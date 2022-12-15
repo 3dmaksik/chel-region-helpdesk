@@ -1,0 +1,56 @@
+/* задаем относительное позиционирование контейнеру */
+.block{position:relative; display: inline-block}
+/* Оформление скрытого элемента по умолчанию */
+.hidden
+{display: none;
+    position: absolute;
+    bottom: 130%;
+    left: 0px;
+    background-color: #fff;
+    color: #3abaf4;
+    padding: 5px;
+    text-align: center;
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    box-shadow: 0 1px 1px rgba(0,0,0,.16);
+    font-size: 12px;}
+/* Дополнительное оформление скрытого элемента(необязательно) */
+.hover + .hidden:before
+{content: " ";
+    position: absolute;
+    top: 98%;
+    left: 10%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    height: 0;
+    width: 0;
+    border: 7px solid transparent;
+    border-right: 7px solid #fff;
+    border-color: #fff transparent transparent transparent;
+    z-index: 2;}
+/* Дополнительное оформление скрытого элемента(необязательно) */
+.hover + .hidden:after
+{content: " ";
+    position: absolute;
+    top: 100%;
+    left: 10%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    height: 0;
+    width: 0;
+    border: 7px solid transparent;
+    border-right: 7px solid #fff;
+    border-color: rgba(0,0,0,.16) transparent transparent transparent;
+    z-index: 1;}
+/* Появление скрытого элемента при наведении */
+.hover:hover + .hidden{display: block;}
+.custom-file-label::after
+{
+    content: "Открыть";
+}
+.close:not(:disabled):not(.disabled):focus, .close:not(:disabled):not(.disabled):hover
+{
+    outline:none;
+}

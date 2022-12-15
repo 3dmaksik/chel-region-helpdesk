@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Requests;
+
+use App\Base\Requests\Request as BaseRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
+class CabinetRequest extends BaseRequest
+{
+    //Правила валидации
+    public function rules(): array
+    {
+        return [
+             'description' => [
+                'required',
+                'integer',
+                'max:9999',
+                'numeric',
+                Rule::unique('cabinet')->ignore(empty($this->cabinet->id) ? 0 : $this->cabinet->id),
+             ],
+
+        ];
+    }
+    //Проверка авторизации
+    public function authorize(): bool
+    {
+        return Auth::check();
+    }
+}
