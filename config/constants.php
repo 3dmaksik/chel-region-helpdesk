@@ -83,4 +83,12 @@ return
             //переопределить заявку
             'redefine' => 'help.redefine'
         ],
+    'settings' =>
+        [
+            'name' => 'настройки',
+            'slug' => 'settings',
+            'edit' => 'settings.edit',
+            'updatePassword' => 'settings.updatePassword',
+            'updateSettings' => 'settings.updateSettings',
+        ],
 ];

@@ -9,7 +9,7 @@ class StoreFilesHelper extends CoreHelper
 {
     protected static array $url;
 
-    public static function createFile($request): array
+    public static function createFile($request, int $w = 1920, int $h = 1080): array
     {
         static $i = 0;
         $imgPath = 'images';
@@ -17,7 +17,7 @@ class StoreFilesHelper extends CoreHelper
                 $fileName = time() . '_' . mt_rand() . '.png';
                 //Изменение размера изображения
                 $img = Image::make($file->path());
-                $img->resize(1920, 1080, function ($constraint) {
+                $img->resize($w, $h, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($imgPath . '/' . $fileName);
                 $url[$i] = ['url' => $fileName];

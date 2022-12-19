@@ -10,7 +10,23 @@ class Help extends Model
 {
     protected $table = 'help';
     protected $primaryKey = 'id';
-    protected $fillable = ['category_id','status_id','cabinet_id','priority_id','work_id','executor_id','calendar_request','calendar_accept','calendar_warning','calendar_final','calendar_execution','images','description_long','info','info_final','check_write'];
+    protected $fillable =
+    ['category_id',
+    'status_id',
+    'cabinet_id',
+    'priority_id',
+    'work_id',
+    'executor_id',
+    'calendar_request',
+    'calendar_accept',
+    'calendar_warning',
+    'calendar_final',
+    'calendar_execution',
+    'images',
+    'description_long',
+    'info',
+    'info_final',
+    'check_write',];
     protected $cacheFor = 1;
 
     public function category(): BelongsTo

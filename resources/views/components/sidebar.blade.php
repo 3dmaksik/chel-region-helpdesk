@@ -36,7 +36,7 @@
             <i class="fas fa-fw fa-star"></i>
             <span>Статистика</span>
         </a> </li>
-	<li class="nav-item active"> <a class="nav-link" href="/panel/settings/edit/">
+        <li class="nav-item {{ (request()->segment(2) == 'settings') ? 'active' : '' }}"> <a class="nav-link" href="{{ route(config('constants.settings.edit')) }}">
             <i class="fas fa-fw fa-cogs"></i>
             <span>Настройки</span>
         </a> </li>

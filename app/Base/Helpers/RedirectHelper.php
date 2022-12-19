@@ -29,6 +29,6 @@ class RedirectHelper extends CoreHelper
 
     protected static function backWithError()
     {
-        return back()->withErrors(['msg' => 'Не сохранено'])->withInput();
+        return back()->withErrors(['msg' => 'Ошибка при сохранении'])->withInput();
     }
 }
