@@ -34,11 +34,4 @@ class Model extends CoreModel
     {
         return $this->orderBy('description', 'ASC');
     }
-
-    protected function getCacheBaseTags(): array
-    {
-        return [
-            'metal',
-        ];
-    }
 }

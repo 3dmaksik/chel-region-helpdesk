@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Work\DTO;
+namespace App\Catalogs\DTO;
 
 use App\Base\DTO\DTO;
 use App\Base\Helpers\StringWorkHelper;

@@ -7,7 +7,7 @@ col-lg-12 mb-4
 <div class="card">
 	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 		<h6 class="m-0 font-weight-bold text-primary">Все сотрудники</h6>
-        <a href="{{ route(config($generateNames.'.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новый сотрудник </button></a>
+        <a href="{{ route(config('constants.work.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новый сотрудник </button></a>
 	</div>
 	<div class="table-responsive">
 		<table class="table align-items-center table-flush">
@@ -27,19 +27,19 @@ col-lg-12 mb-4
                     <td>{{ $item->patronymic }}</td>
 					<td class="d-print-none">
                         <div class="block">
-                            <a href="{{ route(config($generateNames.'.show'),$item->id) }}" class="btn btn-info btn-sm hover">
+                            <a href="{{ route(config('constants.work.show'),$item->id) }}" class="btn btn-info btn-sm hover">
                                 <i class="fas fa-info-circle"></i>
                             </a>
                             <span class="hidden">Открыть сотрудника</span> <!-- скрытый элемент -->
                         </div>
 						<div class="block">
-                            <a href="{{ route(config($generateNames.'.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
+                            <a href="{{ route(config('constants.work.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <span class="hidden">Редактировать сотрудника</span> <!-- скрытый элемент -->
                         </div>
                         <div class="block">
-                            <a href="{{ route(config($generateNames.'.edit'),$item->id) }}" class="btn btn-danger btn-sm hover">
+                            <a href="{{ route(config('constants.work.edit'),$item->id) }}" class="btn btn-danger btn-sm hover">
                                 <i class="fas fa-trash"></i>
                             </a>
                             <span class="hidden">Удалить сотрудника</span> <!-- скрытый элемент -->

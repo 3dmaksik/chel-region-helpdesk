@@ -61,9 +61,16 @@ class Help extends Model
 
     protected function setOrder(): Builder
     {
-        return $this->orderBy('calendar_execution', 'ASC')
+        return $this->orderBy('status_id', 'ASC')
+        ->orderBy('calendar_execution', 'ASC')
         ->orderBy('calendar_warning', 'ASC')
-        ->orderBy('status_id', 'ASC')
         ->orderBy('calendar_final', 'DESC');
+    }
+
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'help',
+        ];
     }
 }

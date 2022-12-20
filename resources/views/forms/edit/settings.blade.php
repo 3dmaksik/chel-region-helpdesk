@@ -8,7 +8,7 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Настройки пароля</h6>
     </div>
     <div class="card-body">
-      <form id="formValidate" method="POST" action="{{ route(config($generateNames.'.updatePassword')) }}">
+      <form id="formValidate" method="POST" action="{{ route(config('constants.settings.updatePassword')) }}">
         @method('PATCH')
         @csrf
         <div class="form-group">
@@ -44,20 +44,20 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Настройки аккаунта</h6>
     </div>
     <div class="card-body">
-      <form id="formValidate" enctype="multipart/form-data" method="POST" action="{{ route(config($generateNames.'.updateSettings')) }}">
+      <form id="formValidate" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.settings.updateSettings')) }}">
         @method('PATCH')
         @csrf
         <div class="form-group">
             <label for="img-profile">Текущая аватарка</label>
             <div class="form-group">
-                <img class="img-profile rounded-circle" src="@if($item->avatar==null)/img/boy.png @else{{ $item->avatar}} @endif" style="max-width: 60px">
+                <img class="img-profile rounded-circle" src="@if(auth()->user()->avatar==null)/img/boy.png @else{{ auth()->user()->avatar}} @endif" style="max-width: 60px">
             </div>
         </div>
         <div class="form-group">
             <label for="select2-images">Загрузить аватарку, если необходимо (не более 60x60px)</label>
             <div class="custom-file">
                 <label class="custom-file-label" for="customFile">Выберите файлы</label>
-                <input type="file" name="avatar" class="custom-file-input" id="customFile" />
+                <input type="file" name="avatar" class="custom-file-input" id="customFile" accept="image/png, image/jpeg" />
             </div>
             @error('avatar')
             <small class="invalid-feedback">Неверное расширение или превышен размер фото</small>
@@ -69,14 +69,14 @@ col-lg-6
                     <figcaption>Текущее оповещение</figcaption>
                     <audio
                         controls
-                        src="@if($item->sound_notify==null)/sound/sound.ogg @else{{ $item->sound_notify}} @endif">
+                        src="@if(auth()->user()->sound_notify==null)/sound/sound.ogg @else{{auth()->user()->sound_notify}} @endif">
                     </audio>
                 </figure>
             </div>
             <label for="sound_notify">Загрузить звук оповещения, если необходимо (формат ogg)</label>
             <div class="custom-file">
                 <label class="custom-file-label" for="customFile">Выберите файлы</label>
-                <input type="file" name="sound_notify" class="custom-file-input" id="customFile2" />
+                <input type="file" name="sound_notify" class="custom-file-input" id="customFile2" accept="audio/ogg" />
             </div>
             @error('sound_notify')
             <small class="invalid-feedback">Неверное расширение или превышен размер фото</small>
@@ -86,7 +86,7 @@ col-lg-6
             <label for="select2-work">Привязать аккаунт к сотруднику</label>
             <select class="select2-single form-control" name="work_id" id="select2-work">
                 @foreach( $works as $work)
-                <option @if ($work->id==$item->work->id) selected @endif value="@if ($work->id==$item->work->id) {{ $item->work->id }} @else {{ $work->id }}@endif">@if ($work->id==$item->work->id) {{ $item->work->lastname }} {{ $item->work->firstname }} {{ $item->work->patronymic }} @else {{ $work->lastname }} {{ $work->firstname }} {{ $work->patronymic }}@endif</option>
+                <option @if ($work->id==auth()->user()->work->id) selected @endif value="@if ($work->id==auth()->user()->work->id) {{ auth()->user()->work->id }} @else {{ $work->id }}@endif">@if ($work->id==auth()->user()->work->id) {{ auth()->user()->work->lastname }} {{ auth()->user()->work->firstname }} {{ auth()->user()->work->patronymic }} @else {{ $work->lastname }} {{ $work->firstname }} {{ $work->patronymic }}@endif</option>
                 @endforeach
             </select>
         </div>

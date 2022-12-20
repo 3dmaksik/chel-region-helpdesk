@@ -15,9 +15,9 @@ class HelpApiController extends Controller
        // $this->middleware('auth');
     }
 
-    public function all(AllCatalogsDTO $all): JsonResponse
+    public function all(): JsonResponse
     {
-        $this->data = $all->getAllCatalogsCollection()->toJson();
+        $this->data = AllCatalogsDTO::getAllCatalogsCollection()->toJson();
         return response()->json($this->data);
     }
 

@@ -3,72 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
-use App\Base\Helpers\RedirectHelper;
-use App\Catalogs\Actions\CatalogsAction;
-use App\Models\Priority;
+use App\Catalogs\Actions\PriorityAction;
 use App\Requests\PriorityRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class PriorityController extends Controller
 {
-    const FORMROUTE = 'constants.priority';
-
-    public function __construct(CatalogsAction $catalogs)
+    public function __construct(PriorityAction $priorities)
     {
         $this->middleware('auth');
-        $this->catalogs = $catalogs;
+        $this->priorities = $priorities;
     }
 
-    public function index(Priority $priority): View
+    public function index(): View
     {
-       // Запуск Action для получения всех записей
-        $generateNames = self::FORMROUTE;
-        $items = $this->catalogs->getAllCatalogs($priority, $this->pages);
-        return view('tables.priority', compact('items', 'generateNames'));
-       // return app(TestTransformer::class)->transform($test);
+        $items = $this->priorities->getAllPagesPaginate();
+        return view('tables.priority', compact('items'));
     }
 
-    public function show(Priority $priority): View
+    public function show(int $priority): View
     {
-        $generateNames = self::FORMROUTE;
-        // Запуск Action c передачей уже проверенного id
-        $item = $this->catalogs->show($priority);
-        return view('forms.show.priority', compact('item', 'generateNames'));
+        $item = $this->priorities->show($priority);
+        return view('forms.show.priority', compact('item'));
     }
 
     public function create(): View
     {
-        $generateNames = self::FORMROUTE;
-        return view('forms.add.priority', compact('generateNames'));
+        return view('forms.add.priority');
     }
 
-    public function store(PriorityRequest $request, Priority $priority): RedirectResponse
+    public function store(PriorityRequest $request): RedirectResponse
     {
-       // Запуск Action для сохранение записи, передача константы для переадресаций
-        $item = $this->catalogs->store($request->validated(), $priority);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'));
+        $this->priorities->store($request->validated());
+        return redirect()->route(config('constants.priority.index'));
     }
 
-    public function edit(Priority $priority): View
+    public function edit(int $priority): View
     {
-        // Запуск Action c передачей уже проверенной модели
-        $generateNames = self::FORMROUTE;
-        $item = $this->catalogs->show($priority);
-        return view('forms.edit.priority', compact('item', 'generateNames'));
+        $item = $this->priorities->show($priority);
+        return view('forms.edit.priority', compact('item'));
     }
 
-    public function update(PriorityRequest $request, Priority $priority): RedirectResponse
+    public function update(PriorityRequest $request, int $priority): RedirectResponse
     {
-        // Запуск Action для сохранение записи, передача константы для переадресаций
-        $item = $this->catalogs->update($request->validated(), $priority);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'), $priority->id);
+        $item = $this->priorities->update($request->validated(), $priority);
+        return redirect()->route(config('constants.priority.index'), $item);
     }
 
-    public function destroy(Priority $priority): RedirectResponse
+    public function destroy(int $priority): RedirectResponse
     {
-        // Запуск Action для удаления записи, передача константы для переадресаций
-        $item = $this->catalogs->delete($priority);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'));
+        $this->priorities->delete($priority);
+        return redirect()->route(config('constants.priority.index'));
     }
 }

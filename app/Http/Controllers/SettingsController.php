@@ -3,43 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
-use App\Base\Helpers\RedirectHelper;
-use App\Catalogs\Actions\CatalogsAction;
-use App\Models\Work;
+use App\Base\Helpers\StoreFilesHelper;
+use App\Catalogs\Actions\SettingsAction;
+use App\Catalogs\Actions\WorkAction;
 use App\Requests\PasswordRequest;
-use App\Settings\Actions\SettingsAction;
+use App\Requests\SettingsRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
-    const FORMROUTE = 'constants.settings';
-
-    public function __construct(SettingsAction $settings, CatalogsAction $catalogs)
+    public function __construct(SettingsAction $settings, WorkAction $work)
     {
         $this->middleware('auth');
         $this->settings = $settings;
-        $this->catalogs = $catalogs;
+        $this->work = $work;
     }
 
-    public function edit(Work $work): View
+    public function edit(): View
     {
-        $generateNames = self::FORMROUTE;
-        $item = $this->settings->show();
-        $works = $this->catalogs->getAllCatalogs($work);
-        return view('forms.edit.settings', compact('generateNames', 'item', 'works'));
+        $works = $this->work->getAllPages();
+        return view('forms.edit.settings', compact('works'));
     }
 
     public function updatePassword(PasswordRequest $request) : RedirectResponse
     {
-        $item = $this->settings->updatePassword($request->validated());
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.edit'));
+        $this->settings->updatePassword($request->validated());
+        return redirect()->route(config('constants.settings.edit'));
     }
 
-    public function updateSettings(PasswordRequest $request): RedirectResponse
+    public function updateSettings(SettingsRequest $request): RedirectResponse
     {
-        //DTO добавить
-        $item = $this->settings->updateSettings($request->validated());
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.edit'));
+        //DTO добавить и request
+        dd(StoreFilesHelper::createNotify($request->sound_notify));
+       // $this->settings->updateSettings($request->validated());
+        //return redirect()->route(config('constants.settings.edit'));
     }
 }

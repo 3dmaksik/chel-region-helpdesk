@@ -8,7 +8,7 @@ col-lg-4
       <h6 class="m-0 font-weight-bold text-primary">Добавить сотрудника</h6>
       <div class="card-title">
         <div class="block">
-          <a style="color: #757575;" class="hover" href="{{ route(config($generateNames.'.index')) }}">
+          <a style="color: #757575;" class="hover" href="{{ route(config('constants.work.index')) }}">
             <i class="fas fa-arrow-left fa-lg"></i>
           </a> <span class="hidden">Назад</span>
           <!-- скрытый элемент -->
@@ -22,7 +22,7 @@ col-lg-4
       </div>
     </div>
     <div class="card-body">
-      <form id="formValidate" method="POST" action="{{ route(config($generateNames.'.store')) }}">
+      <form id="formValidate" method="POST" action="{{ route(config('constants.work.store')) }}">
         @csrf
         <div class="form-group">
             <label for="">Фамилиия</label>
@@ -49,7 +49,7 @@ col-lg-4
             @enderror
         </div>
         <input class="btn btn-primary" type="submit" value="Отправить" />
-        <a class="btn btn-secondary" href="{{ route(config($generateNames.'.index')) }}">Отменить</a>
+        <a class="btn btn-secondary" href="{{ route(config('constants.work.index')) }}">Отменить</a>
       </form>
     </div>
   </div>

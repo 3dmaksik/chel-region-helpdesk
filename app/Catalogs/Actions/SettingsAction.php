@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Settings\Actions;
+namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Models\User;
@@ -28,11 +28,6 @@ class SettingsAction extends Action
             return false;
         }
         return true;
-    }
-
-    public function show() : User
-    {
-        return User::find(auth()->user()->id);
     }
 
     public function update(array $request) : bool
