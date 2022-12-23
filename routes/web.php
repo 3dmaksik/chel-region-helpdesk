@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\WorkController;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,15 @@ Route::controller(SearchController::class)
     Route::get('{search}/work', 'work')->name('work');
     Route::get('{search}/category', 'category')->name('category');
     Route::get('{search}/cabinet', 'cabinet')->name('cabinet');
+});
+
+Route::controller(SettingsController::class)
+->prefix('panel')
+->as('settings.')
+->group(function () {
+    Route::get('settings/edit', 'edit')->name('edit');
+    Route::patch('settings/update/password', 'updatePassword')->name('updatePassword');
+    Route::patch('settings/update/settings', 'updateSettings')->name('updateSettings');
 });
 
 Route::resource('panel/cabinet', CabinetController::class)->except(['show']);

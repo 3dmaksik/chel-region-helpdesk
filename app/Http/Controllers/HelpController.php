@@ -3,112 +3,92 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
-use App\Base\Helpers\RedirectHelper;
-use App\Catalogs\Actions\CatalogsAction;
+use App\Catalogs\Actions\HelpAction;
 use App\Catalogs\DTO\AllCatalogsDTO;
-use App\Help\DTO\HelpDTO;
-use App\Help\Helpers\CheckHelpHelper;
-use App\Models\Help;
+use App\Catalogs\DTO\HelpDTO;
 use App\Requests\HelpRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class HelpController extends Controller
 {
-    const FORMROUTE = 'constants.help';
 
-    public function __construct(CatalogsAction $catalogs)
+    public function __construct(HelpAction $helps)
     {
         $this->middleware('auth');
-        $this->catalogs = $catalogs;
+        $this->helps = $helps;
     }
 
-    public function index(Help $help): View
+    public function index(): View
     {
-       // Запуск Action для получения всех записей
-        $generateNames = self::FORMROUTE;
-        $items = $this->catalogs->getAllCatalogs($help, $this->pages);
-        return view('tables.help', compact('items', 'generateNames'));
-       // return app(TestTransformer::class)->transform($test);
+        $items = $this->helps->getAllPagesPaginate();
+        return view('tables.help', compact('items'));
     }
 
-    public function show(Help $help): View
+    public function show(int $help): View
     {
-        $generateNames = self::FORMROUTE;
-        //Обновление просмотра заявки
-        CheckHelpHelper::checkUpdate($help->id);
-        // Запуск Action c передачей уже проверенного id
-        $item = $this->catalogs->show($help);
-        return view('forms.show.help', compact('item', 'generateNames'));
+        $item = $this->helps->show($help);
+        return view('forms.show.help', compact('item'));
     }
 
-    public function create(AllCatalogsDTO $all): View
+    public function create(): View
     {
-        $generateNames = self::FORMROUTE;
-        $data = $all->getAllCatalogsCollection();
-        return view('forms.add.help', compact('generateNames', 'data'));
+        $data = AllCatalogsDTO::getAllCatalogsCollection();
+        return view('forms.add.help', compact('data'));
     }
 
-    public function store(HelpRequest $request, Help $help): RedirectResponse
+    public function store(HelpRequest $request): RedirectResponse
     {
-       // Запуск Action для сохранение записи, передача константы для переадресаций
         $data = HelpDTO::storeObjectRequest($request->validated());
-        $item = $this->catalogs->store((array) $data, $help);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'));
+        $this->helps->store((array) $data);
+        return redirect()->route(config('constants.help.index'));
     }
 
-    public function edit(AllCatalogsDTO $all, Help $help): View
+    public function edit(int $help): View
     {
-        // Запуск Action c передачей уже проверенной модели
-        $generateNames = self::FORMROUTE;
-        //Все каталоги
-        $data = $all->getAllCatalogsCollection();
-        //Обновление просмотра заявки
-        CheckHelpHelper::checkUpdate($help->id);
-        $item = $this->catalogs->show($help);
-        return view('forms.edit.help', compact('item', 'generateNames', 'data'));
+        $data = AllCatalogsDTO::getAllCatalogsCollection();
+        $item = $this->helps->show($help);
+        return view('forms.edit.help', compact('item', 'data'));
     }
 
-    public function update(HelpRequest $request, Help $help): RedirectResponse
+    public function update(HelpRequest $request, int $help): RedirectResponse
     {
-        // Запуск Action для сохранение записи, передача константы для переадресаций
         $data = HelpDTO::storeObjectRequest($request->validated());
-        $item = $this->catalogs->update((array) $data, $help);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'), $help->id);
+        $item = $this->helps->update((array) $data, $help);
+        return redirect()->route(config('constants.help.index'), $item);
     }
 
-    public function accept(HelpRequest $request, Help $help): RedirectResponse
+    public function accept(HelpRequest $request, int $help): RedirectResponse
     {
         $data = HelpDTO::acceptObjectRequest($request->validated(), $help);
-        $item = $this->catalogs->update((array) $data, $help);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.show'), $help->id);
+        $item = $this->helps->update((array) $data, $help);
+        return redirect()->route(config('constants.help.show'), $item->id);
     }
 
-    public function execute(HelpRequest $request, Help $help): RedirectResponse
+    public function execute(HelpRequest $request, int $help): RedirectResponse
     {
-        $data = HelpDTO::executeObjectRequest($request->validated(), $help);
-        $item = $this->catalogs->update((array) $data, $help);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.show'), $help->id);
+        $data = HelpDTO::executeObjectRequest($request->validated());
+        $item = $this->helps->update((array) $data, $help);
+        return redirect()->route(config('constants.help.show'), $item->id);
     }
 
-    public function redefine(HelpRequest $request, Help $help): RedirectResponse
+    public function redefine(HelpRequest $request, int $help): RedirectResponse
     {
         $data = HelpDTO::redefineObjectRequest($request->validated());
-        $item = $this->catalogs->update((array) $data, $help);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.show'), $help->id);
+        $item = $this->helps->update((array) $data, $help);
+        return redirect()->route(config('constants.help.show'), $item->id);
     }
 
-    public function reject(HelpRequest $request, Help $help): RedirectResponse
+    public function reject(HelpRequest $request, int $help): RedirectResponse
     {
-        $data = HelpDTO::rejectObjectRequest($request->validated(), $help);
-        $item = $this->catalogs->update((array) $data, $help);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.show'), $help->id);
+        $data = HelpDTO::rejectObjectRequest($request->validated());
+        $item = $this->helps->update((array) $data, $help);
+        return redirect()->route(config('constants.help.show'), $item->id);
     }
 
-    public function destroy(Help $help): RedirectResponse
+    public function destroy(int $help): RedirectResponse
     {
-        // Запуск Action для удаления записи, передача константы для переадресаций
-        $item = $this->catalogs->delete($help);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'));
+        $this->helps->delete($help);
+        return redirect()->route(config('constants.work.index'));
     }
 }

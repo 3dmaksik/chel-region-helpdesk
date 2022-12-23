@@ -8,7 +8,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
          </div>
-         <form class="update-form" action="{{ route(config($generateNames.'.accept'),$item->id,'accept') }}" method="POST">
+         <form class="update-form" action="{{ route(config('constants.help.accept'),$item->id,'accept') }}" method="POST">
             @method('PATCH')
             @csrf
             <div class="modal-body">
@@ -42,7 +42,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
          </div>
-         <form class="update-form" action="{{ route(config($generateNames.'.execute'),$item->id,'execute') }}" method="POST">
+         <form class="update-form" action="{{ route(config('constants.help.execute'),$item->id,'execute') }}" method="POST">
             @method('PATCH')
             @csrf
             <div class="modal-body">
@@ -68,7 +68,7 @@
              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
              <span aria-hidden="true">&times;</span></button>
           </div>
-          <form class="update-form" action="{{ route(config($generateNames.'.redefine'),$item->id,'redefine') }}" method="POST">
+          <form class="update-form" action="{{ route(config('constants.help.redefine'),$item->id,'redefine') }}" method="POST">
              @method('PATCH')
              @csrf
              <div class="modal-body">
@@ -94,7 +94,7 @@
              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
              <span aria-hidden="true">&times;</span></button>
           </div>
-          <form class="update-form" action="{{ route(config($generateNames.'.reject'),$item->id,'reject') }}" method="POST">
+          <form class="update-form" action="{{ route(config('constants.help.reject'),$item->id,'reject') }}" method="POST">
              @method('PATCH')
              @csrf
              <div class="modal-body">

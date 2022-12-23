@@ -14,4 +14,11 @@ class Category extends Model
     {
         return $this->hasMany(Help::class, 'category_id');
     }
+
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'category',
+        ];
+    }
 }

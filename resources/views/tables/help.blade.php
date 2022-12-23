@@ -7,7 +7,7 @@ col-lg-12 mb-4
 <div class="card">
 	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 		<h6 class="m-0 font-weight-bold text-primary">Все заявки</h6>
-        <a href="{{ route(config($generateNames.'.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая заявка</button></a>
+        <a href="{{ route(config('constants.help.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая заявка</button></a>
 	</div>
 	<div class="table-responsive">
 		<table class="table align-items-center table-flush">
@@ -52,7 +52,7 @@ col-lg-12 mb-4
                     <td><span class="badge badge-{{ $item->status->color }}">{{ $item->status->description }}</span></td>
 					<td class="d-print-none">
 						<div class="block">
-                            <a href="{{ route(config($generateNames.'.show'),$item->id) }}"> <button type="button" class="btn btn-info mb-1">Открыть</button></a>
+                            <a href="{{ route(config('constants.help.show'),$item->id) }}"> <button type="button" class="btn btn-info mb-1">Открыть</button></a>
                         </div>
 					</td>
 				</tr>

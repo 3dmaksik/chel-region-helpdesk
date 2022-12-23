@@ -37,4 +37,5 @@ mix.js('resources/js/app.js', 'public/js')
     .minify(['public/js/app.js','public/css/all.css'])
     .copyDirectory('resources/vendor/public/font', 'public/font')
     .copyDirectory('resources/vendor/public/img', 'public/img')
+    .copyDirectory('resources/vendor/public/sound', 'public/sound')
     .copyDirectory('resources/vendor/public/webfonts', 'public/webfonts');

@@ -8,7 +8,7 @@ col-lg-12
       <h6 class="m-0 font-weight-bold text-primary">Редактировать заявку</h6>
       <div class="card-title">
         <div class="block">
-          <a style="color: #757575;" class="hover" href="{{ route(config($generateNames.'.index')) }}">
+          <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
             <i class="fas fa-arrow-left fa-lg"></i>
           </a> <span class="hidden">Назад</span>
           <!-- скрытый элемент -->
@@ -22,7 +22,7 @@ col-lg-12
       </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" method="POST" action="{{ route(config($generateNames.'.update'),$item->id) }}">
+        <form id="formValidate" method="POST" action="{{ route(config('constants.help.update'),$item->id) }}">
         @method('PATCH')
         @csrf
         <div class="form-group">
@@ -69,7 +69,7 @@ col-lg-12
             <p>{{ $item->description_long }}</p>
         </div>
         <input class="btn btn-primary" type="submit" value="Отправить" />
-        <a class="btn btn-secondary" href="{{ route(config($generateNames.'.index')) }}">Отменить</a>
+        <a class="btn btn-secondary" href="{{ route(config('constants.help.index')) }}">Отменить</a>
       </form>
     </div>
   </div>

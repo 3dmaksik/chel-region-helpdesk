@@ -24,7 +24,7 @@ col-lg-12 mb-4
                     <td><div style="height: 40px;width: 185px" class="d-print-none card bg-{{ $item->color }}"></div></td>
 					<td class="d-print-none">
 						<div class="block">
-                            <a href="{{ route(config($generateNames.'.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
+                            <a href="{{ route(config('constants.status.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <span class="hidden">Редактировать статус</span> <!-- скрытый элемент -->

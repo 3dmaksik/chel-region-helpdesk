@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Help\DTO;
+namespace App\Catalogs\DTO;
 
 use App\Base\DTO\DTO;
 use App\Base\Helpers\StoreFilesHelper;
@@ -49,12 +49,13 @@ class HelpDTO extends DTO
         return $dto;
     }
 
-    public static function acceptObjectRequest(array $request, Help $help): self
+    public static function acceptObjectRequest(array $request, int $id): self
     {
         $dto = new self();
+        $help = Help::find($id);
         $dto->executor_id = $request['executor_id'];
         $dto->priority_id = $request['priority_id'];
-        $dto->status_id = $help->status->id + 1;
+        $dto->status_id = 1;
         ($request['info']) ? $dto->info = $request['info'] : $dto->info = 'Информация отсутствует';
         $dto->calendar_accept = Carbon::now();
         $dto->calendar_warning = Carbon::now()->addHour($help->priority->warning_timer);
@@ -63,10 +64,10 @@ class HelpDTO extends DTO
         return $dto;
     }
 
-    public static function executeObjectRequest(array $request, Help $help): self
+    public static function executeObjectRequest(array $request): self
     {
         $dto = new self();
-        $dto->status_id = $help->status->id + 1;
+        $dto->status_id = 3;
         $dto->info_final = 'Выполнено с комментарием:' . $request['info_final'];
         $dto->calendar_final = Carbon::now();
         $dto->check_write = false;
@@ -81,10 +82,10 @@ class HelpDTO extends DTO
         return $dto;
     }
 
-    public static function rejectObjectRequest(array $request, Help $help): self
+    public static function rejectObjectRequest(array $request): self
     {
         $dto = new self();
-        $dto->status_id = $help->status->id + 3;
+        $dto->status_id = 4;
         $dto->info_final = 'Причина отклонения:' . $request['info_final'];
         $dto->calendar_final = Carbon::now();
         $dto->check_write = false;

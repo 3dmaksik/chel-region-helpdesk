@@ -9,9 +9,9 @@ class CheckHelpHelper extends CoreHelper
 {
     public Help $help;
 
-    public static function checkUpdate(int $id): bool
+    public static function checkUpdate(int $id, bool $status = true): bool
     {
         $help = Help::find($id);
-        return $help->update(['check_write' => true]);
+        return $help->update(['check_write' => $status]);
     }
 }

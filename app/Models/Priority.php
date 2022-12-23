@@ -20,4 +20,11 @@ class Priority extends Model
     {
         return $this->orderBy('rang', 'ASC');
     }
+
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'priority',
+        ];
+    }
 }
