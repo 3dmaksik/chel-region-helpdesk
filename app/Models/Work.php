@@ -20,4 +20,11 @@ class Work extends Model
     {
         return $this->orderBy('id', 'DESC');
     }
+
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'work',
+        ];
+    }
 }

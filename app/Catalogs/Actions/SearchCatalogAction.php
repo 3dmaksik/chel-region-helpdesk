@@ -1,22 +1,24 @@
 <?php
 
-namespace App\Search\Actions;
+namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\SearchCatalogsDTO;
+use App\Models\Help;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class SearchCatalogAction extends Action
 {
+    private Help $help;
     public function __construct()
     {
         //parent::__construct();
     }
 
-    public function searchCatalog(SearchCatalogsDTO $config): LengthAwarePaginator
+    public function searchHelpWith(SearchCatalogsDTO $config): LengthAwarePaginator
     {
-        //Запуск репозитория
-        return $config->model->where($config->field, $config->id)->paginate($config->pages);
+        $this->work = new Help();
+        return $this->work->where($config->field, $config->id)->paginate($this->page);
     }
 
     public function searchHelp(string $item, int $pages): LengthAwarePaginator

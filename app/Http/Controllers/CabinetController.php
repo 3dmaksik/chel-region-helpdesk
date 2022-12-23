@@ -3,64 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
-use App\Base\Helpers\RedirectHelper;
-use App\Catalogs\Actions\CatalogsAction;
-use App\Models\Cabinet;
+use App\Catalogs\Actions\CabinetAction;
 use App\Requests\CabinetRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class CabinetController extends Controller
 {
-    const FORMROUTE = 'constants.cabinet';
-
-    public function __construct(CatalogsAction $catalogs)
+    public function __construct(CabinetAction $cabinets)
     {
         $this->middleware('auth');
-        $this->catalogs = $catalogs;
+        $this->cabinets = $cabinets;
     }
 
-    public function index(Cabinet $cabinet): View
+    public function index(): View
     {
-       // Запуск Action для получения всех записей
-        $generateNames = self::FORMROUTE;
-        $items = $this->catalogs->getAllCatalogs($cabinet, $this->pages);
-        return view('tables.cabinet', compact('items', 'generateNames'));
-       // return app(TestTransformer::class)->transform($test);
+        $items = $this->cabinets->getAllPagesPaginate();
+        return view('tables.cabinet', compact('items'));
     }
 
     public function create(): View
     {
-        $generateNames = self::FORMROUTE;
-        return view('forms.add.cabinet', compact('generateNames'));
+        return view('forms.add.cabinet');
     }
 
-    public function store(CabinetRequest $request, Cabinet $cabinet): RedirectResponse
+    public function store(CabinetRequest $request): RedirectResponse
     {
-        // Запуск Action для сохранение записи, передача константы для переадресаций
-        $item = $this->catalogs->store($request->validated(), $cabinet);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'));
+        $this->cabinets->store($request->validated());
+        return redirect()->route(config('constants.cabinet.index'));
     }
 
-    public function edit(Cabinet $cabinet): View
+    public function edit(int $cabinet): View
     {
-        // Запуск Action c передачей уже проверенной модели
-        $generateNames = self::FORMROUTE;
-        $item = $this->catalogs->show($cabinet);
-        return view('forms.edit.cabinet', compact('item', 'generateNames'));
+        $item = $this->cabinets->show($cabinet);
+        return view('forms.edit.cabinet', compact('item'));
     }
 
-    public function update(CabinetRequest $request, Cabinet $cabinet): RedirectResponse
+    public function update(CabinetRequest $request, int $cabinet): RedirectResponse
     {
-        // Запуск Action для сохранение записи, передача константы для переадресаций
-        $item = $this->catalogs->update($request->validated(), $cabinet);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'), $cabinet->id);
+        $item = $this->cabinets->update($request->validated(), $cabinet);
+        return redirect()->route(config('constants.cabinet.index'), $item);
     }
 
-    public function destroy(Cabinet $cabinet): RedirectResponse
+    public function destroy(int $cabinet): RedirectResponse
     {
-        // Запуск Action для удаления записи, передача константы для переадресаций
-        $item = $this->catalogs->delete($cabinet);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'));
+        $this->cabinets->delete($cabinet);
+        return redirect()->route(config('constants.cabinet.index'));
     }
 }

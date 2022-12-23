@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
-use App\Base\Helpers\RedirectHelper;
-use App\Catalogs\Actions\CatalogsAction;
-use App\Models\Status;
+use App\Catalogs\Actions\StatusAction;
 use App\Requests\StatusRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -14,33 +12,27 @@ class StatusController extends Controller
 {
     const FORMROUTE = 'constants.status';
 
-    public function __construct(CatalogsAction $catalogs)
+    public function __construct(StatusAction $statuses)
     {
         $this->middleware('auth');
-        $this->catalogs = $catalogs;
+        $this->statuses = $statuses;
     }
 
-    public function index(Status $status): View
+    public function index(): View
     {
-       // Запуск Action для получения всех записей
-        $generateNames = self::FORMROUTE;
-        $items = $this->catalogs->getAllCatalogs($status, $this->pages);
-        return view('tables.status', compact('items', 'generateNames'));
-       // return app(TestTransformer::class)->transform($test);
+        $items = $this->statuses->getAllPagesPaginate();
+        return view('tables.status', compact('items'));
     }
 
-    public function edit(Status $status): View
+    public function edit(int $status): View
     {
-        // Запуск Action c передачей уже проверенной модели
-        $generateNames = self::FORMROUTE;
-        $item = $this->catalogs->show($status);
-        return view('forms.edit.status', compact('item', 'generateNames'));
+        $item = $this->statuses->show($status);
+        return view('forms.edit.status', compact('item'));
     }
 
-    public function update(StatusRequest $request, Status $status): RedirectResponse
+    public function update(StatusRequest $request, int $status): RedirectResponse
     {
-        // Запуск Action для сохранение записи, передача константы для переадресаций
-        $item = $this->catalogs->update($request->validated(), $status);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'), $status->id);
+        $item = $this->statuses->update($request->validated(), $status);
+        return redirect()->route(config('constants.status.index'), $item);
     }
 }

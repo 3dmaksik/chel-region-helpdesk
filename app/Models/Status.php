@@ -14,4 +14,11 @@ class Status extends Model
     {
         return $this->hasMany(Help::class, 'status_id');
     }
+
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'status',
+        ];
+    }
 }

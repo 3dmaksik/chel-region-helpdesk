@@ -3,74 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
-use App\Base\Helpers\RedirectHelper;
-use App\Catalogs\Actions\CatalogsAction;
-use App\Models\Work;
+use App\Catalogs\Actions\WorkAction;
+use App\Catalogs\DTO\WorkDTO;
 use App\Requests\WorkRequest;
-use App\Work\DTO\WorkDTO;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class WorkController extends Controller
 {
-    const FORMROUTE = 'constants.work';
-
-    public function __construct(CatalogsAction $catalogs)
+    public function __construct(WorkAction $works)
     {
         $this->middleware('auth');
-        $this->catalogs = $catalogs;
+        $this->works = $works;
     }
 
-    public function index(Work $work): View
+    public function index(): View
     {
-       // Запуск Action для получения всех записей
-        $generateNames = self::FORMROUTE;
-        $items = $this->catalogs->getAllCatalogs($work, $this->pages);
-        return view('tables.work', compact('items', 'generateNames'));
-       // return app(TestTransformer::class)->transform($test);
+        $items = $this->works->getAllPagesPaginate();
+        return view('tables.work', compact('items'));
     }
 
-    public function show(Work $work): View
+    public function show(int $work): View
     {
-        $generateNames = self::FORMROUTE;
-        // Запуск Action c передачей уже проверенного id
-        $item = $this->catalogs->show($work);
-        return view('forms.show.work', compact('item', 'generateNames'));
+        $item = $this->works->show($work);
+        return view('forms.show.work', compact('item'));
     }
 
     public function create(): View
     {
-        $generateNames = self::FORMROUTE;
-        return view('forms.add.work', compact('generateNames'));
+        return view('forms.add.work');
     }
 
-    public function store(WorkRequest $request, Work $work): RedirectResponse
+    public function store(WorkRequest $request): RedirectResponse
     {
         $data = WorkDTO::storeObjectRequest($request->validated());
-        $item = $this->catalogs->store((array) $data, $work);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'));
+        $this->works->store((array) $data);
+        return redirect()->route(config('constants.work.index'));
     }
 
-    public function edit(Work $work): View
+    public function edit(int $work): View
     {
-        // Запуск Action c передачей уже проверенной модели
-        $generateNames = self::FORMROUTE;
-        $item = $this->catalogs->show($work);
-        return view('forms.edit.work', compact('item', 'generateNames'));
+        $item = $this->works->show($work);
+        return view('forms.edit.work', compact('item'));
     }
 
-    public function update(WorkRequest $request, Work $work): RedirectResponse
+    public function update(WorkRequest $request, int $work): RedirectResponse
     {
-        // Запуск Action для сохранение записи, передача константы для переадресаций
         $data = WorkDTO::storeObjectRequest($request->validated());
-        $item = $this->catalogs->update((array) $data, $work);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'), $work->id);
+        $item = $this->works->update((array) $data, $work);
+        return redirect()->route(config('constants.work.index'), $item);
     }
 
-    public function destroy(Work $work): RedirectResponse
+    public function destroy(int $work): RedirectResponse
     {
-        // Запуск Action для удаления записи, передача константы для переадресаций
-        $item = $this->catalogs->delete($work);
-        return RedirectHelper::redirect($item, config(self::FORMROUTE . '.index'));
+        $this->works->delete($work);
+        return redirect()->route(config('constants.work.index'));
     }
 }

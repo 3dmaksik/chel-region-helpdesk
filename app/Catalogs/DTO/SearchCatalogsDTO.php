@@ -3,22 +3,33 @@
 namespace App\Catalogs\DTO;
 
 use App\Base\DTO\DTO;
-use App\Base\Models\Model;
 
 class SearchCatalogsDTO extends DTO
 {
 
-    public Model $model;
     public int $id;
-    public int $pages;
     public string $field;
-    public static function searchCatalogsObjectRequest(Model $model, int $pages, int $id, string $field): self
+    public static function searchWorkObjectRequest(int $id): self
     {
         $dto = new self();
-        $dto->pages = $pages;
+        $dto->field = 'work_id';
         $dto->id = $id;
-        $dto->model = $model;
-        $dto->field = $field;
+        return $dto;
+    }
+
+    public static function searchCategoryObjectRequest(int $id): self
+    {
+        $dto = new self();
+        $dto->field = 'category_id';
+        $dto->id = $id;
+        return $dto;
+    }
+
+    public static function searchCabinetObjectRequest(int $id): self
+    {
+        $dto = new self();
+        $dto->field = 'cabinet_id';
+        $dto->id = $id;
         return $dto;
     }
 }

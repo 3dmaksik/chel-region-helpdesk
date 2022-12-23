@@ -8,7 +8,7 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Информация о заявке</h6>
       <div class="card-title">
         <div class="block">
-          <a style="color: #757575;" class="hover" href="{{ route(config($generateNames.'.index')) }}">
+          <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
             <i class="fas fa-arrow-left fa-lg"></i>
           </a> <span class="hidden">Назад</span>
           <!-- скрытый элемент -->
@@ -46,7 +46,7 @@ col-lg-6
         @else
         <div class="slider">
         @foreach ($item->images as $image)
-            <a href="/images/{{ $image['url'] }}" data-fancybox="images">
+            <a href="{{ asset('storage/'.$image['url'].'') }}" data-fancybox="images">
            Посмотреть вложение
             </a>
         @endforeach
@@ -60,14 +60,14 @@ col-lg-6
         {{ $item->info_final }}
         @endif
         <hr>
-        @if ($item->status->id ==1)
+        @if ($item->status->id ==2)
         <div class="block">
             <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#acceptHelp" data-id="{{$item->id}}">
                 Назначить исполнителя
             </a>
         </div>
         @endif
-        @if($item->status->id ==2)
+        @if($item->status->id ==1)
         <div class="block">
             <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#executeHelp" data-id="{{$item->id}}">
                 Выполнить заявку

@@ -14,4 +14,11 @@ class Cabinet extends Model
     {
         return $this->hasMany(Help::class, 'cabinet_id');
     }
+
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'cabinet',
+        ];
+    }
 }

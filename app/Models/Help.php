@@ -10,7 +10,23 @@ class Help extends Model
 {
     protected $table = 'help';
     protected $primaryKey = 'id';
-    protected $fillable = ['category_id','status_id','cabinet_id','priority_id','work_id','executor_id','calendar_request','calendar_accept','calendar_warning','calendar_final','calendar_execution','images','description_long','info','info_final','check_write'];
+    protected $fillable =
+    ['category_id',
+    'status_id',
+    'cabinet_id',
+    'priority_id',
+    'work_id',
+    'executor_id',
+    'calendar_request',
+    'calendar_accept',
+    'calendar_warning',
+    'calendar_final',
+    'calendar_execution',
+    'images',
+    'description_long',
+    'info',
+    'info_final',
+    'check_write',];
     protected $cacheFor = 1;
 
     public function category(): BelongsTo
@@ -45,9 +61,16 @@ class Help extends Model
 
     protected function setOrder(): Builder
     {
-        return $this->orderBy('calendar_execution', 'ASC')
+        return $this->orderBy('status_id', 'ASC')
+        ->orderBy('calendar_execution', 'ASC')
         ->orderBy('calendar_warning', 'ASC')
-        ->orderBy('status_id', 'ASC')
         ->orderBy('calendar_final', 'DESC');
+    }
+
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'help',
+        ];
     }
 }

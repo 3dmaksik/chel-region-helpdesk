@@ -4,7 +4,7 @@
 ### Требования
 
 - Astra Linux 1.7+ или другая российская ОС, либо любая акутальная операционная система семейства Linux;
-- PHP 8.0-8.1;
+- PHP 8.0-8.1 c расширениями fileinfo, redis или memcached;
 - СУБД на выбор MYSQL 8.0+/MariaDB 10.8+, PostgreSQL 14+;
 - Сервер Ngnix 1.23+, Apache не рекомендуется;
 - Кеш на выбор Memcashed 1.6+, Redis 7.0 или без него;
@@ -86,30 +86,25 @@
 1. Скопировать проект к себе на сервер в созданную ранее папку одним из способов:
 
 - Через github `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
-- Через composer `$ composer create-project 3dmaksik/chel-region-helpdesk`
+- Через composer `$ composer create-project 3dmaksik/chel-region-helpdesk -s dev --no-dev`
 
 2. Установить проект и библиотеки
 `$ composer install`
 Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно билиблиотеки разработки командой `$ npm run prod`, остальным этот шаг можно пропустить.
 
 3. Установить права для следующих папок:
-`sudo chmod -R 777 ./storage`
-`sudo chmod -R 777 ./bootstrap/cache/`
+`$ sudo chmod -R 777 ./storage`
+`$ sudo chmod -R 777 ./bootstrap/cache/`
+`$ php artisan storage:link`
 
 4. Создать файл настроек или скопировать его командой `$ cp .env.example .env`
 
 5. Сгенерировать ключ проекта командой `$ php artisan key:generate`
 
-6. В файле `.env` заполнить все незаполненные поля, кроме `APP_API_KEY`
+6. В файле `.env` заполнить все незаполненные поля.
 7. Установить базу данных `php artisan migrate:fresh --seed`
 8. Войти на сайт по адресу `http://domain/login`
-После этого необходимо изменить пароль или создать нового пользователя администратора для работы с API.
-
-9.  Получить ключи API по ссылке 
-> http://domain/api/login?name=admin&password=password ,
-
-Где`domain` ваш адрес сайта, `name` ваш логин администратора, `password` пароль администратора. Для API можно создать любой другой аккаунт, срок действия ключа по умолчанию 3 года + 2 месяца. 
-Данные полученные на экране браузера необходимо внести в файл `.env` в поле `APP_API_KEY`
+После этого необходимо обязательно изменить пароль
                 
 
 ### Обновления
