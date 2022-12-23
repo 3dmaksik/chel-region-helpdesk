@@ -15,7 +15,6 @@
         "nesbot/carbon": "dev-master",
         "rennokki/laravel-eloquent-query-cache": "dev-master",
         "simplesoftwareio/simple-qrcode": "dev-develop",
-        "slevomat/coding-standard": "^8.7",
         "spatie/laravel-permission": "dev-main"
     },
     "require-dev": {
@@ -26,6 +25,7 @@
         "mreduar/laravel-phpcs": "^1.8",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
+        "slevomat/coding-standard": "^8.7",
         "spatie/laravel-ignition": "^1.0"
     },
     "autoload": {

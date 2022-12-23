@@ -19,7 +19,7 @@ col-lg-12 mb-4
                     <th style="width:15%">Сотрудник</th>
                     <th style="width:12%">Дата подачи</th>
                     <th style="width:12%">Дата выполнения</th>
-                    <th style="width:12%">Итоговая дата</th>
+                    <th style="width:12%">Контрольная дата</th>
                     <th style="width:10%">Статус</th>
                     <th class="d-print-none"></th>
 				</tr>
@@ -27,13 +27,13 @@ col-lg-12 mb-4
 			<tbody id="table-dynamic">
                 @forelse ($items as $item)
 				<tr
-                @if(strtotime($now)> strtotime($item->calendar_warning) && strtotime($now)< strtotime($item->calendar_execution) && $item->calendar_warning!=null && $item->calendar_execution!=null) class="badge-{{ config("color.5.slug") }}"@endif
-                @if(strtotime($now)> strtotime($item->calendar_execution) && $item->calendar_execution!=null) class="badge-{{ config("color.4.slug") }}"@endif
+                @if(strtotime($now)> strtotime($item->calendar_warning) && strtotime($now)< strtotime($item->calendar_execution) && $item->calendar_warning!=null && $item->calendar_execution!=null && $item->calendar_final==null) class="badge-{{ config("color.5.slug") }}"@endif
+                @if(strtotime($now)> strtotime($item->calendar_execution) && $item->calendar_execution!=null && $item->calendar_final==null) class="badge-{{ config("color.4.slug") }}"@endif
                 >
 					<td>{{ $item->id }}</td>
-                    <td><a href="{{ route('search.category',$item->category_id) }}">{{ $item->category->description }}</a></td>
-                    <td><a href="{{ route('search.cabinet',$item->cabinet_id) }}">{{ $item->cabinet->description }}</a></td>
-                    <td><a href="{{ route('search.work',$item->work_id) }}">{{ $item->work->lastname }} {{ $item->work->firstname }} {{ $item->work->patronymic }}</a></td>
+                    <td class="badge-table"><a href="{{ route('search.category',$item->category_id) }}">{{ $item->category->description }}</a></td>
+                    <td class="badge-table"><a href="{{ route('search.cabinet',$item->cabinet_id) }}">{{ $item->cabinet->description }}</a></td>
+                    <td class="badge-table"><a href="{{ route('search.work',$item->work_id) }}">{{ $item->work->lastname }} {{ $item->work->firstname }} {{ $item->work->patronymic }}</a></td>
                     <td>{{ date( 'd.m.Y H:i', strtotime($item->calendar_request))}}</td>
                     <td>
                         @if ($item->calendar_final==null)
