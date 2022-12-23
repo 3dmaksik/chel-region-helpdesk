@@ -30,7 +30,7 @@ class SettingsAction extends Action
         return true;
     }
 
-    public function update(array $request) : bool
+    public function updateSettings(array $request) : bool
     {
         return User::whereId(auth()->user()->id)->update($request);
     }

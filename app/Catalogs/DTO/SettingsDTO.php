@@ -13,8 +13,12 @@ class SettingsDTO extends DTO
     {
         $dto = new self();
         if (isset($request['avatar'])) {
-            $dto->avatar = json_encode(StoreFilesHelper::createFile($request['images'], 32, 32));
+            $dto->avatar = StoreFilesHelper::createFile($request['avatar'], 32, 32);
         }
+        if (isset($request['sound_notify'])) {
+            $dto->sound_notify = StoreFilesHelper::createNotify($request['sound_notify']);
+        }
+        $dto->work_id = $request['work_id'];
         return $dto;
     }
 }

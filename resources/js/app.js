@@ -1,8 +1,18 @@
 $(function () {
-    let id=0;
-    const sound = new Howl({
-        src: ['/js/sound.ogg'],
-        html5: true
+    let id = 0;
+    var CSRF_TOKEN = $('meta[name="_token"]').attr('content');
+    $.ajax({
+        url: '/api/sound_notify',
+        method: 'get',
+        dataType: 'json',
+        data: {"_token": CSRF_TOKEN},
+        success: function(data){
+            console.log(data);
+            const sound = new Howl({
+                src: [data],
+                html5: true
+            });
+        }
     });
     $( "#description" ).focus(function() {
         if($(this).hasClass('is-invalid'))
@@ -30,22 +40,11 @@ $(function () {
         if ($(this).val() != '') $(this).prev().text('Выбрано файлов: ' + $(this)[0].files.length);
         else $(this).prev().text('Выберите файлы');
     });
-    var CSRF_TOKEN = $('meta[name="_token"]').attr('content');
-    var API_TOKEN=$('meta[name="api_token"]').attr('content');
-    $.ajax({
-        url: '/api/profile',
-        method: 'post',
-        dataType: 'json',
-        data: {"token_type":"Bearer","api_token":API_TOKEN ,"_token": CSRF_TOKEN},
-        success: function(data){
-            console.log(data);
-        }
-    });
     $.ajax({
         url: '/api/help/all',
         method: 'post',
         dataType: 'json',
-        data: {"token_type":"Bearer","api_token":API_TOKEN ,"_token": CSRF_TOKEN},
+        data: {"_token": CSRF_TOKEN},
         success: function(data){
             const obj = JSON.parse(data);
             for (var i = 0; i < obj.work.length; i++) {

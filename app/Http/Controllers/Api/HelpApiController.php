@@ -12,7 +12,7 @@ class HelpApiController extends Controller
     private string $data;
     public function __construct()
     {
-       // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     public function all(): JsonResponse
@@ -24,6 +24,12 @@ class HelpApiController extends Controller
     public function checkHelp(int $id): JsonResponse
     {
         $this->data = CheckHelpHelper::checkUpdate($id);
+        return response()->json($this->data);
+    }
+
+    public function getSoundNotify(): JsonResponse
+    {
+        $this->data = '/sound/sound.ogg';
         return response()->json($this->data);
     }
 }
