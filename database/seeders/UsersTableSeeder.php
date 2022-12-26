@@ -21,6 +21,6 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('password'),
             'work_id' => 1,
             'email_verified_at'=> now(),
-        ])->assignRole('admin');
+        ])->assignRole('superAdmin');
     }
 }

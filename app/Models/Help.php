@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Base\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Help extends Model
 {
@@ -65,6 +66,50 @@ class Help extends Model
         ->orderBy('calendar_execution', 'ASC')
         ->orderBy('calendar_warning', 'ASC')
         ->orderBy('calendar_final', 'DESC');
+    }
+
+    public function getNewPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('status_id', 2)
+        ->orderBy('calendar_request', 'DESC')
+        ->paginate($pages);
+    }
+
+    public function getModWorkerPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('status_id', 1)
+        ->where('executor_id', auth()->user()->id)
+        ->orderBy('calendar_accept', 'DESC')
+        ->paginate($pages);
+    }
+
+    public function getAdmWorkerPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('status_id', 1)
+        ->orderBy('calendar_accept', 'DESC')
+        ->paginate($pages);
+    }
+
+    public function getModCompletedPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('status_id', 3)
+        ->where('executor_id', auth()->user()->id)
+        ->orderBy('calendar_final', 'DESC')
+        ->paginate($pages);
+    }
+
+    public function getAdmDismissPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('status_id', 4)
+        ->orderBy('calendar_request', 'DESC')
+        ->paginate($pages);
+    }
+
+    public function getAdmCompletedPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('status_id', 3)
+        ->orderBy('calendar_final', 'DESC')
+        ->paginate($pages);
     }
 
     protected function getCacheBaseTags(): array

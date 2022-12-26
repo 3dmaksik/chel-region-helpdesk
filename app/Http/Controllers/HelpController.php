@@ -25,6 +25,30 @@ class HelpController extends Controller
         return view('tables.help', compact('items'));
     }
 
+    public function new() : View
+    {
+        $items = $this->helps->getNewPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function worker() : View
+    {
+        $items = $this->helps->getWorkerPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function completed() : View
+    {
+        $items = $this->helps->getCompletedPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function dismiss() : View
+    {
+        $items = $this->helps->getDismissPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
     public function show(int $help): View
     {
         $item = $this->helps->show($help);

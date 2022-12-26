@@ -65,6 +65,9 @@ col-lg-6
             <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#acceptHelp" data-id="{{$item->id}}">
                 Назначить исполнителя
             </a>
+            <a href="{{ route(config('constants.help.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
+                Редактировать заявку
+            </a>
         </div>
         @endif
         @if($item->status->id ==1)
@@ -79,7 +82,10 @@ col-lg-6
             </a>
         </div>
         @endif
-        @if($item->status->id <2)
+        <a href="{{ route(config('constants.help.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
+            Редактировать заявку
+        </a>
+        @if($item->status->id <3)
         <div class="block">
             <a href="" class="btn btn-danger btn-sm hover" data-toggle="modal" data-target="#rejectHelp" data-id="{{$item->id}}">
                 Отклонить заявку

@@ -5,9 +5,36 @@
 		<div class="sidebar-brand-text mx-3">Главные заявки</div>
 	</a>
 	<hr class="sidebar-divider my-0">
-	<li class="nav-item {{ (request()->segment(2) == 'help') ? 'active' : '' }}"> <a class="nav-link" href="{{ route(config('constants.help.index')) }}">
-            <i class="fas fa-fw fa-table-columns"></i>
-            <span>Панель</span></a> </li>
+    <li id="workSidebar" class="nav-item {{ (request()->segment(2) == 'help') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#WorkForm" aria-expanded="false" aria-controls="WorkForm">
+          <i class="fas fa-fw fa-table-columns"></i>
+          <span>Рабочие заявки</span>
+        </a>
+        <div id="WorkForm" class="collapse {{ (request()->segment(2) == 'help') ? 'show' : '' }}" aria-labelledby="headingForm" data-parent="#workSidebar" style="">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Рабочие заявки</h6>
+            <a class="collapse-item  {{ (request()->segment(2) == 'help') && (request()->segment(3) == 'all') ? 'active' : '' }}" href="{{ route(config('constants.help.index')) }}">Все</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'help') && (request()->segment(3) == 'new') ? 'active' : '' }}" href="{{ route(config('constants.help.new')) }}">Новые</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'help') && (request()->segment(3) == 'worker') ? 'active' : '' }}" href="{{ route(config('constants.help.worker')) }}">В работе</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'help') && (request()->segment(3) == 'completed') ? 'active' : '' }}" href="{{ route(config('constants.help.completed')) }}">Выполненные</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'help') && (request()->segment(3) == 'dismiss') ? 'active' : '' }}" href="{{ route(config('constants.help.dismiss')) }}">Отклонённые</a>
+        </div>
+        </div>
+      </li>
+      <li id="UserSidebar" class="nav-item {{ (request()->segment(2) == 'user') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#UserForm" aria-expanded="false" aria-controls="UserForm">
+          <i class="fas fa-regular fa-house"></i>
+          <span>Мои заявки</span>
+        </a>
+        <div id="UserForm" class="collapse {{ (request()->segment(2) == 'user') ? 'show' : '' }}" aria-labelledby="headingForm" data-parent="#UserSidebar" style="">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Мои заявки</h6>
+            <a class="collapse-item {{ (request()->segment(2) == 'user') && (request()->segment(3) == 'worker') ? 'active' : '' }}" href="{{ route(config('constants.user.worker')) }}">В работе</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'user') && (request()->segment(3) == 'completed') ? 'active' : '' }}" href="{{ route(config('constants.user.completed')) }}">Выполненные</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'user') && (request()->segment(3) == 'dismiss') ? 'active' : '' }}" href="{{ route(config('constants.user.dismiss')) }}">Отклонённые</a>
+        </div>
+        </div>
+      </li>
 	<hr class="sidebar-divider">
 	<div class="sidebar-heading"> Списки </div>
 	<li class="nav-item {{ (request()->segment(2) == 'category') ? 'active' : '' }}"> <a class="nav-link" href="{{ route(config('constants.category.index')) }}">

@@ -74,14 +74,26 @@ return
             'store' => 'help.store',
             'update' => 'help.update',
             'destroy' => 'help.destroy',
-            //принять заявку
             'accept' => 'help.accept',
-            //выполнить заявку
             'execute' => 'help.execute',
-            //отклонить заявку
             'reject' => 'help.reject',
-            //переопределить заявку
-            'redefine' => 'help.redefine'
+            'redefine' => 'help.redefine',
+            'new' => 'help.new',
+            'worker' => 'help.worker',
+            'completed' => 'help.completed',
+            'dismiss' => 'help.dismiss',
+        ],
+        'user' =>
+        [
+            'name' => 'пользователь',
+            'slug' => 'user',
+            'show' => 'user.show',
+            'create' => 'user.create',
+            'store' => 'user.store',
+            'new' => 'user.new',
+            'worker' => 'user.worker',
+            'completed' => 'user.completed',
+            'dismiss' => 'user.dismiss',
         ],
     'settings' =>
         [
