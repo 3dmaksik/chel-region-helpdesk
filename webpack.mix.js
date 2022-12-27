@@ -30,7 +30,7 @@ mix.js('resources/js/app.js', 'public/js')
         'resources/vendor/select2/dist/css/select2.min.css',
         'resources/vendor/select2/dist/css/select2-bootstrap4.min.css',
         'resources/vendor/fancybox-master/dist/jquery.fancybox.min.css',
-        'resources/css/ruang-admin.min.css',
+        'resources/css/ruang-admin.css',
         'resources/css/main.css',
     ],'public/css/all.css')
     .version()

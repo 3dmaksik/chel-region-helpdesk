@@ -13,6 +13,7 @@ class CabinetController extends Controller
     public function __construct(CabinetAction $cabinets)
     {
         $this->middleware('auth');
+        $this->middleware(['role:superAdmin']);
         $this->cabinets = $cabinets;
     }
 

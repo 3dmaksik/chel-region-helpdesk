@@ -4,7 +4,8 @@
 ### Требования
 
 - Astra Linux 1.7+ или другая российская ОС, либо любая акутальная операционная система семейства Linux;
-- PHP 8.0-8.1 c расширениями fileinfo, redis или memcached;
+- PHP 8.0-8.1 c расширениями fileinfo, redis или memcached, 
+а также со всеми стандартными расширениями, которые по умолчанию обычно включены iconv, gd, curl, mbstring, sockets;
 - СУБД на выбор MYSQL 8.0+/MariaDB 10.8+, PostgreSQL 14+;
 - Сервер Ngnix 1.23+, Apache не рекомендуется;
 - Кеш на выбор Memcashed 1.6+, Redis 7.0 или без него;
@@ -85,16 +86,25 @@
                 
 1. Скопировать проект к себе на сервер в созданную ранее папку одним из способов:
 
-- Через github `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
-- Через composer `$ composer create-project 3dmaksik/chel-region-helpdesk -s dev --no-dev`
+- Через github: 
+
+`$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
+- Через composer :
+
+`$ composer create-project 3dmaksik/chel-region-helpdesk -s dev --no-dev`
 
 2. Установить проект и библиотеки
+
 `$ composer install`
+
 Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно билиблиотеки разработки командой `$ npm run prod`, остальным этот шаг можно пропустить.
 
 3. Установить права для следующих папок:
+
 `$ sudo chmod -R 777 ./storage`
+
 `$ sudo chmod -R 777 ./bootstrap/cache/`
+
 `$ php artisan storage:link`
 
 4. Создать файл настроек или скопировать его командой `$ cp .env.example .env`

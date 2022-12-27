@@ -8,7 +8,7 @@ col-lg-12
       <h6 class="m-0 font-weight-bold text-primary">Добавить новую заявку</h6>
       <div class="card-title">
         <div class="block">
-          <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
+          <a style="color: #757575;" class="hover" href="{{ route(config('constants.user.worker')) }}">
             <i class="fas fa-arrow-left fa-lg"></i>
           </a> <span class="hidden">Назад</span>
           <!-- скрытый элемент -->
@@ -22,29 +22,13 @@ col-lg-12
       </div>
     </div>
     <div class="card-body">
-      <form id="formValidate" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.help.store')) }}">
+      <form id="formValidate" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.user.store')) }}">
         @csrf
         <div class="form-group">
             <label for="select2-category">Выберите категорию</label>
             <select class="select2-single form-control" name="category_id" id="select2-category">
               @foreach( $data['category'] as $item)
               <option @if (old('category_id')=="$item->id") selected @endif value="{{ $item->id }}">{{ $item->description }}</option>
-              @endforeach
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="select2-cabinet">Выберите кабинет</label>
-            <select class="select2-single form-control" name="cabinet_id" id="select2-cabinet">
-              @foreach( $data['cabinet'] as $item)
-              <option @if (old('cabinet_id')=="$item->id") selected @endif value="{{ $item->id }}">{{ $item->description }}</option>
-              @endforeach
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="select2-work">Выберите сотрудника</label>
-            <select class="select2-single form-control" name="work_id" id="select2-work">
-              @foreach( $data['work'] as $item)
-              <option @if (old('work_id')=="$item->id") selected @endif value="{{ $item->id }}">{{ $item->lastname }} {{ $item->firstname }} {{ $item->patronymic }}</option>
               @endforeach
             </select>
         </div>

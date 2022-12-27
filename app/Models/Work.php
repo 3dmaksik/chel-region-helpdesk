@@ -10,7 +10,7 @@ class Work extends Model
 {
     protected $table = 'work';
     protected $primaryKey = 'id';
-    protected $fillable = ['firstname','lastname','patronymic','encrypt_description'];
+    protected $fillable = ['firstname','lastname','patronymic'];
     public function help(): HasMany
     {
         return $this->hasMany(Help::class, 'work_id');

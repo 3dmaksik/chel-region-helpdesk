@@ -15,6 +15,7 @@ class StatusController extends Controller
     public function __construct(StatusAction $statuses)
     {
         $this->middleware('auth');
+        $this->middleware(['role:superAdmin']);
         $this->statuses = $statuses;
     }
 

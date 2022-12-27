@@ -6,6 +6,7 @@ use App\Base\DTO\DTO;
 use App\Base\Helpers\StoreFilesHelper;
 use App\Models\Help;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HelpDTO extends DTO
 {
@@ -32,12 +33,16 @@ class HelpDTO extends DTO
         }
         if (isset($request['cabinet_id'])) {
             $dto->cabinet_id = $request['cabinet_id'];
+        } else {
+            $dto->cabinet_id = Auth::user()->cabinet_id;
         }
         if (isset($request['priority_id'])) {
             $dto->priority_id = $request['priority_id'];
         }
         if (isset($request['work_id'])) {
             $dto->work_id = $request['work_id'];
+        } else {
+            $dto->work_id = Auth::user()->work_id;
         }
         if (isset($request['description_long'])) {
             $dto->description_long = $request['description_long'];

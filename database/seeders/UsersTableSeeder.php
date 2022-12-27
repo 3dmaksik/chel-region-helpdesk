@@ -20,7 +20,8 @@ class UsersTableSeeder extends Seeder
             'email' =>'test@local.local',
             'password' => Hash::make('password'),
             'work_id' => 1,
+            'cabinet_id'=> 1,
             'email_verified_at'=> now(),
-        ])->assignRole('admin');
+        ])->assignRole('superAdmin');
     }
 }

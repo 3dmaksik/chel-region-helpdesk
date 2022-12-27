@@ -5,10 +5,48 @@
 		<div class="sidebar-brand-text mx-3">Главные заявки</div>
 	</a>
 	<hr class="sidebar-divider my-0">
-	<li class="nav-item {{ (request()->segment(2) == 'help') ? 'active' : '' }}"> <a class="nav-link" href="{{ route(config('constants.help.index')) }}">
-            <i class="fas fa-fw fa-table-columns"></i>
-            <span>Панель</span></a> </li>
+    @hasanyrole('superAdmin|admin|manager')
+    <li id="workSidebar" class="nav-item {{ (request()->segment(1) == 'admin') || (request()->segment(1) == 'mod') || (request()->segment(1) == 'panel') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#WorkForm" aria-expanded="false" aria-controls="WorkForm">
+          <i class="fas fa-fw fa-table-columns"></i>
+          <span>Рабочие заявки</span>
+        </a>
+        <div id="WorkForm" class="collapse {{ (request()->segment(1) == 'admin') || (request()->segment(1) == 'mod') || (request()->segment(1) == 'panel') ? 'show' : '' }}" aria-labelledby="headingForm" data-parent="#workSidebar" style="">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Рабочие заявки</h6>
+            @hasrole('superAdmin')
+            <a class="collapse-item  {{ (request()->segment(2) == 'all') ? 'active' : '' }}" href="{{ route(config('constants.help.index')) }}">Все</a>
+            @endhasanyrole
+            @hasanyrole('superAdmin|admin')
+            <a class="collapse-item {{ (request()->segment(2) == 'new') ? 'active' : '' }}" href="{{ route(config('constants.help.new')) }}">Новые</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'worker') ? 'active' : '' }}" href="{{ route(config('constants.help.worker')) }}">В работе</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'completed') ? 'active' : '' }}" href="{{ route(config('constants.help.completed')) }}">Выполненные</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'dismiss') ? 'active' : '' }}" href="{{ route(config('constants.help.dismiss')) }}">Отклонённые</a>
+            @endhasanyrole
+            @hasrole('manager')
+            <a class="collapse-item {{ (request()->segment(2) == 'worker') ? 'active' : '' }}" href="{{ route(config('constants.mod.worker')) }}">В работе</a>
+            <a class="collapse-item {{ (request()->segment(2) == 'completed') ? 'active' : '' }}" href="{{ route(config('constants.mod.completed')) }}">Выполненные</a>
+            @endhasanyrole
+        </div>
+        </div>
+      </li>
+      @endhasanyrole
+      <li id="UserSidebar" class="nav-item {{ (request()->segment(1) == 'user') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#UserForm" aria-expanded="false" aria-controls="UserForm">
+          <i class="fas fa-regular fa-house"></i>
+          <span>Мои заявки</span>
+        </a>
+        <div id="UserForm" class="collapse {{ (request()->segment(1) == 'user') ? 'show' : '' }}" aria-labelledby="headingForm" data-parent="#UserSidebar" style="">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Мои заявки</h6>
+            <a class="collapse-item {{ (request()->segment(1) == 'user') && (request()->segment(2) == 'worker') ? 'active' : '' }}" href="{{ route(config('constants.user.worker')) }}">В работе</a>
+            <a class="collapse-item {{ (request()->segment(1) == 'user') && (request()->segment(2) == 'completed') ? 'active' : '' }}" href="{{ route(config('constants.user.completed')) }}">Выполненные</a>
+            <a class="collapse-item {{ (request()->segment(1) == 'user') && (request()->segment(2) == 'dismiss') ? 'active' : '' }}" href="{{ route(config('constants.user.dismiss')) }}">Отклонённые</a>
+        </div>
+        </div>
+      </li>
 	<hr class="sidebar-divider">
+    @hasrole('superAdmin')
 	<div class="sidebar-heading"> Списки </div>
 	<li class="nav-item {{ (request()->segment(2) == 'category') ? 'active' : '' }}"> <a class="nav-link" href="{{ route(config('constants.category.index')) }}">
             <i class="fas fa-fw fa-angle-double-up"></i>
@@ -30,13 +68,14 @@
             <i class="fas fa-fw fa-user"></i>
             <span>Сотрудники</span>
         </a> </li>
+    @endhasrole
 	<hr class="sidebar-divider">
 	<div class="sidebar-heading"> Дополнительное </div>
 	<li class="nav-item active"> <a class="nav-link" href="/panel/stat">
             <i class="fas fa-fw fa-star"></i>
             <span>Статистика</span>
         </a> </li>
-        <li class="nav-item {{ (request()->segment(2) == 'settings') ? 'active' : '' }}"> <a class="nav-link" href="{{ route(config('constants.settings.edit')) }}">
+        <li class="nav-item {{ (request()->segment(1) == 'settings') ? 'active' : '' }}"> <a class="nav-link" href="{{ route(config('constants.settings.edit')) }}">
             <i class="fas fa-fw fa-cogs"></i>
             <span>Настройки</span>
         </a> </li>
