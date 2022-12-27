@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('cabinet_id')->unsigned();
             $table->foreign('cabinet_id')->references('id')->on('cabinet')
                 ->onUpdate('cascade')->onDelete('cascade');
-           $table->integer('priority_id')->unsigned();
+           $table->integer('priority_id')->unsigned()->default(1);
            $table->foreign('priority_id')->references('id')->on('priority')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->integer('work_id')->unsigned();

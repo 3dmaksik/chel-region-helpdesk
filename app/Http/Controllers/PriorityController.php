@@ -13,6 +13,7 @@ class PriorityController extends Controller
     public function __construct(PriorityAction $priorities)
     {
         $this->middleware('auth');
+        $this->middleware(['role:superAdmin']);
         $this->priorities = $priorities;
     }
 

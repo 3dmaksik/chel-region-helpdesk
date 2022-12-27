@@ -13,11 +13,12 @@ class Model extends CoreModel
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     public $timestamps = true;
+    public int $page = 25;
     protected $cacheFor = 10080;
 
-    public function getAllPaginateItems(int $page = 25)
+    public function getAllPaginateItems()
     {
-        return $this->setOrder($this)->paginate($page);
+        return $this->setOrder($this)->paginate($this->page);
     }
 
     public function viewOneItem(int $id)

@@ -16,12 +16,52 @@ class HelpController extends Controller
     public function __construct(HelpAction $helps)
     {
         $this->middleware('auth');
+        $this->middleware(['role:admin|superAdmin|manager'])->only('show', 'update', 'execute');
+        $this->middleware(['role:admin|superAdmin'])->only('new', 'workerAdmin', 'dismiss', 'edit', 'accept', 'redefine');
+        $this->middleware(['role:manager'])->only('workerManager');
+        $this->middleware(['role:superAdmin'])->only('index', 'destroy');
         $this->helps = $helps;
     }
 
     public function index(): View
     {
         $items = $this->helps->getAllPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function new() : View
+    {
+        $items = $this->helps->getNewPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function workerAdmin() : View
+    {
+        $items = $this->helps->getWorkerAdmPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function workerManager() : View
+    {
+        $items = $this->helps->getWorkerModPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function completedAdmin() : View
+    {
+        $items = $this->helps->getCompletedAdmPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function completedManager() : View
+    {
+        $items = $this->helps->getCompletedModPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function dismiss() : View
+    {
+        $items = $this->helps->getDismissPagesPaginate();
         return view('tables.help', compact('items'));
     }
 

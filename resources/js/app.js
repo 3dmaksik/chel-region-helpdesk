@@ -7,7 +7,6 @@ $(function () {
         dataType: 'json',
         data: {"_token": CSRF_TOKEN},
         success: function(data){
-            console.log(data);
             const sound = new Howl({
                 src: [data],
                 html5: true

@@ -8,8 +8,13 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Информация о заявке</h6>
       <div class="card-title">
         <div class="block">
-          <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
-            <i class="fas fa-arrow-left fa-lg"></i>
+        @hasanyrole('superAdmin|admin|manager')
+        <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
+        @endhasanyrole
+        @hasrole('user')
+        <a style="color: #757575;" class="hover" href="{{ route(config('constants.user.worker')) }}">
+        @endhasrole
+          <i class="fas fa-arrow-left fa-lg"></i>
           </a> <span class="hidden">Назад</span>
           <!-- скрытый элемент -->
         </div>
@@ -60,32 +65,41 @@ col-lg-6
         {{ $item->info_final }}
         @endif
         <hr>
+        @hasanyrole('superAdmin|admin|manager')
+        @hasanyrole('superAdmin|admin')
         @if ($item->status->id ==2)
         <div class="block">
             <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#acceptHelp" data-id="{{$item->id}}">
                 Назначить исполнителя
             </a>
+            <a href="{{ route(config('constants.help.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
+                Редактировать заявку
+            </a>
         </div>
         @endif
+        @endhasanyrole
         @if($item->status->id ==1)
         <div class="block">
             <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#executeHelp" data-id="{{$item->id}}">
                 Выполнить заявку
             </a>
         </div>
+        @hasanyrole('superAdmin|admin')
         <div class="block">
             <a href="" class="btn btn-info btn-sm hover" data-toggle="modal" data-target="#redefineHelp" data-id="{{$item->id}}">
                 Передать заявку
             </a>
         </div>
         @endif
-        @if($item->status->id <2)
+        @if($item->status->id <3)
         <div class="block">
             <a href="" class="btn btn-danger btn-sm hover" data-toggle="modal" data-target="#rejectHelp" data-id="{{$item->id}}">
                 Отклонить заявку
             </a>
         </div>
         @endif
+        @endhasanyrole
+        @endhasanyrole
     </div>
   </div>
 @endsection

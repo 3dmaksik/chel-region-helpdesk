@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('patronymic')->nullable();
-            $table->text('encrypt_description',32);
             $table->timestamps();
         });
     }

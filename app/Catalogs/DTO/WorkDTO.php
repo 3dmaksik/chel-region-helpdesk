@@ -10,7 +10,6 @@ class WorkDTO extends DTO
     public string $firstname;
     public string $lastname;
     public string $patronymic;
-    public string $encrypt_description;
     public static function storeObjectRequest(array $request): self
     {
         $dto = new self();
@@ -19,7 +18,6 @@ class WorkDTO extends DTO
         if (isset($request['patronymic'])) {
             $dto->patronymic = StringWorkHelper::run($request['patronymic']);
         }
-        $dto->encrypt_description = md5('metal' . $request['lastname'] . 'admin');
         return $dto;
     }
 }

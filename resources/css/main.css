@@ -54,3 +54,12 @@
 {
     outline:none;
 }
+.badge-table a, .badge-table a:hover
+{
+    color: #757575;
+}
+.badge-warning a, .badge-warning a:hover, .badge-danger a, .badge-danger a:hover
+{
+    color: #f2f3f4;
+}
+
