@@ -6,99 +6,94 @@ use App\Base\Actions\Action;
 use App\Models\Help as Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 
 class HelpAction extends Action
 {
+    private Model $model;
     private Model $item;
-
     public function getAllPages() : Collection
     {
         $this->item = new Model();
-        if (Auth::user()->hasRole('superAdmin')) {
-            $this->items = $this->item->getAllItems();
-        }
+        $this->items = $this->item->getAllItems();
         return $this->items;
     }
 
     public function getAllPagesPaginate() :  LengthAwarePaginator
     {
         $this->item = new Model();
-        if (Auth::user()->hasRole('superAdmin')) {
-            $this->items = $this->item->getAllPaginateItems($this->page);
-        }
+        $this->items = $this->item->getAllPaginateItems($this->page);
         return $this->items;
     }
 
     public function getNewPagesPaginate() :  LengthAwarePaginator
     {
         $this->item = new Model();
-        if (Auth::user()->hasAnyRole('admin', 'superAdmin')) {
-            $this->items = $this->item->getNewPaginateItems($this->page);
-        }
+        $this->items = $this->item->getNewPaginateItems($this->page);
         return $this->items;
     }
 
-    public function getWorkerPagesPaginate() :  LengthAwarePaginator
+    public function getWorkerAdmPagesPaginate() :  LengthAwarePaginator
     {
         $this->item = new Model();
-        if (Auth::user()->hasRole('manager')) {
-            $this->items = $this->item->getModWorkerPaginateItems($this->page);
-        }
-        if (Auth::user()->hasAnyRole('admin', 'superAdmin')) {
-            $this->items = $this->item->getAdmWorkerPaginateItems($this->page);
-        }
+        $this->items = $this->item->getAdmWorkerPaginateItems($this->page);
         return $this->items;
     }
 
-    public function getCompletedPagesPaginate() :  LengthAwarePaginator
+    public function getWorkerModPagesPaginate() :  LengthAwarePaginator
     {
         $this->item = new Model();
-        if (Auth::user()->hasRole('manager')) {
-            $this->items = $this->item->getModCompletedPaginateItems($this->page);
-        }
-        if (Auth::user()->hasAnyRole('admin', 'superAdmin')) {
-            $this->items = $this->item->getAdmCompletedPaginateItems($this->page);
-        }
+        $this->items = $this->item->getModWorkerPaginateItems($this->page);
+        return $this->items;
+    }
+
+    public function getCompletedAdmPagesPaginate() :  LengthAwarePaginator
+    {
+        $this->item = new Model();
+        $this->items = $this->item->getAdmCompletedPaginateItems($this->page);
+        return $this->items;
+    }
+
+    public function getCompletedModPagesPaginate() :  LengthAwarePaginator
+    {
+        $this->item = new Model();
+        $this->items = $this->item->getModCompletedPaginateItems($this->page);
         return $this->items;
     }
 
     public function getDismissPagesPaginate() :  LengthAwarePaginator
     {
         $this->item = new Model();
-        if (Auth::user()->hasAnyRole('admin', 'superAdmin')) {
-            $this->items = $this->item->getAdmDismissPaginateItems($this->page);
-        }
+        $this->items = $this->item->getAdmDismissPaginateItems($this->page);
         return $this->items;
     }
 
-    public function findCatalogsById(int $id): Model
+    public function findCatalogsById(int $id) : Model
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->model = new Model();
+        $this->item = $this->model->viewOneItem($id);
         return $this->item;
     }
 
-    public function show(int $id): Model
+    public function show(int $id) : Model
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->model = new Model();
+        $this->item = $this->model->viewOneItem($id);
         $this->item->images = json_decode($this->item->images, true);
         return $this->item;
     }
 
     public function store(array $request) : Model
     {
-        $model = new Model();
-        $this->item = $model->create($request);
+        $this->model = new Model();
+        $this->item = $this->model->create($request);
         Model::flushQueryCache();
         return $this->item;
     }
 
     public function update(array $request, int $id) : Model
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->model = new Model();
+        $this->item = $this->model->viewOneItem($id);
         if ($this->item->work_id == auth()->user()->id) {
             throw new \Exception('Нельзя назначить самого себя');
         }
@@ -109,8 +104,8 @@ class HelpAction extends Action
 
     public function delete(int $id) : bool
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->model = new Model();
+        $this->item = $this->model->viewOneItem($id);
         $this->item->forceDelete();
         Model::flushQueryCache();
         return true;

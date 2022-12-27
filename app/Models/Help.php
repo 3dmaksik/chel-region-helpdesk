@@ -90,6 +90,13 @@ class Help extends Model
         ->paginate($pages);
     }
 
+    public function getUserWorkerPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('work_id', auth()->user()->id)
+        ->orderBy('calendar_accept', 'DESC')
+        ->paginate($pages);
+    }
+
     public function getModCompletedPaginateItems(int $pages): LengthAwarePaginator
     {
         return $this->where('status_id', 3)
@@ -98,9 +105,25 @@ class Help extends Model
         ->paginate($pages);
     }
 
+    public function getUserCompletedPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('status_id', 3)
+        ->where('work_id', auth()->user()->id)
+        ->orderBy('calendar_final', 'DESC')
+        ->paginate($pages);
+    }
+
     public function getAdmDismissPaginateItems(int $pages): LengthAwarePaginator
     {
         return $this->where('status_id', 4)
+        ->orderBy('calendar_request', 'DESC')
+        ->paginate($pages);
+    }
+
+    public function getUserDismissPaginateItems(int $pages): LengthAwarePaginator
+    {
+        return $this->where('status_id', 4)
+        ->where('work_id', auth()->user()->id)
         ->orderBy('calendar_request', 'DESC')
         ->paginate($pages);
     }

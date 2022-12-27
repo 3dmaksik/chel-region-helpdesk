@@ -24,6 +24,9 @@ return new class extends Migration
             $table->integer('work_id')->unsigned();
             $table->foreign('work_id')->references('id')->on('work')
                 ->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('cabinet_id')->unsigned();
+            $table->foreign('cabinet_id')->references('id')->on('cabinet')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

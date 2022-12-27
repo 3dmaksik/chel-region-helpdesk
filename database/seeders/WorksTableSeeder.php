@@ -17,9 +17,8 @@ class WorksTableSeeder extends Seeder
     {
 
             DB::table('work')->insert([
-                'firstname' => Str::random(10),
+                'firstname' => 'System',
                 'lastname' => Str::random(10),
-                'encrypt_description' =>  md5('metal'.Str::random(10).'admin')
             ]);
     }
 }

@@ -14,7 +14,6 @@ class WorkRequest extends BaseRequest
              'firstname' => 'required|string|max:256',
              'lastname' => 'required|string|max:256',
              'patronymic' => 'nullable|string|max:256',
-             'encrypt_description' => 'nullable',
         ];
     }
     //Проверка авторизации

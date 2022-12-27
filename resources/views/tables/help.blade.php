@@ -7,7 +7,12 @@ col-lg-12 mb-4
 <div class="card">
 	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 		<h6 class="m-0 font-weight-bold text-primary">Все заявки</h6>
+        @hasanyrole('superAdmin|admin|manager')
         <a href="{{ route(config('constants.help.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая заявка</button></a>
+        @endhasanyrole
+        @hasrole('user')
+        <a href="{{ route(config('constants.user.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая заявка</button></a>
+        @endhasrole
 	</div>
 	<div class="table-responsive">
 		<table class="table align-items-center table-flush">
@@ -27,8 +32,8 @@ col-lg-12 mb-4
 			<tbody id="table-dynamic">
                 @forelse ($items as $item)
 				<tr
-                @if(strtotime($now)> strtotime($item->calendar_warning) && strtotime($now)< strtotime($item->calendar_execution) && $item->calendar_warning!=null && $item->calendar_execution!=null && $item->calendar_final==null) class="badge-{{ config("color.5.slug") }}"@endif
-                @if(strtotime($now)> strtotime($item->calendar_execution) && $item->calendar_execution!=null && $item->calendar_final==null) class="badge-{{ config("color.4.slug") }}"@endif
+                @if(strtotime($now)> strtotime($item->calendar_warning) && strtotime($now)< strtotime($item->calendar_execution) && $item->calendar_warning!=null && $item->calendar_execution!=null && $item->calendar_final==null && request()->segment(1) != 'user') class="badge-{{ config("color.5.slug") }}"@endif
+                @if(strtotime($now)> strtotime($item->calendar_execution) && $item->calendar_execution!=null && $item->calendar_final==null && request()->segment(1) != 'user') class="badge-{{ config("color.4.slug") }}"@endif
                 >
 					<td>{{ $item->id }}</td>
                     <td class="badge-table"><a href="{{ route('search.category',$item->category_id) }}">{{ $item->category->description }}</a></td>
@@ -52,7 +57,12 @@ col-lg-12 mb-4
                     <td><span class="badge badge-{{ $item->status->color }}">{{ $item->status->description }}</span></td>
 					<td class="d-print-none">
 						<div class="block">
+                            @hasanyrole('superAdmin|admin|manager')
                             <a href="{{ route(config('constants.help.show'),$item->id) }}"> <button type="button" class="btn btn-info mb-1">Открыть</button></a>
+                            @endhasanyrole
+                            @hasrole('user')
+                            <a href="{{ route(config('constants.user.show'),$item->id) }}"> <button type="button" class="btn btn-info mb-1">Открыть</button></a>
+                            @endhasrole
                         </div>
 					</td>
 				</tr>

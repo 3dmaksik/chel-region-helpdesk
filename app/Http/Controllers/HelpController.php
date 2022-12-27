@@ -16,6 +16,10 @@ class HelpController extends Controller
     public function __construct(HelpAction $helps)
     {
         $this->middleware('auth');
+        $this->middleware(['role:admin|superAdmin|manager'])->only('show', 'update', 'execute');
+        $this->middleware(['role:admin|superAdmin'])->only('new', 'workerAdmin', 'dismiss', 'edit', 'accept', 'redefine');
+        $this->middleware(['role:manager'])->only('workerManager');
+        $this->middleware(['role:superAdmin'])->only('index', 'destroy');
         $this->helps = $helps;
     }
 
@@ -31,15 +35,27 @@ class HelpController extends Controller
         return view('tables.help', compact('items'));
     }
 
-    public function worker() : View
+    public function workerAdmin() : View
     {
-        $items = $this->helps->getWorkerPagesPaginate();
+        $items = $this->helps->getWorkerAdmPagesPaginate();
         return view('tables.help', compact('items'));
     }
 
-    public function completed() : View
+    public function workerManager() : View
     {
-        $items = $this->helps->getCompletedPagesPaginate();
+        $items = $this->helps->getWorkerModPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function completedAdmin() : View
+    {
+        $items = $this->helps->getCompletedAdmPagesPaginate();
+        return view('tables.help', compact('items'));
+    }
+
+    public function completedManager() : View
+    {
+        $items = $this->helps->getCompletedModPagesPaginate();
         return view('tables.help', compact('items'));
     }
 

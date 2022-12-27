@@ -83,6 +83,13 @@ return
             'completed' => 'help.completed',
             'dismiss' => 'help.dismiss',
         ],
+        'mod' =>
+        [
+            'name' => 'модератор',
+            'slug' => 'moderator',
+            'worker' => 'mod.worker',
+            'completed' => 'mod.completed',
+        ],
         'user' =>
         [
             'name' => 'пользователь',

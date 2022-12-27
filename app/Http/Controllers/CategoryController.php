@@ -13,6 +13,7 @@ class CategoryController extends Controller
     public function __construct(CategoryAction $category)
     {
         $this->middleware('auth');
+        $this->middleware(['role:superAdmin']);
         $this->categories = $category;
     }
 

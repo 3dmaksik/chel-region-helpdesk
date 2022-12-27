@@ -13,6 +13,7 @@ class SearchController extends Controller
     public function __construct(SearchCatalogAction $catalogs)
     {
         $this->middleware('auth');
+        $this->middleware(['role:admin|superAdmin']);
         $this->catalogs = $catalogs;
     }
 

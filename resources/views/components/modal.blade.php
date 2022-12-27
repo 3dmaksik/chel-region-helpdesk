@@ -1,4 +1,4 @@
-@if(request()->segment(2) == 'help' && isset($item->id))
+@if(request()->segment(1) == 'panel' && isset($item->id))
 <!-- Окно принятия-->
 <div class="modal fade" id="acceptHelp" tabindex="-1" role="dialog" aria-hidden="true">
    <div class="modal-dialog" role="document">

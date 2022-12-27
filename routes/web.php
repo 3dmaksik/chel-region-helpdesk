@@ -28,33 +28,47 @@ Route::controller(HelpController::class)
 ->prefix('panel')
 ->as('help.')
 ->group(function () {
-    Route::get('help/all', 'index')->name('index');
-    Route::get('help/new', 'new')->name('new');
-    Route::get('help/worker', 'worker')->name('worker');
-    Route::get('help/completed', 'completed')->name('completed');
-    Route::get('help/dismiss', 'dismiss')->name('dismiss');
+    Route::get('new', 'new')->name('new');
+    Route::get('worker', 'workerAdmin')->name('worker');
+    Route::get('completed', 'completedAdmin')->name('completed');
+    Route::get('dismiss', 'dismiss')->name('dismiss');
     Route::post('help', 'store')->name('store');
-    Route::get('help/create', 'create')->name('create');
-    Route::patch('help/{help}', 'update')->name('update');
-    Route::get('help/{help}', 'show')->name('show');
-    Route::delete('help/{help}', 'destroy')->name('destroy');
-    Route::get('help/{help}/edit', 'edit')->name('edit');
-    Route::patch('help/{help}/accept', 'accept')->name('accept');
-    Route::patch('help/{help}/execute', 'execute')->name('execute');
-    Route::patch('help/{help}/reject', 'reject')->name('reject');
-    Route::patch('help/{help}/redefine', 'redefine')->name('redefine');
+    Route::get('create', 'create')->name('create');
+    Route::patch('{help}', 'update')->name('update');
+    Route::get('{help}/show', 'show')->name('show');
+    Route::delete('{help}', 'destroy')->name('destroy');
+    Route::get('{help}/edit', 'edit')->name('edit');
+    Route::patch('{help}/accept', 'accept')->name('accept');
+    Route::patch('{help}/execute', 'execute')->name('execute');
+    Route::patch('{help}/reject', 'reject')->name('reject');
+    Route::patch('{help}/redefine', 'redefine')->name('redefine');
+});
+
+Route::controller(HelpController::class)
+->prefix('mod')
+->as('mod.')
+->group(function () {
+    Route::get('worker', 'workerManager')->name('worker');
+    Route::get('completed', 'completedManager')->name('completed');
+});
+
+Route::controller(HelpController::class)
+->prefix('admin')
+->as('help.')
+->group(function () {
+    Route::get('all', 'index')->name('index');
 });
 
 Route::controller(HomeController::class)
 ->prefix('user')
 ->as('user.')
 ->group(function () {
-    Route::post('all', 'store')->name('store');
+    Route::post('help', 'store')->name('store');
     Route::get('worker', 'worker')->name('worker');
     Route::get('completed', 'completed')->name('completed');
     Route::get('dismiss', 'dismiss')->name('dismiss');
     Route::get('create', 'create')->name('create');
-    Route::get('{help}', 'show')->name('show');
+    Route::get('{help}/show', 'show')->name('show');
 });
 
 Route::controller(SearchController::class)
@@ -68,17 +82,17 @@ Route::controller(SearchController::class)
 });
 
 Route::controller(SettingsController::class)
-->prefix('panel')
+->prefix('settings')
 ->as('settings.')
 ->group(function () {
-    Route::get('settings/edit', 'edit')->name('edit');
-    Route::patch('settings/update/password', 'updatePassword')->name('updatePassword');
-    Route::patch('settings/update/settings', 'updateSettings')->name('updateSettings');
+    Route::get('edit', 'edit')->name('edit');
+    Route::patch('update/password', 'updatePassword')->name('updatePassword');
+    Route::patch('update/settings', 'updateSettings')->name('updateSettings');
 });
 
-Route::resource('panel/cabinet', CabinetController::class)->except(['show']);
-Route::resource('panel/category', CategoryController::class)->except(['show']);
-Route::resource('panel/status', StatusController::class)->only(['index', 'edit', 'update']);
-Route::resource('panel/priority', PriorityController::class);
-Route::resource('panel/work', WorkController::class);
+Route::resource('admin/cabinet', CabinetController::class)->except(['show']);
+Route::resource('admin/category', CategoryController::class)->except(['show']);
+Route::resource('admin/status', StatusController::class)->only(['index', 'edit', 'update']);
+Route::resource('admin/priority', PriorityController::class);
+Route::resource('admin/work', WorkController::class);
 Route::view('/test', 'layouts.app');

@@ -14,6 +14,7 @@ class WorkController extends Controller
     public function __construct(WorkAction $works)
     {
         $this->middleware('auth');
+        $this->middleware(['role:superAdmin']);
         $this->works = $works;
     }
 
