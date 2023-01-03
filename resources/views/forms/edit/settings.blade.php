@@ -50,7 +50,7 @@ col-lg-6
         <div class="form-group">
             <label for="img-profile">Текущая аватарка</label>
             <div class="form-group">
-                <img class="img-profile rounded-circle" src="@if(auth()->user()->avatar==null)/img/boy.png @else{{ auth()->user()->avatar}} @endif" style="max-width: 60px">
+                <img class="img-profile rounded-circle" src="@if($works['avatar']==null)/img/boy.png @else/storage/{{ $works['avatar']['url']}} @endif" style="max-width: 60px">
             </div>
         </div>
         <div class="form-group">
@@ -69,7 +69,7 @@ col-lg-6
                     <figcaption>Текущее оповещение</figcaption>
                     <audio
                         controls
-                        src="@if(auth()->user()->sound_notify==null)/sound/sound.ogg @else{{auth()->user()->sound_notify}} @endif">
+                        src="@if($works['sound_notify']==null)/sound/sound.ogg @else/storage/{{ $works['sound_notify']['url']}} @endif">
                     </audio>
                 </figure>
             </div>
@@ -81,14 +81,6 @@ col-lg-6
             @error('sound_notify')
             <small class="invalid-feedback">Неверное расширение или превышен размер фото</small>
             @enderror
-        </div>
-        <div class="form-group">
-            <label for="select2-work">Привязать аккаунт к сотруднику</label>
-            <select class="select2-single form-control" name="work_id" id="select2-work">
-                @foreach( $works as $work)
-                <option @if ($work->id==auth()->user()->work->id) selected @endif value="@if ($work->id==auth()->user()->work->id) {{ auth()->user()->work->id }} @else {{ $work->id }}@endif">@if ($work->id==auth()->user()->work->id) {{ auth()->user()->work->lastname }} {{ auth()->user()->work->firstname }} {{ auth()->user()->work->patronymic }} @else {{ $work->lastname }} {{ $work->firstname }} {{ $work->patronymic }}@endif</option>
-                @endforeach
-            </select>
         </div>
         <input class="btn btn-primary" type="submit" value="Отправить" />
       </form>

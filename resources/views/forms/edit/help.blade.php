@@ -34,14 +34,6 @@ col-lg-12
             </select>
         </div>
         <div class="form-group">
-            <label for="select2-cabinet">Изменить кабинет</label>
-            <select class="select2-single form-control" name="cabinet_id" id="select2-cabinet">
-              @foreach( $data['cabinet'] as $cabinet)
-              <option @if ($cabinet->id==$item->cabinet->id) selected @endif value="@if ($cabinet->id==$item->cabinet->id) {{ $item->cabinet->id }} @else {{ $cabinet->id }}@endif">@if ($cabinet->id==$item->cabinet->id) {{ $item->cabinet->description }} @else {{ $cabinet->description }}@endif</option>
-              @endforeach
-            </select>
-        </div>
-        <div class="form-group">
             <label for="select2-work">Изменить сотрудника</label>
             <select class="select2-single form-control" name="work_id" id="select2-work">
               @foreach( $data['work'] as $work)

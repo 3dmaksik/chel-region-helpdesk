@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SearchCatalogAction;
-use App\Catalogs\DTO\SearchCatalogsDTO;
 use App\Requests\SearchRequest;
 use Illuminate\View\View;
 
 class SearchController extends Controller
 {
+    private SearchCatalogAction $catalogs;
     public function __construct(SearchCatalogAction $catalogs)
     {
         $this->middleware('auth');
@@ -19,29 +19,25 @@ class SearchController extends Controller
 
     public function all(SearchRequest $request): View
     {
-        $search = $request->validated();
-        $items = $this->catalogs->searchHelp($search['search'], $this->pages);
+        $items = $this->catalogs->searchHelp($request->validated());
         return view('tables.help', compact('items'));
     }
 
     public function work(int $search): View
     {
-        $this->data = SearchCatalogsDTO::searchWorkObjectRequest($search);
-        $items = $this->catalogs->searchHelpWith($this->data);
+        $items = $this->catalogs->searchHelpWork($search);
         return view('tables.help', compact('items'));
     }
 
     public function category(int $search): View
     {
-        $this->data = SearchCatalogsDTO::searchCategoryObjectRequest($search);
-        $items = $this->catalogs->searchHelpWith($this->data);
+        $items = $this->catalogs->searchHelpCategory($search);
         return view('tables.help', compact('items'));
     }
 
     public function cabinet(int $search): View
     {
-        $this->data = SearchCatalogsDTO::searchCabinetObjectRequest($search);
-        $items = $this->catalogs->searchHelpWith($this->data);
+        $items = $this->catalogs->searchHelpCabinet($search);
         return view('tables.help', compact('items'));
     }
 }

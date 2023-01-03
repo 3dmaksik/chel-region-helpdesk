@@ -83,14 +83,14 @@ return
             'completed' => 'help.completed',
             'dismiss' => 'help.dismiss',
         ],
-        'mod' =>
+   'mod' =>
         [
             'name' => 'модератор',
             'slug' => 'moderator',
             'worker' => 'mod.worker',
             'completed' => 'mod.completed',
         ],
-        'user' =>
+    'user' =>
         [
             'name' => 'пользователь',
             'slug' => 'user',
@@ -101,6 +101,19 @@ return
             'worker' => 'user.worker',
             'completed' => 'user.completed',
             'dismiss' => 'user.dismiss',
+        ],
+   'users' =>
+        [
+            'name' => 'пользователи',
+            'slug' => 'users',
+            'index' => 'users.index',
+            'show' => 'users.show',
+            'create' => 'users.create',
+            'edit' => 'users.edit',
+            'store' => 'users.store',
+            'update' => 'users.update',
+            'destroy' => 'users.destroy'
+
         ],
     'settings' =>
         [

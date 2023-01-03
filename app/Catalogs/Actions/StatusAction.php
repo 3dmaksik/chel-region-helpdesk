@@ -9,48 +9,34 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class StatusAction extends Action
 {
-    private Model $item;
-
     public function getAllPages() : Collection
     {
-        $this->item = new Model();
-        $this->items = $this->item->getAllItems();
+        $this->items = Model::orderBy('description', 'ASC')->get();
         return $this->items;
     }
 
     public function getAllPagesPaginate() :  LengthAwarePaginator
     {
-        $this->item = new Model();
-        $this->items = $this->item->getAllPaginateItems($this->page);
+        $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
         return $this->items;
-    }
-
-    public function findCatalogsById(int $id): Model
-    {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
-        return $this->item;
     }
 
     public function show(int $id): Model
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->item = Model::findOrFail($id);
         return $this->item;
     }
 
     public function store(array $request) : Model
     {
-        $model = new Model();
-        $this->item = $model->create($request);
+        $this->item = Model::create($request);
         Model::flushQueryCache();
         return $this->item;
     }
 
     public function update(array $request, int $id) : Model
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->item = Model::findOrFail($id);
         $this->item->update($request);
         Model::flushQueryCache();
         return $this->item;
@@ -58,8 +44,7 @@ class StatusAction extends Action
 
     public function delete(int $id) : bool
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
         Model::flushQueryCache();
         return true;

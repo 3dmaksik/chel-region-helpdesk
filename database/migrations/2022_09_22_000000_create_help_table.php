@@ -21,13 +21,10 @@ return new class extends Migration
             $table->integer('status_id')->unsigned()->default(2);
             $table->foreign('status_id')->references('id')->on('status')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->integer('cabinet_id')->unsigned();
-            $table->foreign('cabinet_id')->references('id')->on('cabinet')
-                ->onUpdate('cascade')->onDelete('cascade');
            $table->integer('priority_id')->unsigned()->default(1);
            $table->foreign('priority_id')->references('id')->on('priority')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->integer('work_id')->unsigned();
+            $table->integer('work_id')->unsigned()->nullable();
             $table->foreign('work_id')->references('id')->on('work')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->integer('executor_id')->unsigned()->nullable();

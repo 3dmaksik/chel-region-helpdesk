@@ -13,7 +13,6 @@ class SettingsRequest extends BaseRequest
         return [
             'avatar' => 'nullable|mimes:jpg,gif,png,jpeg|max:20480',
             'sound_notify' => 'nullable|mimes:opus,oga,ogg|max:20480',
-            'work_id' => 'required|exists:work,id',
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Models\User;
+use App\Models\Work;
 use Illuminate\Support\Facades\Hash;
 
 class SettingsAction extends Action
@@ -30,8 +31,18 @@ class SettingsAction extends Action
         return true;
     }
 
+    public function editSettings(): array
+    {
+        $this->item = Work::select('avatar', 'sound_notify')->where('user_id', auth()->user()->id)->first();
+
+        return [
+            'avatar' => json_decode($this->item->avatar, true),
+            'sound_notify' => json_decode($this->item->sound_notify, true),
+            ];
+    }
+
     public function updateSettings(array $request) : bool
     {
-        return User::whereId(auth()->user()->id)->update($request);
+        return Work::whereId(auth()->user()->id)->update($request);
     }
 }

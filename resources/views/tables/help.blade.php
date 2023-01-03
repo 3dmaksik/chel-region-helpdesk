@@ -37,7 +37,7 @@ col-lg-12 mb-4
                 >
 					<td>{{ $item->id }}</td>
                     <td class="badge-table"><a href="{{ route('search.category',$item->category_id) }}">{{ $item->category->description }}</a></td>
-                    <td class="badge-table"><a href="{{ route('search.cabinet',$item->cabinet_id) }}">{{ $item->cabinet->description }}</a></td>
+                    <td class="badge-table"><a href="{{ route('search.cabinet',$item->work->cabinet->id) }}">{{ $item->work->cabinet->description }}</a></td>
                     <td class="badge-table"><a href="{{ route('search.work',$item->work_id) }}">{{ $item->work->lastname }} {{ $item->work->firstname }} {{ $item->work->patronymic }}</a></td>
                     <td>{{ date( 'd.m.Y H:i', strtotime($item->calendar_request))}}</td>
                     <td>

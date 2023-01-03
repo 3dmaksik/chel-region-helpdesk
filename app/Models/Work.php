@@ -3,22 +3,29 @@
 namespace App\Models;
 
 use App\Base\Models\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Work extends Model
 {
     protected $table = 'work';
     protected $primaryKey = 'id';
-    protected $fillable = ['firstname','lastname','patronymic'];
-    public function help(): HasMany
+    protected $fillable =
+    ['firstname',
+    'lastname',
+    'patronymic',
+    'cabinet_id',
+    'user_id',
+    'sound_notify',
+    'avatar',];
+
+    public function cabinet(): BelongsTo
     {
-        return $this->hasMany(Help::class, 'work_id');
+        return $this->belongsTo(Cabinet::class);
     }
 
-    protected function setOrder(): Builder
+    public function user(): BelongsTo
     {
-        return $this->orderBy('id', 'DESC');
+        return $this->belongsTo(User::class);
     }
 
     protected function getCacheBaseTags(): array

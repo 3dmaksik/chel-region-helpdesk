@@ -10,6 +10,7 @@ use Illuminate\View\View;
 
 class PriorityController extends Controller
 {
+    private PriorityAction $priorities;
     public function __construct(PriorityAction $priorities)
     {
         $this->middleware('auth');

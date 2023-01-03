@@ -33,14 +33,6 @@ col-lg-12
             </select>
         </div>
         <div class="form-group">
-            <label for="select2-cabinet">Выберите кабинет</label>
-            <select class="select2-single form-control" name="cabinet_id" id="select2-cabinet">
-              @foreach( $data['cabinet'] as $item)
-              <option @if (old('cabinet_id')=="$item->id") selected @endif value="{{ $item->id }}">{{ $item->description }}</option>
-              @endforeach
-            </select>
-        </div>
-        <div class="form-group">
             <label for="select2-work">Выберите сотрудника</label>
             <select class="select2-single form-control" name="work_id" id="select2-work">
               @foreach( $data['work'] as $item)

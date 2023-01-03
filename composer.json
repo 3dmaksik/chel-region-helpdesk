@@ -5,7 +5,7 @@
     "keywords": ["chel", "admin"],
     "license": "MIT",
     "require": {
-        "php": ">=8",
+        "php": ">=8.1",
         "ext-fileinfo": "*",
         "guzzlehttp/guzzle": "dev-master",
         "intervention/image": "dev-master",

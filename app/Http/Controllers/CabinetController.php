@@ -10,6 +10,7 @@ use Illuminate\View\View;
 
 class CabinetController extends Controller
 {
+    private CabinetAction $cabinets;
     public function __construct(CabinetAction $cabinets)
     {
         $this->middleware('auth');

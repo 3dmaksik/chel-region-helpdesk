@@ -12,7 +12,7 @@ use Illuminate\View\View;
 
 class HelpController extends Controller
 {
-
+    private HelpAction $helps;
     public function __construct(HelpAction $helps)
     {
         $this->middleware('auth');
