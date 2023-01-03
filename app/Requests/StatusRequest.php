@@ -16,7 +16,7 @@ class StatusRequest extends BaseRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('status')->ignore(empty($this->status->id) ? 0 : $this->status->id),
+                Rule::unique('status')->ignore(empty($this->status) ? 0 : $this->status),
                 ],
              'color' => 'nullable|string|max:255',
         ];

@@ -13,7 +13,6 @@ class HelpRequest extends BaseRequest
         return [
             'category_id' => 'sometimes|required|exists:category,id',
             'status_id' => 'sometimes|required|exists:status,id',
-            'cabinet_id' => 'sometimes|required|exists:cabinet,id',
             'priority_id' => 'sometimes|required|exists:priority,id',
             'work_id' => 'sometimes|required|exists:work,id',
             'executor_id' => 'nullable|exists:work,id',

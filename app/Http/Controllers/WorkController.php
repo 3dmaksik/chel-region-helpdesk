@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\WorkAction;
-use App\Catalogs\DTO\WorkDTO;
 use App\Requests\WorkRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class WorkController extends Controller
 {
+    private WorkAction $works;
     public function __construct(WorkAction $works)
     {
         $this->middleware('auth');
@@ -32,26 +32,25 @@ class WorkController extends Controller
 
     public function create(): View
     {
-        return view('forms.add.work');
+        $items = $this->works->create();
+        return view('forms.add.work', compact('items'));
     }
 
     public function store(WorkRequest $request): RedirectResponse
     {
-        $data = WorkDTO::storeObjectRequest($request->validated());
-        $this->works->store((array) $data);
+        $this->works->store($request->validated());
         return redirect()->route(config('constants.work.index'));
     }
 
     public function edit(int $work): View
     {
-        $item = $this->works->show($work);
-        return view('forms.edit.work', compact('item'));
+        $items = $this->works->edit($work);
+        return view('forms.edit.work', compact('items'));
     }
 
     public function update(WorkRequest $request, int $work): RedirectResponse
     {
-        $data = WorkDTO::storeObjectRequest($request->validated());
-        $item = $this->works->update((array) $data, $work);
+        $item = $this->works->update($request->validated(), $work);
         return redirect()->route(config('constants.work.index'), $item);
     }
 

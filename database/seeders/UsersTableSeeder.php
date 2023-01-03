@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
 {
@@ -19,8 +20,6 @@ class UsersTableSeeder extends Seeder
             'name' => 'admin',
             'email' =>'test@local.local',
             'password' => Hash::make('password'),
-            'work_id' => 1,
-            'cabinet_id'=> 1,
             'email_verified_at'=> now(),
         ])->assignRole('superAdmin');
     }

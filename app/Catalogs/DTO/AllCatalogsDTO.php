@@ -7,30 +7,57 @@ use App\Models\Cabinet;
 use App\Models\Category;
 use App\Models\Priority;
 use App\Models\Status;
+use App\Models\User;
 use App\Models\Work;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Role;
 
 class AllCatalogsDTO extends DTO
 {
-    public Category $category;
-    public Status $status;
-    public Cabinet $cabinet;
-    public Priority $priority;
-    public Work $work;
     //Преобразование объекта в любой вид данных для работы
     public static function getAllCatalogsCollection(): Collection
     {
-        $category = new Category();
-        $status = new Status();
-        $cabinet = new Cabinet();
-        $priority = new Priority();
-        $work = new Work();
         return collect([
-            'category' => $category->getAllItems(),
-            'status' => $status->getAllItems(),
-            'cabinet' => $cabinet->getAllItems(),
-            'priority' => $priority->getAllItems(),
-            'work' => $work->getAllItems(),
+            'category' => Category::get(),
+            'status' => Status::get(),
+            'cabinet' => Cabinet::get(),
+            'priority' => Priority::get(),
+            'work' => Work::get(),
         ]);
+    }
+
+    public static function getAllRolesCollection(): Collection
+    {
+        return collect(Role::all()->pluck('name'));
+    }
+
+    public static function getAllCategoryCollection(): Collection
+    {
+        return collect(Category::get());
+    }
+
+    public static function getAllStatusCollection(): Collection
+    {
+        return collect(Status::get());
+    }
+
+    public static function getAllCabinetCollection(): Collection
+    {
+        return collect(Cabinet::get());
+    }
+
+    public static function getAllPriorityCollection(): Collection
+    {
+        return collect(Priority::get());
+    }
+
+    public static function getAllWorkCollection(): Collection
+    {
+        return collect(Work::get());
+    }
+
+    public static function getAllUserCollection(): Collection
+    {
+        return collect(User::get());
     }
 }

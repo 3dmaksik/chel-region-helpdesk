@@ -3,31 +3,35 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     //use HasApiTokens;
+    use QueryCacheable;
     use HasFactory;
     use Notifiable;
     use HasRoles;
 
+    protected $table = 'users';
+    protected $primaryKey = 'id';
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+    public $timestamps = true;
+    protected $cacheFor = 10080;
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'work_id',
         'name',
         'email',
         'password',
-        'sound_notify',
-        'avatar',
     ];
 
     /**
@@ -54,9 +58,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function work(): BelongsTo
+    public function work()
     {
-        return $this->belongsTo(Work::class);
+        return $this->hasOne(Work::class);
+    }
+
+    protected function getCacheBaseTags(): array
+    {
+        return [
+            'users',
+        ];
     }
 }

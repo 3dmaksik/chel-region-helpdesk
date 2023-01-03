@@ -34,7 +34,7 @@ col-lg-6
         <p>{{ $item->category->description }}</p>
         <hr>
         <p class="text-primary">Кабинет</p>
-        <p>№{{ $item->cabinet->description }}</p>
+        <p>№{{ $item->work->cabinet->description}}</p>
         <hr>
         <p class="text-primary">ФИО отправителя заявки</p>
         <p>{{ $item->work->lastname }} {{ $item->work->firstname }} {{ $item->work->patronymic }}</p>

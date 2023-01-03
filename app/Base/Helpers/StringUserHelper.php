@@ -4,7 +4,7 @@ namespace App\Base\Helpers;
 
 use App\Core\Helpers\CoreHelper;
 
-class StringWorkHelper extends CoreHelper
+class StringUserHelper extends CoreHelper
 {
     protected static string $data;
 

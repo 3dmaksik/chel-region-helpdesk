@@ -3,63 +3,74 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Catalogs\DTO\AllCatalogsDTO;
+use App\Catalogs\DTO\WorkDTO;
 use App\Models\Work as Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class WorkAction extends Action
 {
-    private Model $item;
-
     public function getAllPages() : Collection
     {
-        $this->item = new Model();
-        $this->items = $this->item->getAllItems();
+        $this->items = Model::orderBy('lastname', 'ASC')->get();
         return $this->items;
     }
 
     public function getAllPagesPaginate() :  LengthAwarePaginator
     {
-        $this->item = new Model();
-        $this->items = $this->item->getAllPaginateItems($this->page);
+        $this->items = Model::orderBy('lastname', 'ASC')->paginate($this->page);
         return $this->items;
     }
 
-    public function findCatalogsById(int $id): Model
+    public function create() : array
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
-        return $this->item;
+        $cabinets = AllCatalogsDTO::getAllCabinetCollection();
+        $users = AllCatalogsDTO::getAllUserCollection();
+        return [
+            'cabinets' => $cabinets,
+            'users' => $users,
+        ];
     }
 
     public function show(int $id): Model
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->item = Model::findOrFail($id);
         return $this->item;
     }
 
     public function store(array $request) : Model
     {
-        $model = new Model();
-        $this->item = $model->create($request);
+        $data = WorkDTO::storeObjectRequest($request);
+        $this->item = Model::create((array) $data);
         Model::flushQueryCache();
         return $this->item;
     }
 
+    public function edit(int $id) : array
+    {
+        $this->item = Model::findOrFail($id);
+        $cabinets = AllCatalogsDTO::getAllCabinetCollection();
+        $users = AllCatalogsDTO::getAllUserCollection();
+        return [
+            'items' => $this->item,
+            'cabinets' => $cabinets,
+            'users' => $users,
+        ];
+    }
+
     public function update(array $request, int $id) : Model
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
-        $this->item->update($request);
+        $this->item = Model::findOrFail($id);
+        $data = WorkDTO::storeObjectRequest($request);
+        $this->item->update((array) $data);
         Model::flushQueryCache();
         return $this->item;
     }
 
     public function delete(int $id) : bool
     {
-        $model = new Model();
-        $this->item = $model->viewOneItem($id);
+        $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
         Model::flushQueryCache();
         return true;

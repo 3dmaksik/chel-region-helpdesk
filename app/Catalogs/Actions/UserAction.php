@@ -3,47 +3,56 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Catalogs\DTO\AllCatalogsDTO;
+use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserAction extends Action
 {
-    private Model $model;
-    private Model $item;
-
     public function getWorkerPagesPaginate() :  LengthAwarePaginator
     {
-        $this->item = new Model();
-        $this->items = $this->item->getUserWorkerPaginateItems($this->page);
+        $this->items = Model::where('work_id', auth()->user()->id)
+        ->orderBy('calendar_accept', 'DESC')
+        ->paginate($this->page);
         return $this->items;
     }
 
     public function getCompletedPagesPaginate() :  LengthAwarePaginator
     {
-        $this->item = new Model();
-        $this->items = $this->item->getUserCompletedPaginateItems($this->page);
+        $this->items = Model::where('status_id', 3)
+        ->where('work_id', auth()->user()->id)
+        ->orderBy('calendar_final', 'DESC')
+        ->paginate($this->page);
         return $this->items;
     }
 
     public function getDismissPagesPaginate() :  LengthAwarePaginator
     {
-        $this->item = new Model();
-        $this->items = $this->item->getUserDismissPaginateItems($this->page);
+        $this->items = Model::where('status_id', 4)
+        ->where('work_id', auth()->user()->id)
+        ->orderBy('calendar_request', 'DESC')
+        ->paginate($this->page);
         return $this->items;
+    }
+
+    public function create() : array
+    {
+        $data = AllCatalogsDTO::getAllCatalogsCollection();
+        return ['data' => $data];
     }
 
     public function show(int $id) : Model
     {
-        $this->model = new Model();
-        $this->item = $this->model->viewOneItem($id);
+        $this->item = Model::viewOneItem($id);
         $this->item->images = json_decode($this->item->images, true);
         return $this->item;
     }
 
     public function store(array $request) : Model
     {
-        $this->model = new Model();
-        $this->item = $this->model->create($request);
+        $data = HelpDTO::storeObjectRequest($request);
+        $this->item = Model::create($data);
         Model::flushQueryCache();
         return $this->item;
     }

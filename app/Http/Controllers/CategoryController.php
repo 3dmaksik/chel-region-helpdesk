@@ -10,6 +10,7 @@ use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
+    private CategoryAction $categories;
     public function __construct(CategoryAction $category)
     {
         $this->middleware('auth');

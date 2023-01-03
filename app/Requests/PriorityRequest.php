@@ -16,14 +16,14 @@ class PriorityRequest extends BaseRequest
                 'required',
                 'string',
                 'max:255',
-                 Rule::unique('priority')->ignore(empty($this->priority->id) ? 0 : $this->priority->id),
+                 Rule::unique('priority')->ignore(empty($this->priority) ? 0 : $this->priority),
              ],
              'rang' => [
                 'required',
                 'integer',
                 'max:9',
                 'numeric',
-                Rule::unique('priority')->ignore(empty($this->priority->id) ? 0 : $this->priority->id),
+                Rule::unique('priority')->ignore(empty($this->priority) ? 0 : $this->priority),
              ],
              'color' => 'nullable|string|max:255',
              'warning_timer' => [

@@ -68,8 +68,12 @@
             <i class="fas fa-fw fa-user"></i>
             <span>Сотрудники</span>
         </a> </li>
+        <li class="nav-item {{ (request()->segment(2) == 'users') ? 'active' : '' }}"> <a class="nav-link" href="{{ route(config('constants.users.index')) }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Пользователи</span>
+    </a> </li>
+    <hr class="sidebar-divider">
     @endhasrole
-	<hr class="sidebar-divider">
 	<div class="sidebar-heading"> Дополнительное </div>
 	<li class="nav-item active"> <a class="nav-link" href="/panel/stat">
             <i class="fas fa-fw fa-star"></i>

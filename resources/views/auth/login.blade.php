@@ -18,23 +18,15 @@
                   <form class="user" method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group">
-                        <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Введите логин">
-                        <span class="invalid-feedback" role="alert">
-                         <strong>Неверный логин или неправильно заполнен</strong>
-                        </span>
+                        <input type="text" name="name" value="{{old('name')}}" class="form-control @error('name') is-invalid @enderror" id="description" required autocomplete="name" placeholder="Введите логин" autocomplete="off">
+                        @error('name')
+                        <small class="invalid-feedback">Пароль и логин не совпадает</small>
+                        @enderror
                     </div>
                     <div class="form-group">
-                        <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password" placeholder="Введите пароль">
-                       <span class="invalid-feedback" role="alert">
-                       <strong>Неверный пароль</strong>
-                       </span>
+                        <input type="password" class="form-control" name="password" required autocomplete="password" placeholder="Введите пароль">
                     </div>
                     <div class="form-group">
-                        @if(Session::has('error'))
-                        <div class="alert alert-danger">
-                         {{ Session::get('error')}}
-                        </div>
-                        @endif
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small" style="line-height: 1.5rem;">
@@ -49,6 +41,7 @@
                     </div>
                     <hr>
                   </form>
+                  <div class="text-center version" id="version-ruangadmin"></div>
                 </div>
               </div>
             </div>

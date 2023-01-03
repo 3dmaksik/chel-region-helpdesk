@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SettingsAction;
-use App\Catalogs\Actions\WorkAction;
 use App\Catalogs\DTO\SettingsDTO;
 use App\Requests\PasswordRequest;
 use App\Requests\SettingsRequest;
@@ -13,16 +12,16 @@ use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
-    public function __construct(SettingsAction $settings, WorkAction $work)
+    private SettingsAction $settings;
+    public function __construct(SettingsAction $settings)
     {
         $this->middleware('auth');
         $this->settings = $settings;
-        $this->work = $work;
     }
 
     public function edit(): View
     {
-        $works = $this->work->getAllPages();
+        $works = $this->settings->editSettings();
         return view('forms.edit.settings', compact('works'));
     }
 

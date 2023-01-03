@@ -6,18 +6,20 @@ use App\Base\Requests\Request as BaseRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class CategoryRequest extends BaseRequest
+class UserRequest extends BaseRequest
 {
     //Правила валидации
     public function rules(): array
     {
         return [
-             'description' => [
+            'name' => [
                 'required',
                 'string',
-                'max:255',
-                Rule::unique('category')->ignore(empty($this->caregory) ? 0 : $this->category),
+                'max:256',
+                Rule::unique('users')->ignore(empty($this->user) ? 0 : $this->user),
              ],
+             'password' => 'required|string|max:256',
+             'role' => 'required|string',
         ];
     }
     //Проверка авторизации

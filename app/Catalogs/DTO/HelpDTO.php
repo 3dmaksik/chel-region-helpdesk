@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class HelpDTO extends DTO
 {
     public int $category_id;
-    public int $cabinet_id;
     public int $executor_id;
     public int $priority_id;
     public int $work_id;
@@ -24,17 +23,13 @@ class HelpDTO extends DTO
     public Carbon $calendar_final;
     public Carbon $calendar_accept;
     public Carbon $calendar_execution;
+    public Carbon $calendar_request;
     public bool $check_write;
     public static function storeObjectRequest(array $request): self
     {
         $dto = new self();
         if (isset($request['category_id'])) {
             $dto->category_id = $request['category_id'];
-        }
-        if (isset($request['cabinet_id'])) {
-            $dto->cabinet_id = $request['cabinet_id'];
-        } else {
-            $dto->cabinet_id = Auth::user()->cabinet_id;
         }
         if (isset($request['priority_id'])) {
             $dto->priority_id = $request['priority_id'];
@@ -48,7 +43,7 @@ class HelpDTO extends DTO
             $dto->description_long = $request['description_long'];
         }
         if (isset($request['images'])) {
-            $dto->images = json_encode(StoreFilesHelper::createFile($request['images']));
+            $dto->images = json_encode(StoreFilesHelper::createFile($request['images'], 1920, 1080));
         }
         $dto->calendar_request = Carbon::now();
         return $dto;
