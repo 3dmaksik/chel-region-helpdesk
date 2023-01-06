@@ -3,9 +3,12 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Catalogs\DTO\AllCatalogsDTO;
+use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection as SimpleCollection;
 
 class HelpAction extends Action
 {
@@ -89,6 +92,12 @@ class HelpAction extends Action
         return $this->item;
     }
 
+    public function create(): SimpleCollection
+    {
+        $this->items = AllCatalogsDTO::getAllCatalogsCollection();
+        return $this->items;
+    }
+
     public function show(int $id) : Model
     {
         $this->item = Model::findOrFail($id);
@@ -96,20 +105,71 @@ class HelpAction extends Action
         return $this->item;
     }
 
-    public function store(array $request) : Model
+    public function store(array $request) : bool
     {
-        $this->item = Model::create($request);
+        $this->items = HelpDTO::storeObjectRequest($request);
+        Model::create((array) $this->items);
         Model::flushQueryCache();
-        return $this->item;
+        return true;
+    }
+
+    public function edit(int $id) : array
+    {
+        $this->item = Model::findOrFail($id);
+        $this->items = AllCatalogsDTO::getAllCatalogsCollection();
+        return [
+            'items' => $this->item,
+            'data' => $this->items,
+        ];
     }
 
     public function update(array $request, int $id) : Model
     {
         $this->item = Model::findOrFail($id);
-        if ($this->item->work_id == auth()->user()->id) {
+        $this->data = HelpDTO::storeObjectRequest($request);
+        $this->item->update((array) $this->data);
+        Model::flushQueryCache();
+        return $this->item;
+    }
+
+    public function accept(array $request, int $id) : Model
+    {
+        $this->item = Model::findOrFail($id);
+        if ($this->item->work->user->id == auth()->user()->id) {
             throw new \Exception('Нельзя назначить самого себя');
         }
-        $this->item->update($request);
+        if ($this->item->work->user->getRoleNames()[0] == 'user') {
+            throw new \Exception('Нельзя назначить пользователя');
+        }
+        $this->data = HelpDTO::acceptObjectRequest($request, $id);
+        $this->item->update((array) $this->data);
+        Model::flushQueryCache();
+        return $this->item;
+    }
+
+    public function execute(array $request, int $id) : Model
+    {
+        $this->item = Model::findOrFail($id);
+        $this->data = HelpDTO::executeObjectRequest($request, $id);
+        $this->item->update((array) $this->data);
+        Model::flushQueryCache();
+        return $this->item;
+    }
+
+    public function redefine(array $request, int $id) : Model
+    {
+        $this->item = Model::findOrFail($id);
+        $this->data = HelpDTO::redefineObjectRequest($request, $id);
+        $this->item->update((array) $this->data);
+        Model::flushQueryCache();
+        return $this->item;
+    }
+
+    public function reject(array $request, int $id) : Model
+    {
+        $this->item = Model::findOrFail($id);
+        $this->data = HelpDTO::rejectObjectRequest($request, $id);
+        $this->item->update((array) $this->data);
         Model::flushQueryCache();
         return $this->item;
     }

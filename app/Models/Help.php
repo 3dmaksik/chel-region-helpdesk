@@ -47,6 +47,11 @@ class Help extends Model
         return $this->belongsTo(Work::class);
     }
 
+    public function executor(): BelongsTo
+    {
+        return $this->belongsTo(Work::class);
+    }
+
     protected function getCacheBaseTags(): array
     {
         return [

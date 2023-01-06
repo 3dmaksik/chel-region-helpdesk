@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\NewTrade;
 use App\Http\Controllers\CabinetController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HelpController;
@@ -97,4 +98,6 @@ Route::resource('admin/status', StatusController::class)->only(['index', 'edit',
 Route::resource('admin/priority', PriorityController::class);
 Route::resource('admin/work', WorkController::class);
 Route::resource('admin/users', UserController::class);
+
 Route::view('/test', 'layouts.app');
+Route::view('/', 'layouts.app');

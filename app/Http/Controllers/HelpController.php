@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\HelpAction;
-use App\Catalogs\DTO\AllCatalogsDTO;
-use App\Catalogs\DTO\HelpDTO;
 use App\Requests\HelpRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -73,56 +71,49 @@ class HelpController extends Controller
 
     public function create(): View
     {
-        $data = AllCatalogsDTO::getAllCatalogsCollection();
-        return view('forms.add.help', compact('data'));
+        $items = $this->helps->create();
+        return view('forms.add.help', compact('items'));
     }
 
     public function store(HelpRequest $request): RedirectResponse
     {
-        $data = HelpDTO::storeObjectRequest($request->validated());
-        $this->helps->store((array) $data);
+        $this->helps->store($request->validated());
         return redirect()->route(config('constants.help.index'));
     }
 
     public function edit(int $help): View
     {
-        $data = AllCatalogsDTO::getAllCatalogsCollection();
-        $item = $this->helps->show($help);
-        return view('forms.edit.help', compact('item', 'data'));
+        $items = $this->helps->edit($help);
+        return view('forms.edit.help', compact('items'));
     }
 
     public function update(HelpRequest $request, int $help): RedirectResponse
     {
-        $data = HelpDTO::storeObjectRequest($request->validated());
-        $item = $this->helps->update((array) $data, $help);
+        $item = $this->helps->update($request->validated(), $help);
         return redirect()->route(config('constants.help.index'), $item);
     }
 
     public function accept(HelpRequest $request, int $help): RedirectResponse
     {
-        $data = HelpDTO::acceptObjectRequest($request->validated(), $help);
-        $item = $this->helps->update((array) $data, $help);
+        $item = $this->helps->accept($request->validated(), $help);
         return redirect()->route(config('constants.help.show'), $item->id);
     }
 
     public function execute(HelpRequest $request, int $help): RedirectResponse
     {
-        $data = HelpDTO::executeObjectRequest($request->validated());
-        $item = $this->helps->update((array) $data, $help);
+        $item = $this->helps->execute($request->validated(), $help);
         return redirect()->route(config('constants.help.show'), $item->id);
     }
 
     public function redefine(HelpRequest $request, int $help): RedirectResponse
     {
-        $data = HelpDTO::redefineObjectRequest($request->validated());
-        $item = $this->helps->update((array) $data, $help);
+        $item = $this->helps->redefine($request->validated(), $help);
         return redirect()->route(config('constants.help.show'), $item->id);
     }
 
     public function reject(HelpRequest $request, int $help): RedirectResponse
     {
-        $data = HelpDTO::rejectObjectRequest($request->validated());
-        $item = $this->helps->update((array) $data, $help);
+        $item = $this->helps->reject($request->validated(), $help);
         return redirect()->route(config('constants.help.show'), $item->id);
     }
 

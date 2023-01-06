@@ -8,5 +8,5 @@
     <meta name="api_token" content="{{ config('services.api.key') }}" />
 	<link href="/img/logo/logo.png" rel="icon">
 	<title>Администрация Металлургического района - Панель заявки</title>
-	<link href="{{ mix('css/all.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/main.css') }}" rel="stylesheet">
 </head>

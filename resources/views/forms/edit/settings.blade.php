@@ -50,7 +50,7 @@ col-lg-6
         <div class="form-group">
             <label for="img-profile">Текущая аватарка</label>
             <div class="form-group">
-                <img class="img-profile rounded-circle" src="@if($works['avatar']==null)/img/boy.png @else/storage/{{ $works['avatar']['url']}} @endif" style="max-width: 60px">
+                <img class="img-profile rounded-circle" src="@if($works['avatar']==null)/img/boy.png @else{{ url('storage/'.$works['avatar']['url']) }} @endif" style="max-width: 60px">
             </div>
         </div>
         <div class="form-group">
@@ -69,7 +69,7 @@ col-lg-6
                     <figcaption>Текущее оповещение</figcaption>
                     <audio
                         controls
-                        src="@if($works['sound_notify']==null)/sound/sound.ogg @else/storage/{{ $works['sound_notify']['url']}} @endif">
+                        src="@if($works['sound_notify']==null)/sound/sound.ogg @else{{ url('storage/'.$works['sound_notify']['url']) }} @endif">
                     </audio>
                 </figure>
             </div>

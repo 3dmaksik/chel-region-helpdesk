@@ -7,12 +7,14 @@ use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection as SimpleCollection;
 
 class UserAction extends Action
 {
     public function getWorkerPagesPaginate() :  LengthAwarePaginator
     {
-        $this->items = Model::where('work_id', auth()->user()->id)
+        $this->items = Model::where('status_id', '<', 3)
+        ->where('work_id', auth()->user()->id)
         ->orderBy('calendar_accept', 'DESC')
         ->paginate($this->page);
         return $this->items;
@@ -36,24 +38,24 @@ class UserAction extends Action
         return $this->items;
     }
 
-    public function create() : array
+    public function create() : SimpleCollection
     {
-        $data = AllCatalogsDTO::getAllCatalogsCollection();
-        return ['data' => $data];
+        $this->items = AllCatalogsDTO::getAllCatalogsCollection();
+        return $this->items;
     }
 
     public function show(int $id) : Model
     {
-        $this->item = Model::viewOneItem($id);
+        $this->item = Model::findOrFail($id);
         $this->item->images = json_decode($this->item->images, true);
         return $this->item;
     }
 
-    public function store(array $request) : Model
+    public function store(array $request) : bool
     {
-        $data = HelpDTO::storeObjectRequest($request);
-        $this->item = Model::create($data);
+        $this->data = HelpDTO::storeObjectRequest($request);
+        Model::create((array) $this->data);
         Model::flushQueryCache();
-        return $this->item;
+        return true;
     }
 }
