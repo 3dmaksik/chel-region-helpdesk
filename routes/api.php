@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\HelpApiController;
+use App\Http\Controllers\Api\WorkApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('help/all', [HelpApiController::class, 'all']);
-Route::get('sound_notify', [HelpApiController::class, 'getSoundNotify']);
+Route::post('help/all', [HelpApiController::class, 'getAllPages']);
+Route::get('help/new', [HelpApiController::class, 'newPagesCount']);
+Route::get('help/now', [HelpApiController::class, 'nowPagesCount']);
+Route::get('work/all', [WorkApiController::class, 'work']);

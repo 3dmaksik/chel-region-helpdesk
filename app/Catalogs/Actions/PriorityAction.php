@@ -34,11 +34,11 @@ class PriorityAction extends Action
         return $this->item;
     }
 
-    public function store(array $request) : Model
+    public function store(array $request) : bool
     {
-        $this->item = Model::create($request);
+        Model::create($request);
         Model::flushQueryCache();
-        return $this->item;
+        return true;
     }
 
     public function update(array $request, int $id) : Model

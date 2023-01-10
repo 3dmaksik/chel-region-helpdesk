@@ -83,4 +83,4 @@ $('.popover-dismiss').popover({
 
 var version = document.getElementById('version-ruangadmin');
 
-version.innerHTML = "Версия 1.1.8 alpha";
+version.innerHTML = "Версия 1.1.9 alpha";

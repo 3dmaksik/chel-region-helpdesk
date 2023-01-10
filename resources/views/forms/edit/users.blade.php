@@ -45,7 +45,7 @@ col-lg-6
             <label for="select2-role">Роль</label>
             <select class="select2-single form-control" name="role" id="select2-role">
               @foreach( $items['roles'] as $item)
-              <option @if ($items['role'][0]==$item) selected @endif value="@if ($items['role'][0]==$item) {{ $items['role'][0] }} @else {{ $item }}@endif">@if ($items['role'][0]==$item) {{ $items['role'][0] }} @else {{ $item }}@endif</option>
+              <option @if ($items['role']==$item) selected @endif value="@if ($items['role']==$item) {{ $items['role'] }} @else {{ $item }}@endif">@if ($items['role']==$item) {{ $items['role'] }} @else {{ $item }}@endif</option>
               @endforeach
             </select>
             <small id="textCabinet" class="form-text text-muted">Выберите роль сотрудника</small>

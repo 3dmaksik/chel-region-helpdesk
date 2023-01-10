@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SettingsAction;
-use App\Catalogs\DTO\SettingsDTO;
 use App\Requests\PasswordRequest;
 use App\Requests\SettingsRequest;
 use Illuminate\Http\RedirectResponse;
@@ -34,8 +33,7 @@ class SettingsController extends Controller
     public function updateSettings(SettingsRequest $request): RedirectResponse
     {
         //DTO добавить и request
-        $data = SettingsDTO::storeObjectRequest($request->validated());
-        $item = $this->settings->updateSettings((array) $data);
+        $item = $this->settings->updateSettings($request->validated());
         return redirect()->route(config('constants.settings.edit'), $item);
     }
 }

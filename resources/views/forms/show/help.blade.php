@@ -75,6 +75,9 @@ col-lg-6
             <a href="{{ route(config('constants.help.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
                 Редактировать заявку
             </a>
+            <a href="" class="btn btn-danger btn-sm hover" data-toggle="modal" data-target="#rejectHelp" data-id="{{$item->id}}">
+                Отклонить заявку
+            </a>
         </div>
         @endif
         @endhasanyrole
@@ -88,13 +91,6 @@ col-lg-6
         <div class="block">
             <a href="" class="btn btn-info btn-sm hover" data-toggle="modal" data-target="#redefineHelp" data-id="{{$item->id}}">
                 Передать заявку
-            </a>
-        </div>
-        @endif
-        @if($item->status->id <3)
-        <div class="block">
-            <a href="" class="btn btn-danger btn-sm hover" data-toggle="modal" data-target="#rejectHelp" data-id="{{$item->id}}">
-                Отклонить заявку
             </a>
         </div>
         @endif
@@ -153,6 +149,7 @@ col-lg-6
         {{ date( 'd.m.Y H:i', strtotime($item->calendar_execution)) }}
         @endif
         <hr>
+        @if ($item->work_id!=auth()->user()->id)
         <p class="text-primary">Информация для выполнения</p>
         @if ($item->info==null)
         Информация отсуствует
@@ -160,6 +157,7 @@ col-lg-6
         {{ $item->info }}
         @endif
         <hr>
+        @endif
     </div>
   </div>
 @endsection

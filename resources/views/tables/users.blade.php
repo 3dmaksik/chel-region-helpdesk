@@ -13,7 +13,8 @@ col-lg-12 mb-4
 		<table class="table align-items-center table-flush">
 			<thead class="thead-light">
 				<tr>
-					<th style="width: 89%">Логин</th>
+					<th style="width: 59%">Логин</th>
+                    <th style="width: 30%">Роль</th>
                     <th class="d-print-none"></th>
 				</tr>
 			</thead>
@@ -21,6 +22,11 @@ col-lg-12 mb-4
                 @forelse ($items as $item)
 				<tr>
 					<td>{{ $item->name }}</td>
+                    <td>
+                        @if(!empty($item->getRoleNames()))
+                        {{  $item->getRoleNames()[0] }}
+                        @endif
+                    </td>
 					<td class="d-print-none">
                         <div class="block">
                             <a href="{{ route(config('constants.users.show'),$item->id) }}" class="btn btn-info btn-sm hover">

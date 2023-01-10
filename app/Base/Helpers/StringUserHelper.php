@@ -8,7 +8,7 @@ class StringUserHelper extends CoreHelper
 {
     protected static string $data;
 
-    public static function run($string)
+    public static function run(string $string) : string
     {
         static::$data = $string;
         self::stringTrim(static::$data);

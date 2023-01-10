@@ -10,7 +10,6 @@ use Illuminate\View\View;
 
 class StatusController extends Controller
 {
-    const FORMROUTE = 'constants.status';
     private StatusAction $statuses;
 
     public function __construct(StatusAction $statuses)
