@@ -1,5 +1,5 @@
 import '../vendor/jquery/jquery.min.js';
-import '../vendor/bootstrap/js/bootstrap.bundle.min.js';
+import '../vendor/bootstrap/js/bootstrap.min.js';
 import '../vendor/jquery-easing/jquery.easing.min.js';
 import '../vendor/select2/dist/js/select2.full.min.js';
 import '../vendor/select2/dist/js/i18n/ru.js';

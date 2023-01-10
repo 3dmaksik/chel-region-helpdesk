@@ -1,6 +1,5 @@
 <?php
 
-use App\Events\NewTrade;
 use App\Http\Controllers\CabinetController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HelpController;
@@ -9,6 +8,7 @@ use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkController;
 use Illuminate\Support\Facades\Auth;
@@ -27,13 +27,14 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::controller(HelpController::class)
-->prefix('panel')
+->prefix('admin')
 ->as('help.')
 ->group(function () {
-    Route::get('new', 'new')->name('new');
-    Route::get('worker', 'workerAdmin')->name('worker');
-    Route::get('completed', 'completedAdmin')->name('completed');
-    Route::get('dismiss', 'dismiss')->name('dismiss');
+    Route::get('helps/all', 'index')->name('index');
+    Route::get('helps/new', 'new')->name('new');
+    Route::get('helps/worker', 'workerAdmin')->name('worker');
+    Route::get('helps/completed', 'completedAdmin')->name('completed');
+    Route::get('helps/dismiss', 'dismiss')->name('dismiss');
     Route::post('help', 'store')->name('store');
     Route::get('create', 'create')->name('create');
     Route::patch('{help}', 'update')->name('update');
@@ -50,15 +51,8 @@ Route::controller(HelpController::class)
 ->prefix('mod')
 ->as('mod.')
 ->group(function () {
-    Route::get('worker', 'workerManager')->name('worker');
-    Route::get('completed', 'completedManager')->name('completed');
-});
-
-Route::controller(HelpController::class)
-->prefix('admin')
-->as('help.')
-->group(function () {
-    Route::get('all', 'index')->name('index');
+    Route::get('helps/worker', 'workerManager')->name('worker');
+    Route::get('helps/completed', 'completedManager')->name('completed');
 });
 
 Route::controller(HomeController::class)
@@ -66,10 +60,10 @@ Route::controller(HomeController::class)
 ->as('user.')
 ->group(function () {
     Route::post('help', 'store')->name('store');
-    Route::get('worker', 'worker')->name('worker');
-    Route::get('completed', 'completed')->name('completed');
-    Route::get('dismiss', 'dismiss')->name('dismiss');
-    Route::get('create', 'create')->name('create');
+    Route::get('helps/worker', 'worker')->name('worker');
+    Route::get('helps/completed', 'completed')->name('completed');
+    Route::get('helps/dismiss', 'dismiss')->name('dismiss');
+    Route::get('helps/create', 'create')->name('create');
     Route::get('{help}/show', 'show')->name('show');
 });
 
@@ -77,7 +71,7 @@ Route::controller(SearchController::class)
 ->prefix('search')
 ->as('search.')
 ->group(function () {
-    Route::post('all', 'all')->name('all');
+    Route::get('all', 'all')->name('all');
     Route::get('{search}/work', 'work')->name('work');
     Route::get('{search}/category', 'category')->name('category');
     Route::get('{search}/cabinet', 'cabinet')->name('cabinet');
@@ -100,4 +94,5 @@ Route::resource('admin/work', WorkController::class);
 Route::resource('admin/users', UserController::class);
 
 Route::view('/test', 'layouts.app');
-Route::view('/', 'layouts.app');
+Route::get('/', [TestController::class, 'index']);
+Route::get('/send', [TestController::class, 'send']);

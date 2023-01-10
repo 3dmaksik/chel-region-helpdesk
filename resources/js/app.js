@@ -1,10 +1,10 @@
 import './bootstrap.js';
 
 $(function () {
-    Echo.channel('hello-channel')
-        .listen('NewTrade', (e) => {
-            console.log(e.message);
-        })
+    Echo.private('App.Models.User.' + window.Laravel.user)
+        .notification((notification) => {
+            console.log(notification.status + ' '+ notification.category + ' ' + notification.cabinet);
+        });
     let id = 0;
     var CSRF_TOKEN = $('meta[name="_token"]').attr('content');
     $.ajax({
@@ -35,11 +35,11 @@ $(function () {
             let datacount=JSON.parse(data);
             if (datacount == 0)
             {
-                $('#new_count_text').text('У вас нет заявок на исполнении');
+                $('#now_count_text').text('У вас нет заявок на исполнении');
             }
             else
             {
-                $('#new_count_text').text('У вас заявок на исполнении: ' + datacount);
+                $('#now_count_text').text('У вас заявок на исполнении: ' + datacount);
             }
         }
     });
@@ -62,7 +62,7 @@ $(function () {
         method: 'post',
         dataType: 'json',
         data: {"_token": CSRF_TOKEN},
-        success: function(data){
+        success: function (data) {
             const obj = JSON.parse(data);
             for (var i = 0; i < obj.work.length; i++) {
                 var counter = obj.work[i];

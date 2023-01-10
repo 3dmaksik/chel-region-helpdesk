@@ -13,7 +13,7 @@ col-lg-12 mb-4
 		<table class="table align-items-center table-flush">
 			<thead class="thead-light">
 				<tr>
-					<th style="width: 60%">Логин</th>
+					<th style="width: 59%">Логин</th>
                     <th style="width: 30%">Роль</th>
                     <th class="d-print-none"></th>
 				</tr>

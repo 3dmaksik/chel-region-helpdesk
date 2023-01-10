@@ -16,9 +16,9 @@ class HelpApiController extends Controller
         $this->helps = $helps;
     }
 
-    public function all(): JsonResponse
+    public function getAllPages(): JsonResponse
     {
-        $this->data = $this->helps->getAllCatalogsCollection()->toJson();
+        $this->data = $this->helps->getAllCatalogs()->toJson();
         return response()->json($this->data);
     }
 

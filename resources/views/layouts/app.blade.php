@@ -35,7 +35,12 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-  <script src="{{ mix('/js/app.js') }}"></script>
+<script>
+    window.Laravel = {!! json_encode([
+        'user' => auth()->check() ? auth()->user()->id : null,
+    ]) !!};
+</script>
+<script src="{{ mix('/js/app.js') }}"></script>
 </body>
 
 </html>

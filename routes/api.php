@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('help/all', [HelpApiController::class, 'getAllPages']);
 Route::get('help/new', [HelpApiController::class, 'newPagesCount']);
 Route::get('help/now', [HelpApiController::class, 'nowPagesCount']);
 Route::get('work/all', [WorkApiController::class, 'work']);
-Route::post('help/all', [HelpApiController::class, 'all']);

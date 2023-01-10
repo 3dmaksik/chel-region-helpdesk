@@ -8,7 +8,7 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Настройки пароля</h6>
     </div>
     <div class="card-body">
-      <form id="formValidate" method="POST" action="{{ route(config('constants.settings.updatePassword')) }}">
+      <form id="formValidatePassword" method="POST" action="{{ route(config('constants.settings.updatePassword')) }}">
         @method('PATCH')
         @csrf
         <div class="form-group">
@@ -44,7 +44,7 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Настройки аккаунта</h6>
     </div>
     <div class="card-body">
-      <form id="formValidate" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.settings.updateSettings')) }}">
+      <form id="formValidateSettings" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.settings.updateSettings')) }}">
         @method('PATCH')
         @csrf
         <div class="form-group">

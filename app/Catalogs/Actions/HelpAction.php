@@ -6,9 +6,16 @@ use App\Base\Actions\Action;
 use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
+use App\Models\User;
+use App\Notifications\CompletedHelpNotification;
+use App\Notifications\DismissHelpNotification;
+use App\Notifications\NewHelpNotification;
+use App\Notifications\TransferHelpNotification;
+use App\Notifications\WorkHelpNotification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection as SimpleCollection;
+use Illuminate\Support\Facades\Notification;
 
 class HelpAction extends Action
 {
@@ -47,6 +54,7 @@ class HelpAction extends Action
     public function getWorkerAdmPagesPaginate() :  LengthAwarePaginator
     {
         $this->items = Model::where('status_id', self::workHelp)
+        ->orderBy('calendar_execution', 'ASC')
         ->orderBy('calendar_accept', 'DESC')
         ->paginate($this->page);
         return $this->items;
@@ -56,6 +64,7 @@ class HelpAction extends Action
     {
         $this->items = Model::where('status_id', self::workHelp)
         ->where('executor_id', auth()->user()->id)
+        ->orderBy('calendar_execution', 'ASC')
         ->orderBy('calendar_accept', 'DESC')
         ->paginate($this->page);
         return $this->items;
@@ -81,7 +90,7 @@ class HelpAction extends Action
     public function getDismissPagesPaginate() :  LengthAwarePaginator
     {
         $this->items = Model::where('status_id', self::dangerHelp)
-        ->orderBy('calendar_request', 'DESC')
+        ->orderBy('calendar_final', 'DESC')
         ->paginate($this->page);
         return $this->items;
     }
@@ -107,9 +116,11 @@ class HelpAction extends Action
 
     public function store(array $request) : bool
     {
-        $this->items = HelpDTO::storeObjectRequest($request);
-        Model::create((array) $this->items);
+        $this->data = HelpDTO::storeObjectRequest($request);
+        $this->item = Model::create((array) $this->data);
         Model::flushQueryCache();
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new NewHelpNotification($this->item));
         return true;
     }
 
@@ -143,6 +154,8 @@ class HelpAction extends Action
         }
         $this->data = HelpDTO::acceptObjectRequest($request, $id);
         $this->item->update((array) $this->data);
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new WorkHelpNotification($this->item));
         Model::flushQueryCache();
         return $this->item;
     }
@@ -153,6 +166,9 @@ class HelpAction extends Action
         $this->data = HelpDTO::executeObjectRequest($request, $id);
         $this->item->update((array) $this->data);
         Model::flushQueryCache();
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new CompletedHelpNotification($this->item));
+        Model::flushQueryCache();
         return $this->item;
     }
 
@@ -161,6 +177,8 @@ class HelpAction extends Action
         $this->item = Model::findOrFail($id);
         $this->data = HelpDTO::redefineObjectRequest($request, $id);
         $this->item->update((array) $this->data);
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new TransferHelpNotification($this->item));
         Model::flushQueryCache();
         return $this->item;
     }
@@ -170,6 +188,8 @@ class HelpAction extends Action
         $this->item = Model::findOrFail($id);
         $this->data = HelpDTO::rejectObjectRequest($request, $id);
         $this->item->update((array) $this->data);
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new DismissHelpNotification($this->item));
         Model::flushQueryCache();
         return $this->item;
     }

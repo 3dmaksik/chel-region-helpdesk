@@ -6,8 +6,11 @@ use App\Base\Actions\Action;
 use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
+use App\Models\User;
+use App\Notifications\NewHelpNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection as SimpleCollection;
+use Illuminate\Support\Facades\Notification;
 
 class UserAction extends Action
 {
@@ -54,8 +57,18 @@ class UserAction extends Action
     public function store(array $request) : bool
     {
         $this->data = HelpDTO::storeObjectRequest($request);
-        Model::create((array) $this->data);
+        $this->item = Model::create((array) $this->data);
         Model::flushQueryCache();
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new NewHelpNotification(
+            $this->item->id,
+            $this->item->category->description,
+            $this->item->work->cabinet->description,
+            $this->item->work->firstname,
+            $this->item->work->lastname,
+            $this->item->work->patronymic,
+            $this->item->calendar_request,
+        ));
         return true;
     }
 }

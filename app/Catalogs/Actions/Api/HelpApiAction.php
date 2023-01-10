@@ -5,7 +5,7 @@ namespace App\Catalogs\Actions\Api;
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Models\Help;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class HelpApiAction extends Action
 {
@@ -13,10 +13,11 @@ class HelpApiAction extends Action
     const newHelp = 2;
     const successHelp = 3;
     const dangerHelp = 4;
-    public function getAllCatalogsCollection() : Collection
+    private Collection $helps;
+    public function getAllCatalogs() : Collection
     {
-         $this->data = AllCatalogsDTO::getAllCatalogsCollection();
-        return $this->data;
+        $this->helps = AllCatalogsDTO::getAllCatalogsCollection();
+        return $this->helps;
     }
 
     public function updateView(int $id, bool $status = true) :bool

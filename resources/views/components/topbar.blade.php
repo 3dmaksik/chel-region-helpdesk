@@ -7,7 +7,7 @@
             <i class="fas fa-search fa-fw"></i>
         </a>
 			<div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-				<form class="navbar-search" method="POST" action="{{ route('search.all') }}">
+				<form class="navbar-search" method="GET" action="{{ route('search.all') }}">
                     @csrf
 					<div class="input-group">
                         <input type="text" name="search" class="form-control bg-light border-1 small " placeholder="Введите текст для поиска" aria-label="Search" aria-describedby="basic-addon2" style="border-color: #3f51b5;">
@@ -43,8 +43,8 @@
 		</li>
 		<div class="topbar-divider d-none d-sm-block"></div>
 		<li class="nav-item dropdown no-arrow"> <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img class="img-profile rounded-circle" src="/img/boy.png" style="max-width: 60px">
-            <span class="name=profile ml-2 d-none d-lg-inline text-white small">Пользователь</span>
+            <img class="img-profile rounded-circle" src="@if(Cookie::get('avatar')==null)/img/boy.png @else{{ Cookie::get('avatar') }}@endif" style="max-width: 60px">
+            <span class="name=profile ml-2 d-none d-lg-inline text-white small">{{ Cookie::get('firstname') }}</span>
         </a>
 			<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown"> <a class="dropdown-item" href="{{ route(config('constants.settings.edit')) }}">
                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>

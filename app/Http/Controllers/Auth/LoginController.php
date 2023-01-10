@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Work;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -163,7 +165,10 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        //
+        $item = Work::select('firstname', 'avatar', 'sound_notify')->where('user_id', $user->id)->first();
+        Cookie::forever('firstname', $item->firstname);
+        Cookie::forever('avatar', $item->avatar);
+        Cookie::forever('sound_notify', $item->sound_notify);
     }
 
     /**
@@ -204,6 +209,10 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        Cookie::unqueue('firstname');
+        Cookie::unqueue('avatar');
+        Cookie::unqueue('sound_notify');
 
         if ($response = $this->loggedOut($request)) {
             return $response;

@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const webpack = require('webpack');
+let productionSourceMaps = false;
 
 mix.webpackConfig({
     plugins: [
@@ -20,6 +21,7 @@ mix.webpackConfig({
  |
  */
 mix.js('resources/js/app.js', 'public/js')
+    .sourceMaps(productionSourceMaps, 'source-map')
     .postCss('resources/css/main.css', 'public/css')
     .version()
     .minify(['public/js/app.js', 'public/css/main.css'])

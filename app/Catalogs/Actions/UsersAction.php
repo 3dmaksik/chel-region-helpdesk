@@ -45,7 +45,7 @@ class UsersAction extends Action
     {
         $this->user = Model::findOrFail($id);
         $this->roles = AllCatalogsDTO::getAllRolesCollection();
-        $this->role = $this->user->getRoleNames();
+        $this->role = $this->user->getRoleNames()[0];
         return [
             'user' => $this->user,
             'roles' => $this->roles,
@@ -66,7 +66,7 @@ class UsersAction extends Action
         $this->user = Model::findOrFail($id);
         $this->data = UsersDTO::storeObjectRequest($request);
         $this->user->update((array) $this->data);
-        $this->user->assignRole($request['role']);
+        $this->user->syncRoles($request['role']);
         Model::flushQueryCache();
         return $this->user;
     }
@@ -74,6 +74,7 @@ class UsersAction extends Action
     public function delete(int $id) : bool
     {
         $this->user = Model::findOrFail($id);
+        $this->user->syncRoles([]);
         $this->user->forceDelete();
         Model::flushQueryCache();
         return true;
