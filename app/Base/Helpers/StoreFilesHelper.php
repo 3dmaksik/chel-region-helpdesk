@@ -10,6 +10,15 @@ class StoreFilesHelper extends CoreHelper
 {
     protected static array $url;
 
+    /**
+     * Создание картинки в массиве
+     *
+     * @param mixed $request
+     * @param int $w
+     * @param int $h
+     *
+     * @return array
+     */
     public static function createFile($request, int $w, int $h): array
     {
         static $i = 0;
@@ -20,6 +29,15 @@ class StoreFilesHelper extends CoreHelper
         return $url;
     }
 
+    /**
+     * Создание картинки
+     *
+     * @param mixed $file
+     * @param int $w
+     * @param int $h
+     *
+     * @return array
+     */
     public static function createOneFile($file, $w = 1920, int $h = 1080) : array
     {
         $imgPath = 'images';
@@ -33,6 +51,13 @@ class StoreFilesHelper extends CoreHelper
         return ['url' => $fileName];
     }
 
+    /**
+     * Создание звукового уведомления
+     *
+     * @param mixed $request
+     *
+     * @return array
+     */
     public static function createNotify($request) : array
     {
         $fileName = time() . '_' . mt_rand() . '.ogg';

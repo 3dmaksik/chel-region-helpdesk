@@ -27,7 +27,7 @@ col-lg-12
         <div class="form-group">
             <label for="select2-category">Выберите категорию</label>
             <select class="select2-single form-control" name="category_id" id="select2-category">
-              @foreach( $data['category'] as $item)
+              @foreach( $items['category'] as $item)
               <option @if (old('category_id')=="$item->id") selected @endif value="{{ $item->id }}">{{ $item->description }}</option>
               @endforeach
             </select>
@@ -35,7 +35,7 @@ col-lg-12
         <div class="form-group">
             <label for="select2-work">Выберите сотрудника</label>
             <select class="select2-single form-control" name="work_id" id="select2-work">
-              @foreach( $data['work'] as $item)
+              @foreach( $items['work'] as $item)
               <option @if (old('work_id')=="$item->id") selected @endif value="{{ $item->id }}">{{ $item->lastname }} {{ $item->firstname }} {{ $item->patronymic }}</option>
               @endforeach
             </select>

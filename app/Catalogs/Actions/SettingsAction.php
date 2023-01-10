@@ -3,6 +3,7 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Catalogs\DTO\SettingsDTO;
 use App\Models\User;
 use App\Models\Work;
 use Illuminate\Support\Facades\Hash;
@@ -31,18 +32,27 @@ class SettingsAction extends Action
         return true;
     }
 
-    public function editSettings(): array
+    public function editSettings(): Work
     {
-        $this->item = Work::select('avatar', 'sound_notify')->where('user_id', auth()->user()->id)->first();
-
-        return [
-            'avatar' => json_decode($this->item->avatar, true),
-            'sound_notify' => json_decode($this->item->sound_notify, true),
-            ];
+        $this->item = Work::select('user_id', 'avatar', 'sound_notify')->where('user_id', auth()->user()->id)->first();
+        $this->item->avatar = json_decode($this->item->avatar, true);
+        $this->item->sound_notify = json_decode($this->item->sound_notify, true);
+        return $this->item;
     }
 
     public function updateSettings(array $request) : bool
     {
-        return Work::whereId(auth()->user()->id)->update($request);
+        $this->item = Work::select('user_id', 'avatar', 'sound_notify')->where('user_id', auth()->user()->id)->first();
+        $this->data = SettingsDTO::storeObjectRequest($request);
+        if ($this->item->avatar != null) {
+            $this->item->avatar = json_decode($this->item->avatar, true);
+            unlink(storage_path('app\\public\\'.$this->item->avatar['url']));
+        }
+        if ($this->item->sound_notify != null) {
+            $this->item->sound_notify = json_decode($this->item->sound_notify, true);
+            unlink(storage_path('app\\public\\'.$this->item->sound_notify['url']));
+        }
+        Work::flushQueryCache();
+        return Work::whereId(auth()->user()->id)->update((array) $this->data);
     }
 }

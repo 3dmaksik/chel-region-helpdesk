@@ -8,9 +8,12 @@ use App\Catalogs\DTO\WorkDTO;
 use App\Models\Work as Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection as SimpleCollection;
 
 class WorkAction extends Action
 {
+    private SimpleCollection $cabinets;
+    private SimpleCollection $users;
     public function getAllPages() : Collection
     {
         $this->items = Model::orderBy('lastname', 'ASC')->get();
@@ -25,11 +28,11 @@ class WorkAction extends Action
 
     public function create() : array
     {
-        $cabinets = AllCatalogsDTO::getAllCabinetCollection();
-        $users = AllCatalogsDTO::getAllUserCollection();
+        $this->cabinets = AllCatalogsDTO::getAllCabinetCollection();
+        $this->users = AllCatalogsDTO::getAllUserCollection();
         return [
-            'cabinets' => $cabinets,
-            'users' => $users,
+            'cabinets' => $this->cabinets,
+            'users' => $this->users,
         ];
     }
 
@@ -39,31 +42,31 @@ class WorkAction extends Action
         return $this->item;
     }
 
-    public function store(array $request) : Model
+    public function store(array $request) : bool
     {
-        $data = WorkDTO::storeObjectRequest($request);
-        $this->item = Model::create((array) $data);
+        $this->data = WorkDTO::storeObjectRequest($request);
+        Model::create((array) $this->data);
         Model::flushQueryCache();
-        return $this->item;
+        return true;
     }
 
     public function edit(int $id) : array
     {
         $this->item = Model::findOrFail($id);
-        $cabinets = AllCatalogsDTO::getAllCabinetCollection();
-        $users = AllCatalogsDTO::getAllUserCollection();
+        $this->cabinets = AllCatalogsDTO::getAllCabinetCollection();
+        $this->users = AllCatalogsDTO::getAllUserCollection();
         return [
             'items' => $this->item,
-            'cabinets' => $cabinets,
-            'users' => $users,
+            'cabinets' => $this->cabinets,
+            'users' => $this->users,
         ];
     }
 
     public function update(array $request, int $id) : Model
     {
         $this->item = Model::findOrFail($id);
-        $data = WorkDTO::storeObjectRequest($request);
-        $this->item->update((array) $data);
+        $this->data = WorkDTO::storeObjectRequest($request);
+        $this->item->update((array) $this->data);
         Model::flushQueryCache();
         return $this->item;
     }

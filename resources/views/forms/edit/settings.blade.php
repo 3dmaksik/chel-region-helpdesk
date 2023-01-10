@@ -8,7 +8,7 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Настройки пароля</h6>
     </div>
     <div class="card-body">
-      <form id="formValidate" method="POST" action="{{ route(config('constants.settings.updatePassword')) }}">
+      <form id="formValidatePassword" method="POST" action="{{ route(config('constants.settings.updatePassword')) }}">
         @method('PATCH')
         @csrf
         <div class="form-group">
@@ -44,13 +44,13 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Настройки аккаунта</h6>
     </div>
     <div class="card-body">
-      <form id="formValidate" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.settings.updateSettings')) }}">
+      <form id="formValidateSettings" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.settings.updateSettings')) }}">
         @method('PATCH')
         @csrf
         <div class="form-group">
             <label for="img-profile">Текущая аватарка</label>
             <div class="form-group">
-                <img class="img-profile rounded-circle" src="@if($works['avatar']==null)/img/boy.png @else/storage/{{ $works['avatar']['url']}} @endif" style="max-width: 60px">
+                <img class="img-profile rounded-circle" src="@if($works['avatar']==null)/img/boy.png @else{{ url('storage/'.$works['avatar']['url']) }} @endif" style="max-width: 60px">
             </div>
         </div>
         <div class="form-group">
@@ -69,7 +69,7 @@ col-lg-6
                     <figcaption>Текущее оповещение</figcaption>
                     <audio
                         controls
-                        src="@if($works['sound_notify']==null)/sound/sound.ogg @else/storage/{{ $works['sound_notify']['url']}} @endif">
+                        src="@if($works['sound_notify']==null)/sound/sound.ogg @else{{ url('storage/'.$works['sound_notify']['url']) }} @endif">
                     </audio>
                 </figure>
             </div>

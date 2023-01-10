@@ -8,10 +8,13 @@ use App\Catalogs\DTO\UsersDTO;
 use App\Models\User as Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection as SimpleCollection;
 
 class UsersAction extends Action
 {
     private Model $user;
+    private string $role;
+    private SimpleCollection $roles;
     public function getAllPages() : Collection
     {
         $this->items = Model::select('id', 'name')->orderBy('name', 'ASC')->get();
@@ -26,38 +29,34 @@ class UsersAction extends Action
 
     public function create() : array
     {
-        $roles = AllCatalogsDTO::getAllRolesCollection();
+        $this->roles = AllCatalogsDTO::getAllRolesCollection();
         return [
-            'roles' => $roles,
+            'roles' => $this->roles,
         ];
     }
 
-    public function show(int $id): array
+    public function show(int $id): Model
     {
         $this->user = Model::findOrFail($id);
-        $role = $this->user->getRoleNames();
-        return [
-            'user' => $this->user,
-            'role' => $role,
-        ];
+        return $this->user;
     }
 
     public function edit(int $id): array
     {
         $this->user = Model::findOrFail($id);
-        $roles = AllCatalogsDTO::getAllRolesCollection();
-        $role = $this->user->getRoleNames();
+        $this->roles = AllCatalogsDTO::getAllRolesCollection();
+        $this->role = $this->user->getRoleNames()[0];
         return [
             'user' => $this->user,
-            'roles' => $roles,
-            'role' => $role,
+            'roles' => $this->roles,
+            'role' => $this->role,
         ];
     }
 
     public function store(array $request) : bool
     {
-        $data = UsersDTO::storeObjectRequest($request);
-        Model::create((array) $data)->assignRole($request['role']);
+        $this->data = UsersDTO::storeObjectRequest($request);
+        Model::create((array) $this->data)->assignRole($request['role']);
         Model::flushQueryCache();
         return true;
     }
@@ -65,9 +64,9 @@ class UsersAction extends Action
     public function update(array $request, int $id) : Model
     {
         $this->user = Model::findOrFail($id);
-        $data = UsersDTO::storeObjectRequest($request);
-        $this->user->update((array) $data);
-        $this->user->assignRole($request['role']);
+        $this->data = UsersDTO::storeObjectRequest($request);
+        $this->user->update((array) $this->data);
+        $this->user->syncRoles($request['role']);
         Model::flushQueryCache();
         return $this->user;
     }
@@ -75,6 +74,7 @@ class UsersAction extends Action
     public function delete(int $id) : bool
     {
         $this->user = Model::findOrFail($id);
+        $this->user->syncRoles([]);
         $this->user->forceDelete();
         Model::flushQueryCache();
         return true;

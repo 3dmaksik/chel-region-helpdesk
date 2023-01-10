@@ -23,9 +23,13 @@ col-lg-4
     </div>
     <div class="card-body">
         <p class="text-primary">Логин</p>
-        <p>{{ $item['user']->name }}</p>
+        <p>{{ $item->name }}</p>
         <p class="text-primary">Роль</p>
-        <p>{{ $item['role'][0]}}</p>
+        <p>
+            @if(!empty($item->getRoleNames()))
+                {{  $item->getRoleNames()[0] }}
+            @endif
+        </p>
     </div>
   </div>
 @endsection
