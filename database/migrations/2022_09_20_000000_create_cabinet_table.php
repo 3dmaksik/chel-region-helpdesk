@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cabinet', function (Blueprint $table) {
-            $table->smallIncrements('id');
-            $table->float('description')->unique();
+            $table->increments('id');
+            $table->string('description',4)->unique();
             $table->timestamps();
         });
     }

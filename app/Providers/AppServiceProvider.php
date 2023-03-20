@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
         //global View
         view()->composer('*', function ($view) {
-            $view->with('now', Carbon::now());
+            $view->with('now', Carbon::now()->toDateTimeString());
         });
     }
 }

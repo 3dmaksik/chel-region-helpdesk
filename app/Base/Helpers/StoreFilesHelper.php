@@ -43,10 +43,6 @@ class StoreFilesHelper extends CoreHelper
         $imgPath = 'images';
         $fileName = time() . '_' . mt_rand() . '.png';
         $img = Image::make($file->path());
-        $width = $img->width();
-        $height = $img->height();
-        ($width < $w) ? : $w = $width;
-        ($height < $h) ? : $h = $height;
                 $resize = $img->resize($w, $h, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($imgPath . '/' . $fileName);

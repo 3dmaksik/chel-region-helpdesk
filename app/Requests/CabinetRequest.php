@@ -15,8 +15,8 @@ class CabinetRequest extends BaseRequest
              'description' => [
                 'required',
                 'integer',
+                'max:9999',
                 'numeric',
-                'max:250',
                 Rule::unique('cabinet')->ignore(empty($this->cabinet) ? 0 : $this->cabinet),
              ],
 

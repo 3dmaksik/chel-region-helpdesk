@@ -3,7 +3,6 @@
 @include('components.head')
 
 <body id="page-top">
-    <div id="preloader" class="loader"></div>
   <div id="wrapper">
     @include('components.sidebar')
     <div id="content-wrapper" class="d-flex flex-column">
@@ -27,6 +26,7 @@
         </div>
       <!---Container Fluid-->
       </div>
+    @include('components.modal')
     @include('components.footer')
     </div>
   </div>

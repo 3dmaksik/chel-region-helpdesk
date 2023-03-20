@@ -3,24 +3,10 @@ import '../vendor/bootstrap/js/bootstrap.min.js';
 import '../vendor/jquery-easing/jquery.easing.min.js';
 import '../vendor/select2/dist/js/select2.full.min.js';
 import '../vendor/select2/dist/js/i18n/ru.js';
-import '../vendor/plugins/howler.core.js';
+import './howler.core.js';
 import '../vendor/fancybox-master/dist/jquery.fancybox.min.js';
 import './ruang-admin.js';
-import 'jquery-datetimepicker';
 
-import ClassicEditor from '../vendor/plugins/ckeditor.js';
-var ready = (callback) => {
-    if (document.readyState != "loading") callback();
-    else document.addEventListener("DOMContentLoaded", callback);
-  }
-
-  ready(() => {
-      ClassicEditor
-          .create(document.querySelector('.wysiwyg'))
-          .catch(error => {
-              //console.log(`error`, error)
-          });
-  });
 import _ from 'lodash';
 window._ = _;
 

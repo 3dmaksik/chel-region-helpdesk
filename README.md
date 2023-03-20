@@ -4,7 +4,7 @@
 ### Требования
 
 - Astra Linux 1.7+ или другая российская ОС, либо любая акутальная операционная система семейства Linux;
-- PHP 8.1-8.2 c расширениями fileinfo, redis или memcached, 
+- PHP 8.0-8.1 c расширениями fileinfo, redis или memcached, 
 а также со всеми стандартными расширениями, которые по умолчанию обычно включены iconv, gd, curl, mbstring, sockets;
 - СУБД на выбор MYSQL 8.0+/MariaDB 10.8+, PostgreSQL 14+;
 - Сервер Ngnix 1.23+, Apache не рекомендуется;
@@ -61,7 +61,7 @@
 
 Если позволяет сервер, то безопаснее настроить через`VirtualHost`
 
-`$ sudo nano /etc/apache2/sites-available/helpdesk.conf`
+`sudo nano /etc/apache2/sites-available/helpdesk.conf`
 
     <VirtualHost *:80>
         ServerAdmin admin@example.com
@@ -77,55 +77,49 @@
         CustomLog ${APACHE_LOG_DIR}/access.log combined
     </VirtualHost>
 Дальнейший запуск:
-`$ sudo a2enmod rewrite`
-`$ sudo a2ensite helpdesk.conf`
+`sudo a2enmod rewrite`
+`sudo a2ensite helpdesk.conf`
 
 После чего любой сервер необходимо перезапустить.
 
 ### Установка
                 
-1. Скопировать проект к себе на сервер в созданную ранее папку:
+1. Скопировать проект к себе на сервер в созданную ранее папку одним из способов:
+
+- Через github: 
+
 `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
+- Через composer :
+
+`$ composer create-project 3dmaksik/chel-region-helpdesk -s dev --no-dev`
 
 2. Установить проект и библиотеки
+
 `$ composer install`
+
 Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно билиблиотеки разработки командой `$ npm run prod`, остальным этот шаг можно пропустить.
 
-3. Установить права и ссылки для следующих папок:
+3. Установить права для следующих папок:
+
 `$ sudo chmod -R 777 ./storage`
+
 `$ sudo chmod -R 777 ./bootstrap/cache/`
-`$ sudo ln -s /sitepath/storage/app/public /sitepath/public/storage`
+
+`$ php artisan storage:link`
+
 4. Создать файл настроек или скопировать его командой `$ cp .env.example .env`
+
 5. Сгенерировать ключ проекта командой `$ php artisan key:generate`
 
 6. В файле `.env` заполнить все незаполненные поля.
-7. Установить базу данных `$ php artisan migrate:fresh --seed`
-8. Запустить сокеты `$ php artisan websockets:serve` 
-Чтобы не запускать сокеты каждый раз вы можете настроить демон
-`$ apt install supervisor`
-`$ systemctl enable supervisord`
-`$ nano /etc/supervisor/conf.d/websockets.conf`
-
-
-	[program:websockets]
-	command=/path/php /sitepath/artisan websockets:serve
-	numprocs=1
-	autostart=true
-	autorestart=true
-	user=laravel-echo
-
-`$ supervisorctl update`
-`$ supervisorctl start websockets`
-
-После чего проект готов к работе. 
-PS. Рады всем, кто сможет предоставить скрипт автоматического развёртывания.
+7. Установить базу данных `php artisan migrate:fresh --seed`
+8. Войти на сайт по адресу `http://domain/login`
+После этого необходимо обязательно изменить пароль
                 
 
 ### Обновления
                 
 1. Обновления проекта и рабочих библиотек `$ composer update`, библиотек разработки `$ npm update` соответственно.
-2. Если самостоятельно изменили файл `config/settings.php` и не хотите, чтобы в результате обновлений он изменялся обратно необходимо игнорировать 
-`$ git update-index --assume-unchanged config/settings.php`
                 
 
 ### Вопросы и предложения
@@ -141,10 +135,9 @@ PS. Рады всем, кто сможет предоставить скрипт
 6. Boostrap- [MIT](https://github.com/twbs/bootstrap#copyright-and-license)
 7. JQuery- [MIT](https://github.com/jquery/jquery/blob/main/LICENSE.txt)
 8. RuangAdmin- [MIT](https://github.com/indrijunanda/RuangAdmin#license)
-9. eStartup- [CC](https://bootstrapmade.com/license/)
-10. Fancybox- [GPLv3](https://github.com/fancyapps/fancybox#license)
-11. FontAwesome- [CC BY 4.0, SIL OFL 1.1, MIT](https://github.com/FortAwesome/Font-Awesome#license)
-12. Select2- [MIT](https://github.com/select2/select2/blob/develop/LICENSE.md)
-13. Nunito Font-  [OFL](https://github.com/googlefonts/nunito/blob/main/OFL.txt)
+9. Fancybox- [GPLv3](https://github.com/fancyapps/fancybox#license)
+10. FontAwesome- [Mixed](https://github.com/FortAwesome/Font-Awesome#license)
+11. Select2- [MIT](https://github.com/select2/select2/blob/develop/LICENSE.md)
+12. Nunito Font-  [OFL](https://github.com/googlefonts/nunito/blob/main/OFL.txt)
                 
 ### Конец

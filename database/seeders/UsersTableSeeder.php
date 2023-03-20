@@ -21,9 +21,6 @@ class UsersTableSeeder extends Seeder
             'email' =>'test@local.local',
             'password' => Hash::make('password'),
             'email_verified_at'=> now(),
-            'firstname' => 'Имя',
-            'lastname' => 'Фамилия',
-            'cabinet_id'=> 1,
         ])->assignRole('superAdmin');
     }
 }
