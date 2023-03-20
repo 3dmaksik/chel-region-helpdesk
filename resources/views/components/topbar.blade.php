@@ -21,17 +21,23 @@
 		</li>
 		<li class="nav-item dropdown no-arrow mx-1"> <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
+            @hasanyrole('superAdmin|admin')
             <span id="counter" class="badge badge-danger badge-counter"></span>
+            @endhasanyrole
         </a>
+            @hasanyrole('superAdmin|admin|manager')
 			<div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-				<h6 class="dropdown-header"> Оповещения </h6>
+                <h6 class="dropdown-header"> Оповещения </h6>
+                @hasanyrole('superAdmin|admin')
 				<a class="dropdown-item d-flex align-items-center" href="{{ route(config('constants.help.new')) }}">
 					<div class="mr-3">
 						<div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i> </div>
 					</div>
 					<div>
-						<div id="new_count" class="small text-gray-500">Новые заявки</div> <span id="new_count_text">У вас новых заявок: 1</span> </div>
+						<div id="new_count" class="small text-gray-500">Новые заявки</div> <span id="new_count_text">Всего новых заявок: 1</span> </div>
 				</a>
+                @endhasanyrole
+                @hasanyrole('superAdmin|admin|manager')
 				<a class="dropdown-item d-flex align-items-center" href="{{ route(config('constants.help.worker')) }}">
 					<div class="mr-3">
 						<div class="icon-circle bg-success"> <i class="fas fa-walking text-white"></i> </div>
@@ -39,11 +45,13 @@
 					<div>
 						<div id="now_count" class="small text-gray-500">На исполнении</div> <span id="now_count_text">У вас заявок на исполнении: 1</span> </div>
 				</a>
+                @endhasanyrole
 			</div>
+            @endhasanyrole
 		</li>
 		<div class="topbar-divider d-none d-sm-block"></div>
 		<li class="nav-item dropdown no-arrow"> <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img class="img-profile rounded-circle" src="@if(Cookie::get('avatar')==null)/img/boy.png @else{{ Cookie::get('avatar') }}@endif" style="max-width: 60px">
+            <img class="img-profile rounded-circle" src="/img/logo/logo.png" style="max-width: 60px">
             <span class="name=profile ml-2 d-none d-lg-inline text-white small">{{ Cookie::get('firstname') }}</span>
         </a>
 			<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown"> <a class="dropdown-item" href="{{ route(config('constants.settings.edit')) }}">

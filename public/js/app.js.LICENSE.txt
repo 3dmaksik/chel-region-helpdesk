@@ -15,6 +15,11 @@
  */
 
 /*!
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
+/*!
  * Pusher JavaScript Library v8.0.0
  * https://pusher.com/
  *
@@ -54,11 +59,21 @@
  * Date: 2022-12-20T21:28Z
  */
 
+/*!
+ * jQuery Mousewheel 3.1.13
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license
+ * http://jquery.org/license
+ */
+
 /*! Select2 4.0.13 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /*! jQuery v3.6.3 | (c) OpenJS Foundation and other contributors | jquery.org/license */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
 
 /**
  * @license
