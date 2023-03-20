@@ -5,11 +5,11 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\SettingsDTO;
 use App\Models\User;
-use App\Models\Work;
 use Illuminate\Support\Facades\Hash;
 
 class SettingsAction extends Action
 {
+    private User $user;
     public function __construct()
     {
         //parent::__construct();
@@ -17,42 +17,44 @@ class SettingsAction extends Action
 
     public function updatePassword(array $request) : bool
     {
-        if ($this->checkPassword($request['current_password']) && ! $this->checkPassword($request['password'])) {
+        if ($this->checkPassword($request['current_password']) === true && $this->checkPassword($request['password']) === false) {
             return User::whereId(auth()->user()->id)->update([
                 'password' => Hash::make($request['password']),
             ]);
         }
+        return false;
     }
 
     protected function checkPassword(string $password) : bool
     {
-        if (! Hash::check($password, auth()->user()->password)) {
-            return false;
+        if (Hash::check($password, auth()->user()->password)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
-    public function editSettings(): Work
+    public function editSettings(): User
     {
-        $this->item = Work::select('user_id', 'avatar', 'sound_notify')->where('user_id', auth()->user()->id)->first();
-        $this->item->avatar = json_decode($this->item->avatar, true);
-        $this->item->sound_notify = json_decode($this->item->sound_notify, true);
-        return $this->item;
+        $this->user = User::whereId(auth()->user()->id)->first();
+        $this->user->avatar = json_decode($this->user->avatar, true);
+        $this->user->sound_notify = json_decode($this->user->sound_notify, true);
+        return $this->user;
     }
 
     public function updateSettings(array $request) : bool
     {
-        $this->item = Work::select('user_id', 'avatar', 'sound_notify')->where('user_id', auth()->user()->id)->first();
+        $this->user = User::whereId(auth()->user()->id)->first();
         $this->data = SettingsDTO::storeObjectRequest($request);
-        if ($this->item->avatar != null) {
-            $this->item->avatar = json_decode($this->item->avatar, true);
-            unlink(storage_path('app\\public\\'.$this->item->avatar['url']));
+        if (isset($this->data->avatar) && $this->user->avatar != null) {
+            $this->user->avatar = json_decode($this->user->avatar, true);
+            unlink(storage_path('app\\public\\'.$this->user->avatar['url']));
         }
-        if ($this->item->sound_notify != null) {
-            $this->item->sound_notify = json_decode($this->item->sound_notify, true);
-            unlink(storage_path('app\\public\\'.$this->item->sound_notify['url']));
+        if (isset($this->data->sound_notify) && $this->user->sound_notify != null) {
+            $this->user->sound_notify = json_decode($this->user->sound_notify, true);
+            unlink(storage_path('app\\public\\'.$this->user->sound_notify['url']));
         }
-        Work::flushQueryCache();
-        return Work::whereId(auth()->user()->id)->update((array) $this->data);
+        User::flushQueryCache();
+        $this->user->update((array) $this->data);
+        return true;
     }
 }

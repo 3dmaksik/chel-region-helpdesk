@@ -16,5 +16,10 @@ class Action extends CoreAction
     public Model $item;
     public RedirectResponse $redirect;
     public array| DTO $data;
-    public int $page = 10;
+    public int $page;
+
+    public function __construct()
+    {
+        $this->page = config('settings.pages');
+    }
 }
