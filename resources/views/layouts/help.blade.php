@@ -3,6 +3,7 @@
 @include('components.head')
 
 <body id="page-top">
+    <div id="preloader" class="loader"></div>
   <div id="wrapper">
     @include('components.sidebar')
     <div id="content-wrapper" class="d-flex flex-column">
@@ -30,7 +31,7 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-  <script src="{{ mix('/js/app.js') }}"></script>
+  <script src="{{ mix('/js/app.min.js') }}"></script>
 </body>
 
 </html>

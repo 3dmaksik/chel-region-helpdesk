@@ -18,7 +18,7 @@ col-lg-12 mb-4
 				</tr>
 			</thead>
 			<tbody id="table-dynamic">
-                @forelse ($items as $item)
+                @forelse ($items['data'] as $item)
 				<tr>
 					<td>{{ $item->description }}</td>
                     <td><div style="height: 40px;width: 185px" class="d-print-none card bg-{{ $item->color }}"></div></td>
@@ -41,6 +41,6 @@ col-lg-12 mb-4
 @endsection
 @section('paginate')
 <div class="card-footer clearfix">
-    {{ $items->links() }}
+    {{ $items['data']->links() }}
 </div>
 @endsection

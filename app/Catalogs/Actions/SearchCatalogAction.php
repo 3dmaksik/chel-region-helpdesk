@@ -4,52 +4,93 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Models\Help;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class SearchCatalogAction extends Action
 {
+    protected User $user;
+    private LengthAwarePaginator $helpSearch;
+    private array $searchData;
     public function __construct()
     {
-        //parent::__construct();
+        parent::__construct();
     }
-
-    public function searchHelpWork(int $id): LengthAwarePaginator
+        //не работает ещё
+    protected function role(Builder $builder) : Builder
     {
-        $this->items = Help::where('work_id', $id)->paginate($this->page);
-        return $this->items;
+        $this->user = User::whereId(auth()->user()->id)->first();
+        if ($this->user->hasRole('user')) {
+            return $builder->where('user_id', auth()->user()->id);
+        }
+        if ($this->user->hasRole('manager')) {
+            return $builder->where('user_id', auth()->user()->id)
+            ->where('executor_id', auth()->user()->id);
+        }
     }
 
-    public function searchHelpCategory(int $id): LengthAwarePaginator
+    public function searchHelpWork(int $id): array
     {
-        $this->items = Help::where('category_id', $id)->paginate($this->page);
-        return $this->items;
+        $this->helpSearch = Help::where('user_id', $id)->RoleSearch()->paginate($this->page);
+        $this->searchData =
+        [
+            'method' => 'searchwork',
+            'data' => $this->helpSearch,
+        ];
+        return $this->searchData;
     }
 
-    public function searchHelpCabinet(int $id): LengthAwarePaginator
+    public function searchHelpCategory(int $id): array
     {
-        $this->items = Help::join('work', 'work.id', '=', 'help.work_id')->where('work.cabinet_id', $id)->paginate($this->page);
-        return $this->items;
+        $this->helpSearch = Help::where('category_id', $id)->RoleSearch()->paginate($this->page);
+        $this->searchData =
+        [
+            'method' => 'searchcategory',
+            'data' => $this->helpSearch,
+        ];
+        return $this->searchData;
     }
 
-    public function searchHelp(array $request): LengthAwarePaginator
+    public function searchHelpCabinet(int $id): array
+    {
+        $this->helpSearch =
+        Help::join('users', 'users.id', '=', 'help.user_id')->RoleSearch()->where('users.cabinet_id', $id)->paginate($this->page);
+        $this->searchData =
+        [
+            'method' => 'searchcabinet',
+            'data' => $this->helpSearch,
+        ];
+        return $this->searchData;
+    }
+
+    public function searchHelp(array $request): array
     {
         $item = $request['search'];
-        $this->items = Help::join('work', 'work.id', '=', 'help.work_id')
+        $this->helpSearch = Help::join('users', 'users.id', '=', 'help.user_id')
         ->join('category', 'category.id', '=', 'help.category_id')
         ->join('status', 'status.id', '=', 'help.status_id')
-        ->join('cabinet', 'cabinet.id', '=', 'work.cabinet_id')
+        ->join('cabinet', 'cabinet.id', '=', 'users.cabinet_id')
         ->join('priority', 'priority.id', '=', 'help.priority_id')
-        ->where('description_long', 'LIKE', '%' . $item . '%')
+        ->RoleSearch()
+        ->where('app_number', 'LIKE', '%' . $item . '%')
+        ->orWhere('description_long', 'LIKE', '%' . $item . '%')
         ->orWhere('category.description', 'LIKE', '%' . $item . '%')
         ->orWhere('status.description', 'LIKE', '%' . $item . '%')
         ->orWhere('cabinet.description', 'LIKE', '%' . $item . '%')
         ->orWhere('priority.description', 'LIKE', '%' . $item . '%')
         ->orWhere('info', 'LIKE', '%' . $item . '%')
         ->orWhere('info_final', 'LIKE', '%' . $item . '%')
-        ->orWhere('work.firstname', 'LIKE', '%' . $item . '%')
-        ->orWhere('work.lastname', 'LIKE', '%' . $item . '%')
-        ->orWhere('work.patronymic', 'LIKE', '%' . $item . '%')
+        ->orWhere('users.firstname', 'LIKE', '%' . $item . '%')
+        ->orWhere('users.lastname', 'LIKE', '%' . $item . '%')
+        ->orWhere('users.patronymic', 'LIKE', '%' . $item . '%')
         ->paginate($this->page);
-        return $this->items;
+        $this->helpSearch->appends(array('search' => $item));
+        $this->searchData =
+        [
+            'method' => 'searchcall',
+            'data' => $this->helpSearch,
+        ];
+        return $this->searchData;
     }
 }

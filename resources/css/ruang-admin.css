@@ -11,9 +11,27 @@ html {
 }
 
 body {
-  height: 100%
+  height: 100%;
 }
-
+.loader {
+    animation:spin 1s infinite linear;
+    border:solid 2vmin transparent;
+    border-radius:50%;
+    border-right-color:#09f;
+    border-top-color:#09f;
+    box-sizing:border-box;
+    height:10vmin;
+    left:calc(50% - 5vmin);
+    position:fixed;
+    top:calc(50% - 5vmin);
+    width:10vmin;
+    z-index:1;
+  }
+  @keyframes spin {
+    100% {
+      transform:rotate(360deg);
+    }
+  }
 a:focus {
   outline: 0
 }
@@ -452,11 +470,13 @@ a:focus {
   height: 2.5rem;
   width: 2.5rem;
   -webkit-box-shadow: 0 0 !important;
-  box-shadow: 0 0 !important
+  box-shadow: 0 0 !important;
+  color: #fff
 }
 
 .topbar #sidebarToggleTop:hover {
-  background-color: #fafafa
+  background-color: #fff;
+  color: #6e707e
 }
 
 .topbar #sidebarToggleTop:active {
