@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Priority;
 use App\Models\Status;
 use App\Models\User;
+use App\Models\Work;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Role;
 
@@ -21,7 +22,7 @@ class AllCatalogsDTO extends DTO
             'status' => Status::get(),
             'cabinet' => Cabinet::get(),
             'priority' => Priority::get(),
-            'user' => User::get(),
+            'work' => Work::get(),
         ]);
     }
 
@@ -48,6 +49,11 @@ class AllCatalogsDTO extends DTO
     public static function getAllPriorityCollection(): Collection
     {
         return collect(Priority::get());
+    }
+
+    public static function getAllWorkCollection(): Collection
+    {
+        return collect(Work::get());
     }
 
     public static function getAllUserCollection(): Collection

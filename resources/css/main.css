@@ -3,7 +3,6 @@
 @import '../vendor/select2/dist/css/select2.min.css';
 @import '../vendor/select2/dist/css/select2-bootstrap4.min.css';
 @import '../vendor/fancybox-master/dist/jquery.fancybox.min.css';
-@import '../../node_modules/jquery-datetimepicker/build/jquery.datetimepicker.min.css';
 @import 'ruang-admin.css';
 /* задаем относительное позиционирование контейнеру */
 .block{position:relative; display: inline-block}
@@ -68,8 +67,5 @@
 .badge-warning a, .badge-warning a:hover, .badge-danger a, .badge-danger a:hover
 {
     color: #f2f3f4;
-}
-.ck-editor__editable_inline {
-    min-height: 300px;
 }
 

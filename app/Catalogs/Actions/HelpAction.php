@@ -3,14 +3,18 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Base\Helpers\GeneratorAppNumberHelper;
 use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use App\Models\User;
-use App\Notifications\HelpNotification;
+use App\Notifications\CompletedHelpNotification;
+use App\Notifications\DismissHelpNotification;
+use App\Notifications\NewHelpNotification;
+use App\Notifications\TransferHelpNotification;
+use App\Notifications\WorkHelpNotification;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection as SimpleCollection;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 
 class HelpAction extends Action
@@ -19,104 +23,81 @@ class HelpAction extends Action
     const newHelp = 2;
     const successHelp = 3;
     const dangerHelp = 4;
-    private Model | null $last;
-    private User $user;
-    public User $superAdmin;
-    public User $users;
-    public User $userMod;
-    public User $oldUserMod;
-    public User $userHome;
-    private array $helps;
-    private int $total;
-    public function getAllCatalogs() : Collection
+    public function getAllPages() : Collection
     {
-        $this->items = AllCatalogsDTO::getAllCatalogsCollection();
+        $this->items = Model::orderBy('status_id', 'ASC')
+        ->orderBy('calendar_execution', 'ASC')
+        ->orderBy('calendar_warning', 'ASC')
+        ->orderBy('calendar_final', 'DESC')
+        ->get();
         return $this->items;
     }
 
-    public function getAllPagesPaginate() :  array
+    public function getAllPagesPaginate() :  LengthAwarePaginator
     {
-        $this->items = Model::dontCache()->orderBy('status_id', 'ASC')
-        ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+        $this->items = Model::orderBy('status_id', 'ASC')
+        ->orderBy('calendar_execution', 'ASC')
+        ->orderBy('calendar_warning', 'ASC')
         ->orderBy('calendar_final', 'DESC')
         ->paginate($this->page);
-        $this->total = Model::count();
-        $this->helps =
-        [
-            'method' => 'alladm',
-            'total' => $this->total,
-            'data' => $this->items,
-        ];
-        return $this->helps;
+        return $this->items;
     }
 
-    public function getNewPagesPaginate() :  array
+    public function getNewPagesPaginate() :  LengthAwarePaginator
     {
-        $this->items = Model::dontCache()->where('status_id', self::newHelp)
-        ->orderBy('calendar_request', 'ASC')
+        $this->items = Model::where('status_id', self::newHelp)
+        ->orderBy('calendar_request', 'DESC')
         ->paginate($this->page);
-        $this->total = Model::where('status_id', self::newHelp)->count();
-        $this->helps =
-        [
-            'method' => 'newadm',
-            'total' => $this->total,
-            'data' => $this->items,
-        ];
-        return $this->helps;
+        return $this->items;
     }
 
-    public function getWorkerPagesPaginate() :  array
+    public function getWorkerAdmPagesPaginate() :  LengthAwarePaginator
     {
-        $this->items = Model::dontCache()->where('status_id', self::workHelp)
-        ->RoleHelp()
-        ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+        $this->items = Model::where('status_id', self::workHelp)
+        ->orderBy('calendar_execution', 'ASC')
+        ->orderBy('calendar_accept', 'DESC')
         ->paginate($this->page);
-        $this->total = Model::where('status_id', self::workHelp)->count();
-        $this->helps =
-        [
-            'method' => 'workeradm',
-            'total' => $this->total,
-            'data' => $this->items,
-        ];
-        return $this->helps;
+        return $this->items;
     }
 
-    public function getCompletedPagesPaginate() :  array
+    public function getWorkerModPagesPaginate() :  LengthAwarePaginator
     {
-        $this->items = Model::dontCache()->where('status_id', self::successHelp)
-        ->RoleHelp()
+        $this->items = Model::where('status_id', self::workHelp)
+        ->where('executor_id', auth()->user()->id)
+        ->orderBy('calendar_execution', 'ASC')
+        ->orderBy('calendar_accept', 'DESC')
+        ->paginate($this->page);
+        return $this->items;
+    }
+
+    public function getCompletedAdmPagesPaginate() :  LengthAwarePaginator
+    {
+        $this->items = Model::where('status_id', self::successHelp)
         ->orderBy('calendar_final', 'DESC')
         ->paginate($this->page);
-        $this->total = Model::where('status_id', self::successHelp)->count();
-        $this->helps =
-        [
-            'method' => 'completedadm',
-            'total' => $this->total,
-            'data' => $this->items,
-        ];
-        return $this->helps;
+        return $this->items;
     }
 
-    public function getDismissPagesPaginate() :  array
+    public function getCompletedModPagesPaginate() :  LengthAwarePaginator
     {
-        $this->items = Model::dontCache()->where('status_id', self::dangerHelp)
+        $this->items = Model::where('status_id', self::successHelp)
+        ->where('executor_id', auth()->user()->id)
         ->orderBy('calendar_final', 'DESC')
         ->paginate($this->page);
-        $this->total = Model::where('status_id', self::dangerHelp)->count();
-        $this->helps =
-        [
-            'method' => 'dismissadm',
-            'total' => $this->total,
-            'data' => $this->items,
-        ];
-        return $this->helps;
+        return $this->items;
+    }
+
+    public function getDismissPagesPaginate() :  LengthAwarePaginator
+    {
+        $this->items = Model::where('status_id', self::dangerHelp)
+        ->orderBy('calendar_final', 'DESC')
+        ->paginate($this->page);
+        return $this->items;
     }
 
     public function findCatalogsById(int $id) : Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         return $this->item;
     }
 
@@ -128,173 +109,96 @@ class HelpAction extends Action
 
     public function show(int $id) : Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->item->images = json_decode($this->item->images, true);
-        $this->item->images_final = json_decode($this->item->images_final, true);
         return $this->item;
     }
 
     public function store(array $request) : bool
     {
         $this->data = HelpDTO::storeObjectRequest($request);
-        $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
-        if ($this->last == null) {
-                $this->data->app_number = GeneratorAppNumberHelper::generate();
-        } else {
-                $this->data->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
-        }
         $this->item = Model::create((array) $this->data);
-
-        $superAdmin = User::role(['superAdmin'])->get();
-        $users = User::role(['admin'])->get();
-        Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
-        Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
-        Notification::send($users, new HelpNotification('newadm', route('help.new')));
+        Model::flushQueryCache();
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new NewHelpNotification($this->item));
         return true;
     }
 
     public function edit(int $id) : array
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
         return [
-            'item' => $this->item,
+            'items' => $this->item,
             'data' => $this->items,
         ];
     }
 
     public function update(array $request, int $id) : Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->data = HelpDTO::storeObjectRequest($request);
-        $this->item->dontCache()->update((array) $this->data);
+        $this->item->update((array) $this->data);
+        Model::flushQueryCache();
         return $this->item;
     }
 
     public function accept(array $request, int $id) : Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
-        $this->data = HelpDTO::acceptObjectRequest($request, $id);
-        $this->user = User::select('id')->where('id', $this->data->executor_id)->first();
-        if ($this->user->id == auth()->user()->id) {
-            if ($this->user->getRoleNames()[0] != 'admin' && $this->user->getRoleNames()[0] != 'superAdmin') {
-                throw new \Exception('Нельзя назначить самого себя');
-            }
+        $this->item = Model::findOrFail($id);
+        if ($this->item->work->user->id == auth()->user()->id) {
+            throw new \Exception('Нельзя назначить самого себя');
         }
-        if ($this->user->getRoleNames()[0] == 'user') {
+        if ($this->item->work->user->getRoleNames()[0] == 'user') {
             throw new \Exception('Нельзя назначить пользователя');
         }
-        if ($this->item->status_id != self::newHelp) {
-            throw new \Exception('Заявка уже принята или отклонена');
-        }
-        $this->item->dontCache()->update((array) $this->data);
-
-        $superAdmin = User::role(['superAdmin'])->get();
-        $users = User::role(['admin'])->get();
-        Notification::send($superAdmin, new HelpNotification('workeradm', route('help.worker')));
-        Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
-        Notification::send($users, new HelpNotification('workeradm', route('help.worker')));
-
-        $userMod = User::findOrFail($this->item->executor_id);
-        Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
-
-        $userHome = User::findOrFail($this->item->user_id);
-        Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+        $this->data = HelpDTO::acceptObjectRequest($request, $id);
+        $this->item->update((array) $this->data);
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new WorkHelpNotification($this->item));
+        Model::flushQueryCache();
         return $this->item;
     }
 
     public function execute(array $request, int $id) : Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->data = HelpDTO::executeObjectRequest($request, $id);
-        if ($this->item->status_id != self::workHelp) {
-            throw new \Exception('Заявка уже выполнена или отклонена');
-        }
-        $this->item->dontCache()->update((array) $this->data);
-
-        $superAdmin = User::role(['superAdmin'])->get();
-        $users = User::role(['admin'])->get();
-        Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
-        Notification::send($superAdmin, new HelpNotification('completedadm', route('help.completed')));
-        Notification::send($users, new HelpNotification('completedadm', route('help.completed')));
-
-        $userHome = User::findOrFail($this->item->user_id);
-        Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
+        $this->item->update((array) $this->data);
+        Model::flushQueryCache();
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new CompletedHelpNotification($this->item));
+        Model::flushQueryCache();
         return $this->item;
     }
 
     public function redefine(array $request, int $id) : Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->data = HelpDTO::redefineObjectRequest($request, $id);
-        $this->user = User::select('id', 'user_id')->where('user_id', $this->data->executor_id)->first();
-        if ($this->user->id == auth()->user()->id) {
-            throw new \Exception('Нельзя назначить самого себя');
-        }
-        if ($this->user->getRoleNames()[0] == 'user') {
-            throw new \Exception('Нельзя назначить пользователя');
-        }
-        if ($this->item->status_id != self::workHelp) {
-            throw new \Exception('Заявка уже выполнена или отклонена');
-        }
-        $oldUserMod = User::findOrFail($this->item->executor_id);
-        $this->item->dontCache()->update((array) $this->data);
-
-        $superAdmin = User::role(['superAdmin'])->get();
-        $users = User::role(['admin'])->get();
-        Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
-        Notification::send($superAdmin, new HelpNotification('workeradm', route('help.worker')));
-        Notification::send($users, new HelpNotification('workeradm', route('help.worker')));
-
-        $userMod = User::findOrFail($this->item->executor_id);
-        Notification::send($oldUserMod, new HelpNotification('workeradm', route('help.worker')));
-        Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
-
-        $userHome = User::findOrFail($this->item->user_id);
-        Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+        $this->item->update((array) $this->data);
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new TransferHelpNotification($this->item));
+        Model::flushQueryCache();
         return $this->item;
     }
 
     public function reject(array $request, int $id) : Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->data = HelpDTO::rejectObjectRequest($request, $id);
-        if ($this->item->status_id != self::newHelp) {
-            throw new \Exception('Заявка не может быть отклонена');
-        }
-        $this->item->dontCache()->update((array) $this->data);
-
-        $superAdmin = User::role(['superAdmin'])->get();
-        $users = User::role(['admin'])->get();
-        Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
-        Notification::send($superAdmin, new HelpNotification('dismissadm', route('help.dismiss')));
-        Notification::send($users, new HelpNotification('dismissadm', route('help.dismiss')));
-
-        $userHome = User::findOrFail($this->item->user_id);
-        Notification::send($userHome, new HelpNotification('dismissuser', route('home.dismiss')));
+        $this->item->update((array) $this->data);
+        $users = User::role(['superAdmin', 'admin'])->get();
+        Notification::send($users, new DismissHelpNotification($this->item));
+        Model::flushQueryCache();
         return $this->item;
     }
 
     public function delete(int $id) : bool
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::viewOneItem($id);
         $this->item->forceDelete();
+        Model::flushQueryCache();
         return true;
-    }
-
-    public function updateView(int $id, bool $status = true) :bool
-    {
-        return Model::dontCache()->whereId($id)->update(['check_write' => $status]);
-    }
-
-    public function getNewPagesCount() :  int
-    {
-         return Model::dontCache()->where('status_id', self::newHelp)->count();
-    }
-
-    public function getNowPagesCount() :  int
-    {
-        return Model::dontCache()->where('status_id', self::workHelp)
-        ->where('executor_id', auth()->user()->id)->count();
     }
 }

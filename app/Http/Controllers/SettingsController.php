@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SettingsAction;
+use App\Requests\PasswordRequest;
+use App\Requests\SettingsRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class SettingsController extends Controller
@@ -11,6 +14,7 @@ class SettingsController extends Controller
     private SettingsAction $settings;
     public function __construct(SettingsAction $settings)
     {
+        $this->middleware('auth');
         $this->settings = $settings;
     }
 
@@ -18,5 +22,18 @@ class SettingsController extends Controller
     {
         $works = $this->settings->editSettings();
         return view('forms.edit.settings', compact('works'));
+    }
+
+    public function updatePassword(PasswordRequest $request) : RedirectResponse
+    {
+        $this->settings->updatePassword($request->validated());
+        return redirect()->route(config('constants.settings.edit'));
+    }
+
+    public function updateSettings(SettingsRequest $request): RedirectResponse
+    {
+        //DTO добавить и request
+        $item = $this->settings->updateSettings($request->validated());
+        return redirect()->route(config('constants.settings.edit'), $item);
     }
 }

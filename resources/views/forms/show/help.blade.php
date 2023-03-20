@@ -8,11 +8,11 @@ col-lg-6
       <h6 class="m-0 font-weight-bold text-primary">Информация о заявке</h6>
       <div class="card-title">
         <div class="block">
-        @hasanyrole('superAdmin|admin')
+        @hasanyrole('superAdmin|admin|manager')
         <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
         @endhasanyrole
-        @hasrole('manager|user')
-        <a style="color: #757575;" class="hover" href="{{ route(config('constants.home.worker')) }}">
+        @hasrole('user')
+        <a style="color: #757575;" class="hover" href="{{ route(config('constants.user.worker')) }}">
         @endhasrole
           <i class="fas fa-arrow-left fa-lg"></i>
           </a> <span class="hidden">Назад</span>
@@ -28,16 +28,16 @@ col-lg-6
     </div>
     <div class="card-body">
         <p class="text-primary">Номер заявки</p>
-        <p>{{ $item->app_number}}</p>
+        <p>{{ $item->id }}</p>
         <hr>
         <p class="text-primary">Категория заявки</p>
         <p>{{ $item->category->description }}</p>
         <hr>
         <p class="text-primary">Кабинет</p>
-        <p>№{{ $item->user->cabinet->description}}</p>
+        <p>№{{ $item->work->cabinet->description}}</p>
         <hr>
         <p class="text-primary">ФИО отправителя заявки</p>
-        <p>{{ $item->user->lastname }} {{ $item->user->firstname }} {{ $item->user->patronymic }}</p>
+        <p>{{ $item->work->lastname }} {{ $item->work->firstname }} {{ $item->work->patronymic }}</p>
         <hr>
         <p class="text-primary">Дата подачи заявки</p>
         <p>{{ date( 'd.m.Y H:i', strtotime($item->calendar_request)) }}</p>
@@ -63,19 +63,6 @@ col-lg-6
         Заявка ещё не выполнена или не взята в работу
         @else
         {{ $item->info_final }}
-        @endif
-        <hr>
-        <p class="text-primary">Вложения к ответам</p>
-        @if ($item->images_final==null)
-        Вложения отсуствуют
-        @else
-        <div class="slider">
-        @foreach ($item->images_final as $image)
-            <a href="{{ asset('storage/'.$image['url'].'') }}" data-fancybox="images">
-           Посмотреть вложение
-            </a>
-        @endforeach
-        </div>
         @endif
         <hr>
         @hasanyrole('superAdmin|admin|manager')
@@ -111,7 +98,6 @@ col-lg-6
         @endhasanyrole
     </div>
   </div>
-@include('components.modal')
 @endsection
 @section('components.grid.right')
 col-lg-6

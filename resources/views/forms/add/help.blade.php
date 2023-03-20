@@ -23,35 +23,39 @@ col-lg-12
     </div>
     <div class="card-body">
       <form id="formValidate" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.help.store')) }}">
+        @csrf
         <div class="form-group">
-            <div class="text-center">
-                <div id="sent-message-send" style="display: none"> </div>
-            </div>
             <label for="select2-category">Выберите категорию</label>
             <select class="select2-single form-control" name="category_id" id="select2-category">
               @foreach( $items['category'] as $item)
-              <option value="{{ $item->id }}">{{ $item->description }}</option>
+              <option @if (old('category_id')=="$item->id") selected @endif value="{{ $item->id }}">{{ $item->description }}</option>
               @endforeach
             </select>
         </div>
         <div class="form-group">
-            <label for="select2-user">Выберите сотрудника</label>
-            <select class="select2-single form-control" name="user_id" id="select2-user">
-              @foreach( $items['user'] as $item)
-              <option value="{{ $item->id }}">{{ $item->lastname }} {{ $item->firstname }} {{ $item->patronymic }}</option>
+            <label for="select2-work">Выберите сотрудника</label>
+            <select class="select2-single form-control" name="work_id" id="select2-work">
+              @foreach( $items['work'] as $item)
+              <option @if (old('work_id')=="$item->id") selected @endif value="{{ $item->id }}">{{ $item->lastname }} {{ $item->firstname }} {{ $item->patronymic }}</option>
               @endforeach
             </select>
         </div>
         <div class="form-group">
             <label for="select2-description-long">Введите текст</label>
-            <textarea class="form-control" id="select2-description-long" rows="3" name="description_long">{{ old('description_long') }}</textarea>
+            <textarea class="form-control @error('description_long') is-invalid @enderror" id="select2-description-long" rows="3" name="description_long">{{ old('description_long') }}</textarea>
+            @error('description_long')
+            <small class="invalid-feedback">Текст не введён</small>
+            @enderror
         </div>
         <div class="form-group">
-            <label for="images">Загрузите фото или скриншоты если необходимо</label>
+            <label for="select2-images">Загрузите фото или скриншоты если необходимо</label>
             <div class="custom-file">
                 <label class="custom-file-label" for="customFile">Выберите файлы</label>
                 <input type="file" name="images[]" class="custom-file-input" id="customFile" accept="image/png, image/jpeg" multiple />
               </div>
+            @error('images')
+            <small class="invalid-feedback">Неверное расширение или превышен размер фото</small>
+            @enderror
         </div>
         <input class="btn btn-primary" type="submit" value="Отправить" />
         <a class="btn btn-secondary" href="{{ route(config('constants.help.index')) }}">Отменить</a>

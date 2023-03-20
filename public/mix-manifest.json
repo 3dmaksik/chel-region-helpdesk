@@ -1,7 +1,7 @@
 {
-    "/js/app.js": "/js/app.js?id=c42866f51a6ed41cfc8a60a8ad33387f",
-    "/js/estartup.js": "/js/estartup.js?id=ecca6e91ecbaddeb1a8d608ab25bb9ba",
-    "/css/main.css": "/css/main.css?id=f66819cad3df1c5f151637fe1f2f8cb0",
+    "/js/app.js": "/js/app.js",
+    "/js/estartup.js": "/js/estartup.js",
+    "/css/main.css": "/css/main.css",
     "/css/estartup.css": "/css/estartup.css?id=e0e49753f2aae58fe83bfe2ad07ad121",
     "/js/app.min.js": "/js/app.min.js?id=c42866f51a6ed41cfc8a60a8ad33387f",
     "/css/main.min.css": "/css/main.min.css?id=f66819cad3df1c5f151637fe1f2f8cb0",

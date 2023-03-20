@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Work;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -41,6 +42,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('guest')->except('logout');
     }
 
     /**
@@ -148,10 +150,10 @@ class LoginController extends Controller
         if ($response = $this->authenticated($request, $this->guard()->user())) {
             return $response;
         }
-            return response()->json([
-                    'auth' => false,
-                    'intended' => $this->redirectPath(),
-                    ]);
+
+        return $request->wantsJson()
+                    ? new JsonResponse([], 204)
+                    : redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -163,6 +165,10 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
+        $item = Work::select('firstname', 'avatar', 'sound_notify')->where('user_id', $user->id)->first();
+        Cookie::forever('firstname', $item->firstname);
+        Cookie::forever('avatar', $item->avatar);
+        Cookie::forever('sound_notify', $item->sound_notify);
     }
 
     /**

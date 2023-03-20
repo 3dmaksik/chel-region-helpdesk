@@ -24,13 +24,14 @@ col-lg-4
     <div class="card-body">
       <form id="formValidate" method="POST" action="{{ route(config('constants.cabinet.update'),$item->id) }}">
         @method('PATCH')
+        @csrf
         <div class="form-group">
-            <div class="text-center">
-                <div id="sent-message-send" style="display: none"> </div>
-            </div>
             <label for="">Номер</label>
-            <input type="text" name="description" value="{{ $item->description }}" class="form-control" id="description" aria-describedby="textHelp" placeholder="№ 1" autocomplete="off">
+            <input type="text" name="description" value="{{ $item->description }}" class="form-control @error('description') is-invalid @enderror" id="description" aria-describedby="textHelp" placeholder="Пр. 1" autocomplete="off">
             <small id="textHelp" class="form-text text-muted">Введите номер кабинета</small>
+            @error('description')
+            <small class="invalid-feedback">Такой кабинет уже существует или неправильно указано значение</small>
+            @enderror
         </div>
         <input class="btn btn-primary" type="submit" value="Отправить" />
         <a class="btn btn-secondary" href="{{ route(config('constants.cabinet.index')) }}">Отменить</a>

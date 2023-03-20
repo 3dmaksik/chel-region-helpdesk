@@ -5,27 +5,20 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Models\Cabinet as Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CabinetAction extends Action
 {
-    private array $cabinets;
-    private int $total;
     public function getAllPages() : Collection
     {
         $this->items = Model::orderBy('description', 'ASC')->get();
         return $this->items;
     }
 
-    public function getAllPagesPaginate() : array
+    public function getAllPagesPaginate() :  LengthAwarePaginator
     {
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        $this->total = Model::count();
-        $this->cabinets =
-        [
-            'data' => $this->items,
-            'total' => $this->total,
-        ];
-        return $this->cabinets;
+        return $this->items;
     }
 
     public function show(int $id): Model
@@ -36,7 +29,7 @@ class CabinetAction extends Action
 
     public function store(array $request) : bool
     {
-        $this->item = Model::create($request);
+        Model::create($request);
         Model::flushQueryCache();
         return true;
     }

@@ -5,28 +5,21 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Models\Priority as Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PriorityAction extends Action
 {
-    private array $proirity;
-    private int $total;
     public function getAllPages() : Collection
     {
-        $this->items = Model::orderBy('rang', 'ASC')->get();
+        $this->items = Model::orderBy('description', 'ASC')->get();
         return $this->items;
     }
 
-    public function getAllPagesPaginate() : array
+    public function getAllPagesPaginate() :  LengthAwarePaginator
     {
         $this->item = new Model();
-        $this->items = Model::orderBy('rang', 'ASC')->paginate($this->page);
-        $this->total = Model::count();
-        $this->proirity =
-        [
-            'data' => $this->items,
-            'total' => $this->total,
-        ];
-        return $this->proirity;
+        $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
+        return $this->items;
     }
 
     public function findCatalogsById(int $id): Model

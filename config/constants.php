@@ -2,18 +2,6 @@
 
 return
 [
-    'news' =>
-        [
-            'name' => 'новости',
-            'slug' => 'news',
-            'index' => 'news.index',
-            'show' => 'news.show',
-            'create' => 'news.create',
-            'edit' => 'news.edit',
-            'store' => 'news.store',
-            'update' => 'news.update',
-            'destroy' => 'news.destroy'
-        ],
     'cabinet' =>
         [
             'name' => 'кабинет',
@@ -50,6 +38,19 @@ return
             'update' => 'priority.update',
             'destroy' => 'priority.destroy'
         ],
+    'work' =>
+        [
+            'name' => 'сотрудник',
+            'slug' => 'work',
+            'index' => 'work.index',
+            'show' => 'work.show',
+            'create' => 'work.create',
+            'edit' => 'work.edit',
+            'store' => 'work.store',
+            'update' => 'work.update',
+            'destroy' => 'work.destroy'
+
+        ],
     'status' =>
         [
             'name' => 'статус',
@@ -82,17 +83,24 @@ return
             'completed' => 'help.completed',
             'dismiss' => 'help.dismiss',
         ],
-    'home' =>
+   'mod' =>
+        [
+            'name' => 'модератор',
+            'slug' => 'moderator',
+            'worker' => 'mod.worker',
+            'completed' => 'mod.completed',
+        ],
+    'user' =>
         [
             'name' => 'пользователь',
-            'slug' => 'home',
-            'show' => 'home.show',
-            'create' => 'home.create',
-            'store' => 'home.store',
-            'new' => 'home.new',
-            'worker' => 'home.worker',
-            'completed' => 'home.completed',
-            'dismiss' => 'home.dismiss',
+            'slug' => 'user',
+            'show' => 'user.show',
+            'create' => 'user.create',
+            'store' => 'user.store',
+            'new' => 'user.new',
+            'worker' => 'user.worker',
+            'completed' => 'user.completed',
+            'dismiss' => 'user.dismiss',
         ],
    'users' =>
         [

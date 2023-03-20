@@ -10,16 +10,25 @@ col-lg-6
     <div class="card-body">
       <form id="formValidatePassword" method="POST" action="{{ route(config('constants.settings.updatePassword')) }}">
         @method('PATCH')
+        @csrf
         <div class="form-group">
-            <div class="text-center">
-                <div id="sent-message-upPass" style="display: none"> </div>
-            </div>
             <label for="">Введите существующий пароль</label>
-            <input type="password" class="form-control" name="current_password" required autocomplete="current_password" name="current_password">
+            <input type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" required autocomplete="current_password" name="current_password">
+            @error('current_password')
+            <small class="invalid-feedback">Текущий пароль неверен</small>
+            @enderror
         </div>
         <div class="form-group">
             <label for="">Введите новый пароль</label>
-            <input type="password" class="form-control" name="password" required autocomplete="password" name="password">
+            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="password" name="password">
+            @error('password')
+            <small class="invalid-feedback">Текущий пароль похож на старый</small>
+            @enderror
+        </div>
+        <div class="form-group">
+            @if($errors->any())
+            <small style="color: #fc544b">Неверный существующий пароль</small>
+            @endif
         </div>
         <input class="btn btn-primary" type="submit" value="Отправить" />
       </form>
@@ -37,10 +46,7 @@ col-lg-6
     <div class="card-body">
       <form id="formValidateSettings" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.settings.updateSettings')) }}">
         @method('PATCH')
-        <div class="form-group">
-            <div class="text-center">
-                <div id="sent-message-upSettings" style="display: none"> </div>
-            </div>
+        @csrf
         <div class="form-group">
             <label for="img-profile">Текущая аватарка</label>
             <div class="form-group">
@@ -53,6 +59,9 @@ col-lg-6
                 <label class="custom-file-label" for="customFile">Выберите файлы</label>
                 <input type="file" name="avatar" class="custom-file-input" id="customFile" accept="image/png, image/jpeg" />
             </div>
+            @error('avatar')
+            <small class="invalid-feedback">Неверное расширение или превышен размер фото</small>
+            @enderror
         </div>
         <div class="form-group">
             <div class="form-group">
@@ -69,6 +78,9 @@ col-lg-6
                 <label class="custom-file-label" for="customFile">Выберите файлы</label>
                 <input type="file" name="sound_notify" class="custom-file-input" id="customFile2" accept="audio/ogg" />
             </div>
+            @error('sound_notify')
+            <small class="invalid-feedback">Неверное расширение или превышен размер фото</small>
+            @enderror
         </div>
         <input class="btn btn-primary" type="submit" value="Отправить" />
       </form>

@@ -7,6 +7,7 @@ use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\UsersDTO;
 use App\Models\User as Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection as SimpleCollection;
 
 class UsersAction extends Action
@@ -14,33 +15,23 @@ class UsersAction extends Action
     private Model $user;
     private string $role;
     private SimpleCollection $roles;
-    private SimpleCollection $cabinets;
-    private array $users;
-    private int $total;
     public function getAllPages() : Collection
     {
-        $this->items = Model::orderBy('lastname', 'ASC')->get();
+        $this->items = Model::select('id', 'name')->orderBy('name', 'ASC')->get();
         return $this->items;
     }
 
-    public function getAllPagesPaginate() :  array
+    public function getAllPagesPaginate() :  LengthAwarePaginator
     {
-        $this->items = Model::orderBy('lastname', 'ASC')->paginate($this->page);
-        $this->users =
-        [
-            'data' => $this->items,
-            'total' => $this->total,
-        ];
-        return $this->users;
+        $this->items = Model::select('id', 'name')->orderBy('name', 'ASC')->paginate($this->page);
+        return $this->items;
     }
 
     public function create() : array
     {
         $this->roles = AllCatalogsDTO::getAllRolesCollection();
-        $this->cabinets = AllCatalogsDTO::getAllCabinetCollection();
         return [
             'roles' => $this->roles,
-            'cabinets' => $this->cabinets,
         ];
     }
 
@@ -55,12 +46,10 @@ class UsersAction extends Action
         $this->user = Model::findOrFail($id);
         $this->roles = AllCatalogsDTO::getAllRolesCollection();
         $this->role = $this->user->getRoleNames()[0];
-        $this->cabinets = AllCatalogsDTO::getAllCabinetCollection();
         return [
             'user' => $this->user,
             'roles' => $this->roles,
             'role' => $this->role,
-            'cabinets' => $this->cabinets,
         ];
     }
 
@@ -89,10 +78,5 @@ class UsersAction extends Action
         $this->user->forceDelete();
         Model::flushQueryCache();
         return true;
-    }
-
-    public function getDataUser() : Model
-    {
-        return Model::whereId(auth()->user()->id)->first();
     }
 }

@@ -11,7 +11,7 @@
   });
 
   // Close any open menu accordions when window is resized below 768px
-  $(window).on('resize', function() {
+  $(window).resize(function() {
     if ($(window).width() < 768) {
       $('.sidebar .collapse').collapse('hide');
     };
@@ -83,4 +83,4 @@ $('.popover-dismiss').popover({
 
 var version = document.getElementById('version-ruangadmin');
 
-version.innerHTML = "Версия 1.1.10 beta";
+version.innerHTML = "Версия 1.1.9 alpha";

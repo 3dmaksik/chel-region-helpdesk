@@ -5,7 +5,8 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<meta name="_token" content="{{ csrf_token() }}" />
+    <meta name="api_token" content="{{ config('services.api.key') }}" />
 	<link href="/img/logo/logo.png" rel="icon">
-	<title>{{ config('settings.title') }}</title>
-    <link href="{{ mix('css/main.min.css') }}" rel="stylesheet">
+	<title>Администрация Металлургического района - Панель заявки</title>
+    <link href="{{ mix('css/main.css') }}" rel="stylesheet">
 </head>

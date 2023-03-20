@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Rennokki\QueryCache\Traits\QueryCacheable;
@@ -33,12 +32,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'firstname',
-        'lastname',
-        'patronymic',
-        'cabinet_id',
-        'sound_notify',
-        'avatar',
     ];
 
     /**
@@ -65,10 +58,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function cabinet(): BelongsTo
+    public function work()
     {
-        return $this->belongsTo(Cabinet::class);
+        return $this->hasOne(Work::class);
     }
 
     protected function getCacheBaseTags(): array
