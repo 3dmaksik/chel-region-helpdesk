@@ -5,21 +5,28 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Models\Category as Model;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryAction extends Action
 {
+    private array $categories;
+    private int $total;
     public function getAllPages() : Collection
     {
         $this->items = Model::orderBy('description', 'ASC')->get($this->page);
         return $this->items;
     }
 
-    public function getAllPagesPaginate() :  LengthAwarePaginator
+    public function getAllPagesPaginate() : array
     {
         $this->item = new Model();
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        return $this->items;
+        $this->total = Model::count();
+        $this->categories =
+        [
+            'data' => $this->items,
+            'total' => $this->total,
+        ];
+        return $this->categories;
     }
 
     public function show(int $id): Model

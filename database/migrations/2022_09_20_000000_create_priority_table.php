@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('priority', function (Blueprint $table) {
-            $table->increments('id');
+            $table->tinyIncrements('id');
             $table->string('description')->unique();
             $table->integer('rang')->unique();
             $table->integer('warning_timer');

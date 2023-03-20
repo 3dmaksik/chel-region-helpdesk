@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Base\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Work extends Model
 {
@@ -14,7 +15,6 @@ class Work extends Model
     'lastname',
     'patronymic',
     'cabinet_id',
-    'user_id',
     'sound_notify',
     'avatar',];
 
@@ -23,9 +23,9 @@ class Work extends Model
         return $this->belongsTo(Cabinet::class);
     }
 
-    public function user(): BelongsTo
+    public function user(): HasOne
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 
     protected function getCacheBaseTags(): array

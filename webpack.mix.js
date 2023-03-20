@@ -27,3 +27,8 @@ mix.js('resources/js/app.js', 'public/js')
     .minify(['public/js/app.js', 'public/css/main.css'])
     .copyDirectory('resources/vendor/public/img', 'public/img')
     .copyDirectory('resources/vendor/public/sound', 'public/sound');
+mix.js('resources/js/estartup.js', 'public/js')
+    .sourceMaps(productionSourceMaps, 'source-map')
+    .postCss('resources/css/estartup.css', 'public/css')
+    .version()
+    .minify(['public/js/estartup.js','public/css/estartup.css']);

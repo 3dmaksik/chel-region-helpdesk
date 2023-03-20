@@ -18,7 +18,7 @@ col-lg-12 mb-4
 				</tr>
 			</thead>
 			<tbody id="table-dynamic">
-                @forelse ($items as $item)
+                @forelse ($items['data'] as $item)
 				<tr>
 					<td>{{ $item->description }}</td>
 					<td class="d-print-none">
@@ -28,16 +28,35 @@ col-lg-12 mb-4
                             </a>
                             <span class="hidden">Редактировать категорию</span> <!-- скрытый элемент -->
                         </div>
-                     <form method="POST" style="display: inline" action="{{ route(config('constants.category.destroy'),$item->id) }}">
                         <div class="block">
-                                @method('DELETE')
-                                @csrf
-                                <button type="submit" class="btn btn-danger btn-sm hover">
-                                        <i class="fas fa-trash"></i>
-                                </button>
-                            <span class="hidden">Удалить категорию</span> <!-- скрытый элемент -->
+                        <a data-toggle="modal" data-target="#removeModal-{{ $item->id}}" href="#" class="btn btn-danger btn-sm hover remove"><i class="fas fa-trash"></i></a>
+                        <span class="hidden">Удалить категорию</span> <!-- скрытый элемент -->
                         </div>
-                    </form>
+                    <!-- Окно удаления-->
+                        <div class="modal fade" id="removeModal-{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Удаление</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form id="formRemove-{{$item->id}}" class="remove-form" action="{{ route(config('constants.category.destroy'),$item->id) }}" method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                            <p class="text-center">Вы действительно хотите удалить запись?</p>
+                                            </div>
+                                        </div>
+                                            <div class="modal-footer form-group">
+                                            <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Отменить</button>
+                                            <input class="btn btn-danger remove-submit" type="submit" value="Да" />
+                                            </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
 					</td>
 				</tr>
                 @empty
@@ -50,6 +69,6 @@ col-lg-12 mb-4
 @endsection
 @section('paginate')
 <div class="card-footer clearfix">
-    {{ $items->links() }}
+    {{ $items['data']->links() }}
 </div>
 @endsection

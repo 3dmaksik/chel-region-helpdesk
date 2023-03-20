@@ -5,20 +5,27 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Models\Status as Model;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class StatusAction extends Action
 {
+    private array $statuses;
+    private int $total;
     public function getAllPages() : Collection
     {
         $this->items = Model::orderBy('description', 'ASC')->get();
         return $this->items;
     }
 
-    public function getAllPagesPaginate() :  LengthAwarePaginator
+    public function getAllPagesPaginate() : array
     {
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        return $this->items;
+        $this->total = Model::count();
+        $this->statuses =
+        [
+            'data' => $this->items,
+            'total' => $this->total,
+        ];
+        return $this->statuses;
     }
 
     public function show(int $id): Model

@@ -14,8 +14,8 @@ class HelpRequest extends BaseRequest
             'category_id' => 'sometimes|required|exists:category,id',
             'status_id' => 'sometimes|required|exists:status,id',
             'priority_id' => 'sometimes|required|exists:priority,id',
-            'work_id' => 'sometimes|required|exists:work,id',
-            'executor_id' => 'nullable|exists:work,id',
+            'user_id' => 'sometimes|required|exists:users,id',
+            'executor_id' => 'nullable|exists:users,id',
             'calendar_request' => 'nullable|date',
             'calendar_accept' => 'nullable|date',
             'calendar_final' => 'nullable|date',
@@ -24,6 +24,7 @@ class HelpRequest extends BaseRequest
             'description_long' => 'sometimes|required|string',
             'info' => 'nullable|string',
             'info_final' => 'nullable|string',
+            'images_final.*' => 'nullable|mimes:jpg,gif,png,jpeg|max:20480',
             'check_write' => 'nullable|integer|max:2|numeric',
         ];
     }
