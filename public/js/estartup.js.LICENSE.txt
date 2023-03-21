@@ -29,6 +29,10 @@
  * Date: 2022-12-20T21:28Z
  */
 
+/*! Select2 4.0.13 | https://github.com/select2/select2/blob/master/LICENSE.md */
+
+/*! jQuery v3.6.3 | (c) OpenJS Foundation and other contributors | jquery.org/license */
+
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.16.1
