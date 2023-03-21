@@ -26,6 +26,7 @@ class UsersAction extends Action
     public function getAllPagesPaginate() :  array
     {
         $this->items = Model::orderBy('lastname', 'ASC')->paginate($this->page);
+        $this->total = Model::count();
         $this->users =
         [
             'data' => $this->items,
