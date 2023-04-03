@@ -39,7 +39,7 @@
          error_page 404 /index.php;
  
          location ~ \.php$ {
-                fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
                 fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
                 include fastcgi_params;
          }
@@ -72,13 +72,12 @@
         AllowOverride None
         Require all granted
         </Directory>
-
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
     </VirtualHost>
 Дальнейший запуск:
-`$ sudo a2enmod rewrite`
-`$ sudo a2ensite helpdesk.conf`
+`$ sudo a2enmod rewrite`  
+`$ sudo a2ensite helpdesk.conf`  
 
 После чего любой сервер необходимо перезапустить.
 
@@ -92,29 +91,32 @@
 Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно билиблиотеки разработки командой `$ npm run prod`, остальным этот шаг можно пропустить.
 
 3. Установить права и ссылки для следующих папок:
-`$ sudo chmod -R 777 ./storage`
-`$ sudo chmod -R 777 ./bootstrap/cache/`
-`$ sudo ln -s /sitepath/storage/app/public /sitepath/public/storage`
+`$ sudo chmod -R 777 ./storage`  
+`$ sudo chmod -R 777 ./bootstrap/cache/`  
+`$ sudo ln -s /srv/example.com/storage/app/public /srv/example.com/public/storage`  
 4. Создать файл настроек или скопировать его командой `$ cp .env.example .env`
 5. Сгенерировать ключ проекта командой `$ php artisan key:generate`
 
 6. В файле `.env` заполнить все незаполненные поля.
 7. Установить базу данных `$ php artisan migrate:fresh --seed`
 8. Запустить сокеты `$ php artisan websockets:serve` 
-Чтобы не запускать сокеты каждый раз вы можете настроить демон
-`$ apt install supervisor`
-`$ systemctl enable supervisord`
-`$ nano /etc/supervisor/conf.d/websockets.conf`
+Чтобы не запускать сокеты каждый раз вы можете настроить демон  
+`$ apt install supervisor`  
+`$ systemctl enable supervisor`  
+`$ nano /etc/supervisor/conf.d/websockets.conf`  
 
 
-	[program:websockets]
-	command=/path/php /sitepath/artisan websockets:serve
-	numprocs=1
-	autostart=true
-	autorestart=true
-	user=laravel-echo
+    [program:websockets]
+    command=/path/php /srv/example.com/artisan websockets:serve
+    numprocs=1
+    autostart=true
+    autorestart=true
+    user=laravel-echo
+
+ 
 
 `$ supervisorctl update`
+
 `$ supervisorctl start websockets`
 
 После чего проект готов к работе. 
