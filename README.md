@@ -15,7 +15,7 @@
 Создать папку для работы, например`/srv/example.com/` и направить используемый сервер на поддиректорию`public`
 Примерные настройки перенаправления для сервера ngnix. 
 Изменяются в файле`/etc/nginx/nginx.conf`
-
+````
     server {
          listen 80;
          listen [::]:80;
@@ -39,7 +39,7 @@
          error_page 404 /index.php;
  
          location ~ \.php$ {
-                fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
                 fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
                 include fastcgi_params;
          }
@@ -48,74 +48,77 @@
                deny all;
          }
     }
+````
 Если используется Apache (не рекомендуется) создаётся в корне `/srv/example.com/` файл `.htaccess` с примерно следующим содержанием.
-
-    Options +FollowSymLinks
-    RewriteEngine On
-    #RewriteCond %{HTTPS} =off
-    #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [QSA,L]
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ /public/$1 [L]
-    RewriteRule ^ index.php [L]
-
+````
+Options +FollowSymLinks
+RewriteEngine On
+#RewriteCond %{HTTPS} =off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /public/$1 [L]
+RewriteRule ^ index.php [L]
+````
 Если позволяет сервер, то безопаснее настроить через`VirtualHost`
 
 `$ sudo nano /etc/apache2/sites-available/helpdesk.conf`
-
-    <VirtualHost *:80>
-        ServerAdmin admin@example.com
-        ServerName mydomain.com
-        DocumentRoot /var/www/html/laravel/public
-        <Directory /var/www/html/laravel>
-        Options Indexes MultiViews
-        AllowOverride None
-        Require all granted
-        </Directory>
-
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-    </VirtualHost>
-Дальнейший запуск:
-`$ sudo a2enmod rewrite`
+````
+<VirtualHost *:80>
+ ServerAdmin admin@example.com
+ ServerName mydomain.com
+ DocumentRoot /srv/example.com/public
+   <Directory /srv/example.com>
+     Options Indexes MultiViews
+     AllowOverride None
+     Require all granted
+   </Directory>
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+````
+Дальнейший запуск:  
+`$ sudo a2enmod rewrite`  
 `$ sudo a2ensite helpdesk.conf`
 
 После чего любой сервер необходимо перезапустить.
 
 ### Установка
                 
-1. Скопировать проект к себе на сервер в созданную ранее папку:
+1. Скопировать проект к себе на сервер в созданную ранее папку:  
 `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
 
-2. Установить проект и библиотеки
+2. Установить проект и библиотеки  
 `$ composer install`
-Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно билиблиотеки разработки командой `$ npm run prod`, остальным этот шаг можно пропустить.
+Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно библиотеки разработки командой `$ npm run prod`, остальным этот шаг можно пропустить.
 
-3. Установить права и ссылки для следующих папок:
-`$ sudo chmod -R 777 ./storage`
-`$ sudo chmod -R 777 ./bootstrap/cache/`
-`$ sudo ln -s /sitepath/storage/app/public /sitepath/public/storage`
+3. Установить права и ссылки для следующих папок:  
+`$ sudo chmod -R 777 ./storage`  
+`$ sudo chmod -R 777 ./bootstrap/cache/`  
+Более безопасный способ, это установить права 755 на папки и 644 на файлы  
+`$ sudo ln -s /srv/example.com/storage/app/public /srv/example.com/public/storage`  
+
 4. Создать файл настроек или скопировать его командой `$ cp .env.example .env`
 5. Сгенерировать ключ проекта командой `$ php artisan key:generate`
-
 6. В файле `.env` заполнить все незаполненные поля.
 7. Установить базу данных `$ php artisan migrate:fresh --seed`
 8. Запустить сокеты `$ php artisan websockets:serve` 
-Чтобы не запускать сокеты каждый раз вы можете настроить демон
-`$ apt install supervisor`
-`$ systemctl enable supervisord`
-`$ nano /etc/supervisor/conf.d/websockets.conf`
 
+Чтобы не запускать сокеты каждый раз вы можете настроить демон  
 
-	[program:websockets]
-	command=/path/php /sitepath/artisan websockets:serve
-	numprocs=1
-	autostart=true
-	autorestart=true
-	user=laravel-echo
-
-`$ supervisorctl update`
-`$ supervisorctl start websockets`
+`$ sudo apt install supervisor`  
+`$ sudo systemctl enable supervisor`  
+`$ sudo nano /etc/supervisor/conf.d/websockets.conf`  
+````
+[program:websockets]
+command=/path/php /srv/example.com/artisan websockets:serve
+numprocs=1
+autostart=true
+autorestart=true
+user=laravel-echo
+````
+`$ sudo supervisorctl update`  
+`$ sudo supervisorctl start websockets`  
 
 После чего проект готов к работе. 
 PS. Рады всем, кто сможет предоставить скрипт автоматического развёртывания.
