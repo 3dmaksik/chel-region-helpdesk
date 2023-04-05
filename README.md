@@ -25,7 +25,7 @@
          add_header X-Frame-Options "SAMEORIGIN";
          add_header X-Content-Type-Options "nosniff";
  
-          index index.php;
+         index index.php;
  
          charset utf-8;
  
@@ -86,18 +86,22 @@ RewriteRule ^ index.php [L]
 ### Установка
                 
 1. Скопировать проект к себе на сервер в созданную ранее папку:  
+
 `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
 
-2. Установить проект и библиотеки  
-`$ composer install`
-Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно библиотеки разработки командой `$ npm run prod`, остальным этот шаг можно пропустить.
+2. Установить проект и библиотеки командой `$ composer install`  
+
+Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно библиотеки разработки командой  
+`$ npm run prod`, остальным этот шаг можно пропустить.
 
 3. Установить права и ссылки для следующих папок:  
+
 `$ sudo chmod -R 777 ./storage`  
 `$ sudo chmod -R 777 ./bootstrap/cache/`  
 Более безопасный способ, это установить права 755 на папки и 644 на файлы  
 
 4. Создать символьные ссылки для загрузки файлов:  
+
 `$ sudo ln -s /srv/example.com/storage/app/public/images /srv/example.com/public/storage/images`  
 `$ sudo ln -s /srv/example.com/storage/app/public/avatar /srv/example.com/public/storage/avatar`  
 `$ sudo ln -s /srv/example.com/storage/app/public/sound /srv/example.com/public/storage/sound`  
@@ -106,9 +110,7 @@ RewriteRule ^ index.php [L]
 6. Сгенерировать ключ проекта командой `$ php artisan key:generate`
 7. В файле `.env` заполнить все незаполненные поля.
 8. Установить базу данных `$ php artisan migrate:fresh --seed`
-9. Запустить сокеты `$ php artisan websockets:serve` 
-
-Чтобы не запускать сокеты каждый раз вы можете настроить демон  
+9. Настроить сокеты с помощью демона:  
 
 `$ sudo apt install supervisor`  
 `$ sudo systemctl enable supervisor`  
@@ -119,7 +121,7 @@ command=/path/php /srv/example.com/artisan websockets:serve
 numprocs=1
 autostart=true
 autorestart=true
-user=laravel-echo
+user=example_user
 ````
 `$ sudo supervisorctl update`  
 `$ sudo supervisorctl start websockets`  
