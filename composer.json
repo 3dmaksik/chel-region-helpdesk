@@ -7,10 +7,10 @@
     "require": {
         "php": ">=8.1",
         "ext-fileinfo": "*",
-        "beyondcode/laravel-websockets": "^2.x-dev",
+        "beyondcode/laravel-websockets": "^1.x-dev",
         "guzzlehttp/guzzle": "dev-master",
         "intervention/image": "dev-master",
-        "laravel/framework": "9.x-dev",
+        "laravel/framework": "10.x-dev",
         "laravel/sanctum": "3.x-dev",
         "laravel/tinker": "2.x-dev",
         "laravel/ui": "4.x-dev",
@@ -26,10 +26,10 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "mreduar/laravel-phpcs": "^1.8",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
+        "nunomaduro/collision": "^7.0",
+        "phpunit/phpunit": "^10.0",
         "slevomat/coding-standard": "^8.7",
-        "spatie/laravel-ignition": "^1.0"
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
