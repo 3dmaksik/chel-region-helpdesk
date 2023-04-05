@@ -96,13 +96,17 @@ RewriteRule ^ index.php [L]
 `$ sudo chmod -R 777 ./storage`  
 `$ sudo chmod -R 777 ./bootstrap/cache/`  
 Более безопасный способ, это установить права 755 на папки и 644 на файлы  
-`$ sudo ln -s /srv/example.com/storage/app/public /srv/example.com/public/storage`  
 
-4. Создать файл настроек или скопировать его командой `$ cp .env.example .env`
-5. Сгенерировать ключ проекта командой `$ php artisan key:generate`
-6. В файле `.env` заполнить все незаполненные поля.
-7. Установить базу данных `$ php artisan migrate:fresh --seed`
-8. Запустить сокеты `$ php artisan websockets:serve` 
+4. Создать символьные ссылки для загрузки файлов
+`$ sudo ln -s /srv/example.com/storage/app/public/images /srv/example.com/public/storage/images`  
+`$ sudo ln -s /srv/example.com/storage/app/public/avatar /srv/example.com/public/storage/avatar`  
+`$ sudo ln -s /srv/example.com/storage/app/public/sound /srv/example.com/public/storage/sound`  
+
+5. Создать файл настроек или скопировать его командой `$ cp .env.example .env`
+6. Сгенерировать ключ проекта командой `$ php artisan key:generate`
+7. В файле `.env` заполнить все незаполненные поля.
+8. Установить базу данных `$ php artisan migrate:fresh --seed`
+9. Запустить сокеты `$ php artisan websockets:serve` 
 
 Чтобы не запускать сокеты каждый раз вы можете настроить демон  
 
