@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 class LoaderApiController extends Controller
 {
     private array $data;
+
     private LoaderAction $loader;
 
     public function __construct(LoaderAction $loader)
@@ -19,6 +20,7 @@ class LoaderApiController extends Controller
     public function index(): JsonResponse
     {
         $this->data = $this->loader->getLoad();
+
         return response()->json($this->data);
     }
 }

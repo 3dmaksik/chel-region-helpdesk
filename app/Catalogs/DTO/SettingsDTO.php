@@ -7,9 +7,10 @@ use App\Base\Helpers\StoreFilesHelper;
 
 class SettingsDTO extends DTO
 {
-
     public string $avatar;
+
     public string $sound_notify;
+
     public static function storeObjectRequest(array $request): self
     {
         $dto = new self();
@@ -19,6 +20,7 @@ class SettingsDTO extends DTO
         if (isset($request['sound_notify'])) {
             $dto->sound_notify = json_encode(StoreFilesHelper::createNotify($request['sound_notify'], 'sound'));
         }
+
         return $dto;
     }
 }

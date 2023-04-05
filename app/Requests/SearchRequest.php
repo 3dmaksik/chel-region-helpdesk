@@ -14,6 +14,7 @@ class SearchRequest extends BaseRequest
             'search' => 'required|string|max:255',
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {

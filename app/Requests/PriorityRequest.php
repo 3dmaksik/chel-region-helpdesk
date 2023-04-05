@@ -12,35 +12,36 @@ class PriorityRequest extends BaseRequest
     public function rules(): array
     {
         return [
-             'description' => [
+            'description' => [
                 'required',
                 'string',
                 'max:255',
-                 Rule::unique('priority')->ignore(empty($this->priority) ? 0 : $this->priority),
-             ],
-             'rang' => [
+                Rule::unique('priority')->ignore(empty($this->priority) ? 0 : $this->priority),
+            ],
+            'rang' => [
                 'required',
                 'integer',
                 'max:9',
                 'numeric',
                 Rule::unique('priority')->ignore(empty($this->priority) ? 0 : $this->priority),
-             ],
-             'color' => 'nullable|string|max:255',
-             'warning_timer' => [
+            ],
+            'color' => 'nullable|string|max:255',
+            'warning_timer' => [
                 'required',
                 'integer',
                 'min:1',
-                'max:' . $this->danger_timer + 1,
+                'max:'.$this->danger_timer + 1,
                 'numeric',
-             ],
-             'danger_timer' => [
+            ],
+            'danger_timer' => [
                 'required',
                 'integer',
-                'min: ' . $this->warning_timer + 1,
+                'min: '.$this->warning_timer + 1,
                 'numeric',
-             ],
+            ],
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {

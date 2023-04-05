@@ -9,6 +9,7 @@ use Illuminate\View\View;
 class NewsController extends Controller
 {
     private NewsAction $news;
+
     public function __construct(NewsAction $news)
     {
         $this->news = $news;
@@ -17,12 +18,14 @@ class NewsController extends Controller
     public function index(): View
     {
         $items = $this->news->getAllPagesPaginate();
+
         return view('pages.news', compact('items'));
     }
 
     public function show(int $priority): View
     {
         $item = $this->news->show($priority);
+
         return view('forms.show.news', compact('item'));
     }
 
@@ -34,6 +37,7 @@ class NewsController extends Controller
     public function edit(int $news): View
     {
         $item = $this->news->show($news);
+
         return view('forms.edit.news', compact('item'));
     }
 }

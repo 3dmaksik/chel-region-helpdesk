@@ -10,12 +10,19 @@ use Illuminate\Support\Str;
 class UsersDTO extends DTO
 {
     public string $name;
+
     public string $email;
+
     public string $password;
+
     public string $firstname;
+
     public string $lastname;
+
     public string $patronymic;
+
     public int $cabinet_id;
+
     public static function storeObjectRequest(array $request): self
     {
         $dto = new self();
@@ -28,6 +35,7 @@ class UsersDTO extends DTO
         if (isset($request['patronymic'])) {
             $dto->patronymic = StringUserHelper::run($request['patronymic']);
         }
+
         return $dto;
     }
 }

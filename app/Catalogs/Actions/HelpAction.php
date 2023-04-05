@@ -9,32 +9,46 @@ use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use App\Models\User;
 use App\Notifications\HelpNotification;
-use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Notification;
 
 class HelpAction extends Action
 {
     const workHelp = 1;
+
     const newHelp = 2;
+
     const successHelp = 3;
+
     const dangerHelp = 4;
-    private Model | null $last;
+
+    private Model|null $last;
+
     private User $user;
+
     public User $superAdmin;
+
     public User $users;
+
     public User $userMod;
+
     public User $oldUserMod;
+
     public User $userHome;
+
     private array $helps;
+
     private int $total;
-    public function getAllCatalogs() : Collection
+
+    public function getAllCatalogs(): Collection
     {
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
+
         return $this->items;
     }
 
-    public function getAllPagesPaginate() :  array
+    public function getAllPagesPaginate(): array
     {
         $this->items = Model::dontCache()->orderBy('status_id', 'ASC')
         ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
@@ -48,10 +62,11 @@ class HelpAction extends Action
             'total' => $this->total,
             'data' => $this->items,
         ];
+
         return $this->helps;
     }
 
-    public function getNewPagesPaginate() :  array
+    public function getNewPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', self::newHelp)
         ->orderBy('calendar_request', 'ASC')
@@ -63,10 +78,11 @@ class HelpAction extends Action
             'total' => $this->total,
             'data' => $this->items,
         ];
+
         return $this->helps;
     }
 
-    public function getWorkerPagesPaginate() :  array
+    public function getWorkerPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', self::workHelp)
         ->RoleHelp()
@@ -80,10 +96,11 @@ class HelpAction extends Action
             'total' => $this->total,
             'data' => $this->items,
         ];
+
         return $this->helps;
     }
 
-    public function getCompletedPagesPaginate() :  array
+    public function getCompletedPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', self::successHelp)
         ->RoleHelp()
@@ -96,10 +113,11 @@ class HelpAction extends Action
             'total' => $this->total,
             'data' => $this->items,
         ];
+
         return $this->helps;
     }
 
-    public function getDismissPagesPaginate() :  array
+    public function getDismissPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', self::dangerHelp)
         ->orderBy('calendar_final', 'DESC')
@@ -111,30 +129,34 @@ class HelpAction extends Action
             'total' => $this->total,
             'data' => $this->items,
         ];
+
         return $this->helps;
     }
 
-    public function findCatalogsById(int $id) : Model
+    public function findCatalogsById(int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
+
         return $this->item;
     }
 
     public function create(): SimpleCollection
     {
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
+
         return $this->items;
     }
 
-    public function show(int $id) : Model
+    public function show(int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->item->images = json_decode($this->item->images, true);
         $this->item->images_final = json_decode($this->item->images_final, true);
+
         return $this->item;
     }
 
-    public function store(array $request) : bool
+    public function store(array $request): bool
     {
         $this->data = HelpDTO::storeObjectRequest($request);
         $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
@@ -150,28 +172,31 @@ class HelpAction extends Action
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
         Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
         Notification::send($users, new HelpNotification('newadm', route('help.new')));
+
         return true;
     }
 
-    public function edit(int $id) : array
+    public function edit(int $id): array
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
+
         return [
             'item' => $this->item,
             'data' => $this->items,
         ];
     }
 
-    public function update(array $request, int $id) : Model
+    public function update(array $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->data = HelpDTO::storeObjectRequest($request);
         $this->item->dontCache()->update((array) $this->data);
+
         return $this->item;
     }
 
-    public function accept(array $request, int $id) : Model
+    public function accept(array $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->data = HelpDTO::acceptObjectRequest($request, $id);
@@ -200,10 +225,11 @@ class HelpAction extends Action
 
         $userHome = User::findOrFail($this->item->user_id);
         Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+
         return $this->item;
     }
 
-    public function execute(array $request, int $id) : Model
+    public function execute(array $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->data = HelpDTO::executeObjectRequest($request, $id);
@@ -220,10 +246,11 @@ class HelpAction extends Action
 
         $userHome = User::findOrFail($this->item->user_id);
         Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
+
         return $this->item;
     }
 
-    public function redefine(array $request, int $id) : Model
+    public function redefine(array $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->data = HelpDTO::redefineObjectRequest($request, $id);
@@ -252,10 +279,11 @@ class HelpAction extends Action
 
         $userHome = User::findOrFail($this->item->user_id);
         Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+
         return $this->item;
     }
 
-    public function reject(array $request, int $id) : Model
+    public function reject(array $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->data = HelpDTO::rejectObjectRequest($request, $id);
@@ -272,27 +300,29 @@ class HelpAction extends Action
 
         $userHome = User::findOrFail($this->item->user_id);
         Notification::send($userHome, new HelpNotification('dismissuser', route('home.dismiss')));
+
         return $this->item;
     }
 
-    public function delete(int $id) : bool
+    public function delete(int $id): bool
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->item->forceDelete();
+
         return true;
     }
 
-    public function updateView(int $id, bool $status = true) :bool
+    public function updateView(int $id, bool $status = true): bool
     {
         return Model::dontCache()->whereId($id)->update(['check_write' => $status]);
     }
 
-    public function getNewPagesCount() :  int
+    public function getNewPagesCount(): int
     {
          return Model::dontCache()->where('status_id', self::newHelp)->count();
     }
 
-    public function getNowPagesCount() :  int
+    public function getNowPagesCount(): int
     {
         return Model::dontCache()->where('status_id', self::workHelp)
         ->where('executor_id', auth()->user()->id)->count();

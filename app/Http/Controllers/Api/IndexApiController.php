@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 class IndexApiController extends Controller
 {
     private string $data;
+
     private HomeAction $helps;
 
     public function __construct(HomeAction $helps)
@@ -20,6 +21,7 @@ class IndexApiController extends Controller
     public function store(IndexRequest $request): JsonResponse
     {
         $this->data = $this->helps->store($request->validated());
+
         return response()->json($this->data);
     }
 }

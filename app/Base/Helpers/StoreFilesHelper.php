@@ -12,67 +12,51 @@ class StoreFilesHelper extends CoreHelper
 {
     /**
      * [url one file or more files]
-     *
-     * @var array
      */
     protected static array $url;
+
     /**
      * [counter in a loop]
-     *
-     * @var int
      */
     private static int $i = 0;
+
     /**
      * [generated name file]
-     *
-     * @var string
      */
     private static string $fileName;
+
     /**
      * [converted image]
-     *
-     * @var \Intervention\Image\Image
      */
     private static Img $img;
+
     /**
      * [converted image in width and height]
-     *
-     * @var \Intervention\Image\Image
      */
     private static Img $resize;
+
     /**
      * [width image]
-     *
-     * @var int
      */
     private static int $width;
+
     /**
      * [height image]
-     *
-     * @var int
      */
     private static int $height;
+
     /**
      * [generated name]
-     *
-     * @var string
      */
     private static string $nameGenerate;
+
     /**
      * [saved file]
-     *
-     * @var array
      */
     private static array $saveStorage;
+
     /**
      * [creating multiple images]
-     *
-     * @param \Illuminate\Http\UploadedFile $request
-     * @param string $type
-     * @param int $w
-     * @param int $h
-     *
-     * @return array
      */
     public static function createFile(UploadedFile $request, string $type = 'public', int $w = 1920, int $h = 1080): array
     {
@@ -80,66 +64,57 @@ class StoreFilesHelper extends CoreHelper
             $url[self::$i] = self::createOneFile($file, $type, $w, $h);
             self::$i++;
         }
+
         return $url;
     }
 
     /**
      * [generate image name]
-     *
-     * @return string
      */
-    protected static function createImageName() : string
+    protected static function createImageName(): string
     {
-        self::$nameGenerate = time() . '_' . mt_rand() . '.png';
+        self::$nameGenerate = time().'_'.mt_rand().'.png';
+
         return self::$nameGenerate;
     }
 
     /**
      * [generate sound name]
-     *
-     * @return string
      */
-    protected static function createSoundName() : string
+    protected static function createSoundName(): string
     {
-        self::$nameGenerate = time() . '_' . mt_rand() . '.ogg';
+        self::$nameGenerate = time().'_'.mt_rand().'.ogg';
+
         return self::$nameGenerate;
     }
 
     /**
      * [create one image]
      *
-     * @param \Illuminate\Http\UploadedFile $file
-     * @param string $type
-     * @param int $w
-     * @param int $h
-     *
-     * @return array
+     * @param  int  $w
+     * @param  int  $h
      */
-    public static function createOneFile(UploadedFile $file, string $type, $w, $h) : array
+    public static function createOneFile(UploadedFile $file, string $type, $w, $h): array
     {
         self::$fileName = self::createImageName();
         self::$img = Image::make($file->getRealPath());
         self::$resize = self::resizeFile(self::$img, $w, $h);
         self::$resize->stream();
         self::$saveStorage = self::saveImageStorage($type, self::$fileName, self::$resize);
+
         return self::$saveStorage;
     }
 
     /**
      * [resize image]
-     *
-     * @param \Intervention\Image\Image $img
-     * @param int $w
-     * @param int $h
-     *
-     * @return \Intervention\Image\Image
      */
     protected static function resizeFile(Img $img, int $w, int $h): Img
     {
         self::$width = $img->width();
         self::$height = $img->height();
-        (self::$width < $w) ? : $w = self::$width;
-        (self::$height < $h) ? : $h = self::$height;
+        (self::$width < $w) ?: $w = self::$width;
+        (self::$height < $h) ?: $h = self::$height;
+
         return $img->resize($w, $h, function ($constraint) {
             $constraint->aspectRatio();
         });
@@ -147,45 +122,32 @@ class StoreFilesHelper extends CoreHelper
 
     /**
      * [save image]
-     *
-     * @param string $type
-     * @param string $fileName
-     * @param \Intervention\Image\Image $img
-     *
-     * @return array
      */
-    protected static function saveImageStorage(string $type, string $fileName, Img $img) : array
+    protected static function saveImageStorage(string $type, string $fileName, Img $img): array
     {
         Storage::disk($type)->put($fileName, $img);
+
         return ['url' => $fileName];
     }
 
     /**
      * [save sound]
-     *
-     * @param \Illuminate\Http\UploadedFile $file
-     * @param string $path
-     * @param string $fileName
-     *
-     * @return array
      */
-    protected static function saveSoundStorage(UploadedFile $file, string $path, string $fileName) : array
+    protected static function saveSoundStorage(UploadedFile $file, string $path, string $fileName): array
     {
         $file->storeAs($path, $fileName);
+
         return ['url' => $fileName];
     }
 
     /**
      * [create one sound]
-     *
-     * @param \Illuminate\Http\UploadedFile $request
-     *
-     * @return array
      */
-    public static function createNotify(UploadedFile $request) : array
+    public static function createNotify(UploadedFile $request): array
     {
         self::$fileName = self::createSoundName();
         self::$saveStorage = self::saveSoundStorage($request, '\\public\\sound\\', self::$fileName);
+
         return self::$saveStorage;
     }
 }

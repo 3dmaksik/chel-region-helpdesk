@@ -16,6 +16,7 @@ class IndexRequest extends BaseRequest
             'description_long' => 'required|string',
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {

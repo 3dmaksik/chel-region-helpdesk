@@ -5,26 +5,26 @@ col-lg-6
 @section('row')
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-      <h6 class="m-0 font-weight-bold text-primary">Информация о заявке</h6>
-      <div class="card-title">
-        <div class="block">
-        @hasanyrole('superAdmin|admin')
-        <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
-        @endhasanyrole
-        @hasrole('manager|user')
-        <a style="color: #757575;" class="hover" href="{{ route(config('constants.home.worker')) }}">
-        @endhasrole
-          <i class="fas fa-arrow-left fa-lg"></i>
-          </a> <span class="hidden">Назад</span>
-          <!-- скрытый элемент -->
+        <h6 class="m-0 font-weight-bold text-primary">Информация о заявке</h6>
+        <div class="card-title">
+            <div class="block">
+                @hasanyrole('superAdmin|admin')
+                <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
+                    @endhasanyrole
+                    @hasrole('manager|user')
+                    <a style="color: #757575;" class="hover" href="{{ route(config('constants.home.worker')) }}">
+                        @endhasrole
+                        <i class="fas fa-arrow-left fa-lg"></i>
+                    </a> <span class="hidden">Назад</span>
+                    <!-- скрытый элемент -->
+            </div>
+            <div class="block d-print-none">
+                <a style="color: #757575;" class="hover" href="javascript:(print());">
+                    <i class="fas fa-print fa-lg"></i>
+                </a> <span class="hidden">Печать</span>
+                <!-- скрытый элемент -->
+            </div>
         </div>
-        <div class="block d-print-none">
-          <a style="color: #757575;" class="hover" href="javascript:(print());">
-            <i class="fas fa-print fa-lg"></i>
-          </a> <span class="hidden">Печать</span>
-          <!-- скрытый элемент -->
-        </div>
-      </div>
     </div>
     <div class="card-body">
         <p class="text-primary">Номер заявки</p>
@@ -50,11 +50,11 @@ col-lg-6
         Вложения отсуствуют
         @else
         <div class="slider">
-        @foreach ($item->images as $image)
+            @foreach ($item->images as $image)
             <a href="{{ asset('storage/'.$image['url'].'') }}" data-fancybox="images">
-           Посмотреть вложение
+                Посмотреть вложение
             </a>
-        @endforeach
+            @endforeach
         </div>
         @endif
         <hr>
@@ -70,11 +70,11 @@ col-lg-6
         Вложения отсуствуют
         @else
         <div class="slider">
-        @foreach ($item->images_final as $image)
+            @foreach ($item->images_final as $image)
             <a href="{{ asset('storage/'.$image['url'].'') }}" data-fancybox="images">
-           Посмотреть вложение
+                Посмотреть вложение
             </a>
-        @endforeach
+            @endforeach
         </div>
         @endif
         <hr>
@@ -82,13 +82,15 @@ col-lg-6
         @hasanyrole('superAdmin|admin')
         @if ($item->status->id ==2)
         <div class="block">
-            <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#acceptHelp" data-id="{{$item->id}}">
+            <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#acceptHelp"
+                data-id="{{$item->id}}">
                 Назначить исполнителя
             </a>
             <a href="{{ route(config('constants.help.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
                 Редактировать заявку
             </a>
-            <a href="" class="btn btn-danger btn-sm hover" data-toggle="modal" data-target="#rejectHelp" data-id="{{$item->id}}">
+            <a href="" class="btn btn-danger btn-sm hover" data-toggle="modal" data-target="#rejectHelp"
+                data-id="{{$item->id}}">
                 Отклонить заявку
             </a>
         </div>
@@ -96,13 +98,15 @@ col-lg-6
         @endhasanyrole
         @if($item->status->id ==1)
         <div class="block">
-            <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#executeHelp" data-id="{{$item->id}}">
+            <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#executeHelp"
+                data-id="{{$item->id}}">
                 Выполнить заявку
             </a>
         </div>
         @hasanyrole('superAdmin|admin')
         <div class="block">
-            <a href="" class="btn btn-info btn-sm hover" data-toggle="modal" data-target="#redefineHelp" data-id="{{$item->id}}">
+            <a href="" class="btn btn-info btn-sm hover" data-toggle="modal" data-target="#redefineHelp"
+                data-id="{{$item->id}}">
                 Передать заявку
             </a>
         </div>
@@ -110,7 +114,7 @@ col-lg-6
         @endhasanyrole
         @endhasanyrole
     </div>
-  </div>
+</div>
 @include('components.modal')
 @endsection
 @section('components.grid.right')
@@ -120,7 +124,7 @@ col-lg-6
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Информация об исполнении</h6>
-      </div>
+    </div>
     <div class="card-body">
         <p class="text-primary">Статус заявки</p>
         <p class="badge badge-{{ $item->status->color }}">{{ $item->status->description }}</p>
@@ -173,5 +177,5 @@ col-lg-6
         <hr>
         @endif
     </div>
-  </div>
+</div>
 @endsection

@@ -9,14 +9,17 @@ use Illuminate\Database\Eloquent\Collection;
 class PriorityAction extends Action
 {
     private array $proirity;
+
     private int $total;
-    public function getAllPages() : Collection
+
+    public function getAllPages(): Collection
     {
         $this->items = Model::orderBy('rang', 'ASC')->get();
+
         return $this->items;
     }
 
-    public function getAllPagesPaginate() : array
+    public function getAllPagesPaginate(): array
     {
         $this->item = new Model();
         $this->items = Model::orderBy('rang', 'ASC')->paginate($this->page);
@@ -26,41 +29,47 @@ class PriorityAction extends Action
             'data' => $this->items,
             'total' => $this->total,
         ];
+
         return $this->proirity;
     }
 
     public function findCatalogsById(int $id): Model
     {
         $this->item = Model::findOrFail($id);
+
         return $this->item;
     }
 
     public function show(int $id): Model
     {
         $this->item = Model::findOrFail($id);
+
         return $this->item;
     }
 
-    public function store(array $request) : bool
+    public function store(array $request): bool
     {
         Model::create($request);
         Model::flushQueryCache();
+
         return true;
     }
 
-    public function update(array $request, int $id) : Model
+    public function update(array $request, int $id): Model
     {
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
         Model::flushQueryCache();
+
         return $this->item;
     }
 
-    public function delete(int $id) : bool
+    public function delete(int $id): bool
     {
         $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
         Model::flushQueryCache();
+
         return true;
     }
 }

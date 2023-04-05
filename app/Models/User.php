@@ -19,11 +19,17 @@ class User extends Authenticatable
     use HasRoles;
 
     const CREATED_AT = 'created_at';
+
     const UPDATED_AT = 'updated_at';
+
     protected $table = 'users';
+
     protected $primaryKey = 'id';
+
     public $timestamps = true;
+
     protected $cacheFor = 10080;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -50,6 +56,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
     /**
      * The attributes that should be guarded for serialization.
      *

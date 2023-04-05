@@ -9,14 +9,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Work extends Model
 {
     protected $table = 'work';
+
     protected $primaryKey = 'id';
+
     protected $fillable =
     ['firstname',
-    'lastname',
-    'patronymic',
-    'cabinet_id',
-    'sound_notify',
-    'avatar',];
+        'lastname',
+        'patronymic',
+        'cabinet_id',
+        'sound_notify',
+        'avatar', ];
 
     public function cabinet(): BelongsTo
     {

@@ -12,16 +12,17 @@ class CabinetRequest extends BaseRequest
     public function rules(): array
     {
         return [
-             'description' => [
+            'description' => [
                 'required',
                 'integer',
                 'numeric',
                 'max:250',
                 Rule::unique('cabinet')->ignore(empty($this->cabinet) ? 0 : $this->cabinet),
-             ],
+            ],
 
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {

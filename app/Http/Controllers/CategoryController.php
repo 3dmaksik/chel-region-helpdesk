@@ -9,6 +9,7 @@ use Illuminate\View\View;
 class CategoryController extends Controller
 {
     private CategoryAction $categories;
+
     public function __construct(CategoryAction $category)
     {
         $this->categories = $category;
@@ -17,6 +18,7 @@ class CategoryController extends Controller
     public function index(): View
     {
         $items = $this->categories->getAllPagesPaginate();
+
         return view('tables.category', compact('items'));
     }
 
@@ -28,6 +30,7 @@ class CategoryController extends Controller
     public function edit(int $category): View
     {
         $item = $this->categories->show($category);
+
         return view('forms.edit.category', compact('item'));
     }
 }

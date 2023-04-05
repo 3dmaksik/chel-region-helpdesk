@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 class StatisticAction extends Action
 {
     public Carbon $today;
+
     public function __construct()
     {
         //parent::__construct();
@@ -18,6 +19,7 @@ class StatisticAction extends Action
     public function indexStatistic(): array
     {
         $today = Carbon::now();
+
         return [
             'month' => Help::whereMonth('calendar_request', '=', $today->month)->count(),
             'year' => Help::whereYear('calendar_request', '=', $today->year)->count(),

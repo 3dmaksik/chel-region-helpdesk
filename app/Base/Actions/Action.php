@@ -12,10 +12,14 @@ use Illuminate\Support\Collection as SimpleCollection;
 
 class Action extends CoreAction
 {
-    public LengthAwarePaginator | Collection | SimpleCollection $items;
+    public LengthAwarePaginator|Collection|SimpleCollection $items;
+
     public Model $item;
+
     public RedirectResponse $redirect;
-    public array| DTO $data;
+
+    public array|DTO $data;
+
     public int $page;
 
     public function __construct()

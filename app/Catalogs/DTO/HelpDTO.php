@@ -10,22 +10,39 @@ use Carbon\Carbon;
 class HelpDTO extends DTO
 {
     public int $category_id;
+
     public int $executor_id;
+
     public int $priority_id;
+
     public int $user_id;
+
     public int $status_id;
+
     public string $description_long;
+
     public string $info;
+
     public string $info_final;
+
     public string $images;
+
     public string $images_final;
+
     public string $app_number;
+
     public Carbon $calendar_warning;
+
     public Carbon $calendar_final;
+
     public Carbon $calendar_accept;
+
     public Carbon $calendar_execution;
+
     public Carbon $calendar_request;
+
     public bool $check_write;
+
     public static function storeObjectRequest(array $request): self
     {
         $dto = new self();
@@ -45,6 +62,7 @@ class HelpDTO extends DTO
             $dto->images = json_encode(StoreFilesHelper::createFile($request['images'], 'images', 1920, 1080));
         }
         $dto->calendar_request = Carbon::now();
+
         return $dto;
     }
 
@@ -60,6 +78,7 @@ class HelpDTO extends DTO
         $dto->calendar_warning = Carbon::now()->addHour($help->priority->warning_timer);
         $dto->calendar_execution = Carbon::now()->addHour($help->priority->danger_timer);
         $dto->check_write = true;
+
         return $dto;
     }
 
@@ -67,12 +86,13 @@ class HelpDTO extends DTO
     {
         $dto = new self();
         $dto->status_id = 3;
-        $dto->info_final = 'Выполнено с комментарием:' . $request['info_final'];
+        $dto->info_final = 'Выполнено с комментарием:'.$request['info_final'];
         if (isset($request['images_final'])) {
             $dto->images_final = json_encode(StoreFilesHelper::createFile($request['images_final'], 'images', 1920, 1080));
         }
         $dto->calendar_final = Carbon::now();
         $dto->check_write = false;
+
         return $dto;
     }
 
@@ -81,6 +101,7 @@ class HelpDTO extends DTO
         $dto = new self();
         $dto->executor_id = $request['executor_id'];
         $dto->calendar_accept = Carbon::now();
+
         return $dto;
     }
 
@@ -88,9 +109,10 @@ class HelpDTO extends DTO
     {
         $dto = new self();
         $dto->status_id = 4;
-        $dto->info_final = 'Причина отклонения:' . $request['info_final'];
+        $dto->info_final = 'Причина отклонения:'.$request['info_final'];
         $dto->calendar_final = Carbon::now();
         $dto->check_write = false;
+
         return $dto;
     }
 }

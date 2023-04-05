@@ -12,14 +12,15 @@ class CategoryRequest extends BaseRequest
     public function rules(): array
     {
         return [
-             'description' => [
+            'description' => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique('category')->ignore(empty($this->caregory) ? 0 : $this->category),
-             ],
+            ],
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {

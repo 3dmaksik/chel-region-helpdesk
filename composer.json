@@ -22,13 +22,11 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
+        "laravel/pint": "dev-main",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
-        "mreduar/laravel-phpcs": "^1.8",
         "nunomaduro/collision": "^7.0",
         "phpunit/phpunit": "^10.0",
-        "slevomat/coding-standard": "^8.7",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {

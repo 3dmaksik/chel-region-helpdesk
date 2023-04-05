@@ -17,6 +17,7 @@ class NewsRequest extends BaseRequest
             'created_at' => 'nullable|date',
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {

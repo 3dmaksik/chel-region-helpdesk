@@ -28,6 +28,7 @@ class HelpRequest extends BaseRequest
             'check_write' => 'nullable|integer|max:2|numeric',
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {
