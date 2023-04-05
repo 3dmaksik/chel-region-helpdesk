@@ -3,12 +3,9 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Models\User;
-use Illuminate\Support\Facades\Cookie;
 
 class LoaderAction extends Action
 {
-    protected User $user;
     protected array $result;
     protected int $timer = 525600;
 
@@ -16,7 +13,6 @@ class LoaderAction extends Action
     {
         //parent::__construct();
         $this->result = [
-            'firstname' => null,
             'avatar' => null,
             'soundNotify' => null,
         ];
@@ -24,22 +20,12 @@ class LoaderAction extends Action
 
     public function getLoad(): array
     {
-        $this->user = User::select('firstname', 'avatar', 'sound_notify')->where('id', auth()->user()->id)->first();
-        $this->result['firstname'] = $this->user->firstname;
-
-        if ($this->user->avatar != null) {
-            $this->result['avatar'] = json_decode($this->user->avatar, true);
+        if (auth()->user()->avatar != null) {
+            $this->result['avatar'] = json_decode(auth()->user()->avatar, true);
         }
-        if ($this->user->soundNotify != null) {
-            $this->result['soundNotify'] = json_decode($this->user->soundNotify, true);
+        if (auth()->user()->sound_notify != null) {
+            $this->result['soundNotify'] = json_decode(auth()->user()->sound_notify, true);
         }
-
-        $this->setCookie($this->result);
         return $this->result;
-    }
-
-    protected function setCookie(array $data) : void
-    {
-        Cookie::queue('firstname', $data['firstname'], $this->timer);
     }
 }
