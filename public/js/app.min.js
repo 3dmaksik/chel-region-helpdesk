@@ -135,6 +135,9 @@ $(function () {
     dataType: 'json',
     error: function error(data) {},
     success: function success(data) {
+      if (data.avatar != null) {
+        $('.img-profile').attr("src", "/storage/avatar/" + data.avatar.url);
+      }
       if (data.soundNotify != null) {
         var _sound = new Howl({
           src: ['/storage/sound/' + data.soundNotify.url],

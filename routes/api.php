@@ -24,11 +24,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('guest')->middleware('throttle:10,10')->group(function () {
+Route::middleware('guest')->middleware('throttle:10,1')->group(function () {
     Route::post('help/new', [IndexApiController::class, 'store'])->name('index.store');
 });
-Route::middleware('auth')->middleware('throttle:10,10')->group(function () {
+Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
     Route::middleware(['role:superAdmin'])->group(function () {
+        Route::post('help/all', [HelpApiController::class, 'getAllPages']);
         Route::controller(CabinetApiController::class)
         ->prefix('admin/cabinet')
         ->as('cabinet.')
@@ -112,7 +113,6 @@ Route::middleware('auth')->middleware('throttle:10,10')->group(function () {
             });
             Route::get('help/new', [HelpApiController::class, 'newPagesCount']);
             Route::get('help/now', [HelpApiController::class, 'nowPagesCount']);
+            Route::get('loader/get', [LoaderApiController::class, 'index']);
     });
 });
-    Route::post('help/all', [HelpApiController::class, 'getAllPages']);
-    Route::get('loader/get', [LoaderApiController::class, 'index']);

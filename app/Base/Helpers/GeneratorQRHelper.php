@@ -8,7 +8,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class GeneratorQRHelper extends CoreHelper
 {
     /**
-     * Генерация QR
+     * [generation QR code]
      *
      * @param string $generator
      *

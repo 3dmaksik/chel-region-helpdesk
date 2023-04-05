@@ -7,7 +7,7 @@ use App\Core\Helpers\CoreHelper;
 class GeneratorUIDHelper extends CoreHelper
 {
     /**
-     * Проверка деления на 4
+     * [checking division by 4]
      *
      * @param int $number
      *
@@ -21,7 +21,7 @@ class GeneratorUIDHelper extends CoreHelper
     }
 
     /**
-     * Генерация UUID 4-4
+     * [generation UUID 4-4]
      *
      * @param int $length
      *

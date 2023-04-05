@@ -8,44 +8,44 @@ use Carbon\Carbon;
 class GeneratorAppNumberHelper extends CoreHelper
 {
     /**
-     * [Текущий год]
+     * [this year]
      *
      * @var string
      */
     public static string $nowYear;
     /**
-     * [Слово для генерации]
+     * [word to generate]
      *
      * @var string
      */
     public static string $genWorld = 'ADM';
     /**
-     * [Парсинг последней записи]
+     * [parsing the last entry]
      *
      * @var array
      */
     public static array $parse;
     /**
-     * [Генерация нового номера]
+     * [generation of a new number]
      *
      * @var array
      */
     public static array $generator;
       /**
-     * [Нумерация заявки]
+     * [first application number]
      *
      * @var int
      */
     public static int $startNumber = 1;
     /**
-     * [Нумерация заявки]
+     * [current order number]
      *
      * @var int
      */
     public static int $number = 0;
 
     /**
-     * [Генератор номера заявки]
+     * [order number generation]
      *
      * @param mixed string
      *

@@ -8,7 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
-//Base Helper Paginate in Laraval
+//Base Helper Paginate in Laravel
 class PaginateHelper extends CoreHelper
 {
     public static function paginate(Collection $results, int $pageSize): LengthAwarePaginator
