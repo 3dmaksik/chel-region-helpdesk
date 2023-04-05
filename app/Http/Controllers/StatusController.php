@@ -18,12 +18,14 @@ class StatusController extends Controller
     public function index(): View
     {
         $items = $this->statuses->getAllPagesPaginate();
+
         return view('tables.status', compact('items'));
     }
 
     public function edit(int $status): View
     {
         $item = $this->statuses->show($status);
+
         return view('forms.edit.status', compact('item'));
     }
 }

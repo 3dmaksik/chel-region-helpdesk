@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
 {
@@ -18,12 +17,12 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'name' => 'admin',
-            'email' =>'test@local.local',
+            'email' => 'test@local.local',
             'password' => Hash::make('password'),
-            'email_verified_at'=> now(),
+            'email_verified_at' => now(),
             'firstname' => 'Имя',
             'lastname' => 'Фамилия',
-            'cabinet_id'=> 1,
+            'cabinet_id' => 1,
         ])->assignRole('superAdmin');
     }
 }

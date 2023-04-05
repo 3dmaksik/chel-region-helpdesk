@@ -12,15 +12,16 @@ class StatusRequest extends BaseRequest
     public function rules(): array
     {
         return [
-             'description' => [
+            'description' => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique('status')->ignore(empty($this->status) ? 0 : $this->status),
-                ],
-             'color' => 'nullable|string|max:255',
+            ],
+            'color' => 'nullable|string|max:255',
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {

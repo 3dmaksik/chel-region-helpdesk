@@ -11,6 +11,7 @@ abstract class BaseRepository extends CoreRepository
     {
         return clone $this->model;
     }
+
     //Получение модели
     public function getRepository()
     {

@@ -5,11 +5,13 @@ namespace App\Core\Repositories;
 abstract class CoreRepository
 {
     protected $model;
+
     //Получение модели
     public function __construct()
     {
         $this->model = app($this->getModelClass());
     }
+
     // Обязательная реализация в конкрентном репозитории
     abstract protected function getModelClass();
 

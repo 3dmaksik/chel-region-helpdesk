@@ -9,38 +9,31 @@ class GeneratorAppNumberHelper extends CoreHelper
 {
     /**
      * [this year]
-     *
-     * @var string
      */
     public static string $nowYear;
+
     /**
      * [word to generate]
-     *
-     * @var string
      */
     public static string $genWorld = 'ADM';
+
     /**
      * [parsing the last entry]
-     *
-     * @var array
      */
     public static array $parse;
+
     /**
      * [generation of a new number]
-     *
-     * @var array
      */
     public static array $generator;
-      /**
+
+    /**
      * [first application number]
-     *
-     * @var int
      */
     public static int $startNumber = 1;
+
     /**
      * [current order number]
-     *
-     * @var int
      */
     public static int $number = 0;
 
@@ -48,10 +41,8 @@ class GeneratorAppNumberHelper extends CoreHelper
      * [order number generation]
      *
      * @param mixed string
-     *
-     * @return string
      */
-    public static function generate(string | null $last = null) : string
+    public static function generate(string|null $last = null): string
     {
         self::$nowYear = Carbon::now()->year;
         self::$parse = explode('-', $last);
@@ -67,6 +58,7 @@ class GeneratorAppNumberHelper extends CoreHelper
                 self::$nowYear,
                 self::$number,
             ];
+
             return implode('-', self::$generator);
     }
 }

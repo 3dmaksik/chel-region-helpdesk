@@ -6,5 +6,4 @@ use App\Core\Requests\CoreRequest;
 
 class Request extends CoreRequest
 {
-
 }

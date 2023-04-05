@@ -9,6 +9,7 @@ use Illuminate\View\View;
 class CabinetController extends Controller
 {
     private CabinetAction $cabinets;
+
     public function __construct(CabinetAction $cabinets)
     {
         $this->cabinets = $cabinets;
@@ -17,6 +18,7 @@ class CabinetController extends Controller
     public function index(): View
     {
         $items = $this->cabinets->getAllPagesPaginate();
+
         return view('tables.cabinet', compact('items'));
     }
 
@@ -28,6 +30,7 @@ class CabinetController extends Controller
     public function edit(int $cabinet): View
     {
         $item = $this->cabinets->show($cabinet);
+
         return view('forms.edit.cabinet', compact('item'));
     }
 }

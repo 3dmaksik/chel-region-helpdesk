@@ -15,11 +15,16 @@ use Illuminate\Support\Facades\Notification;
 class HomeAction extends Action
 {
     private array $helps;
-    private Model | null $last;
+
+    private Model|null $last;
+
     private int $total;
+
     public User $superAdmin;
+
     public User $users;
-    public function getWorkerPagesPaginate() :  array
+
+    public function getWorkerPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', '<', 3)
         ->where('user_id', auth()->user()->id)
@@ -35,10 +40,11 @@ class HomeAction extends Action
             'total' => $this->total,
             'data' => $this->items,
         ];
+
         return $this->helps;
     }
 
-    public function getCompletedPagesPaginate() :  array
+    public function getCompletedPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', 3)
         ->where('user_id', auth()->user()->id)
@@ -52,10 +58,11 @@ class HomeAction extends Action
             'total' => $this->total,
             'data' => $this->items,
         ];
+
         return $this->helps;
     }
 
-    public function getDismissPagesPaginate() :  array
+    public function getDismissPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', 4)
         ->where('user_id', auth()->user()->id)
@@ -69,23 +76,26 @@ class HomeAction extends Action
             'total' => $this->total,
             'data' => $this->items,
         ];
+
         return $this->helps;
     }
 
-    public function create() : SimpleCollection
+    public function create(): SimpleCollection
     {
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
+
         return $this->items;
     }
 
-    public function show(int $id) : Model
+    public function show(int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->item->images = json_decode($this->item->images, true);
+
         return $this->item;
     }
 
-    public function store(array $request) : bool
+    public function store(array $request): bool
     {
         $this->data = HelpDTO::storeObjectRequest($request);
         if (! isset($this->data->user_id)) {
@@ -103,6 +113,7 @@ class HomeAction extends Action
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
         Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
         Notification::send($users, new HelpNotification('newadm', route('help.new')));
+
         return true;
     }
 }

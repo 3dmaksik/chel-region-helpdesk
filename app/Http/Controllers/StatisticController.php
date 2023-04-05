@@ -9,6 +9,7 @@ use Illuminate\View\View;
 class StatisticController extends Controller
 {
     private StatisticAction $statistic;
+
     public function __construct(StatisticAction $statistic)
     {
         $this->statistic = $statistic;
@@ -17,6 +18,7 @@ class StatisticController extends Controller
     public function index(): View
     {
         $data = $this->statistic->indexStatistic();
+
         return view('forms.show.statistic', compact('data'));
     }
 }

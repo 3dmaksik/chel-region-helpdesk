@@ -10,8 +10,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class SearchCatalogAction extends Action
 {
     protected User $user;
+
     private LengthAwarePaginator $helpSearch;
+
     private array $searchData;
+
     private int $total;
 
     public function __construct()
@@ -29,6 +32,7 @@ class SearchCatalogAction extends Action
             'total' => $this->total,
             'data' => $this->helpSearch,
         ];
+
         return $this->searchData;
     }
 
@@ -42,6 +46,7 @@ class SearchCatalogAction extends Action
             'total' => $this->total,
             'data' => $this->helpSearch,
         ];
+
         return $this->searchData;
     }
 
@@ -57,6 +62,7 @@ class SearchCatalogAction extends Action
             'total' => $this->total,
             'data' => $this->helpSearch,
         ];
+
         return $this->searchData;
     }
 
@@ -69,17 +75,17 @@ class SearchCatalogAction extends Action
         ->join('cabinet', 'cabinet.id', '=', 'users.cabinet_id')
         ->join('priority', 'priority.id', '=', 'help.priority_id')
         ->RoleSearch()
-        ->where('app_number', 'LIKE', '%' . $item . '%')
-        ->orWhere('description_long', 'LIKE', '%' . $item . '%')
-        ->orWhere('category.description', 'LIKE', '%' . $item . '%')
-        ->orWhere('status.description', 'LIKE', '%' . $item . '%')
-        ->orWhere('cabinet.description', 'LIKE', '%' . $item . '%')
-        ->orWhere('priority.description', 'LIKE', '%' . $item . '%')
-        ->orWhere('info', 'LIKE', '%' . $item . '%')
-        ->orWhere('info_final', 'LIKE', '%' . $item . '%')
-        ->orWhere('users.firstname', 'LIKE', '%' . $item . '%')
-        ->orWhere('users.lastname', 'LIKE', '%' . $item . '%')
-        ->orWhere('users.patronymic', 'LIKE', '%' . $item . '%')
+        ->where('app_number', 'LIKE', '%'.$item.'%')
+        ->orWhere('description_long', 'LIKE', '%'.$item.'%')
+        ->orWhere('category.description', 'LIKE', '%'.$item.'%')
+        ->orWhere('status.description', 'LIKE', '%'.$item.'%')
+        ->orWhere('cabinet.description', 'LIKE', '%'.$item.'%')
+        ->orWhere('priority.description', 'LIKE', '%'.$item.'%')
+        ->orWhere('info', 'LIKE', '%'.$item.'%')
+        ->orWhere('info_final', 'LIKE', '%'.$item.'%')
+        ->orWhere('users.firstname', 'LIKE', '%'.$item.'%')
+        ->orWhere('users.lastname', 'LIKE', '%'.$item.'%')
+        ->orWhere('users.patronymic', 'LIKE', '%'.$item.'%')
         ->paginate($this->page);
         $this->total = Help::join('users', 'users.id', '=', 'help.user_id')
         ->join('category', 'category.id', '=', 'help.category_id')
@@ -87,24 +93,25 @@ class SearchCatalogAction extends Action
         ->join('cabinet', 'cabinet.id', '=', 'users.cabinet_id')
         ->join('priority', 'priority.id', '=', 'help.priority_id')
         ->RoleSearch()
-        ->where('app_number', 'LIKE', '%' . $item . '%')
-        ->orWhere('description_long', 'LIKE', '%' . $item . '%')
-        ->orWhere('category.description', 'LIKE', '%' . $item . '%')
-        ->orWhere('status.description', 'LIKE', '%' . $item . '%')
-        ->orWhere('cabinet.description', 'LIKE', '%' . $item . '%')
-        ->orWhere('priority.description', 'LIKE', '%' . $item . '%')
-        ->orWhere('info', 'LIKE', '%' . $item . '%')
-        ->orWhere('info_final', 'LIKE', '%' . $item . '%')
-        ->orWhere('users.firstname', 'LIKE', '%' . $item . '%')
-        ->orWhere('users.lastname', 'LIKE', '%' . $item . '%')
-        ->orWhere('users.patronymic', 'LIKE', '%' . $item . '%')->count();
-        $this->helpSearch->appends(array('search' => $item));
+        ->where('app_number', 'LIKE', '%'.$item.'%')
+        ->orWhere('description_long', 'LIKE', '%'.$item.'%')
+        ->orWhere('category.description', 'LIKE', '%'.$item.'%')
+        ->orWhere('status.description', 'LIKE', '%'.$item.'%')
+        ->orWhere('cabinet.description', 'LIKE', '%'.$item.'%')
+        ->orWhere('priority.description', 'LIKE', '%'.$item.'%')
+        ->orWhere('info', 'LIKE', '%'.$item.'%')
+        ->orWhere('info_final', 'LIKE', '%'.$item.'%')
+        ->orWhere('users.firstname', 'LIKE', '%'.$item.'%')
+        ->orWhere('users.lastname', 'LIKE', '%'.$item.'%')
+        ->orWhere('users.patronymic', 'LIKE', '%'.$item.'%')->count();
+        $this->helpSearch->appends(['search' => $item]);
         $this->searchData =
         [
             'method' => 'searchcall',
             'total' => $this->total,
             'data' => $this->helpSearch,
         ];
+
         return $this->searchData;
     }
 }

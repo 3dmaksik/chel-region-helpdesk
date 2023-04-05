@@ -10,28 +10,33 @@ use Illuminate\Support\Facades\Hash;
 class SettingsAction extends Action
 {
     private User $user;
+
     private array $avatar;
+
     private array $soundNotify;
+
     public function __construct()
     {
         //parent::__construct();
     }
 
-    public function updatePassword(array $request) : bool
+    public function updatePassword(array $request): bool
     {
         if ($this->checkPassword($request['current_password']) === true && $this->checkPassword($request['password']) === false) {
             return User::whereId(auth()->user()->id)->update([
                 'password' => Hash::make($request['password']),
             ]);
         }
+
         return false;
     }
 
-    protected function checkPassword(string $password) : bool
+    protected function checkPassword(string $password): bool
     {
         if (Hash::check($password, auth()->user()->password)) {
             return true;
         }
+
         return false;
     }
 
@@ -42,10 +47,11 @@ class SettingsAction extends Action
         $this->soundNotify = json_decode($this->user->sound_notify, true);
         $this->user->avatar = $this->avatar['url'];
         $this->user->sound_notify = $this->soundNotify['url'];
+
         return $this->user;
     }
 
-    public function updateSettings(array $request) : bool
+    public function updateSettings(array $request): bool
     {
         $this->user = User::whereId(auth()->user()->id)->first();
         $this->data = SettingsDTO::storeObjectRequest($request);
@@ -59,6 +65,7 @@ class SettingsAction extends Action
         }
         User::flushQueryCache();
         $this->user->update((array) $this->data);
+
         return true;
     }
 }

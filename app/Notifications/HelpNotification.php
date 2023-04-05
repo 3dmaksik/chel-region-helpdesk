@@ -9,10 +9,10 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 class HelpNotification extends BaseNotification
 {
     public Model $model;
+
     public string $method;
+
     public string $route;
-
-
 
     /**
      * Create a new notification instance.
@@ -29,7 +29,6 @@ class HelpNotification extends BaseNotification
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
     public function via($notifiable): array
     {

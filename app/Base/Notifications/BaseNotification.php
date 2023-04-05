@@ -6,5 +6,4 @@ use App\Core\Notifications\CoreNotification;
 
 class BaseNotification extends CoreNotification
 {
-
 }

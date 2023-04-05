@@ -9,6 +9,7 @@ use Illuminate\View\View;
 class SettingsController extends Controller
 {
     private SettingsAction $settings;
+
     public function __construct(SettingsAction $settings)
     {
         $this->settings = $settings;
@@ -17,6 +18,7 @@ class SettingsController extends Controller
     public function edit(): View
     {
         $works = $this->settings->editSettings();
+
         return view('forms.edit.settings', compact('works'));
     }
 }

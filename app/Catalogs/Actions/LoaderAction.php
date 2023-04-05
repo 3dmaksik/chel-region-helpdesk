@@ -7,6 +7,7 @@ use App\Base\Actions\Action;
 class LoaderAction extends Action
 {
     protected array $result;
+
     protected int $timer = 525600;
 
     public function __construct()
@@ -26,6 +27,7 @@ class LoaderAction extends Action
         if (auth()->user()->sound_notify != null) {
             $this->result['soundNotify'] = json_decode(auth()->user()->sound_notify, true);
         }
+
         return $this->result;
     }
 }

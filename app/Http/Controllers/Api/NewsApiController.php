@@ -10,7 +10,9 @@ use Illuminate\Http\JsonResponse;
 class NewsApiController extends Controller
 {
     private string $data;
+
     private NewsAction $news;
+
     public function __construct(NewsAction $news)
     {
         $this->news = $news;
@@ -19,18 +21,21 @@ class NewsApiController extends Controller
     public function store(NewsRequest $request): JsonResponse
     {
         $this->data = $this->news->store($request->validated());
+
         return response()->json($this->data);
     }
 
     public function update(NewsRequest $request, int $news): JsonResponse
     {
         $this->data = $this->news->update($request->validated(), $news);
+
         return response()->json($this->data);
     }
 
     public function destroy(int $news): JsonResponse
     {
         $this->data = $this->news->delete($news);
+
         return response()->json($this->data);
     }
 }

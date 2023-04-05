@@ -3,4 +3,4 @@
     <div class="p-2">
         <h6 class="total">@if(isset($items))Всего записей:{{ $items['total'] }} @endif</h6>
     </div>
-  </div>
+</div>

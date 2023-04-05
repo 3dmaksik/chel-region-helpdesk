@@ -9,26 +9,29 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Help extends Model
 {
     protected $table = 'help';
+
     protected $primaryKey = 'id';
+
     protected $cacheFor = 1;
+
     protected $fillable =
     ['app_number',
-    'category_id',
-    'status_id',
-    'priority_id',
-    'user_id',
-    'executor_id',
-    'calendar_request',
-    'calendar_accept',
-    'calendar_warning',
-    'calendar_final',
-    'calendar_execution',
-    'images',
-    'description_long',
-    'info',
-    'info_final',
-    'images_final',
-    'check_write',];
+        'category_id',
+        'status_id',
+        'priority_id',
+        'user_id',
+        'executor_id',
+        'calendar_request',
+        'calendar_accept',
+        'calendar_warning',
+        'calendar_final',
+        'calendar_execution',
+        'images',
+        'description_long',
+        'info',
+        'info_final',
+        'images_final',
+        'check_write', ];
 
     public function category(): BelongsTo
     {
@@ -63,6 +66,7 @@ class Help extends Model
         if (auth()->user()->roles->pluck('name')[0] === 'manager') {
             return $builder->where('executor_id', auth()->user()->id);
         }
+
         return $builder;
     }
 
@@ -74,6 +78,7 @@ class Help extends Model
         if (auth()->user()->roles->pluck('name')[0] === 'user') {
             return $builder->where('user_id', auth()->user()->id);
         }
+
         return $builder;
     }
 

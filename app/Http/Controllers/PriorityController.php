@@ -9,6 +9,7 @@ use Illuminate\View\View;
 class PriorityController extends Controller
 {
     private PriorityAction $priorities;
+
     public function __construct(PriorityAction $priorities)
     {
         $this->priorities = $priorities;
@@ -17,12 +18,14 @@ class PriorityController extends Controller
     public function index(): View
     {
         $items = $this->priorities->getAllPagesPaginate();
+
         return view('tables.priority', compact('items'));
     }
 
     public function show(int $priority): View
     {
         $item = $this->priorities->show($priority);
+
         return view('forms.show.priority', compact('item'));
     }
 
@@ -34,6 +37,7 @@ class PriorityController extends Controller
     public function edit(int $priority): View
     {
         $item = $this->priorities->show($priority);
+
         return view('forms.edit.priority', compact('item'));
     }
 }

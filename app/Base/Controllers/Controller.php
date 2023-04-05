@@ -6,5 +6,4 @@ use App\Core\Controllers\CoreController;
 
 class Controller extends CoreController
 {
-
 }

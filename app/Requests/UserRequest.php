@@ -17,15 +17,16 @@ class UserRequest extends BaseRequest
                 'string',
                 'max:256',
                 Rule::unique('users')->ignore(empty($this->user) ? 0 : $this->user),
-             ],
-             'password' => 'sometimes|required|string|max:255',
-             'firstname' => 'required|string|max:255',
-             'lastname' => 'required|string|max:255',
-             'patronymic' => 'nullable|string|max:255',
-             'cabinet_id' => 'required|integer|max:250|numeric|exists:cabinet,id',
-             'role' => 'required|string',
+            ],
+            'password' => 'sometimes|required|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'patronymic' => 'nullable|string|max:255',
+            'cabinet_id' => 'required|integer|max:250|numeric|exists:cabinet,id',
+            'role' => 'required|string',
         ];
     }
+
     //Проверка авторизации
     public function authorize(): bool
     {
