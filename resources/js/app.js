@@ -144,29 +144,13 @@ $(function () {
         error: function (data) {
         },
         success: function (data) {
-            if (data.avatar == null)
-            {
-                $('.img-profile').attr("src", "/img/boy.png");
-            }
-            else
-            {
-                $('.img-profile').attr("src", "/storage/" + data.avatar.url);
-            }
-            if (data.soundNotify == null)
+            if (data.soundNotify != null)
             {
                 const sound = new Howl({
-                    src: [data],
+                    src: ['/storage/sound/'+data.soundNotify.url],
                     html5: true
                 })
             }
-            else
-            {
-                const sound = new Howl({
-                    src: [data.data.soundNotify],
-                    html5: true
-                })
-            }
-
         }
     });
 

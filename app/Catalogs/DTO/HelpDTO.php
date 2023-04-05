@@ -42,7 +42,7 @@ class HelpDTO extends DTO
             $dto->description_long = $request['description_long'];
         }
         if (isset($request['images'])) {
-            $dto->images = json_encode(StoreFilesHelper::createFile($request['images'], 1920, 1080));
+            $dto->images = json_encode(StoreFilesHelper::createFile($request['images'], 'images', 1920, 1080));
         }
         $dto->calendar_request = Carbon::now();
         return $dto;
@@ -69,7 +69,7 @@ class HelpDTO extends DTO
         $dto->status_id = 3;
         $dto->info_final = 'Выполнено с комментарием:' . $request['info_final'];
         if (isset($request['images_final'])) {
-            $dto->images_final = json_encode(StoreFilesHelper::createFile($request['images_final'], 1920, 1080));
+            $dto->images_final = json_encode(StoreFilesHelper::createFile($request['images_final'], 'images', 1920, 1080));
         }
         $dto->calendar_final = Carbon::now();
         $dto->check_write = false;
