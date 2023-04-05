@@ -144,10 +144,14 @@ $(function () {
         error: function (data) {
         },
         success: function (data) {
+            if (data.avatar != null)
+            {
+                $('.img-profile').attr("src", "/storage/avatar/" + data.avatar.url);
+            }
             if (data.soundNotify != null)
             {
                 const sound = new Howl({
-                    src: ['/storage/sound/'+data.soundNotify.url],
+                    src: ['/storage/sound/' + data.soundNotify.url],
                     html5: true
                 })
             }

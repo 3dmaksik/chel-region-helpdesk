@@ -53,6 +53,18 @@ class StoreFilesHelper extends CoreHelper
      */
     private static int $height;
     /**
+     * [generated name]
+     *
+     * @var string
+     */
+    private static string $nameGenerate;
+    /**
+     * [saved file]
+     *
+     * @var array
+     */
+    private static array $saveStorage;
+    /**
      * [creating multiple images]
      *
      * @param \Illuminate\Http\UploadedFile $request
@@ -78,7 +90,8 @@ class StoreFilesHelper extends CoreHelper
      */
     protected static function createImageName() : string
     {
-        return time() . '_' . mt_rand() . '.png';
+        self::$nameGenerate = time() . '_' . mt_rand() . '.png';
+        return self::$nameGenerate;
     }
 
     /**
@@ -88,7 +101,8 @@ class StoreFilesHelper extends CoreHelper
      */
     protected static function createSoundName() : string
     {
-        return time() . '_' . mt_rand() . '.ogg';
+        self::$nameGenerate = time() . '_' . mt_rand() . '.ogg';
+        return self::$nameGenerate;
     }
 
     /**
@@ -107,7 +121,8 @@ class StoreFilesHelper extends CoreHelper
         self::$img = Image::make($file->getRealPath());
         self::$resize = self::resizeFile(self::$img, $w, $h);
         self::$resize->stream();
-        return self::saveImageStorage($type, self::$fileName, self::$resize);
+        self::$saveStorage = self::saveImageStorage($type, self::$fileName, self::$resize);
+        return self::$saveStorage;
     }
 
     /**
@@ -170,6 +185,7 @@ class StoreFilesHelper extends CoreHelper
     public static function createNotify(UploadedFile $request) : array
     {
         self::$fileName = self::createSoundName();
-        return self::saveSoundStorage($request, '\\public\\sound\\', self::$fileName);
+        self::$saveStorage = self::saveSoundStorage($request, '\\public\\sound\\', self::$fileName);
+        return self::$saveStorage;
     }
 }

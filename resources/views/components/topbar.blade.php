@@ -34,7 +34,7 @@
 						<div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i> </div>
 					</div>
 					<div>
-						<div id="new_count" class="small text-gray-500">Новые заявки</div> <span id="new_count_text">Всего новых заявок: 1</span> </div>
+						<div id="new_count" class="small text-gray-500">Новые заявки</div> <span id="new_count_text">Новые заявки загружаются</span> </div>
 				</a>
                 @endhasanyrole
                 @hasanyrole('superAdmin|admin|manager')
@@ -43,7 +43,7 @@
 						<div class="icon-circle bg-success"> <i class="fas fa-walking text-white"></i> </div>
 					</div>
 					<div>
-						<div id="now_count" class="small text-gray-500">На исполнении</div> <span id="now_count_text">У вас заявок на исполнении: 1</span> </div>
+						<div id="now_count" class="small text-gray-500">На исполнении</div> <span id="now_count_text">Заявки на исполнение загружаются</span> </div>
 				</a>
                 @endhasanyrole
 			</div>
@@ -51,8 +51,8 @@
 		</li>
 		<div class="topbar-divider d-none d-sm-block"></div>
 		<li class="nav-item dropdown no-arrow"> <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img class="img-profile rounded-circle" src="/img/logo/logo.png" style="max-width: 60px">
-            <span class="name=profile ml-2 d-none d-lg-inline text-white small">{{ Cookie::get('firstname') }}</span>
+            <img class="img-profile rounded-circle" src="/img/spinner.gif" style="max-width: 60px">
+            <span class="name=profile ml-2 d-none d-lg-inline text-white small">{{ auth()->user()->firstname }}</span>
         </a>
 			<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown"> <a class="dropdown-item" href="{{ route(config('constants.settings.edit')) }}">
                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
