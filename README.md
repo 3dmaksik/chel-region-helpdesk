@@ -97,7 +97,7 @@ RewriteRule ^ index.php [L]
 `$ sudo chmod -R 777 ./bootstrap/cache/`  
 Более безопасный способ, это установить права 755 на папки и 644 на файлы  
 
-4. Создать символьные ссылки для загрузки файлов
+4. Создать символьные ссылки для загрузки файлов:  
 `$ sudo ln -s /srv/example.com/storage/app/public/images /srv/example.com/public/storage/images`  
 `$ sudo ln -s /srv/example.com/storage/app/public/avatar /srv/example.com/public/storage/avatar`  
 `$ sudo ln -s /srv/example.com/storage/app/public/sound /srv/example.com/public/storage/sound`  
