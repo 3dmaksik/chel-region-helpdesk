@@ -22,6 +22,13 @@ class HelpController extends Controller
         return view('tables.help', compact('items'));
     }
 
+    public function getIndex(): View
+    {
+        $items = $this->helps->getAllPagesPaginate();
+
+        return view('loader.help', compact('items'));
+    }
+
     public function new(): View
     {
         $items = $this->helps->getNewPagesPaginate();

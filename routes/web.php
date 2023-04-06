@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
         ->as('help.')
         ->group(function () {
             Route::get('helps/all', 'index')->name('index');
+            Route::post('helps/all', 'getIndex')->name('index');
             Route::get('helps/new', 'new')->name('new');
             Route::post('helps/new', 'getNew')->name('new');
         });
