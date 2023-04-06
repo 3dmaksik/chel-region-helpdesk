@@ -14,7 +14,7 @@ __webpack_require__.r(__webpack_exports__);
 /* provided dependency */ var jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 $(function () {
-  var CSRF_TOKEN = $('meta[name="_token"]').attr('content');
+  var CSRF_TOKEN = $('meta[name="_token"]').attr("content");
   var sendForm = $("#formValidate");
   var acceptForm = $("#formAccept");
   var executeForm = $("#formExecute");
@@ -22,10 +22,10 @@ $(function () {
   var rejectForm = $("#formReject");
   var updatePasswordForm = $("#formValidatePassword");
   var updateSettingsForm = $("#formValidateSettings");
-  var page = $('.current-page').text();
+  var page = $(".current-page").text();
   $.ajaxSetup({
     headers: {
-      'X-CSRF-TOKEN': CSRF_TOKEN
+      "X-CSRF-TOKEN": CSRF_TOKEN
     }
   });
   function loadNew(method, route) {
@@ -35,61 +35,61 @@ $(function () {
       });
     }
   }
-  Echo["private"]('App.Models.User.' + window.Laravel.user).notification(function (notification) {
+  Echo["private"]("App.Models.User." + window.Laravel.user).notification(function (notification) {
     loadNew(notification.method, notification.route);
-    if (notification.method == 'newadm') {
+    if (notification.method == "newadm") {
       newCount();
       sound.play();
     }
-    if (notification.method == 'workeradm') {
+    if (notification.method == "workeradm") {
       nowCount();
     }
   });
-  sendAllForm(sendForm, 'send');
-  sendAllForm(acceptForm, 'accept');
-  sendAllForm(executeForm, 'execute');
-  sendAllForm(redefineForm, 'redefine');
-  sendAllForm(rejectForm, 'reject');
-  sendAllForm(updatePasswordForm, 'upPass');
-  sendAllForm(updateSettingsForm, 'upSettings');
+  sendAllForm(sendForm, "send");
+  sendAllForm(acceptForm, "accept");
+  sendAllForm(executeForm, "execute");
+  sendAllForm(redefineForm, "redefine");
+  sendAllForm(rejectForm, "reject");
+  sendAllForm(updatePasswordForm, "upPass");
+  sendAllForm(updateSettingsForm, "upSettings");
   newCount();
   nowCount();
   function sendAllForm(form, inputMessage) {
-    form.on('submit', function (e) {
+    form.on("submit", function (e) {
       e.preventDefault();
       var formData = new FormData(this);
       $.each($("input[type=file]"), function (i, obj) {
         $.each(obj.files, function (j, file) {
-          formData.append('images[' + j + ']', file);
+          formData.append("images[" + j + "]", file);
         });
       });
       $.ajax({
-        url: $(this).attr('action'),
-        type: 'POST',
+        url: $(this).attr("action"),
+        type: "POST",
         cache: false,
-        dataType: 'json',
+        dataType: "json",
         data: formData,
         processData: false,
         contentType: false,
         timeout: 600000,
         beforeSend: function beforeSend() {
-          $(form).find('input, textarea, select, button[type=submit]').prop('disabled', true);
+          $(form).find("input, textarea, select, button[type=submit]").prop("disabled", true);
         },
         error: function error(data) {
           $("#sent-message-" + inputMessage).hide(1500).empty();
-          if (data.responseJSON.message == 'validation.required') {
+          if (data.responseJSON.message == "validation.required") {
             $("#sent-message-" + inputMessage).append("<div class='alert alert-danger'>Ошибка. Неверно заполнены поля!</div>").slideDown(1500);
-          } else if (data.responseJSON.message == 'validation.unique') {
+          } else if (data.responseJSON.message == "validation.unique") {
             $("#sent-message-" + inputMessage).append("<div class='alert alert-danger'>Ошибка. Данные уже существуют!</div>").slideDown(1500);
           } else {
             $("#sent-message-" + inputMessage).append("<div class='alert alert-danger'>Ошибка сервера. Обратитесь к администратору. Наименование ошибки:" + data.responseJSON.message + "</div>").slideDown(1500);
           }
-          $(form).find('input, textarea, select, button[type=submit]').prop("disabled", false);
+          $(form).find("input, textarea, select, button[type=submit]").prop("disabled", false);
         },
         success: function success(data) {
           $("#sent-message-" + inputMessage).hide(1500).empty();
           $("#sent-message-" + inputMessage).append("<div class='alert alert-success'>Запись успешно обработана!</div>").slideDown(1500);
-          $(form).find('input, textarea, select, button[type=submit]').prop("disabled", false);
+          $(form).find("input, textarea, select, button[type=submit]").prop("disabled", false);
           setTimeout(function () {
             location.reload();
           }, 3000);
@@ -99,89 +99,91 @@ $(function () {
   }
   function newCount() {
     $.ajax({
-      url: '/api/help/new',
-      method: 'get',
-      dataType: 'json',
+      url: "/api/help/new",
+      method: "get",
+      dataType: "json",
       success: function success(data) {
         var datacount = JSON.parse(data);
         if (datacount == 0) {
-          $('#counter').text('');
-          $('#new_count_text').text('Нет новых заявок');
+          $("#counter").text("");
+          $("#new_count_text").text("Нет новых заявок");
         } else {
-          $('#counter').text(datacount);
-          $('#new_count_text').text('Всего новых заявок: ' + datacount);
+          $("#counter").text(datacount);
+          $("#new_count_text").text("Всего новых заявок: " + datacount);
         }
       }
     });
   }
   function nowCount() {
     $.ajax({
-      url: '/api/help/now',
-      method: 'get',
-      dataType: 'json',
+      url: "/api/help/now",
+      method: "get",
+      dataType: "json",
       success: function success(data) {
         var datacount = JSON.parse(data);
         if (datacount == 0) {
-          $('#now_count_text').text('У вас нет заявок на исполнении');
+          $("#now_count_text").text("У вас нет заявок на исполнении");
         } else {
-          $('#now_count_text').text('У вас заявок на исполнении: ' + datacount);
+          $("#now_count_text").text("У вас заявок на исполнении: " + datacount);
         }
       }
     });
   }
   $.ajax({
-    url: '/api/loader/get',
-    method: 'get',
-    dataType: 'json',
+    url: "/api/loader/get",
+    method: "get",
+    dataType: "json",
     error: function error(data) {},
     success: function success(data) {
       if (data.avatar != null) {
-        $('.img-profile').attr("src", "/storage/avatar/" + data.avatar.url);
+        $(".img-profile").attr("src", "/storage/avatar/" + data.avatar.url);
+      } else {
+        $(".img-profile").attr("src", "/img/boy.png");
       }
       if (data.soundNotify != null) {
         var _sound = new Howl({
-          src: ['/storage/sound/' + data.soundNotify.url],
+          src: ["/storage/sound/" + data.soundNotify.url],
           html5: true
         });
       }
     }
   });
   $.ajax({
-    url: '/api/help/all',
-    method: 'post',
-    dataType: 'json',
+    url: "/api/help/all",
+    method: "post",
+    dataType: "json",
     success: function success(data) {
       var obj = JSON.parse(data);
       for (var i = 0; i < obj.user.length; i++) {
         var counter = obj.user[i];
-        if (counter.patronymic == null) counter.patronymic = '';
-        $('#accept-select2-user').append('<option value="' + counter.id + '">' + counter.lastname + ' ' + counter.firstname + ' ' + counter.patronymic + '</option>');
-        $('#redefine-select2-user').append('<option value="' + counter.id + '">' + counter.lastname + ' ' + counter.firstname + ' ' + counter.patronymic + '</option>');
+        if (counter.patronymic == null) counter.patronymic = "";
+        $("#accept-select2-user").append('<option value="' + counter.id + '">' + counter.lastname + " " + counter.firstname + " " + counter.patronymic + "</option>");
+        $("#redefine-select2-user").append('<option value="' + counter.id + '">' + counter.lastname + " " + counter.firstname + " " + counter.patronymic + "</option>");
       }
       for (var i = 0; i < obj.priority.length; i++) {
         var counter = obj.priority[i];
-        $('#accept-select2-priority').append('<option value="' + counter.id + '">' + counter.description + '</option>');
+        $("#accept-select2-priority").append('<option value="' + counter.id + '">' + counter.description + "</option>");
       }
     }
   });
-  $('.select2-single').select2({
+  $(".select2-single").select2({
     language: "ru"
   });
-  jQuery.datetimepicker.setLocale('ru');
-  jQuery('#datetimepicker').datetimepicker({
-    format: 'Y-m-d H:i:s'
+  jQuery.datetimepicker.setLocale("ru");
+  jQuery("#datetimepicker").datetimepicker({
+    format: "Y-m-d H:i:s"
   });
-  $('.custom-file-input').on('change', function () {
-    if ($(this).val() != '') $(this).prev().text('Выбрано файлов: ' + $(this)[0].files.length);else $(this).prev().text('Выберите файлы');
+  $(".custom-file-input").on("change", function () {
+    if ($(this).val() != "") $(this).prev().text("Выбрано файлов: " + $(this)[0].files.length);else $(this).prev().text("Выберите файлы");
   });
-  $('.remove-form').on('submit', function (e) {
+  $(".remove-form").on("submit", function (e) {
     e.preventDefault();
     var formData = new FormData(this);
     $.ajax({
-      url: $(this).attr('action'),
-      type: 'POST',
+      url: $(this).attr("action"),
+      type: "POST",
       cache: false,
-      dataType: 'json',
+      dataType: "json",
       data: formData,
       processData: false,
       contentType: false,
@@ -194,7 +196,7 @@ $(function () {
       }
     });
   });
-  $('#preloader').fadeOut('slow', function () {
+  $("#preloader").fadeOut("slow", function () {
     $(this).remove();
   });
 });
@@ -249,7 +251,7 @@ var ready = function ready(callback) {
   if (document.readyState != "loading") callback();else document.addEventListener("DOMContentLoaded", callback);
 };
 ready(function () {
-  _vendor_plugins_ckeditor_js__WEBPACK_IMPORTED_MODULE_9___default().create(document.querySelector('.wysiwyg'))["catch"](function (error) {
+  _vendor_plugins_ckeditor_js__WEBPACK_IMPORTED_MODULE_9___default().create(document.querySelector(".wysiwyg"))["catch"](function (error) {
     //console.log(`error`, error)
   });
 });
@@ -264,7 +266,7 @@ window._ = (lodash__WEBPACK_IMPORTED_MODULE_10___default());
 
 
 window.axios = axios__WEBPACK_IMPORTED_MODULE_11__["default"];
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -275,14 +277,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.Pusher = (pusher_js__WEBPACK_IMPORTED_MODULE_13___default());
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_12__["default"]({
-  broadcaster: 'pusher',
-  key: '456',
+  broadcaster: "pusher",
+  key: "456",
   wsHost: window.location.hostname,
   wsPort: 6001,
-  cluster: 'mt1',
+  cluster: "mt1",
   forceTLS: false,
   disableStats: true,
-  enabledTransports: ['ws']
+  enabledTransports: ["ws"]
 });
 
 /***/ }),
@@ -301,25 +303,23 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_12__["default"]({
   // Start of use strict
 
   // Toggle the side navigation
-  $("#sidebarToggle, #sidebarToggleTop").on('click', function (e) {
+  $("#sidebarToggle, #sidebarToggleTop").on("click", function (e) {
     $("body").toggleClass("sidebar-toggled");
     $(".sidebar").toggleClass("toggled");
     if ($(".sidebar").hasClass("toggled")) {
-      $('.sidebar .collapse').collapse('hide');
+      $(".sidebar .collapse").collapse("hide");
     }
-    ;
   });
 
   // Close any open menu accordions when window is resized below 768px
-  $(window).on('resize', function () {
+  $(window).on("resize", function () {
     if ($(window).width() < 768) {
-      $('.sidebar .collapse').collapse('hide');
+      $(".sidebar .collapse").collapse("hide");
     }
-    ;
   });
 
   // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
-  $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function (e) {
+  $("body.fixed-nav .sidebar").on("mousewheel DOMMouseScroll wheel", function (e) {
     if ($(window).width() > 768) {
       var e0 = e.originalEvent,
         delta = e0.wheelDelta || -e0.detail;
@@ -329,21 +329,21 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_12__["default"]({
   });
 
   // Scroll to top button appear
-  $(document).on('scroll', function () {
+  $(document).on("scroll", function () {
     var scrollDistance = $(this).scrollTop();
     if (scrollDistance > 100) {
-      $('.scroll-to-top').fadeIn();
+      $(".scroll-to-top").fadeIn();
     } else {
-      $('.scroll-to-top').fadeOut();
+      $(".scroll-to-top").fadeOut();
     }
   });
 
   // Smooth scrolling using jQuery easing
-  $(document).on('click', 'a.scroll-to-top', function (e) {
+  $(document).on("click", "a.scroll-to-top", function (e) {
     var $anchor = $(this);
-    $('html, body').stop().animate({
-      scrollTop: $($anchor.attr('href')).offset().top
-    }, 1000, 'easeInOutExpo');
+    $("html, body").stop().animate({
+      scrollTop: $($anchor.attr("href")).offset().top
+    }, 1000, "easeInOutExpo");
     e.preventDefault();
   });
 })(jQuery); // End of use strict
@@ -374,13 +374,13 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_12__["default"]({
 $(function () {
   $('[data-toggle="popover"]').popover();
 });
-$('.popover-dismiss').popover({
-  trigger: 'focus'
+$(".popover-dismiss").popover({
+  trigger: "focus"
 });
 
 // Version in Sidebar
 
-var version = document.getElementById('version-ruangadmin');
+var version = document.getElementById("version-ruangadmin");
 version.innerHTML = "Версия 1.1.11 beta";
 
 /***/ }),

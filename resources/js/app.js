@@ -166,6 +166,12 @@ $(function () {
                     "/storage/avatar/" + data.avatar.url
                 );
             }
+            else {
+                $(".img-profile").attr(
+                    "src",
+                    "/img/boy.png"
+                );
+            }
             if (data.soundNotify != null) {
                 const sound = new Howl({
                     src: ["/storage/sound/" + data.soundNotify.url],

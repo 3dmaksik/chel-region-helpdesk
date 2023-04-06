@@ -1,6 +1,4 @@
 /node_modules
-/public/images
-/public/storage
 /storage/*.key
 /vendor
 .env
@@ -14,7 +12,6 @@ Homestead.yaml
 auth.json
 npm-debug.log
 yarn-error.log
-phpcs.xml
 /.fleet
 /.idea
 /.vscode

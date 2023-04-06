@@ -137,6 +137,11 @@ $(function () {
     success: function success(data) {
       if (data.avatar != null) {
         $(".img-profile").attr("src", "/storage/avatar/" + data.avatar.url);
+<<<<<<< HEAD
+=======
+      } else {
+        $(".img-profile").attr("src", "/img/boy.png");
+>>>>>>> develop
       }
       if (data.soundNotify != null) {
         var _sound = new Howl({
