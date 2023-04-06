@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('category_id');
             $table->foreign('category_id')->references('id')->on('category')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedTinyInteger('status_id')->default(2);
+            $table->unsignedTinyInteger('status_id')->default(1);
             $table->foreign('status_id')->references('id')->on('status')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedTinyInteger('priority_id')->default(1);

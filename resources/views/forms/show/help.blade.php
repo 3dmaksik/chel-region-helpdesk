@@ -80,7 +80,7 @@ col-lg-6
         <hr>
         @hasanyrole('superAdmin|admin|manager')
         @hasanyrole('superAdmin|admin')
-        @if ($item->status->id ==2)
+        @if ($item->status->id ==1)
         <div class="block">
             <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#acceptHelp"
                 data-id="{{$item->id}}">
@@ -96,7 +96,7 @@ col-lg-6
         </div>
         @endif
         @endhasanyrole
-        @if($item->status->id ==1)
+        @if($item->status->id ==2)
         <div class="block">
             <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#executeHelp"
                 data-id="{{$item->id}}">

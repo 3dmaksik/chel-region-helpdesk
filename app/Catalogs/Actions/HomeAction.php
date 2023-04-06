@@ -107,7 +107,7 @@ class HomeAction extends Action
         } else {
                 $this->data->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
         }
-        $this->item = Model::dontCache()->create((array) $this->data);
+        $this->item = Model::create((array) $this->data);
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));

@@ -27,7 +27,7 @@ class AllCatalogsDTO extends DTO
 
     public static function getAllRolesCollection(): Collection
     {
-        return collect(Role::all()->pluck('name'));
+        return collect(Role::orderBy('id','DESC')->get()->pluck('name'));
     }
 
     public static function getAllCategoryCollection(): Collection

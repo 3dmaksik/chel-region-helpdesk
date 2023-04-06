@@ -43,10 +43,14 @@ class SettingsAction extends Action
     public function editSettings(): User
     {
         $this->user = User::whereId(auth()->user()->id)->first();
-        $this->avatar = json_decode($this->user->avatar, true);
-        $this->soundNotify = json_decode($this->user->sound_notify, true);
-        $this->user->avatar = $this->avatar['url'];
-        $this->user->sound_notify = $this->soundNotify['url'];
+        if (isset($this->user->avatar)){
+            $this->avatar = json_decode($this->user->avatar, true);
+            $this->user->avatar = $this->avatar['url'];
+        }
+        if (isset($this->user->sound_notify)){
+            $this->soundNotify = json_decode($this->user->sound_notify, true);
+            $this->user->sound_notify = $this->soundNotify['url'];
+        }
 
         return $this->user;
     }

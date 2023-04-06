@@ -72,7 +72,7 @@ class HelpDTO extends DTO
         $help = Help::find($id);
         $dto->executor_id = $request['executor_id'];
         $dto->priority_id = $request['priority_id'];
-        $dto->status_id = 1;
+        $dto->status_id = 2;
         ($request['info']) ? $dto->info = $request['info'] : $dto->info = 'Информация отсутствует';
         $dto->calendar_accept = Carbon::now();
         $dto->calendar_warning = Carbon::now()->addHour($help->priority->warning_timer);
