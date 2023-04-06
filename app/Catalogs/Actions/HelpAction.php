@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Notification;
 
 class HelpAction extends Action
 {
-    const workHelp = 1;
+    const newHelp = 1;
 
-    const newHelp = 2;
+    const workHelp = 2;
 
     const successHelp = 3;
 
@@ -189,7 +189,7 @@ class HelpAction extends Action
 
     public function update(array $request, int $id): Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->data = HelpDTO::storeObjectRequest($request);
         $this->item->dontCache()->update((array) $this->data);
 
@@ -212,7 +212,7 @@ class HelpAction extends Action
         if ($this->item->status_id != self::newHelp) {
             throw new \Exception('Заявка уже принята или отклонена');
         }
-        $this->item->dontCache()->update((array) $this->data);
+        $this->item->update((array) $this->data);
 
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
@@ -236,7 +236,7 @@ class HelpAction extends Action
         if ($this->item->status_id != self::workHelp) {
             throw new \Exception('Заявка уже выполнена или отклонена');
         }
-        $this->item->dontCache()->update((array) $this->data);
+        $this->item->update((array) $this->data);
 
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
@@ -265,7 +265,7 @@ class HelpAction extends Action
             throw new \Exception('Заявка уже выполнена или отклонена');
         }
         $oldUserMod = User::findOrFail($this->item->executor_id);
-        $this->item->dontCache()->update((array) $this->data);
+        $this->item->update((array) $this->data);
 
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
@@ -290,7 +290,7 @@ class HelpAction extends Action
         if ($this->item->status_id != self::newHelp) {
             throw new \Exception('Заявка не может быть отклонена');
         }
-        $this->item->dontCache()->update((array) $this->data);
+        $this->item->update((array) $this->data);
 
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
@@ -314,7 +314,7 @@ class HelpAction extends Action
 
     public function updateView(int $id, bool $status = true): bool
     {
-        return Model::dontCache()->whereId($id)->update(['check_write' => $status]);
+        return Model::whereId($id)->update(['check_write' => $status]);
     }
 
     public function getNewPagesCount(): int
