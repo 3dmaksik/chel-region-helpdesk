@@ -22301,40 +22301,40 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 (function () {
   "use strict";
 
-  var CSRF_TOKEN = $('meta[name="_token"]').attr('content');
+  var CSRF_TOKEN = $('meta[name="_token"]').attr("content");
   $.ajaxSetup({
     headers: {
-      'X-CSRF-TOKEN': CSRF_TOKEN
+      "X-CSRF-TOKEN": CSRF_TOKEN
     }
   });
-  $('.select2-single').select2({
+  $(".select2-single").select2({
     language: "ru"
   });
-  $('.select2-single').find('.select2-single').addClass('color-white');
-  $('.custom-file-input').on('change', function () {
-    if ($(this).val() != '') $(this).prev().text('Выбрано файлов: ' + $(this)[0].files.length);else $(this).prev().text('Выберите файлы');
+  $(".select2-single").find(".select2-single").addClass("color-white");
+  $(".custom-file-input").on("change", function () {
+    if ($(this).val() != "") $(this).prev().text("Выбрано файлов: " + $(this)[0].files.length);else $(this).prev().text("Выберите файлы");
   });
   var loginForm = $(".user");
-  loginForm.on('submit', function (e) {
+  loginForm.on("submit", function (e) {
     e.preventDefault();
     var formData = loginForm.serialize();
     $.ajax({
-      url: $(this).attr('action'),
-      type: 'POST',
+      url: $(this).attr("action"),
+      type: "POST",
       cache: false,
-      dataType: 'json',
+      dataType: "json",
       data: formData,
       beforeSend: function beforeSend() {
-        $(loginForm).find('input, textarea, select, button[type=submit]').prop('disabled', true);
+        $(loginForm).find("input, textarea, select, button[type=submit]").prop("disabled", true);
       },
       error: function error(data) {
         $("#errors-list").empty().hide();
-        if (data.responseJSON.message == 'validation.exists' || data.responseJSON.message == 'auth.failed') {
+        if (data.responseJSON.message == "validation.exists" || data.responseJSON.message == "auth.failed") {
           $("#errors-list").append("<div class='alert alert-danger'>Неверный логин или пароль!</div>").slideDown(700);
         } else {
           $("#errors-list").append("<div class='alert alert-danger'>Ошибка сервера. Обратитесь к администратору. Наименование ошибки:" + data.responseJSON.message + "</div>").slideDown(700);
         }
-        $(loginForm).find('input, textarea, select, button[type=submit]').prop("disabled", false);
+        $(loginForm).find("input, textarea, select, button[type=submit]").prop("disabled", false);
       },
       success: function success(data) {
         window.location.href = data.intended;
@@ -22342,42 +22342,42 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     });
   });
   var helpForm = $("#formValidate");
-  helpForm.on('submit', function (e) {
+  helpForm.on("submit", function (e) {
     e.preventDefault();
     var formData = new FormData(this);
     $.each($("input[type=file]"), function (i, obj) {
       $.each(obj.files, function (j, file) {
-        formData.append('images[' + j + ']', file);
-        console.log('1');
+        formData.append("images[" + j + "]", file);
+        console.log("1");
       });
     });
     $.ajax({
-      url: $(this).attr('action'),
-      type: 'POST',
+      url: $(this).attr("action"),
+      type: "POST",
       cache: false,
-      dataType: 'json',
+      dataType: "json",
       data: formData,
       processData: false,
       contentType: false,
       timeout: 600000,
       beforeSend: function beforeSend() {
-        $(helpForm).find('input, textarea, select, button[type=submit]').prop('disabled', true);
+        $(helpForm).find("input, textarea, select, button[type=submit]").prop("disabled", true);
       },
       error: function error(data) {
         $("#error-message").empty().hide();
         $("#sent-message").empty().hide();
-        if (data.responseJSON.message == 'validation.required') {
+        if (data.responseJSON.message == "validation.required") {
           $("#error-message").append("<div class='alert alert-danger'>Ошибка. Неверно заполнены поля!</div>").slideDown(700);
         } else {
           $("#error-message").append("<div class='alert alert-danger'>Ошибка сервера. Обратитесь к администратору. Наименование ошибки:" + data.responseJSON.message + "</div>").slideDown(700);
         }
-        $(helpForm).find('input, textarea, select, button[type=submit]').prop("disabled", false);
+        $(helpForm).find("input, textarea, select, button[type=submit]").prop("disabled", false);
       },
       success: function success(data) {
         $("#error-message").empty().hide();
         $("#sent-message").empty().hide();
         $("#sent-message").append("<div class='alert alert-success'>Успех. Ваше сообщение отправлено и скоро будет рассмотрено!</div>").slideDown(700);
-        $(helpForm).find('input, textarea, select, button[type=submit]').prop("disabled", false);
+        $(helpForm).find("input, textarea, select, button[type=submit]").prop("disabled", false);
       }
     });
   });
@@ -22418,88 +22418,88 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
    * Easy on scroll event listener
    */
   var onscroll = function onscroll(el, listener) {
-    el.addEventListener('scroll', listener);
+    el.addEventListener("scroll", listener);
   };
 
   /**
    * Scrolls to an element with header offset
    */
   var scrollto = function scrollto(el) {
-    var header = select('#header');
+    var header = select("#header");
     var offset = header.offsetHeight;
-    if (!header.classList.contains('header-scrolled')) {
+    if (!header.classList.contains("header-scrolled")) {
       offset -= 16;
     }
     var elementPos = select(el).offsetTop;
     window.scrollTo({
       top: elementPos - offset,
-      behavior: 'smooth'
+      behavior: "smooth"
     });
   };
 
   /**
    * Toggle .header-scrolled class to #header when page is scrolled
    */
-  var selectHeader = select('#header');
+  var selectHeader = select("#header");
   if (selectHeader) {
     var headerScrolled = function headerScrolled() {
       if (window.scrollY > 100) {
-        selectHeader.classList.add('header-scrolled');
+        selectHeader.classList.add("header-scrolled");
       } else {
-        selectHeader.classList.remove('header-scrolled');
+        selectHeader.classList.remove("header-scrolled");
       }
     };
-    window.addEventListener('load', headerScrolled);
+    window.addEventListener("load", headerScrolled);
     onscroll(document, headerScrolled);
   }
 
   /**
    * Back to top button
    */
-  var backtotop = select('.back-to-top');
+  var backtotop = select(".back-to-top");
   if (backtotop) {
     var toggleBacktotop = function toggleBacktotop() {
       if (window.scrollY > 100) {
-        backtotop.classList.add('active');
+        backtotop.classList.add("active");
       } else {
-        backtotop.classList.remove('active');
+        backtotop.classList.remove("active");
       }
     };
-    window.addEventListener('load', toggleBacktotop);
+    window.addEventListener("load", toggleBacktotop);
     onscroll(document, toggleBacktotop);
   }
 
   /**
    * Mobile nav toggle
    */
-  on('click', '.mobile-nav-toggle', function (e) {
-    select('#navbar').classList.toggle('navbar-mobile');
-    this.classList.toggle('bi-list');
-    this.classList.toggle('bi-x');
+  on("click", ".mobile-nav-toggle", function (e) {
+    select("#navbar").classList.toggle("navbar-mobile");
+    this.classList.toggle("bi-list");
+    this.classList.toggle("bi-x");
   });
 
   /**
    * Mobile nav dropdowns activate
    */
-  on('click', '.navbar .dropdown > a', function (e) {
-    if (select('#navbar').classList.contains('navbar-mobile')) {
+  on("click", ".navbar .dropdown > a", function (e) {
+    if (select("#navbar").classList.contains("navbar-mobile")) {
       e.preventDefault();
-      this.nextElementSibling.classList.toggle('dropdown-active');
+      this.nextElementSibling.classList.toggle("dropdown-active");
     }
   }, true);
 
   /**
    * Scrool with ofset on links with a class name .scrollto
    */
-  on('click', '.scrollto', function (e) {
+  on("click", ".scrollto", function (e) {
     if (select(this.hash)) {
       e.preventDefault();
-      var navbar = select('#navbar');
-      if (navbar.classList.contains('navbar-mobile')) {
-        navbar.classList.remove('navbar-mobile');
-        var navbarToggle = select('.mobile-nav-toggle');
-        navbarToggle.classList.toggle('bi-list');
-        navbarToggle.classList.toggle('bi-x');
+      var navbar = select("#navbar");
+      if (navbar.classList.contains("navbar-mobile")) {
+        navbar.classList.remove("navbar-mobile");
+        var navbarToggle = select(".mobile-nav-toggle");
+        navbarToggle.classList.toggle("bi-list");
+        navbarToggle.classList.toggle("bi-x");
       }
       scrollto(this.hash);
     }
@@ -22508,7 +22508,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   /**
    * Scroll with ofset on page load with hash links in the url
    */
-  window.addEventListener('load', function () {
+  window.addEventListener("load", function () {
     if (window.location.hash) {
       if (select(window.location.hash)) {
         scrollto(window.location.hash);
@@ -22519,10 +22519,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   /**
    * Animation on scroll
    */
-  window.addEventListener('load', function () {
+  window.addEventListener("load", function () {
     _vendor_aos_js_aos_js__WEBPACK_IMPORTED_MODULE_0___default().init({
       duration: 2000,
-      easing: 'ease-in-out',
+      easing: "ease-in-out",
       once: true,
       mirror: true
     });

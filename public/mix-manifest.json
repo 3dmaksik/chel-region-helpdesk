@@ -1,10 +1,10 @@
 {
-    "/js/app.js": "/js/app.js?id=ecaf4518e8da4a3d94b76d5ddbe3ab90",
-    "/js/estartup.js": "/js/estartup.js?id=b3cd47d3d1de2c40c536579aa0a80a57",
-    "/css/main.css": "/css/main.css?id=def58e1494468abf29cb5161c77ffc23",
-    "/css/estartup.css": "/css/estartup.css?id=14a47035eb55f2e8a68308e9bfe78bd3",
-    "/js/app.min.js": "/js/app.min.js?id=ecaf4518e8da4a3d94b76d5ddbe3ab90",
-    "/css/main.min.css": "/css/main.min.css?id=def58e1494468abf29cb5161c77ffc23",
+    "/js/app.js": "/js/app.js?id=491e0221b8a38186a39e6417edf3300e",
+    "/js/estartup.js": "/js/estartup.js?id=d2af555afd6c2ffc1a5a47016a0fa738",
+    "/css/main.css": "/css/main.css?id=3e457452cc7bd02acce044234125e341",
+    "/css/estartup.css": "/css/estartup.css?id=f4baddad1359ea773c15922ab6b0e88c",
+    "/js/app.min.js": "/js/app.min.js?id=491e0221b8a38186a39e6417edf3300e",
+    "/css/main.min.css": "/css/main.min.css?id=3e457452cc7bd02acce044234125e341",
     "/img/boy.png": "/img/boy.png?id=7e36bcdadaf77042e44f4ac133650ba1",
     "/img/error.svg": "/img/error.svg?id=ad8144cda6b5d3c749577e5fe31e97d2",
     "/img/girl.png": "/img/girl.png?id=49f07a94854a2cbbce71c76ba99449b6",
@@ -16,10 +16,10 @@
     "/img/logo/logo2.png": "/img/logo/logo2.png?id=b60aaa957848930978dae5c0322a7dbb",
     "/img/man.png": "/img/man.png?id=9088840606f7f0d17e3e9dd0b90484db",
     "/img/screenshot/ss2.png": "/img/screenshot/ss2.png?id=c3add8be0e8412e4c1e4d7268b0a3aa7",
+    "/img/spinner.gif": "/img/spinner.gif?id=747cc151b8beb0a9234d5537b7ec7b2d",
     "/img/think.svg": "/img/think.svg?id=a0f3643b36bfe79fb3f6d93a48e61497",
     "/img/undraw_posting_photo.svg": "/img/undraw_posting_photo.svg?id=96a2c3f036f07f962f82d4d9e4b72ae0",
     "/sound/sound.ogg": "/sound/sound.ogg?id=a0786fecb67e1c1048a9c2044001dfae",
-    "/js/estartup.min.js": "/js/estartup.min.js?id=b3cd47d3d1de2c40c536579aa0a80a57",
-    "/css/estartup.min.css": "/css/estartup.min.css?id=14a47035eb55f2e8a68308e9bfe78bd3",
-    "/img/ring.gif": "/img/ring.gif?id=306da0b540a47280632869920a868ffd"
+    "/js/estartup.min.js": "/js/estartup.min.js?id=d2af555afd6c2ffc1a5a47016a0fa738",
+    "/css/estartup.min.css": "/css/estartup.min.css?id=f4baddad1359ea773c15922ab6b0e88c"
 }
