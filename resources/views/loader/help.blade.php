@@ -42,7 +42,7 @@
                         <td class="badge-table"><a href="{{ route('search.cabinet',$item->user->cabinet->id) }}">{{
                                 $item->user->cabinet->description }}</a></td>
                         <td class="badge-table"><a href="{{ route('search.work',$item->user_id) }}">{{
-                                $item->user->lastname }} {{ $item->user->firstname }} {{ $item->user->patronymic }}</a>
+                                $item->user->lastname }} <br/> {{ $item->user->firstname }} <br/> {{ $item->user->patronymic }}</a>
                         </td>
                         <td>{{ date( 'd.m.Y H:i', strtotime($item->calendar_request))}}</td>
                         <td>

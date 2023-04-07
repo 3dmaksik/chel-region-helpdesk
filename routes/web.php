@@ -38,8 +38,6 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('helps/all', 'index')->name('index');
             Route::post('helps/all', 'getIndex')->name('index');
-            Route::get('helps/new', 'new')->name('new');
-            Route::post('helps/new', 'getNew')->name('new');
         });
         Route::controller(CabinetController::class)
             ->prefix('admin/cabinet')
@@ -88,6 +86,8 @@ Route::middleware('auth')->group(function () {
         ->prefix('admin')
         ->as('help.')
         ->group(function () {
+            Route::get('helps/new', 'new')->name('new');
+            Route::post('helps/new', 'getNew')->name('new');
             Route::get('create', 'create')->name('create');
             Route::get('helps/dismiss', 'dismiss')->name('dismiss');
             Route::post('helps/dismiss', 'getDismiss')->name('dismiss');
