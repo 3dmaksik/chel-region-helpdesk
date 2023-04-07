@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "/js/app.js": "/js/app.js",
     "/js/estartup.js": "/js/estartup.js",
     "/css/main.css": "/css/main.css",
@@ -12,6 +13,14 @@
 >>>>>>> develop
     "/js/app.min.js": "/js/app.min.js?id=491e0221b8a38186a39e6417edf3300e",
     "/css/main.min.css": "/css/main.min.css?id=3e457452cc7bd02acce044234125e341",
+=======
+    "/js/app.js": "/js/app.js?id=6a9767e57dba1142b3aab8c3c6a49ea6",
+    "/js/estartup.js": "/js/estartup.js?id=2ca56586c305d1113910f0d1076b1e58",
+    "/css/main.css": "/css/main.css?id=857e958b7492db7f35592d6cab9ce58c",
+    "/css/estartup.css": "/css/estartup.css?id=78d50dcf6529e87f4e125e895db67030",
+    "/js/app.min.js": "/js/app.min.js?id=6a9767e57dba1142b3aab8c3c6a49ea6",
+    "/css/main.min.css": "/css/main.min.css?id=857e958b7492db7f35592d6cab9ce58c",
+>>>>>>> develop
     "/img/boy.png": "/img/boy.png?id=7e36bcdadaf77042e44f4ac133650ba1",
     "/img/error.svg": "/img/error.svg?id=ad8144cda6b5d3c749577e5fe31e97d2",
     "/img/girl.png": "/img/girl.png?id=49f07a94854a2cbbce71c76ba99449b6",
@@ -27,6 +36,6 @@
     "/img/think.svg": "/img/think.svg?id=a0f3643b36bfe79fb3f6d93a48e61497",
     "/img/undraw_posting_photo.svg": "/img/undraw_posting_photo.svg?id=96a2c3f036f07f962f82d4d9e4b72ae0",
     "/sound/sound.ogg": "/sound/sound.ogg?id=a0786fecb67e1c1048a9c2044001dfae",
-    "/js/estartup.min.js": "/js/estartup.min.js?id=d2af555afd6c2ffc1a5a47016a0fa738",
-    "/css/estartup.min.css": "/css/estartup.min.css?id=f4baddad1359ea773c15922ab6b0e88c"
+    "/js/estartup.min.js": "/js/estartup.min.js?id=2ca56586c305d1113910f0d1076b1e58",
+    "/css/estartup.min.css": "/css/estartup.min.css?id=78d50dcf6529e87f4e125e895db67030"
 }

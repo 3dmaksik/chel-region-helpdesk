@@ -61,10 +61,10 @@ col-lg-6
                 <label for="select2-cabinet">Выберите кабинет</label>
                 <select class="select2-single form-control" name="cabinet_id" id="select2-cabinet">
                     @foreach( $items['cabinets'] as $cabinet)
-                    <option @if ($cabinet->id==$items['user']->cabinet->id) selected @endif value="@if
-                        ($cabinet->id==$items['user']->cabinet->id) {{ $items['user']->cabinet->id }} @else {{
-                        $cabinet->id }}@endif">@if ($cabinet->id==$items['user']->cabinet->id) {{
-                        $items['user']->cabinet->description }} @else {{ $cabinet->description }}@endif</option>
+                    <option @if ($cabinet->id==$items['user']->cabinet->id) selected @endif
+                        value="@if($cabinet->id==$items['user']->cabinet->id) {{ $items['user']->cabinet->id }}
+                        @else {{$cabinet->id }}@endif">@if ($cabinet->id==$items['user']->cabinet->id)
+                        {{$items['user']->cabinet->description }} @else {{ $cabinet->description }}@endif</option>
                     @endforeach
                 </select>
                 <small id="textCabinet" class="form-text text-muted">Выберите кабинет сотрудника</small>
@@ -74,8 +74,8 @@ col-lg-6
                 <select class="select2-single form-control" name="role" id="select2-role">
                     @foreach( $items['roles'] as $item)
                     <option @if ($items['role']==$item) selected @endif
-                        value="@if ($items['role']==$item) {{ $items['role'] }} @else {{ $item }}@endif">@if
-                        ($items['role']==$item) {{ $items['role'] }} @else {{ $item }}@endif</option>
+                        value="@if ($items['role']==$item) {{ $items['role'] }} @else {{ $item }}@endif">
+                        @if ($items['role']==$item) {{ $items['role'] }} @else {{ $item }}@endif</option>
                     @endforeach
                 </select>
                 <small id="textCabinet" class="form-text text-muted">Выберите роль пользователя</small>

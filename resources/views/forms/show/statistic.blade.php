@@ -35,8 +35,7 @@ col-lg-4
         @endif
         <p class="text-primary">Самый отклоняемый сотрудник</p>
         @if ($data['error_work'] !=null)
-        <p>{{ $data['error_work']->lastname }} {{ $data['error_work']->firstname }} {{ $data['error_work']->patronymic
-            }}</p>
+        <p>{{ $data['error_work']->lastname }} {{ $data['error_work']->firstname }} {{ $data['error_work']->patronymic}}</p>
         @else
         <p>Отклоняемый сотрудник отсуствует</p>
         @endif

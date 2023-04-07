@@ -34,8 +34,7 @@ col-lg-12
                         @foreach( $items['data']['category'] as $category)
                         <option
                             value="@if ($category->id==$items['item']->category->id) {{ $items['item']->category->id }} @else {{ $category->id }}@endif">
-                            @if ($category->id==$items['item']->category->id) {{ $items['item']->category->description
-                            }} @else {{ $category->description }}@endif</option>
+                            @if ($category->id==$items['item']->category->id) {{ $items['item']->category->description}} @else {{ $category->description }}@endif</option>
                         @endforeach
                     </select>
                 </div>
@@ -46,8 +45,8 @@ col-lg-12
                         <option
                             value="@if ($user->id==$items['item']->user->id) {{ $items['item']->user->id }} @else {{ $user->id }}@endif">
                             @if ($user->id==$items['item']->user->id) {{ $items['item']->user->lastname }} {{
-                            $items['item']->user->firstname }} {{ $items['item']->user->patronymic }} @else {{
-                            $user->lastname }} {{ $user->firstname }} {{ $user->patronymic }}@endif</option>
+                            $items['item']->user->firstname }} {{ $items['item']->user->patronymic }}
+                            @else {{ $user->lastname }} {{ $user->firstname }} {{ $user->patronymic }}@endif</option>
                         @endforeach
                     </select>
                 </div>
@@ -57,8 +56,8 @@ col-lg-12
                         @foreach( $items['data']['priority'] as $priority)
                         <option
                             value="@if ($priority->id==$items['item']->priority->id) {{ $items['item']->priority->id }} @else {{ $priority->id }}@endif">
-                            @if ($priority->id==$items['item']->priority->id) {{ $items['item']->priority->description
-                            }} @else {{ $priority->description }}@endif</option>
+                            @if ($priority->id==$items['item']->priority->id) {{ $items['item']->priority->description}}
+                            @else {{ $priority->description }}@endif</option>
                         @endforeach
                     </select>
                 </div>

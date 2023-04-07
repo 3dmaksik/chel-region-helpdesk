@@ -178,6 +178,13 @@ $(function () {
                     html5: true,
                 });
             }
+            else
+            {
+                const sound = new Howl({
+                    src: ["/sound/sound.ogg"],
+                    html5: true,
+                });
+            }
         },
     });
 
