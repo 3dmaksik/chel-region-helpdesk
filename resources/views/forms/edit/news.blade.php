@@ -59,4 +59,5 @@ col-lg-12
         </form>
     </div>
 </div>
+<script src="{{ mix('/js/editor.js') }}"></script>
 @endsection

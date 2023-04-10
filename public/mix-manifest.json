@@ -1,6 +1,7 @@
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "/js/app.js": "/js/app.js",
     "/js/estartup.js": "/js/estartup.js",
     "/css/main.css": "/css/main.css",
@@ -15,10 +16,14 @@
     "/css/main.min.css": "/css/main.min.css?id=3e457452cc7bd02acce044234125e341",
 =======
     "/js/app.js": "/js/app.js?id=6a9767e57dba1142b3aab8c3c6a49ea6",
+=======
+    "/js/app.js": "/js/app.js?id=d246dee7e0ef8384fb9b0bcac48dcf1c",
+>>>>>>> develop
     "/js/estartup.js": "/js/estartup.js?id=2ca56586c305d1113910f0d1076b1e58",
+    "/js/editor.js": "/js/editor.js?id=a3752ba6d70537e7126858a45998f20e",
     "/css/main.css": "/css/main.css?id=857e958b7492db7f35592d6cab9ce58c",
     "/css/estartup.css": "/css/estartup.css?id=78d50dcf6529e87f4e125e895db67030",
-    "/js/app.min.js": "/js/app.min.js?id=6a9767e57dba1142b3aab8c3c6a49ea6",
+    "/js/app.min.js": "/js/app.min.js?id=d246dee7e0ef8384fb9b0bcac48dcf1c",
     "/css/main.min.css": "/css/main.min.css?id=857e958b7492db7f35592d6cab9ce58c",
 >>>>>>> develop
     "/img/boy.png": "/img/boy.png?id=7e36bcdadaf77042e44f4ac133650ba1",
@@ -37,5 +42,6 @@
     "/img/undraw_posting_photo.svg": "/img/undraw_posting_photo.svg?id=96a2c3f036f07f962f82d4d9e4b72ae0",
     "/sound/sound.ogg": "/sound/sound.ogg?id=a0786fecb67e1c1048a9c2044001dfae",
     "/js/estartup.min.js": "/js/estartup.min.js?id=2ca56586c305d1113910f0d1076b1e58",
-    "/css/estartup.min.css": "/css/estartup.min.css?id=78d50dcf6529e87f4e125e895db67030"
+    "/css/estartup.min.css": "/css/estartup.min.css?id=78d50dcf6529e87f4e125e895db67030",
+    "/js/editor.min.js": "/js/editor.min.js?id=a3752ba6d70537e7126858a45998f20e"
 }

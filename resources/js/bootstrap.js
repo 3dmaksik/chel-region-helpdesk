@@ -8,17 +8,6 @@ import "../vendor/fancybox-master/dist/jquery.fancybox.min.js";
 import "./ruang-admin.js";
 import "jquery-datetimepicker";
 
-import ClassicEditor from "../vendor/plugins/ckeditor.js";
-var ready = (callback) => {
-    if (document.readyState != "loading") callback();
-    else document.addEventListener("DOMContentLoaded", callback);
-};
-
-ready(() => {
-    ClassicEditor.create(document.querySelector(".wysiwyg")).catch((error) => {
-        //console.log(`error`, error)
-    });
-});
 import _ from "lodash";
 window._ = _;
 

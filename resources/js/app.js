@@ -160,13 +160,7 @@ $(function () {
         dataType: "json",
         error: function (data) {},
         success: function (data) {
-            if (data.avatar != null) {
-                $(".img-profile").attr(
-                    "src",
-                    "/storage/avatar/" + data.avatar.url
-                );
-            }
-            else {
+            if (data.avatar == null) {
                 $(".img-profile").attr(
                     "src",
                     "/img/boy.png"

@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Notifications\HelpNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Collection as SimpleCollection;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Notification;
 
 class HelpAction extends Action
@@ -40,6 +41,8 @@ class HelpAction extends Action
     private array $helps;
 
     private int $total;
+
+    private int $count;
 
     public function getAllCatalogs(): Collection
     {
@@ -319,7 +322,14 @@ class HelpAction extends Action
 
     public function getNewPagesCount(): int
     {
-         return Model::dontCache()->where('status_id', self::newHelp)->count();
+        if (auth()->user()->hasAnyRole(['admin', 'superAdmin']) == true) {
+           $this->count = Model::dontCache()->where('status_id', self::newHelp)->count();
+           Cookie::queue('newCount', $this->count);
+        } else {
+            $this->count = 0;
+        }
+
+         return $this->count;
     }
 
     public function getNowPagesCount(): int

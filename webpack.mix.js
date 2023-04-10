@@ -31,4 +31,8 @@ mix.js('resources/js/estartup.js', 'public/js')
     .sourceMaps(productionSourceMaps, 'source-map')
     .postCss('resources/css/estartup.css', 'public/css')
     .version()
-    .minify(['public/js/estartup.js','public/css/estartup.css']);
+    .minify(['public/js/estartup.js', 'public/css/estartup.css']);
+mix.js('resources/js/editor.js', 'public/js')
+    .sourceMaps(productionSourceMaps, 'source-map')
+    .version()
+    .minify(['public/js/editor.js']);
