@@ -3,7 +3,7 @@
     <a class="sidebar-brand d-flex align-items-center justify-content-center"
         href="{{ route(config('constants.news.index')) }}">
         <div class="sidebar-brand-icon"> <img src="/img/logo/logo2.png"> </div>
-        <div class="sidebar-brand-text mx-3">Главные заявки</div>
+        <div class="sidebar-brand-text mx-3">Журнал заявок</div>
     </a>
     <hr class="sidebar-divider my-0">
     <li id="newsSidebar">

@@ -29,7 +29,7 @@
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 @hasanyrole('superAdmin|admin')
-                <span id="counter" class="badge badge-danger badge-counter"></span>
+                <span id="counter" class="badge badge-danger badge-counter">@if(Cookie::get('newCount') != null) {{ Cookie::get('newCount') }} @endif</span>
                 @endhasanyrole
             </a>
             @hasanyrole('superAdmin|admin|manager')
@@ -64,9 +64,8 @@
         <div class="topbar-divider d-none d-sm-block"></div>
         <li class="nav-item dropdown no-arrow"> <a class="nav-link dropdown-toggle" href="#" id="userDropdown"
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="/img/spinner.gif" style="max-width: 60px">
-                <span class="name=profile ml-2 d-none d-lg-inline text-white small">{{ auth()->user()->firstname
-                    }}</span>
+                <img class="img-profile rounded-circle" src="@if(Cookie::get('avatar') != null)/storage/avatar/{{Cookie::get('avatar')}}@else/img/spinner.gif @endif" style="max-width: 60px">
+                <span class="name=profile ml-2 d-none d-lg-inline text-white small">{{ auth()->user()->firstname}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown"> <a
                     class="dropdown-item" href="{{ route(config('constants.settings.edit')) }}">
