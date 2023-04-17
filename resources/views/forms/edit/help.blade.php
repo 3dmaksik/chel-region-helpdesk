@@ -25,9 +25,6 @@ col-lg-12
         <form id="formValidate" method="POST" action="{{ route(config('constants.help.update'),$items['item']->id) }}">
             @method('PATCH')
             <div class="form-group">
-                <div class="text-center">
-                    <div id="sent-message-send" style="display: none"> </div>
-                </div>
                 <div class="form-group">
                     <label for="select2-category">Изменить категорию</label>
                     <select class="select2-single form-control" name="category_id" id="select2-category">

@@ -11,9 +11,6 @@ col-lg-6
         <form id="formValidatePassword" method="POST" action="{{ route(config('constants.settings.updatePassword')) }}">
             @method('PATCH')
             <div class="form-group">
-                <div class="text-center">
-                    <div id="sent-message-upPass" style="display: none"> </div>
-                </div>
                 <label for="">Введите существующий пароль</label>
                 <input type="password" class="form-control" name="current_password" required
                     autocomplete="current_password" name="current_password">

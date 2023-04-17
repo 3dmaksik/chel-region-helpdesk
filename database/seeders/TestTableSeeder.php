@@ -24,10 +24,10 @@ class TestTableSeeder extends Seeder
     {
         $roles = ['user', 'manager', 'admin', 'superAdmin'];
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        for ($i = 2; $i <= 250; $i++) {
+        for ($i = 2; $i <= 1000; $i++) {
             Cabinet::flushQueryCache();
             $last = Cabinet::select('id')->orderBy('id', 'desc')->first();
-            if ($last->id == 250) {
+            if ($last->id == 1000) {
             break;
             }
             DB::table('cabinet')->insert([
@@ -52,13 +52,13 @@ class TestTableSeeder extends Seeder
                 'danger_timer' => mt_rand($warning_timer + 1, 99999),
             ]);
         }
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 1000; $i++) {
             DB::table('category')->insert([
                 'description' => substr(str_shuffle($permitted_chars), 0, 16),
             ]);
             Category::flushQueryCache();
         }
-        for ($i = 1; $i <= 1000; $i++) {
+        for ($i = 1; $i <= 5000; $i++) {
             $role_num = mt_rand(0, 3);
             User::create([
                 'name' => substr(str_shuffle($permitted_chars), 0, 16),

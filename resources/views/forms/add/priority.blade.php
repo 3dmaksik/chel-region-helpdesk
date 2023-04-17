@@ -24,9 +24,6 @@ col-lg-4
     <div class="card-body">
         <form id="formValidate" method="POST" action="{{ route(config('constants.priority.store')) }}">
             <div class="form-group">
-                <div class="text-center">
-                    <div id="sent-message-send" style="display: none"> </div>
-                </div>
                 <label for="">Название</label>
                 <input type="text" name="description" value="" class="form-control" id="description"
                     aria-describedby="textHelp" placeholder="Средний" autocomplete="off">

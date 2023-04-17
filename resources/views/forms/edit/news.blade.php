@@ -25,9 +25,6 @@ col-lg-12
         <form id="formValidate" method="POST" action="{{ route(config('constants.news.update'),$item->id) }}">
             @method('PATCH')
             <div class="form-group">
-                <div class="text-center">
-                    <div id="sent-message-send" style="display: none"> </div>
-                </div>
                 <label for="">Название</label>
                 <input type="text" name="name" value="{{ $item->name }}" class="form-control" id="name"
                     aria-describedby="textName" placeholder="Название" autocomplete="off">

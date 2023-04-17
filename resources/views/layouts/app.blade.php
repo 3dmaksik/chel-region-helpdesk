@@ -9,6 +9,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 @include('components.topbar')
+                @include('components.alert')
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
                     @include('components.breadcrumbs')

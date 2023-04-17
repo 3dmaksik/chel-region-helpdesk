@@ -24,9 +24,6 @@ col-lg-6
     <div class="card-body">
         <form id="formValidate" method="POST" action="{{ route(config('constants.users.store')) }}">
             <div class="form-group">
-                <div class="text-center">
-                    <div id="sent-message-send" style="display: none"> </div>
-                </div>
                 <label for="">Логин</label>
                 <input type="text" name="name" value="" class="form-control" id="name" aria-describedby="textName"
                     autocomplete="off">

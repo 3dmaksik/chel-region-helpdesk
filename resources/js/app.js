@@ -36,16 +36,16 @@ $(function () {
         }
     );
 
-    sendAllForm(sendForm, "send");
-    sendAllForm(acceptForm, "accept");
-    sendAllForm(executeForm, "execute");
-    sendAllForm(redefineForm, "redefine");
-    sendAllForm(rejectForm, "reject");
-    sendAllForm(updatePasswordForm, "upPass");
-    sendAllForm(updateSettingsForm, "upSettings");
+    sendAllForm(sendForm);
+    sendAllForm(acceptForm);
+    sendAllForm(executeForm);
+    sendAllForm(redefineForm);
+    sendAllForm(rejectForm);
+    sendAllForm(updatePasswordForm);
+    sendAllForm(updateSettingsForm);
     newCount();
     nowCount();
-    function sendAllForm(form, inputMessage) {
+    function sendAllForm(form) {
         form.on("submit", function (e) {
             e.preventDefault();
             var formData = new FormData(this);
@@ -69,51 +69,72 @@ $(function () {
                         .prop("disabled", true);
                 },
                 error: function (data) {
-                    $("#sent-message-" + inputMessage)
-                        .hide(1500)
-                        .empty();
                     if (data.responseJSON.message == "validation.required") {
-                        $("#sent-message-" + inputMessage)
-                            .append(
-                                "<div class='alert alert-danger'>Ошибка. Неверно заполнены поля!</div>"
-                            )
-                            .slideDown(1500);
+                        $(".alert-danger-title")
+                            .text(
+                                " Ошибка"
+                        );
+                        $(".alert-danger-text")
+                        .text(
+                            "Неверно заполнены поля!"
+                        );
+                        $(".base-alert-danger").fadeIn(2000);
+                        setTimeout(function(){
+                          $(".base-alert-danger").fadeOut(2000);
+                        }, 4500);
                     } else if (
                         data.responseJSON.message == "validation.unique"
                     ) {
-                        $("#sent-message-" + inputMessage)
-                            .append(
-                                "<div class='alert alert-danger'>Ошибка. Данные уже существуют!</div>"
-                            )
-                            .slideDown(1500);
+                        $(".alert-danger-title")
+                            .text(
+                                " Ошибка"
+                        );
+                        $(".alert-danger-text")
+                        .text(
+                            "Данные уже существуют!"
+                        );
+                        $(".base-alert-danger").fadeIn(2000);
+                        setTimeout(function(){
+                          $(".base-alert-danger").fadeOut(2000);
+                        }, 4500);
                     } else {
-                        $("#sent-message-" + inputMessage)
-                            .append(
-                                "<div class='alert alert-danger'>Ошибка сервера. Обратитесь к администратору. Наименование ошибки:" +
-                                    data.responseJSON.message +
-                                    "</div>"
-                            )
-                            .slideDown(1500);
+                        $(".alert-danger-title")
+                            .text(
+                                " Ошибка"
+                        );
+                        $(".alert-danger-text")
+                        .text(
+                            "Ошибка сервера. Обратитесь к администратору. Наименование ошибки:" +
+                            data.responseJSON.message
+                        );
+                        $(".base-alert-danger").fadeIn(2000);
+                        setTimeout(function(){
+                          $(".base-alert-danger").fadeOut(2000);
+                        }, 4500);
                     }
                     $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                 },
                 success: function (data) {
-                    $("#sent-message-" + inputMessage)
-                        .hide(1500)
-                        .empty();
-                    $("#sent-message-" + inputMessage)
-                        .append(
-                            "<div class='alert alert-success'>Запись успешно обработана!</div>"
-                        )
-                        .slideDown(1500);
+                    $(".alert-success-title")
+                            .text(
+                                " Успех"
+                        );
+                        $(".alert-success-text")
+                        .text(
+                            "Запись успешно обработана!"
+                        );
+                        $(".base-alert-success").fadeIn(2000);
+                        setTimeout(function(){
+                          $(".base-alert-success").fadeOut(2000);
+                        }, 4500);
                     $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                     setTimeout(function () {
-                        location.reload();
-                    }, 3000);
+                        $(form).trigger("reset");
+                    }, 5000);
                 },
             });
         });

@@ -25,9 +25,6 @@ col-lg-12
         <form id="formValidate" enctype="multipart/form-data" method="POST"
             action="{{ route(config('constants.help.store')) }}">
             <div class="form-group">
-                <div class="text-center">
-                    <div id="sent-message-send" style="display: none"> </div>
-                </div>
                 <label for="select2-category">Выберите категорию</label>
                 <select class="select2-single form-control" name="category_id" id="select2-category">
                     @foreach( $items['category'] as $item)

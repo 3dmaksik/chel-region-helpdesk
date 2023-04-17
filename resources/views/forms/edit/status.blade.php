@@ -25,9 +25,6 @@ col-lg-4
         <form id="formValidate" method="POST" action="{{ route(config('constants.status.update'),$item->id) }}">
             @method('PATCH')
             <div class="form-group">
-                <div class="text-center">
-                    <div id="sent-message-send" style="display: none"> </div>
-                </div>
                 <label for="">Наименование</label>
                 <input type="text" name="description" value="{{ $item->description }}"
                     class="form-control @error('description') is-invalid @enderror" id="description"

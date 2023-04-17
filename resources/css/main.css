@@ -81,3 +81,12 @@
 .ck-editor__editable_inline {
     min-height: 300px;
 }
+.base-alert-success, .base-alert-danger{
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: 70px;
+    z-index:3;
+}
