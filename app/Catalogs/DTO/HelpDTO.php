@@ -4,114 +4,66 @@ namespace App\Catalogs\DTO;
 
 use App\Base\DTO\DTO;
 use App\Base\Helpers\StoreFilesHelper;
-use App\Models\Help;
+use App\Base\Requests\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Collection as SimpleCollection;
 
-class HelpDTO extends DTO
+final class HelpDTO extends DTO
 {
-    public int $category_id;
+    public ?int $category_id;
 
-    public int $executor_id;
+    public ?int $executor_id;
 
-    public int $priority_id;
+    public ?int $priority_id;
 
-    public int $user_id;
+    public ?int $user_id;
 
-    public int $status_id;
+    public ?int $status_id;
 
-    public string $description_long;
+    public ?string $description_long;
 
-    public string $info;
+    public ?string $info;
 
-    public string $info_final;
+    public ?string $info_final;
 
-    public string $images;
+    public ?string $images;
 
-    public string $images_final;
+    public ?string $images_final;
 
-    public string $app_number;
+    public ?string $app_number;
 
-    public Carbon $calendar_warning;
+    public ?Carbon $calendar_warning;
 
-    public Carbon $calendar_final;
+    public ?Carbon $calendar_final;
 
-    public Carbon $calendar_accept;
+    public ?Carbon $calendar_accept;
 
-    public Carbon $calendar_execution;
+    public ?Carbon $calendar_execution;
 
-    public Carbon $calendar_request;
+    public ?Carbon $calendar_request;
 
-    public bool $check_write;
+    public ?bool $check_write;
 
-    public static function storeObjectRequest(array $request): self
+    public static function storeObjectRequest(Request $request, ?SimpleCollection $options = null): self
     {
         $dto = new self();
-        if (isset($request['category_id'])) {
-            $dto->category_id = $request['category_id'];
-        }
-        if (isset($request['priority_id'])) {
-            $dto->priority_id = $request['priority_id'];
-        }
-        if (isset($request['user_id'])) {
-            $dto->user_id = $request['user_id'];
-        }
-        if (isset($request['description_long'])) {
-            $dto->description_long = $request['description_long'];
-        }
-        if (isset($request['images'])) {
-            $dto->images = json_encode(StoreFilesHelper::createFile($request['images'], 'images', 1920, 1080));
-        }
-        $dto->calendar_request = Carbon::now();
-
-        return $dto;
-    }
-
-    public static function acceptObjectRequest(array $request, int $id): self
-    {
-        $dto = new self();
-        $help = Help::find($id);
-        $dto->executor_id = $request['executor_id'];
-        $dto->priority_id = $request['priority_id'];
-        $dto->status_id = 2;
-        ($request['info']) ? $dto->info = $request['info'] : $dto->info = 'Информация отсутствует';
-        $dto->calendar_accept = Carbon::now();
-        $dto->calendar_warning = Carbon::now()->addHour($help->priority->warning_timer);
-        $dto->calendar_execution = Carbon::now()->addHour($help->priority->danger_timer);
-        $dto->check_write = true;
-
-        return $dto;
-    }
-
-    public static function executeObjectRequest(array $request): self
-    {
-        $dto = new self();
-        $dto->status_id = 3;
-        $dto->info_final = 'Выполнено с комментарием:'.$request['info_final'];
-        if (isset($request['images_final'])) {
-            $dto->images_final = json_encode(StoreFilesHelper::createFile($request['images_final'], 'images', 1920, 1080));
-        }
-        $dto->calendar_final = Carbon::now();
-        $dto->check_write = false;
-
-        return $dto;
-    }
-
-    public static function redefineObjectRequest(array $request): self
-    {
-        $dto = new self();
-        $dto->executor_id = $request['executor_id'];
-        $dto->calendar_accept = Carbon::now();
-
-        return $dto;
-    }
-
-    public static function rejectObjectRequest(array $request): self
-    {
-        $dto = new self();
-        $dto->status_id = 4;
-        $dto->info_final = 'Причина отклонения:'.$request['info_final'];
-        $dto->calendar_final = Carbon::now();
-        $dto->check_write = false;
+        $dto->category_id = $request->get('category_id');
+        $dto->priority_id = $request->get('priority_id');
+        $dto->user_id = $request->get('user_id');
+        $dto->executor_id = $request->get('executor_id');
+        $dto->description_long = $request->get('description_long');
+        $dto->info = $request->get('info');
+        $dto->info_final = $request->get('info_final');
+        $dto->images = json_encode(StoreFilesHelper::createFile($request->file('images'), 'images', 1920, 1080));
+        $dto->images_final = json_encode(StoreFilesHelper::createFile($request->file('images'), 'images', 1920, 1080));
+        $dto->app_number = $options?->get('app_number');
+        $dto->status_id = $options?->get('status_id');
+        $dto->calendar_request = $options?->get('calendar_request');
+        $dto->calendar_accept = $options?->get('calendar_accept');
+        $dto->calendar_warning = $options?->get('calendar_warning');
+        $dto->calendar_execution = $options?->get('calendar_execution');
+        $dto->calendar_final = $options?->get('calendar_final');
+        $dto->check_write = $options?->get('check_write');
 
         return $dto;
     }

@@ -1,3 +1,4 @@
+<div id="modal-forms">
 <!-- Окно принятия-->
 <div class="modal fade" id="acceptHelp" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -138,4 +139,6 @@
         </div>
         </form>
     </div>
+</div>
+
 </div>

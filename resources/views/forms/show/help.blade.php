@@ -51,7 +51,7 @@ col-lg-6
         @else
         <div class="slider">
             @foreach ($item->images as $image)
-            <a href="{{ asset('storage/'.$image['url'].'') }}" data-fancybox="images">
+            <a href="{{ asset('storage/images/'.$image['url'].'') }}" data-fancybox="images">
                 Посмотреть вложение
             </a>
             @endforeach

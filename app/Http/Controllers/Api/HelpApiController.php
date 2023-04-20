@@ -21,42 +21,42 @@ class HelpApiController extends Controller
 
     public function store(HelpRequest $request): JsonResponse
     {
-        $this->data = $this->helps->store($request->validated());
+        $this->data = $this->helps->store($request);
 
         return response()->json($this->data);
     }
 
     public function update(HelpRequest $request, int $help): JsonResponse
     {
-        $this->data = $this->helps->update($request->validated(), $help);
+        $this->data = $this->helps->update($request, $help);
 
         return response()->json($this->data);
     }
 
     public function accept(HelpRequest $request, int $help): JsonResponse
     {
-        $this->data = $this->helps->accept($request->validated(), $help);
+        $this->data = $this->helps->accept($request, $help);
 
         return response()->json($this->data);
     }
 
     public function execute(HelpRequest $request, int $help): JsonResponse
     {
-        $this->data = $this->helps->execute($request->validated(), $help);
+        $this->data = $this->helps->execute($request, $help);
 
         return response()->json($this->data);
     }
 
     public function redefine(HelpRequest $request, int $help): JsonResponse
     {
-        $this->data = $this->helps->redefine($request->validated(), $help);
+        $this->data = $this->helps->redefine($request, $help);
 
         return response()->json($this->data);
     }
 
     public function reject(HelpRequest $request, int $help): JsonResponse
     {
-        $this->data = $this->helps->reject($request->validated(), $help);
+        $this->data = $this->helps->reject($request, $help);
 
         return response()->json($this->data);
     }

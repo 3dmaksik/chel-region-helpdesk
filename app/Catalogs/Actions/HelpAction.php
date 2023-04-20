@@ -9,10 +9,12 @@ use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use App\Models\User;
 use App\Notifications\HelpNotification;
-use Illuminate\Support\Collection;
+use App\Requests\HelpRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class HelpAction extends Action
 {
@@ -38,13 +40,21 @@ class HelpAction extends Action
 
     public User $userHome;
 
+    private Carbon $calendar_request;
+
+    private SimpleCollection $options;
+
     private array $helps;
+
+    private array $dataClear;
 
     private int $total;
 
     private int $count;
 
-    public function getAllCatalogs(): Collection
+    private string $app_number;
+
+    public function getAllCatalogs(): SimpleCollection
     {
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
 
@@ -159,17 +169,27 @@ class HelpAction extends Action
         return $this->item;
     }
 
-    public function store(array $request): bool
+    protected function clear(HelpDTO $data): array
     {
-        $this->data = HelpDTO::storeObjectRequest($request);
+        return array_diff((array) $data, ['', null, false]);
+    }
+
+    public function store(HelpRequest $request): bool
+    {
         $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
-                $this->data->app_number = GeneratorAppNumberHelper::generate();
+                $this->app_number = GeneratorAppNumberHelper::generate();
         } else {
-                $this->data->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
+                $this->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
         }
-        $this->item = Model::create((array) $this->data);
-
+        $this->calendar_request = Carbon::now();
+        $this->options = collect([
+            'app_number' => $this->app_number,
+            'calendar_request' => $this->calendar_request,
+        ]);
+        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
+        $this->dataClear = $this->clear($this->data);
+        $this->item = Model::create($this->dataClear);
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
@@ -190,20 +210,29 @@ class HelpAction extends Action
         ];
     }
 
-    public function update(array $request, int $id): Model
+    public function update(HelpRequest $request, int $id): Model
     {
-        $this->item = Model::findOrFail($id);
+        $this->item = Model::dontCache()->findOrFail($id);
         $this->data = HelpDTO::storeObjectRequest($request);
-        $this->item->dontCache()->update((array) $this->data);
+        $this->dataClear = $this->clear($this->data);
+        $this->item->update($this->dataClear);
 
         return $this->item;
     }
 
-    public function accept(array $request, int $id): Model
+    public function accept(HelpRequest $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
-        $this->data = HelpDTO::acceptObjectRequest($request, $id);
-        $this->user = User::select('id')->where('id', $this->data->executor_id)->first();
+        $this->options = collect([
+            'status_id' => self::workHelp,
+            'calendar_accept' => Carbon::now(),
+            'calendar_warning'=> Carbon::now()->addHour($this->item->priority->warning_timer),
+            'calendar_execution' => Carbon::now()->addHour($this->item->priority->danger_timer),
+            'check_write' => true,
+        ]);
+        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
+        $this->dataClear = $this->clear($this->data);
+        $this->user = User::dontCache()->findOrFail($this->data->executor_id);
         if ($this->user->id == auth()->user()->id) {
             if ($this->user->getRoleNames()[0] != 'admin' && $this->user->getRoleNames()[0] != 'superAdmin') {
                 throw new \Exception('Нельзя назначить самого себя');
@@ -215,7 +244,7 @@ class HelpAction extends Action
         if ($this->item->status_id != self::newHelp) {
             throw new \Exception('Заявка уже принята или отклонена');
         }
-        $this->item->update((array) $this->data);
+        $this->item->update($this->dataClear);
 
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
@@ -232,14 +261,20 @@ class HelpAction extends Action
         return $this->item;
     }
 
-    public function execute(array $request, int $id): Model
+    public function execute(HelpRequest $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
-        $this->data = HelpDTO::executeObjectRequest($request, $id);
+        $this->options = collect([
+            'status_id' => self::successHelp,
+            'calendar_final' => Carbon::now(),
+            'check_write' => false,
+        ]);
+        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
+        $this->dataClear = $this->clear($this->data);
         if ($this->item->status_id != self::workHelp) {
             throw new \Exception('Заявка уже выполнена или отклонена');
         }
-        $this->item->update((array) $this->data);
+        $this->item->update($this->dataClear);
 
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
@@ -253,11 +288,15 @@ class HelpAction extends Action
         return $this->item;
     }
 
-    public function redefine(array $request, int $id): Model
+    public function redefine(HelpRequest $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
-        $this->data = HelpDTO::redefineObjectRequest($request, $id);
-        $this->user = User::select('id', 'user_id')->where('user_id', $this->data->executor_id)->first();
+        $this->options = collect([
+            'calendar_accept' => Carbon::now(),
+        ]);
+        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
+        $this->dataClear = $this->clear($this->data);
+        $this->user = User::findOrFail($this->data->executor_id);
         if ($this->user->id == auth()->user()->id) {
             throw new \Exception('Нельзя назначить самого себя');
         }
@@ -268,7 +307,7 @@ class HelpAction extends Action
             throw new \Exception('Заявка уже выполнена или отклонена');
         }
         $oldUserMod = User::findOrFail($this->item->executor_id);
-        $this->item->update((array) $this->data);
+        $this->item->update($this->dataClear);
 
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
@@ -286,14 +325,20 @@ class HelpAction extends Action
         return $this->item;
     }
 
-    public function reject(array $request, int $id): Model
+    public function reject(HelpRequest $request, int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
-        $this->data = HelpDTO::rejectObjectRequest($request, $id);
+        $this->options = collect([
+            'status_id' => self::dangerHelp,
+            'calendar_final' => Carbon::now(),
+            'check_write' => false,
+        ]);
+        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
+        $this->dataClear = $this->clear($this->data);
         if ($this->item->status_id != self::newHelp) {
             throw new \Exception('Заявка не может быть отклонена');
         }
-        $this->item->update((array) $this->data);
+        $this->item->update($this->dataClear);
 
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();

@@ -135,6 +135,11 @@ $(function () {
                     setTimeout(function () {
                         $(form).trigger("reset");
                     }, 5000);
+                    if ( $(".modal").hasClass("fade show") ) {
+                        setTimeout(function () {
+                            location.reload();
+                        }, 5000);
+                    }
                 },
             });
         });

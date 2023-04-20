@@ -11,11 +11,11 @@ class HelpRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'category_id' => 'sometimes|required|exists:category,id',
-            'status_id' => 'sometimes|required|exists:status,id',
-            'priority_id' => 'sometimes|required|exists:priority,id',
-            'user_id' => 'sometimes|required|exists:users,id',
-            'executor_id' => 'nullable|exists:users,id',
+            'category_id' => 'sometimes|required|integer|numeric|exists:category,id',
+            'status_id' => 'sometimes|required|integer|numeric|exists:status,id',
+            'priority_id' => 'sometimes|required|integer|numeric|exists:priority,id',
+            'user_id' => 'sometimes|required|integer|numeric|exists:users,id',
+            'executor_id' => 'nullable|integer|numeric|exists:users,id',
             'calendar_request' => 'nullable|date',
             'calendar_accept' => 'nullable|date',
             'calendar_final' => 'nullable|date',

@@ -8,6 +8,7 @@ use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use App\Models\User;
+use App\Requests\HelpRequest;
 use App\Notifications\HelpNotification;
 use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Notification;
@@ -96,7 +97,7 @@ class HomeAction extends Action
         return $this->item;
     }
 
-    public function store(array $request): bool
+    public function store(HelpRequest $request): bool
     {
         $this->data = HelpDTO::storeObjectRequest($request);
         if (! isset($this->data->user_id)) {
