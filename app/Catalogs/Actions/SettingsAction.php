@@ -5,6 +5,7 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\SettingsDTO;
 use App\Models\User;
+use App\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Hash;
 
 class SettingsAction extends Action
@@ -14,6 +15,8 @@ class SettingsAction extends Action
     private array $avatar;
 
     private array $soundNotify;
+
+    private array $dataClear;
 
     public function __construct()
     {
@@ -42,7 +45,7 @@ class SettingsAction extends Action
 
     public function editSettings(): User
     {
-        $this->user = User::whereId(auth()->user()->id)->first();
+        $this->user = User::findOrFail(auth()->user()->id);
         if (isset($this->user->avatar)) {
             $this->avatar = json_decode($this->user->avatar, true);
             $this->user->avatar = $this->avatar['url'];
@@ -55,9 +58,9 @@ class SettingsAction extends Action
         return $this->user;
     }
 
-    public function updateSettings(array $request): bool
+    public function updateSettings(SettingsRequest $request): bool
     {
-        $this->user = User::whereId(auth()->user()->id)->first();
+        $this->user = User::findOrFail(auth()->user()->id);
         $this->data = SettingsDTO::storeObjectRequest($request);
         if (isset($this->data->avatar) && $this->user->avatar != null) {
             $this->user->avatar = json_decode($this->user->avatar, true);
@@ -68,8 +71,14 @@ class SettingsAction extends Action
             unlink(storage_path('app\\public\\sound\\'.$this->user->sound_notify['url']));
         }
         User::flushQueryCache();
-        $this->user->update((array) $this->data);
+        $this->dataClear = $this->clear($this->data);
+        $this->user->update($this->dataClear);
 
         return true;
+    }
+
+    protected function clear(SettingsDTO $data): array
+    {
+        return array_diff((array) $data, ['', null, false]);
     }
 }

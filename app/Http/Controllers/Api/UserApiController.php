@@ -20,14 +20,14 @@ class UserApiController extends Controller
 
     public function store(UserRequest $request): JsonResponse
     {
-        $this->data = $this->users->store($request->validated());
+        $this->data = $this->users->store($request);
 
         return response()->json($this->data);
     }
 
     public function update(UserRequest $request, int $user): JsonResponse
     {
-        $this->data = $this->users->update($request->validated(), $user);
+        $this->data = $this->users->update($request, $user);
 
         return response()->json($this->data);
     }

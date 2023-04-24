@@ -6,6 +6,7 @@ use App\Base\Actions\Action;
 use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\UsersDTO;
 use App\Models\User as Model;
+use App\Requests\UserRequest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SimpleCollection;
 
@@ -22,6 +23,8 @@ class UsersAction extends Action
     private array $users;
 
     private int $total;
+
+    private array $dataClear;
 
     public function getAllPages(): Collection
     {
@@ -76,21 +79,23 @@ class UsersAction extends Action
         ];
     }
 
-    public function store(array $request): bool
+    public function store(UserRequest $request): bool
     {
         $this->data = UsersDTO::storeObjectRequest($request);
-        Model::create((array) $this->data)->assignRole($request['role']);
+        $this->dataClear = $this->clear($this->data);
+        Model::create($this->dataClear)->assignRole($this->dataClear['role']);
         Model::flushQueryCache();
 
         return true;
     }
 
-    public function update(array $request, int $id): Model
+    public function update(UserRequest $request, int $id): Model
     {
         $this->user = Model::findOrFail($id);
         $this->data = UsersDTO::storeObjectRequest($request);
-        $this->user->update((array) $this->data);
-        $this->user->syncRoles($request['role']);
+        $this->dataClear = $this->clear($this->data);
+        $this->user->update($this->dataClear);
+        $this->user->syncRoles($this->dataClear['role']);
         Model::flushQueryCache();
 
         return $this->user;
@@ -109,5 +114,10 @@ class UsersAction extends Action
     public function getDataUser(): Model
     {
         return Model::whereId(auth()->user()->id)->first();
+    }
+
+    protected function clear(UsersDTO $data): array
+    {
+        return array_diff((array) $data, ['', null, false]);
     }
 }

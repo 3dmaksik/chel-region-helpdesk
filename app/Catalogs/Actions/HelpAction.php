@@ -14,7 +14,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Auth;
 
 class HelpAction extends Action
 {
@@ -226,7 +225,7 @@ class HelpAction extends Action
         $this->options = collect([
             'status_id' => self::workHelp,
             'calendar_accept' => Carbon::now(),
-            'calendar_warning'=> Carbon::now()->addHour($this->item->priority->warning_timer),
+            'calendar_warning' => Carbon::now()->addHour($this->item->priority->warning_timer),
             'calendar_execution' => Carbon::now()->addHour($this->item->priority->danger_timer),
             'check_write' => true,
         ]);
