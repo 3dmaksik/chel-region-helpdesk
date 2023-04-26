@@ -2,27 +2,14 @@ import "./bootstrap.js";
 
 $(function () {
     let CSRF_TOKEN = $('meta[name="_token"]').attr("content");
-    let sendForm = $("#formValidate");
-    let acceptForm = $("#formAccept");
-    let executeForm = $("#formExecute");
-    let redefineForm = $("#formRedefine");
-    let rejectForm = $("#formReject");
-    let updatePasswordForm = $("#formValidatePassword");
-    let updateSettingsForm = $("#formValidateSettings");
-
     let page = $(".current-page").text();
+    newCount();
+    nowCount();
 
     $.ajaxSetup({
         headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
     });
 
-    function loadNew(method, route) {
-        if ($("div").hasClass(method)) {
-            $.post(route + "?page=" + page + "", function (data) {
-                $("." + method).html(data);
-            });
-        }
-    }
     Echo.private("App.Models.User." + window.Laravel.user).notification(
         (notification) => {
             loadNew(notification.method, notification.route);
@@ -36,15 +23,133 @@ $(function () {
         }
     );
 
-    sendAllForm(sendForm);
-    sendAllForm(acceptForm);
-    sendAllForm(executeForm);
-    sendAllForm(redefineForm);
-    sendAllForm(rejectForm);
-    sendAllForm(updatePasswordForm);
-    sendAllForm(updateSettingsForm);
-    newCount();
-    nowCount();
+    $(".select2-single").select2({
+        language: "ru",
+    });
+
+    jQuery.datetimepicker.setLocale("ru");
+    jQuery("#datetimepicker").datetimepicker({
+        format: "Y-m-d H:i:s",
+    });
+
+    $("input[type=submit]").on('click', function () {
+        var formId = $(this)
+            .closest('form')
+            .attr('id');
+        let sendForm = $("#" + formId);
+        sendAllForm(sendForm);
+    })
+
+    $(".custom-file-input").on("change", function () {
+        if ($(this).val() != "")
+            $(this)
+                .prev()
+                .text("Выбрано файлов: " + $(this)[0].files.length);
+        else $(this).prev().text("Выберите файлы");
+    });
+
+    $.ajax({
+        url: "/api/loader/get",
+        method: "get",
+        dataType: "json",
+        error: function (data) {},
+        success: function (data) {
+            if (data.avatar == null) {
+                $(".img-profile").attr(
+                    "src",
+                    "/img/boy.png"
+                );
+            }
+            if (data.soundNotify != null) {
+                const sound = new Howl({
+                    src: ["/storage/sound/" + data.soundNotify.url],
+                    html5: true,
+                });
+            }
+            else
+            {
+                const sound = new Howl({
+                    src: ["/sound/sound.ogg"],
+                    html5: true,
+                });
+            }
+        },
+    });
+
+    $.ajax({
+        url: "/api/help/all",
+        method: "post",
+        dataType: "json",
+        success: function (data) {
+            const obj = JSON.parse(data);
+            for (var i = 0; i < obj.user.length; i++) {
+                var counter = obj.user[i];
+                if (counter.patronymic == null) counter.patronymic = "";
+                $("#accept-select2-user").append(
+                    '<option value="' +
+                        counter.id +
+                        '">' +
+                        counter.lastname +
+                        " " +
+                        counter.firstname +
+                        " " +
+                        counter.patronymic +
+                        "</option>"
+                );
+                $("#redefine-select2-user").append(
+                    '<option value="' +
+                        counter.id +
+                        '">' +
+                        counter.lastname +
+                        " " +
+                        counter.firstname +
+                        " " +
+                        counter.patronymic +
+                        "</option>"
+                );
+            }
+            for (var i = 0; i < obj.priority.length; i++) {
+                var counter = obj.priority[i];
+                $("#accept-select2-priority").append(
+                    '<option value="' +
+                        counter.id +
+                        '">' +
+                        counter.description +
+                        "</option>"
+                );
+            }
+        },
+    });
+
+    $(".remove-form").on("submit", function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: $(this).attr("action"),
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            data: formData,
+            processData: false,
+            contentType: false,
+            timeout: 600000,
+            error: function (data) {},
+            success: function (data) {
+                setTimeout(function () {
+                    location.reload();
+                }, 3000);
+            },
+        });
+    });
+
+    function loadNew(method, route) {
+        if ($("div").hasClass(method)) {
+            $.post(route + "?page=" + page + "", function (data) {
+                $("." + method).html(data);
+            });
+        }
+    }
+
     function sendAllForm(form) {
         form.on("submit", function (e) {
             e.preventDefault();
@@ -134,7 +239,7 @@ $(function () {
                         .prop("disabled", false);
                     setTimeout(function () {
                         $(form).trigger("reset");
-                    }, 5000);
+                    }, 1000);
                     if ( $(".modal").hasClass("fade show") ) {
                         setTimeout(function () {
                             location.reload();
@@ -144,6 +249,7 @@ $(function () {
             });
         });
     }
+
     function newCount() {
         $.ajax({
             url: "/api/help/new",
@@ -163,6 +269,7 @@ $(function () {
             },
         });
     }
+
     function nowCount() {
         $.ajax({
             url: "/api/help/now",
@@ -180,112 +287,7 @@ $(function () {
             },
         });
     }
-    $.ajax({
-        url: "/api/loader/get",
-        method: "get",
-        dataType: "json",
-        error: function (data) {},
-        success: function (data) {
-            if (data.avatar == null) {
-                $(".img-profile").attr(
-                    "src",
-                    "/img/boy.png"
-                );
-            }
-            if (data.soundNotify != null) {
-                const sound = new Howl({
-                    src: ["/storage/sound/" + data.soundNotify.url],
-                    html5: true,
-                });
-            }
-            else
-            {
-                const sound = new Howl({
-                    src: ["/sound/sound.ogg"],
-                    html5: true,
-                });
-            }
-        },
-    });
 
-    $.ajax({
-        url: "/api/help/all",
-        method: "post",
-        dataType: "json",
-        success: function (data) {
-            const obj = JSON.parse(data);
-            for (var i = 0; i < obj.user.length; i++) {
-                var counter = obj.user[i];
-                if (counter.patronymic == null) counter.patronymic = "";
-                $("#accept-select2-user").append(
-                    '<option value="' +
-                        counter.id +
-                        '">' +
-                        counter.lastname +
-                        " " +
-                        counter.firstname +
-                        " " +
-                        counter.patronymic +
-                        "</option>"
-                );
-                $("#redefine-select2-user").append(
-                    '<option value="' +
-                        counter.id +
-                        '">' +
-                        counter.lastname +
-                        " " +
-                        counter.firstname +
-                        " " +
-                        counter.patronymic +
-                        "</option>"
-                );
-            }
-            for (var i = 0; i < obj.priority.length; i++) {
-                var counter = obj.priority[i];
-                $("#accept-select2-priority").append(
-                    '<option value="' +
-                        counter.id +
-                        '">' +
-                        counter.description +
-                        "</option>"
-                );
-            }
-        },
-    });
-    $(".select2-single").select2({
-        language: "ru",
-    });
-    jQuery.datetimepicker.setLocale("ru");
-    jQuery("#datetimepicker").datetimepicker({
-        format: "Y-m-d H:i:s",
-    });
-    $(".custom-file-input").on("change", function () {
-        if ($(this).val() != "")
-            $(this)
-                .prev()
-                .text("Выбрано файлов: " + $(this)[0].files.length);
-        else $(this).prev().text("Выберите файлы");
-    });
-    $(".remove-form").on("submit", function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        $.ajax({
-            url: $(this).attr("action"),
-            type: "POST",
-            cache: false,
-            dataType: "json",
-            data: formData,
-            processData: false,
-            contentType: false,
-            timeout: 600000,
-            error: function (data) {},
-            success: function (data) {
-                setTimeout(function () {
-                    location.reload();
-                }, 3000);
-            },
-        });
-    });
     $("#preloader").fadeOut("slow", function () {
         $(this).remove();
     });

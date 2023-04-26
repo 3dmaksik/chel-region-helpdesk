@@ -197,9 +197,9 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        Cookie::unqueue('firstname');
         Cookie::unqueue('avatar');
-        Cookie::unqueue('sound_notify');
+        Cookie::unqueue('soundNotify');
+        Cookie::unqueue('newCount');
 
         if ($response = $this->loggedOut($request)) {
             return $response;

@@ -29,7 +29,7 @@
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 @hasanyrole('superAdmin|admin')
-                <span id="counter" class="badge badge-danger badge-counter">@if(Cookie::get('newCount') != null) {{ Cookie::get('newCount') }} @endif</span>
+                <span id="counter" class="badge badge-danger badge-counter">@if(Cookie::get('newCount') > 0) {{ Cookie::get('newCount') }} @endif</span>
                 @endhasanyrole
             </a>
             @hasanyrole('superAdmin|admin|manager')

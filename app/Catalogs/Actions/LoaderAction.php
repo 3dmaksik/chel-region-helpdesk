@@ -9,7 +9,7 @@ class LoaderAction extends Action
 {
     protected array $result;
 
-    protected int $timer = 525600;
+    protected int $timer = 44640;
 
     public function __construct()
     {
@@ -18,6 +18,7 @@ class LoaderAction extends Action
             'avatar' => null,
             'soundNotify' => null,
         ];
+        $this->removeCooke();
     }
 
     public function getLoad(): array
@@ -36,5 +37,11 @@ class LoaderAction extends Action
     protected function setCooke(string $name, string $url, int $timer)
     {
         return Cookie::queue($name, $url, $timer);
+    }
+
+    protected function removeCooke(): void
+    {
+        Cookie::forget('avatar');
+        Cookie::forget('newCount');
     }
 }
