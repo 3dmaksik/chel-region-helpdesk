@@ -28,7 +28,7 @@ col-lg-12
         <div>{!! $item->news_text !!}</div>
         <hr>
         <h6 class="text-primary">Дата публикации:</h6>
-        <h6>{{ date( 'd.m.Y H:i', strtotime($item->created_at))}}</h6>
+        <h6>{{ $item->created_at }}</h6>
     </div>
 </div>
 @endsection

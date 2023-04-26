@@ -9,17 +9,19 @@ class StringUserHelper extends CoreHelper
     /**
      * [processed string]
      */
-    protected static string $data;
+    protected static string|null $data;
 
     /**
      * [string processing by 3 parameters]
      */
-    public static function run(string $string): string
+    public static function run(string|null $string): string|null
     {
         static::$data = $string;
+        if (static::$data != null) {
         self::stringTrim(static::$data);
         self::stringAllLower(static::$data);
         self::stringUpFirst(static::$data);
+        }
 
         return static::$data;
     }

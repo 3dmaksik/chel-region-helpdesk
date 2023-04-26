@@ -40,7 +40,7 @@ col-lg-6
         <p>{{ $item->user->lastname }} {{ $item->user->firstname }} {{ $item->user->patronymic }}</p>
         <hr>
         <p class="text-primary">Дата подачи заявки</p>
-        <p>{{ date( 'd.m.Y H:i', strtotime($item->calendar_request)) }}</p>
+        <p>{{ $item->calendar_request }}</p>
         <hr>
         <p class="text-primary">Описание заявки</p>
         <p>{{ $item->description_long }}</p>
@@ -143,28 +143,28 @@ col-lg-6
         @if ($item->calendar_accept==null)
         Заявка ещё не принята
         @else
-        {{ date( 'd.m.Y H:i', strtotime($item->calendar_accept)) }}
+        {{ $item->calendar_accept }}
         @endif
         <hr>
         <p class="text-primary">Дата выполнения заявки</p>
         @if ($item->calendar_final==null)
         Заявка ещё не выполнена
         @else
-        {{ date( 'd.m.Y H:i', strtotime($item->calendar_final)) }}
+        {{ $item->calendar_final }}
         @endif
         <hr>
         <p class="text-primary">Дата предупреждения о просрочке заявки</p>
         @if ($item->calendar_warning==null)
         Заявка ещё не взята в работу
         @else
-        {{ date( 'd.m.Y H:i', strtotime($item->calendar_warning)) }}
+        {{ $item->calendar_warning }}
         @endif
         <hr>
         <p class="text-primary">Максимальная дата для выполнения заявки</p>
         @if ($item->calendar_execution==null)
         Заявка ещё не взята в работу
         @else
-        {{ date( 'd.m.Y H:i', strtotime($item->calendar_execution)) }}
+        {{ $item->calendar_execution }}
         @endif
         <hr>
         @if ($item->work_id!=auth()->user()->id)

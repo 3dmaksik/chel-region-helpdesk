@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Base\Models\Model;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Article extends Model
 {
@@ -18,4 +20,15 @@ class Article extends Model
             'news',
         ];
     }
+
+    protected function createdAt(): Attribute
+    {
+    return Attribute::make(
+        get: function ($value) {
+            if ($value != null) {
+                return Carbon::parse($value)->format('d.m.Y H:i');
+            }
+        }
+    );
+   }
 }

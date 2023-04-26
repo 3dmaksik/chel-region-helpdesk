@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Base\Models\Model;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Help extends Model
@@ -81,6 +83,42 @@ class Help extends Model
 
         return $builder;
     }
+
+    protected function calendarRequest(): Attribute
+    {
+        return $this->calendarView();
+    }
+
+    protected function calendarAccept(): Attribute
+    {
+        return $this->calendarView();
+    }
+
+    protected function calendarExecution(): Attribute
+    {
+        return $this->calendarView();
+    }
+
+    protected function calendarFinal(): Attribute
+    {
+        return $this->calendarView();
+    }
+
+    protected function calendarWarning(): Attribute
+    {
+        return $this->calendarView();
+    }
+
+   protected function calendarView(): Attribute
+   {
+    return Attribute::make(
+        get: function ($value) {
+            if ($value != null) {
+                return Carbon::parse($value)->format('d.m.Y H:i');
+            }
+        }
+    );
+   }
 
     protected function getCacheBaseTags(): array
     {

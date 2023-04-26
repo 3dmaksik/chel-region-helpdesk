@@ -28,14 +28,10 @@
             </thead>
             <tbody id="table-dynamic">
                 @forelse ($items['data'] as $item)
-                <tr @if(strtotime($now)> strtotime($item->calendar_warning) && strtotime($now)< strtotime($item->
-                        calendar_execution) && $item->calendar_warning!=null && $item->calendar_execution!=null &&
-                        $item->calendar_final==null && request()->segment(1) != 'user') class="badge-{{
-                        config("color.5.slug") }}"@endif
+                <tr @if(strtotime($now)> strtotime($item->calendar_warning) && strtotime($now)< strtotime($item->calendar_execution) && $item->calendar_warning!=null
+                && $item->calendar_execution!=null && $item->calendar_final==null && request()->segment(1) != 'user') class="badge-{{config("color.5.slug") }}"@endif
                         @if(strtotime($now)> strtotime($item->calendar_execution) && $item->calendar_execution!=null &&
-                        $item->calendar_final==null && request()->segment(1) != 'user') class="badge-{{
-                        config("color.4.slug") }}"@endif
-                        >
+                        $item->calendar_final==null && request()->segment(1) != 'user') class="badge-{{config("color.4.slug") }}"@endif>
                         <td>{{ $item->app_number }}</td>
                         <td class="badge-table"><a href="{{ route('search.category',$item->category_id) }}">{{
                                 $item->category->description }}</a></td>
@@ -44,19 +40,19 @@
                         <td class="badge-table"><a href="{{ route('search.work',$item->user_id) }}">{{
                                 $item->user->lastname }} <br/> {{ $item->user->firstname }} <br/> {{ $item->user->patronymic }}</a>
                         </td>
-                        <td>{{ date( 'd.m.Y H:i', strtotime($item->calendar_request))}}</td>
+                        <td>{{ $item->calendar_request}}</td>
                         <td>
                             @if ($item->calendar_final==null)
                             Дата неопределена
                             @else
-                            {{ date( 'd.m.Y H:i', strtotime($item->calendar_final)) }}
+                            {{ $item->calendar_final }}
                             @endif
                         </td>
                         <td>
                             @if ($item->calendar_execution==null)
                             Дата неопределена
                             @else
-                            {{ date( 'd.m.Y H:i', strtotime($item->calendar_execution))}}
+                            {{ $item->calendar_execution }}
                             @endif
                         </td>
                         <td><span class="badge badge-{{ $item->status->color }}">{{ $item->status->description }}</span>
