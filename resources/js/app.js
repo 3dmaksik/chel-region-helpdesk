@@ -75,51 +75,52 @@ $(function () {
             }
         },
     });
-
-    $.ajax({
-        url: "/api/help/all",
-        method: "post",
-        dataType: "json",
-        success: function (data) {
-            const obj = JSON.parse(data);
-            for (var i = 0; i < obj.user.length; i++) {
-                var counter = obj.user[i];
-                if (counter.patronymic == null) counter.patronymic = "";
-                $("#accept-select2-user").append(
-                    '<option value="' +
-                        counter.id +
-                        '">' +
-                        counter.lastname +
-                        " " +
-                        counter.firstname +
-                        " " +
-                        counter.patronymic +
-                        "</option>"
-                );
-                $("#redefine-select2-user").append(
-                    '<option value="' +
-                        counter.id +
-                        '">' +
-                        counter.lastname +
-                        " " +
-                        counter.firstname +
-                        " " +
-                        counter.patronymic +
-                        "</option>"
-                );
-            }
-            for (var i = 0; i < obj.priority.length; i++) {
-                var counter = obj.priority[i];
-                $("#accept-select2-priority").append(
-                    '<option value="' +
-                        counter.id +
-                        '">' +
-                        counter.description +
-                        "</option>"
-                );
-            }
-        },
-    });
+    $(".btn-modal").on('click', function () {
+        $.ajax({
+            url: "/api/help/all",
+            method: "post",
+            dataType: "json",
+            success: function (data) {
+                const obj = JSON.parse(data);
+                for (var i = 0; i < obj.user.length; i++) {
+                    var counter = obj.user[i];
+                    if (counter.patronymic == null) counter.patronymic = "";
+                    $("#accept-select2-user").append(
+                        '<option value="' +
+                            counter.id +
+                            '">' +
+                            counter.lastname +
+                            " " +
+                            counter.firstname +
+                            " " +
+                            counter.patronymic +
+                            "</option>"
+                    );
+                    $("#redefine-select2-user").append(
+                        '<option value="' +
+                            counter.id +
+                            '">' +
+                            counter.lastname +
+                            " " +
+                            counter.firstname +
+                            " " +
+                            counter.patronymic +
+                            "</option>"
+                    );
+                }
+                for (var i = 0; i < obj.priority.length; i++) {
+                    var counter = obj.priority[i];
+                    $("#accept-select2-priority").append(
+                        '<option value="' +
+                            counter.id +
+                            '">' +
+                            counter.description +
+                            "</option>"
+                    );
+                }
+            },
+        });
+    })
 
     $(".remove-form").on("submit", function (e) {
         e.preventDefault();

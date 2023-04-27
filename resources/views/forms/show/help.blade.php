@@ -82,14 +82,14 @@ col-lg-6
         @hasanyrole('superAdmin|admin')
         @if ($item->status->id ==1)
         <div class="block">
-            <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#acceptHelp"
+            <a href="" class="btn btn-primary btn-sm hover btn-modal" data-toggle="modal" data-target="#acceptHelp"
                 data-id="{{$item->id}}">
                 Назначить исполнителя
             </a>
             <a href="{{ route(config('constants.help.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
                 Редактировать заявку
             </a>
-            <a href="" class="btn btn-danger btn-sm hover" data-toggle="modal" data-target="#rejectHelp"
+            <a href="" class="btn btn-danger btn-sm hover btn-modal" data-toggle="modal" data-target="#rejectHelp"
                 data-id="{{$item->id}}">
                 Отклонить заявку
             </a>
@@ -98,14 +98,14 @@ col-lg-6
         @endhasanyrole
         @if($item->status->id ==2)
         <div class="block">
-            <a href="" class="btn btn-primary btn-sm hover" data-toggle="modal" data-target="#executeHelp"
+            <a href="" class="btn btn-primary btn-sm hover btn-modal" data-toggle="modal" data-target="#executeHelp"
                 data-id="{{$item->id}}">
                 Выполнить заявку
             </a>
         </div>
         @hasanyrole('superAdmin|admin')
         <div class="block">
-            <a href="" class="btn btn-info btn-sm hover" data-toggle="modal" data-target="#redefineHelp"
+            <a href="" class="btn btn-info btn-sm hover btn-modal" data-toggle="modal" data-target="#redefineHelp"
                 data-id="{{$item->id}}">
                 Передать заявку
             </a>
