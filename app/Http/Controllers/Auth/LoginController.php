@@ -144,10 +144,10 @@ class LoginController extends Controller
             return $response;
         }
 
-            return response()->json([
-                'auth' => false,
-                'intended' => $this->redirectPath(),
-            ]);
+        return response()->json([
+            'auth' => false,
+            'intended' => $this->redirectPath(),
+        ]);
     }
 
     /**

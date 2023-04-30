@@ -3,14 +3,20 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Models\Help;
 use App\Models\Priority as Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 class PriorityAction extends Action
 {
     private array $proirity;
 
+    private array $response;
+
     private int $total;
+
+    private int $count;
 
     public function getAllPages(): Collection
     {
@@ -47,29 +53,46 @@ class PriorityAction extends Action
         return $this->item;
     }
 
-    public function store(array $request): bool
+    public function store(array $request): JsonResponse
     {
         Model::create($request);
-        Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Приоритет успешно добавлен!',
+        ];
 
-        return true;
+        return response()->success($this->response);
     }
 
-    public function update(array $request, int $id): Model
+    public function update(array $request, int $id): JsonResponse
     {
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
         Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Приоритет успешно обновлён!',
+        ];
 
-        return $this->item;
+        return response()->success($this->response);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): JsonResponse
     {
+        $this->count = Help::dontCache()->where('priority_id', $id)->count();
+        if ($this->count > 0) {
+            $this->response = [
+                'message' => 'Приоритет не может быть удалён, так как не удалены все заявки связанные с ним!',
+            ];
+
+            return response()->error($this->response);
+        }
+
         $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
         Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Приоритет успешно удалён!',
+        ];
 
-        return true;
+        return response()->success($this->response);
     }
 }

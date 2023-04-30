@@ -3,6 +3,7 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cookie;
 
 class LoaderAction extends Action
@@ -21,7 +22,7 @@ class LoaderAction extends Action
         $this->removeCooke();
     }
 
-    public function getLoad(): array
+    public function getLoad(): JsonResponse
     {
         if (auth()->user()->avatar != null) {
             $this->result['avatar'] = json_decode(auth()->user()->avatar, true);
@@ -31,7 +32,7 @@ class LoaderAction extends Action
             $this->result['soundNotify'] = json_decode(auth()->user()->sound_notify, true);
         }
 
-        return $this->result;
+        return response()->json($this->result);
     }
 
     protected function setCooke(string $name, string $url, int $timer)

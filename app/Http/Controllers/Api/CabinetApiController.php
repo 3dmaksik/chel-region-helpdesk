@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class CabinetApiController extends Controller
 {
-    private string $data;
+    private JsonResponse $data;
 
     private CabinetAction $cabinets;
 
@@ -22,20 +22,20 @@ class CabinetApiController extends Controller
     {
         $this->data = $this->cabinets->store($request->validated());
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function update(CabinetRequest $request, int $cabinet): JsonResponse
     {
         $this->data = $this->cabinets->update($request->validated(), $cabinet);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function destroy(int $cabinet): JsonResponse
     {
         $this->data = $this->cabinets->delete($cabinet);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 }

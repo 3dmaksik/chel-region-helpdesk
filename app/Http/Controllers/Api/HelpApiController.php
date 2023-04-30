@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class HelpApiController extends Controller
 {
-    private string $data;
+    private JsonResponse $data;
 
     private HelpAction $helps;
 
@@ -23,77 +23,77 @@ class HelpApiController extends Controller
     {
         $this->data = $this->helps->store($request);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function update(HelpRequest $request, int $help): JsonResponse
     {
         $this->data = $this->helps->update($request, $help);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function accept(HelpRequest $request, int $help): JsonResponse
     {
         $this->data = $this->helps->accept($request, $help);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function execute(HelpRequest $request, int $help): JsonResponse
     {
         $this->data = $this->helps->execute($request, $help);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function redefine(HelpRequest $request, int $help): JsonResponse
     {
         $this->data = $this->helps->redefine($request, $help);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function reject(HelpRequest $request, int $help): JsonResponse
     {
         $this->data = $this->helps->reject($request, $help);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function destroy(int $help): JsonResponse
     {
         $this->data = $this->helps->delete($help);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function getAllPages(): JsonResponse
     {
         $this->data = $this->helps->getAllCatalogs()->toJson();
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function checkHelp(int $id): JsonResponse
     {
         $this->data = $this->helps->updateView($id);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function newPagesCount(): JsonResponse
     {
         $this->data = $this->helps->getNewPagesCount();
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function nowPagesCount(): JsonResponse
     {
         $this->data = $this->helps->getNowPagesCount();
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
    /* public function getSoundNotify(): JsonResponse

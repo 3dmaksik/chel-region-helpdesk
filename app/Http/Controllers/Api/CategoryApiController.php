@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class CategoryApiController extends Controller
 {
-    private string $data;
+    private JsonResponse $data;
 
     private CategoryAction $categories;
 
@@ -22,20 +22,20 @@ class CategoryApiController extends Controller
     {
         $this->data = $this->categories->store($request->validated());
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function update(CategoryRequest $request, int $cabinet): JsonResponse
     {
         $this->data = $this->categories->update($request->validated(), $cabinet);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function destroy(int $cabinet): JsonResponse
     {
         $this->data = $this->categories->delete($cabinet);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 }

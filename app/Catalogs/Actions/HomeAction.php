@@ -10,12 +10,15 @@ use App\Models\Help as Model;
 use App\Models\User;
 use App\Notifications\HelpNotification;
 use App\Requests\HelpRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Notification;
 
 class HomeAction extends Action
 {
     private array $helps;
+
+    private array $response;
 
     private Model|null $last;
 
@@ -28,14 +31,14 @@ class HomeAction extends Action
     public function getWorkerPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', '<', 3)
-        ->where('user_id', auth()->user()->id)
-        ->orderBy('status_id', 'ASC')
-        ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderBy('calendar_accept', 'ASC')
-        ->paginate($this->page);
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('status_id', 'ASC')
+            ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_accept', 'ASC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', '<', 3)
-        ->where('user_id', auth()->user()->id)->count();
+            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'workeruser',
@@ -49,11 +52,11 @@ class HomeAction extends Action
     public function getCompletedPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', 3)
-        ->where('user_id', auth()->user()->id)
-        ->orderBy('calendar_final', 'DESC')
-        ->paginate($this->page);
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('calendar_final', 'DESC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', 3)
-        ->where('user_id', auth()->user()->id)->count();
+            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'completeduser',
@@ -67,11 +70,11 @@ class HomeAction extends Action
     public function getDismissPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', 4)
-        ->where('user_id', auth()->user()->id)
-        ->orderBy('calendar_request', 'DESC')
-        ->paginate($this->page);
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('calendar_request', 'DESC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', 4)
-        ->where('user_id', auth()->user()->id)->count();
+            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'dismissuser',
@@ -97,7 +100,7 @@ class HomeAction extends Action
         return $this->item;
     }
 
-    public function store(HelpRequest $request): bool
+    public function store(HelpRequest $request): JsonResponse
     {
         $this->data = HelpDTO::storeObjectRequest($request);
         if (! isset($this->data->user_id)) {
@@ -105,9 +108,9 @@ class HomeAction extends Action
         }
         $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
-                $this->data->app_number = GeneratorAppNumberHelper::generate();
+            $this->data->app_number = GeneratorAppNumberHelper::generate();
         } else {
-                $this->data->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
+            $this->data->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
         }
         $this->item = Model::create((array) $this->data);
         $superAdmin = User::role(['superAdmin'])->get();
@@ -115,7 +118,10 @@ class HomeAction extends Action
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
         Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
         Notification::send($users, new HelpNotification('newadm', route('help.new')));
+        $this->response = [
+            'message' => 'Заявка успешно добавлена!',
+        ];
 
-        return true;
+        return response()->success($this->response);
     }
 }

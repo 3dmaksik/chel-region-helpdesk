@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class StatusApiController extends Controller
 {
-    private string $data;
+    private JsonResponse $data;
 
     private StatusAction $statuses;
 
@@ -22,6 +22,6 @@ class StatusApiController extends Controller
     {
         $this->data = $this->statuses->store($request->validated(), $status);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 }

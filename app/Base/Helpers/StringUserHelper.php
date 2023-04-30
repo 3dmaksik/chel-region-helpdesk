@@ -18,9 +18,9 @@ class StringUserHelper extends CoreHelper
     {
         static::$data = $string;
         if (static::$data != null) {
-        self::stringTrim(static::$data);
-        self::stringAllLower(static::$data);
-        self::stringUpFirst(static::$data);
+            self::stringTrim(static::$data);
+            self::stringAllLower(static::$data);
+            self::stringUpFirst(static::$data);
         }
 
         return static::$data;

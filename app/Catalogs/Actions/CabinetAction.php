@@ -5,10 +5,13 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Models\Cabinet as Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 class CabinetAction extends Action
 {
     private array $cabinets;
+
+    private array $response;
 
     private int $total;
 
@@ -39,29 +42,39 @@ class CabinetAction extends Action
         return $this->item;
     }
 
-    public function store(array $request): bool
+    public function store(array $request): JsonResponse
     {
         $this->item = Model::create($request);
         Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Кабинет успешно добавлен!',
+        ];
 
-        return true;
+        return response()->success($this->response);
+
     }
 
-    public function update(array $request, int $id): Model
+    public function update(array $request, int $id): JsonResponse
     {
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
         Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Кабинет успешно обновлён!',
+        ];
 
-        return $this->item;
+        return response()->success($this->response);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): JsonResponse
     {
+        Model::flushQueryCache();
         $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
-        Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Кабинет успешно удалён!',
+        ];
 
-        return true;
+        return response()->success($this->response);
     }
 }

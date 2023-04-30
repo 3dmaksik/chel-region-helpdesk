@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class UserApiController extends Controller
 {
-    private string $data;
+    private JsonResponse $data;
 
     private UsersAction $users;
 
@@ -22,27 +22,27 @@ class UserApiController extends Controller
     {
         $this->data = $this->users->store($request);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function update(UserRequest $request, int $user): JsonResponse
     {
         $this->data = $this->users->update($request, $user);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function destroy(int $user): JsonResponse
     {
         $this->data = $this->users->delete($user);
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function users(): JsonResponse
     {
         $this->data = $this->users->getDataUser()->toJson();
 
-        return response()->json($this->data);
+        return $this->data;
     }
 }

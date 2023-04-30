@@ -111,13 +111,13 @@ class Help extends Model
 
    protected function calendarView(): Attribute
    {
-    return Attribute::make(
-        get: function ($value) {
-            if ($value != null) {
-                return Carbon::parse($value)->format('d.m.Y H:i');
-            }
-        }
-    );
+       return Attribute::make(
+           get: function ($value) {
+               if ($value != null) {
+                   return Carbon::parse($value)->format('d.m.Y H:i');
+               }
+           }
+       );
    }
 
     protected function getCacheBaseTags(): array
