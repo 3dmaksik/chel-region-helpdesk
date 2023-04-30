@@ -33,12 +33,12 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::middleware(['role:superAdmin'])->group(function () {
         Route::controller(HelpController::class)
-        ->prefix('admin')
-        ->as('help.')
-        ->group(function () {
-            Route::get('helps/all', 'index')->name('index');
-            Route::post('helps/all', 'getIndex')->name('index');
-        });
+            ->prefix('admin')
+            ->as('help.')
+            ->group(function () {
+                Route::get('helps/all', 'index')->name('index');
+                Route::post('helps/all', 'getIndex')->name('index');
+            });
         Route::controller(CabinetController::class)
             ->prefix('admin/cabinet')
             ->as('cabinet.')
@@ -83,16 +83,16 @@ Route::middleware('auth')->group(function () {
     });
     Route::middleware(['role:admin|superAdmin'])->group(function () {
         Route::controller(HelpController::class)
-        ->prefix('admin')
-        ->as('help.')
-        ->group(function () {
-            Route::get('helps/new', 'new')->name('new');
-            Route::post('helps/new', 'getNew')->name('new');
-            Route::get('create', 'create')->name('create');
-            Route::get('helps/dismiss', 'dismiss')->name('dismiss');
-            Route::post('helps/dismiss', 'getDismiss')->name('dismiss');
-            Route::get('{help}/edit', 'edit')->name('edit');
-        });
+            ->prefix('admin')
+            ->as('help.')
+            ->group(function () {
+                Route::get('helps/new', 'new')->name('new');
+                Route::post('helps/new', 'getNew')->name('new');
+                Route::get('create', 'create')->name('create');
+                Route::get('helps/dismiss', 'dismiss')->name('dismiss');
+                Route::post('helps/dismiss', 'getDismiss')->name('dismiss');
+                Route::get('{help}/edit', 'edit')->name('edit');
+            });
         Route::controller(NewsController::class)
             ->prefix('news')
             ->as('news.')
@@ -103,15 +103,15 @@ Route::middleware('auth')->group(function () {
     });
     Route::middleware(['role:admin|superAdmin|manager'])->group(function () {
         Route::controller(HelpController::class)
-        ->prefix('admin')
-        ->as('help.')
-        ->group(function () {
-            Route::get('{help}/show', 'show')->name('show');
-            Route::get('helps/worker', 'worker')->name('worker');
-            Route::post('helps/worker', 'getWorker')->name('worker');
-            Route::get('helps/completed', 'completed')->name('completed');
-            Route::post('helps/completed', 'getCompleted')->name('completed');
-        });
+            ->prefix('admin')
+            ->as('help.')
+            ->group(function () {
+                Route::get('{help}/show', 'show')->name('show');
+                Route::get('helps/worker', 'worker')->name('worker');
+                Route::post('helps/worker', 'getWorker')->name('worker');
+                Route::get('helps/completed', 'completed')->name('completed');
+                Route::post('helps/completed', 'getCompleted')->name('completed');
+            });
     });
     Route::middleware(['role:admin|superAdmin|manager|user'])->group(function () {
         Route::controller(HomeController::class)
@@ -127,7 +127,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('helps/create', 'create')->name('create');
                 Route::get('{help}/show', 'show')->name('show');
             });
-            Route::controller(SettingsController::class)
+        Route::controller(SettingsController::class)
             ->prefix('settings')
             ->as('settings.')
             ->group(function () {
@@ -140,7 +140,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('', 'index')->name('index');
                 Route::get('{news}/show', 'show')->name('show');
             });
-            Route::controller(SearchController::class)
+        Route::controller(SearchController::class)
             ->prefix('search')
             ->as('search.')
             ->group(function () {

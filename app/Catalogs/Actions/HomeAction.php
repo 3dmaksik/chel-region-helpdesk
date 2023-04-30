@@ -28,14 +28,14 @@ class HomeAction extends Action
     public function getWorkerPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', '<', 3)
-        ->where('user_id', auth()->user()->id)
-        ->orderBy('status_id', 'ASC')
-        ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderBy('calendar_accept', 'ASC')
-        ->paginate($this->page);
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('status_id', 'ASC')
+            ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_accept', 'ASC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', '<', 3)
-        ->where('user_id', auth()->user()->id)->count();
+            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'workeruser',
@@ -49,11 +49,11 @@ class HomeAction extends Action
     public function getCompletedPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', 3)
-        ->where('user_id', auth()->user()->id)
-        ->orderBy('calendar_final', 'DESC')
-        ->paginate($this->page);
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('calendar_final', 'DESC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', 3)
-        ->where('user_id', auth()->user()->id)->count();
+            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'completeduser',
@@ -67,11 +67,11 @@ class HomeAction extends Action
     public function getDismissPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', 4)
-        ->where('user_id', auth()->user()->id)
-        ->orderBy('calendar_request', 'DESC')
-        ->paginate($this->page);
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('calendar_request', 'DESC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', 4)
-        ->where('user_id', auth()->user()->id)->count();
+            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'dismissuser',
@@ -105,9 +105,9 @@ class HomeAction extends Action
         }
         $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
-                $this->data->app_number = GeneratorAppNumberHelper::generate();
+            $this->data->app_number = GeneratorAppNumberHelper::generate();
         } else {
-                $this->data->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
+            $this->data->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
         }
         $this->item = Model::create((array) $this->data);
         $superAdmin = User::role(['superAdmin'])->get();

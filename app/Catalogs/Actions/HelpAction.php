@@ -63,10 +63,10 @@ class HelpAction extends Action
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::dontCache()->orderBy('status_id', 'ASC')
-        ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderBy('calendar_final', 'DESC')
-        ->paginate($this->page);
+            ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_final', 'DESC')
+            ->paginate($this->page);
         $this->total = Model::count();
         $this->helps =
         [
@@ -81,8 +81,8 @@ class HelpAction extends Action
     public function getNewPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', self::newHelp)
-        ->orderBy('calendar_request', 'ASC')
-        ->paginate($this->page);
+            ->orderBy('calendar_request', 'ASC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', self::newHelp)->count();
         $this->helps =
         [
@@ -97,10 +97,10 @@ class HelpAction extends Action
     public function getWorkerPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', self::workHelp)
-        ->RoleHelp()
-        ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
-        ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
-        ->paginate($this->page);
+            ->RoleHelp()
+            ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', self::workHelp)->count();
         $this->helps =
         [
@@ -115,9 +115,9 @@ class HelpAction extends Action
     public function getCompletedPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', self::successHelp)
-        ->RoleHelp()
-        ->orderBy('calendar_final', 'DESC')
-        ->paginate($this->page);
+            ->RoleHelp()
+            ->orderBy('calendar_final', 'DESC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', self::successHelp)->count();
         $this->helps =
         [
@@ -132,8 +132,8 @@ class HelpAction extends Action
     public function getDismissPagesPaginate(): array
     {
         $this->items = Model::dontCache()->where('status_id', self::dangerHelp)
-        ->orderBy('calendar_final', 'DESC')
-        ->paginate($this->page);
+            ->orderBy('calendar_final', 'DESC')
+            ->paginate($this->page);
         $this->total = Model::where('status_id', self::dangerHelp)->count();
         $this->helps =
         [
@@ -177,9 +177,9 @@ class HelpAction extends Action
     {
         $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
-                $this->app_number = GeneratorAppNumberHelper::generate();
+            $this->app_number = GeneratorAppNumberHelper::generate();
         } else {
-                $this->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
+            $this->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
         }
         $this->calendar_request = Carbon::now();
         $this->options = collect([
@@ -367,18 +367,18 @@ class HelpAction extends Action
     public function getNewPagesCount(): int
     {
         if (auth()->user()->hasAnyRole(['admin', 'superAdmin']) == true) {
-           $this->count = Model::dontCache()->where('status_id', self::newHelp)->count();
-           Cookie::queue('newCount', $this->count);
+            $this->count = Model::dontCache()->where('status_id', self::newHelp)->count();
+            Cookie::queue('newCount', $this->count);
         } else {
             $this->count = 0;
         }
 
-         return $this->count;
+        return $this->count;
     }
 
     public function getNowPagesCount(): int
     {
         return Model::dontCache()->where('status_id', self::workHelp)
-        ->where('executor_id', auth()->user()->id)->count();
+            ->where('executor_id', auth()->user()->id)->count();
     }
 }

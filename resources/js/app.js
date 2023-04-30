@@ -175,49 +175,21 @@ $(function () {
                         .prop("disabled", true);
                 },
                 error: function (data) {
-                    if (data.responseJSON.message == "validation.required") {
+                    console.log(data.responseJSON.message);
                         $(".alert-danger-title")
                             .text(
-                                " Ошибка"
+                                " Ошибка!"
                         );
                         $(".alert-danger-text")
-                        .text(
-                            "Неверно заполнены поля!"
-                        );
-                        $(".base-alert-danger").fadeIn(2000);
-                        setTimeout(function(){
-                          $(".base-alert-danger").fadeOut(2000);
-                        }, 4500);
-                    } else if (
-                        data.responseJSON.message == "validation.unique"
-                    ) {
-                        $(".alert-danger-title")
-                            .text(
-                                " Ошибка"
-                        );
-                        $(".alert-danger-text")
-                        .text(
-                            "Данные уже существуют!"
-                        );
-                        $(".base-alert-danger").fadeIn(2000);
-                        setTimeout(function(){
-                          $(".base-alert-danger").fadeOut(2000);
-                        }, 4500);
-                    } else {
-                        $(".alert-danger-title")
-                            .text(
-                                " Ошибка"
-                        );
-                        $(".alert-danger-text")
-                        .text(
-                            "Ошибка сервера. Обратитесь к администратору. Наименование ошибки:" +
+                        .html(
+                            "При отправке возникла ошибка:<br/>" +
                             data.responseJSON.message
                         );
                         $(".base-alert-danger").fadeIn(2000);
                         setTimeout(function(){
                           $(".base-alert-danger").fadeOut(2000);
                         }, 4500);
-                    }
+
                     $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
@@ -229,7 +201,7 @@ $(function () {
                         );
                         $(".alert-success-text")
                         .text(
-                            "Запись успешно обработана!"
+                            data.message
                         );
                         $(".base-alert-success").fadeIn(2000);
                         setTimeout(function(){
@@ -239,13 +211,8 @@ $(function () {
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                     setTimeout(function () {
-                        $(form).trigger("reset");
-                    }, 1000);
-                    if ( $(".modal").hasClass("fade show") ) {
-                        setTimeout(function () {
-                            location.reload();
-                        }, 5000);
-                    }
+                        location.reload();
+                    }, 5000);
                 },
             });
         });

@@ -53,12 +53,12 @@ class GeneratorAppNumberHelper extends CoreHelper
                 self::$number = self::$parse[2] + self::$startNumber;
             }
         }
-            self::$generator = [
-                self::$genWorld,
-                self::$nowYear,
-                self::$number,
-            ];
+        self::$generator = [
+            self::$genWorld,
+            self::$nowYear,
+            self::$number,
+        ];
 
-            return implode('-', self::$generator);
+        return implode('-', self::$generator);
     }
 }

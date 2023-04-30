@@ -28,7 +28,7 @@ class TestTableSeeder extends Seeder
             Cabinet::flushQueryCache();
             $last = Cabinet::select('id')->orderBy('id', 'desc')->first();
             if ($last->id == 1000) {
-            break;
+                break;
             }
             DB::table('cabinet')->insert([
                 'description' => $i,
@@ -39,11 +39,11 @@ class TestTableSeeder extends Seeder
             $warning_timer = mt_rand(1, 9999);
             $faker = app(Faker::class);
             if ($i == 3) {
-            $i = 4;
+                $i = 4;
             }
             $last = Priority::select('id')->orderBy('id', 'desc')->first();
             if ($last->id == 9) {
-            break;
+                break;
             }
             DB::table('priority')->insert([
                 'description' => substr(str_shuffle($permitted_chars), 0, 16),
@@ -76,9 +76,9 @@ class TestTableSeeder extends Seeder
         for ($i = 2; $i <= 1000000; $i++) {
             $last = Help::select('app_number')->orderBy('id', 'desc')->first();
             if ($last == null) {
-                    $app_number = GeneratorAppNumberHelper::generate();
+                $app_number = GeneratorAppNumberHelper::generate();
             } else {
-                    $app_number = GeneratorAppNumberHelper::generate($last->app_number);
+                $app_number = GeneratorAppNumberHelper::generate($last->app_number);
             }
             $status_id = mt_rand(1, 4);
             if ($status_id == 2 || $status_id == 4) {
