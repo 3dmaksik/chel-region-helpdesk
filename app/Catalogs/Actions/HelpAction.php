@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Notifications\HelpNotification;
 use App\Requests\HelpRequest;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Notification;
@@ -45,6 +46,8 @@ class HelpAction extends Action
 
     private array $helps;
 
+    private array $response;
+
     private array $dataClear;
 
     private int $total;
@@ -53,11 +56,11 @@ class HelpAction extends Action
 
     private string $app_number;
 
-    public function getAllCatalogs(): SimpleCollection
+    public function getAllCatalogs(): JsonResponse
     {
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
 
-        return $this->items;
+        return response()->json($this->items);
     }
 
     public function getAllPagesPaginate(): array
@@ -173,7 +176,7 @@ class HelpAction extends Action
         return array_diff((array) $data, ['', null, false]);
     }
 
-    public function store(HelpRequest $request): bool
+    public function store(HelpRequest $request): JsonResponse
     {
         $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
@@ -195,7 +198,11 @@ class HelpAction extends Action
         Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
         Notification::send($users, new HelpNotification('newadm', route('help.new')));
 
-        return true;
+        $this->response = [
+            'message' => 'Заявка успешно добавлена!',
+        ];
+
+        return response()->success($this->response);
     }
 
     public function edit(int $id): array
@@ -209,17 +216,21 @@ class HelpAction extends Action
         ];
     }
 
-    public function update(HelpRequest $request, int $id): Model
+    public function update(HelpRequest $request, int $id): JsonResponse
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->data = HelpDTO::storeObjectRequest($request);
         $this->dataClear = $this->clear($this->data);
         $this->item->update($this->dataClear);
 
-        return $this->item;
+        $this->response = [
+            'message' => 'Заявка успешно обновлена!',
+        ];
+
+        return response()->success($this->response);
     }
 
-    public function accept(HelpRequest $request, int $id): Model
+    public function accept(HelpRequest $request, int $id): JsonResponse
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->options = collect([
@@ -234,14 +245,26 @@ class HelpAction extends Action
         $this->user = User::dontCache()->findOrFail($this->data->executor_id);
         if ($this->user->id == auth()->user()->id) {
             if ($this->user->getRoleNames()[0] != 'admin' && $this->user->getRoleNames()[0] != 'superAdmin') {
-                throw new \Exception('Нельзя назначить самого себя');
+                $this->response = [
+                    'message' => 'Нельзя назначить самого себя!',
+                ];
+
+                return response()->error($this->response);
             }
         }
         if ($this->user->getRoleNames()[0] == 'user') {
-            throw new \Exception('Нельзя назначить пользователя');
+            $this->response = [
+                'message' => 'Нельзя назначить пользователя!',
+            ];
+
+            return response()->error($this->response);
         }
         if ($this->item->status_id != self::newHelp) {
-            throw new \Exception('Заявка уже принята или отклонена');
+            $this->response = [
+                'message' => 'Заявка уже принята или отклонена!',
+            ];
+
+            return response()->error($this->response);
         }
         $this->item->update($this->dataClear);
 
@@ -257,10 +280,14 @@ class HelpAction extends Action
         $userHome = User::findOrFail($this->item->user_id);
         Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
 
-        return $this->item;
+        $this->response = [
+            'message' => 'Заявка успешно принята!',
+        ];
+
+        return response()->success($this->response);
     }
 
-    public function execute(HelpRequest $request, int $id): Model
+    public function execute(HelpRequest $request, int $id): JsonResponse
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->options = collect([
@@ -271,7 +298,11 @@ class HelpAction extends Action
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);
         if ($this->item->status_id != self::workHelp) {
-            throw new \Exception('Заявка уже выполнена или отклонена');
+            $this->response = [
+                'message' => 'Заявка уже выполнена или отклонена!',
+            ];
+
+            return response()->error($this->response);
         }
         $this->item->update($this->dataClear);
 
@@ -284,10 +315,14 @@ class HelpAction extends Action
         $userHome = User::findOrFail($this->item->user_id);
         Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
 
-        return $this->item;
+        $this->response = [
+            'message' => 'Заявка успешно выполнена!',
+        ];
+
+        return response()->success($this->response);
     }
 
-    public function redefine(HelpRequest $request, int $id): Model
+    public function redefine(HelpRequest $request, int $id): JsonResponse
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->options = collect([
@@ -297,13 +332,25 @@ class HelpAction extends Action
         $this->dataClear = $this->clear($this->data);
         $this->user = User::findOrFail($this->data->executor_id);
         if ($this->user->id == auth()->user()->id) {
-            throw new \Exception('Нельзя назначить самого себя');
+            $this->response = [
+                'message' => 'Нельзя назначить самого себя!',
+            ];
+
+            return response()->error($this->response);
         }
         if ($this->user->getRoleNames()[0] == 'user') {
-            throw new \Exception('Нельзя назначить пользователя');
+            $this->response = [
+                'message' => 'Нельзя назначить пользователя!',
+            ];
+
+            return response()->error($this->response);
         }
         if ($this->item->status_id != self::workHelp) {
-            throw new \Exception('Заявка уже выполнена или отклонена');
+            $this->response = [
+                'message' => 'Заявка уже выполнена или отклонена!',
+            ];
+
+            return response()->error($this->response);
         }
         $oldUserMod = User::findOrFail($this->item->executor_id);
         $this->item->update($this->dataClear);
@@ -321,10 +368,14 @@ class HelpAction extends Action
         $userHome = User::findOrFail($this->item->user_id);
         Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
 
-        return $this->item;
+        $this->response = [
+            'message' => 'Заявка успешно перенаправлена!',
+        ];
+
+        return response()->success($this->response);
     }
 
-    public function reject(HelpRequest $request, int $id): Model
+    public function reject(HelpRequest $request, int $id): JsonResponse
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->options = collect([
@@ -335,7 +386,11 @@ class HelpAction extends Action
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);
         if ($this->item->status_id != self::newHelp) {
-            throw new \Exception('Заявка не может быть отклонена');
+            $this->response = [
+                'message' => 'Заявка не может быть отклонена, так как уже принята в работу!',
+            ];
+
+            return response()->error($this->response);
         }
         $this->item->update($this->dataClear);
 
@@ -348,23 +403,33 @@ class HelpAction extends Action
         $userHome = User::findOrFail($this->item->user_id);
         Notification::send($userHome, new HelpNotification('dismissuser', route('home.dismiss')));
 
-        return $this->item;
+        $this->response = [
+            'message' => 'Заявка успешно отклонена!',
+        ];
+
+        return response()->success($this->response);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): JsonResponse
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->item->forceDelete();
 
-        return true;
+        $this->response = [
+            'message' => 'Заявка успешно удалена!',
+        ];
+
+        return response()->success($this->response);
     }
 
-    public function updateView(int $id, bool $status = true): bool
+    public function updateView(int $id, bool $status = true): JsonResponse
     {
-        return Model::whereId($id)->update(['check_write' => $status]);
+        Model::whereId($id)->update(['check_write' => $status]);
+
+        return response()->success('Заявка успешно прочитана!');
     }
 
-    public function getNewPagesCount(): int
+    public function getNewPagesCount(): JsonResponse
     {
         if (auth()->user()->hasAnyRole(['admin', 'superAdmin']) == true) {
             $this->count = Model::dontCache()->where('status_id', self::newHelp)->count();
@@ -373,12 +438,14 @@ class HelpAction extends Action
             $this->count = 0;
         }
 
-        return $this->count;
+        return response()->json($this->count);
     }
 
-    public function getNowPagesCount(): int
+    public function getNowPagesCount(): JsonResponse
     {
-        return Model::dontCache()->where('status_id', self::workHelp)
+        $this->count = Model::dontCache()->where('status_id', self::workHelp)
             ->where('executor_id', auth()->user()->id)->count();
+
+        return response()->json($this->count);
     }
 }

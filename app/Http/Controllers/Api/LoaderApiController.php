@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 
 class LoaderApiController extends Controller
 {
-    private array $data;
+    private JsonResponse $data;
 
     private LoaderAction $loader;
 
@@ -21,6 +21,6 @@ class LoaderApiController extends Controller
     {
         $this->data = $this->loader->getLoad();
 
-        return response()->json($this->data);
+        return $this->data;
     }
 }

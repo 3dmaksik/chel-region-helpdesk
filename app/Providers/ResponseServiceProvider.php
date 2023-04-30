@@ -30,7 +30,7 @@ class ResponseServiceProvider extends ServiceProvider
             return Response::json($data, 200);
         });
         Response::macro('error', function ($data) {
-            return Response::json($data, 403);
+            return Response::json($data, 500);
         });
 
         Response::macro('created', function ($data) {

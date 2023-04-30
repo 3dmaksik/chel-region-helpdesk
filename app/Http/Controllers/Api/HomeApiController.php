@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class HomeApiController extends Controller
 {
-    private string $data;
+    private JsonResponse $data;
 
     private HomeAction $helps;
 
@@ -22,6 +22,6 @@ class HomeApiController extends Controller
     {
         $this->data = $this->helps->store($request->validated());
 
-        return response()->json($this->data);
+        return $this->data;
     }
 }

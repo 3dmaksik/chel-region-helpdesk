@@ -4,10 +4,13 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Models\Article as Model;
+use Illuminate\Http\JsonResponse;
 
 class NewsAction extends Action
 {
     private array $news;
+
+    private array $response;
 
     private int $total;
 
@@ -39,25 +42,37 @@ class NewsAction extends Action
         return $this->item;
     }
 
-    public function store(array $request): bool
+    public function store(array $request): JsonResponse
     {
-        Model::dontCache()->create($request);
+        Model::create($request);
+        $this->response = [
+            'message' => 'Новость успешно добавлена!',
+        ];
 
-        return true;
+        return response()->success($this->response);
     }
 
-    public function update(array $request, int $id): Model
+    public function update(array $request, int $id): JsonResponse
     {
-        $this->item = Model::dontCache()->findOrFail($id);
-        $this->item->dontCache()->update($request);
+        $this->item = Model::findOrFail($id);
+        $this->item->update($request);
+        Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Новость успешно обновлена!',
+        ];
 
-        return $this->item;
+        return response()->success($this->response);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): JsonResponse
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
+        $this->item->forceDelete();
+        Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Новость успешно удалена!',
+        ];
 
-        return true;
+        return response()->success($this->response);
     }
 }

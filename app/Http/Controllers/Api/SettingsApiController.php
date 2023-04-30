@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 
 class SettingsApiController extends Controller
 {
-    private string $data;
+    private JsonResponse $data;
 
     private SettingsAction $settings;
 
@@ -23,7 +23,7 @@ class SettingsApiController extends Controller
     {
         $this->data = $this->settings->updatePassword($request->validated());
 
-        return response()->json($this->data);
+        return $this->data;
     }
 
     public function updateSettings(SettingsRequest $request): JsonResponse
@@ -31,6 +31,6 @@ class SettingsApiController extends Controller
         //DTO добавить и request
         $this->data = $this->settings->updateSettings($request->validated());
 
-        return response()->json($this->data);
+        return $this->data;
     }
 }

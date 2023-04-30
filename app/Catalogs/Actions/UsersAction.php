@@ -5,9 +5,11 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\UsersDTO;
+use App\Models\Help;
 use App\Models\User as Model;
 use App\Requests\UserRequest;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection as SimpleCollection;
 
 class UsersAction extends Action
@@ -22,7 +24,11 @@ class UsersAction extends Action
 
     private array $users;
 
+    private array $response;
+
     private int $total;
+
+    private int $count;
 
     private array $dataClear;
 
@@ -79,17 +85,20 @@ class UsersAction extends Action
         ];
     }
 
-    public function store(UserRequest $request): bool
+    public function store(UserRequest $request): JsonResponse
     {
         $this->data = UsersDTO::storeObjectRequest($request);
         $this->dataClear = $this->clear($this->data);
         Model::create($this->dataClear)->assignRole($this->dataClear['role']);
         Model::flushQueryCache();
+        $this->response = [
+            'message' => 'Пользователь успешно добавлен!',
+        ];
 
-        return true;
+        return response()->success($this->response);
     }
 
-    public function update(UserRequest $request, int $id): Model
+    public function update(UserRequest $request, int $id): JsonResponse
     {
         $this->user = Model::findOrFail($id);
         $this->data = UsersDTO::storeObjectRequest($request);
@@ -98,17 +107,49 @@ class UsersAction extends Action
         $this->user->syncRoles($this->dataClear['role']);
         Model::flushQueryCache();
 
-        return $this->user;
+        $this->response = [
+            'message' => 'Пользователь успешно обновлён!',
+        ];
+
+        return response()->success($this->response);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): JsonResponse
     {
+        $this->count = Help::dontCache()->where('user_id', $id)->orWhere('executor_id', $id)->count();
+        if ($this->count > 0) {
+            $this->response = [
+                'message' => 'Пользователь не может быть удалён, так как не удалены все заявки связанные с ним!',
+            ];
+
+            return response()->error($this->response);
+        }
+
         $this->user = Model::findOrFail($id);
+        if ($this->user->id === auth()->user()->id) {
+            $this->response = [
+                'message' => 'Пользователь не может удалить самого себя!',
+            ];
+
+            return response()->error($this->response);
+        }
+        $this->count = Model::role(['superAdmin'])->count();
+        if ($this->count === 1) {
+            $this->response = [
+                'message' => 'Вы не можете удалить последнего администратора!',
+            ];
+
+            return response()->error($this->response);
+        }
         $this->user->syncRoles([]);
         $this->user->forceDelete();
         Model::flushQueryCache();
 
-        return true;
+        $this->response = [
+            'message' => 'Пользователь успешно удалён!',
+        ];
+
+        return response()->success($this->response);
     }
 
     public function getDataUser(): Model

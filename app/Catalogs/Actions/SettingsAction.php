@@ -6,6 +6,7 @@ use App\Base\Actions\Action;
 use App\Catalogs\DTO\SettingsDTO;
 use App\Models\User;
 use App\Requests\SettingsRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class SettingsAction extends Action
@@ -23,15 +24,17 @@ class SettingsAction extends Action
         //parent::__construct();
     }
 
-    public function updatePassword(array $request): bool
+    public function updatePassword(array $request): JsonResponse
     {
         if ($this->checkPassword($request['current_password']) === true && $this->checkPassword($request['password']) === false) {
-            return User::whereId(auth()->user()->id)->update([
+            User::whereId(auth()->user()->id)->update([
                 'password' => Hash::make($request['password']),
             ]);
+
+            return response()->success('Пароль успешно обновлён!');
         }
 
-        return false;
+        return response()->error('Пароль не обновлён');
     }
 
     protected function checkPassword(string $password): bool
@@ -58,7 +61,7 @@ class SettingsAction extends Action
         return $this->user;
     }
 
-    public function updateSettings(SettingsRequest $request): bool
+    public function updateSettings(SettingsRequest $request): JsonResponse
     {
         $this->user = User::findOrFail(auth()->user()->id);
         $this->data = SettingsDTO::storeObjectRequest($request);
@@ -74,7 +77,7 @@ class SettingsAction extends Action
         $this->dataClear = $this->clear($this->data);
         $this->user->update($this->dataClear);
 
-        return true;
+        return response()->success('Настройки успешно обновлены');
     }
 
     protected function clear(SettingsDTO $data): array

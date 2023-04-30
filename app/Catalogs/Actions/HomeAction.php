@@ -10,12 +10,15 @@ use App\Models\Help as Model;
 use App\Models\User;
 use App\Notifications\HelpNotification;
 use App\Requests\HelpRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Notification;
 
 class HomeAction extends Action
 {
     private array $helps;
+
+    private array $response;
 
     private Model|null $last;
 
@@ -97,7 +100,7 @@ class HomeAction extends Action
         return $this->item;
     }
 
-    public function store(HelpRequest $request): bool
+    public function store(HelpRequest $request): JsonResponse
     {
         $this->data = HelpDTO::storeObjectRequest($request);
         if (! isset($this->data->user_id)) {
@@ -115,7 +118,10 @@ class HomeAction extends Action
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
         Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
         Notification::send($users, new HelpNotification('newadm', route('help.new')));
+        $this->response = [
+            'message' => 'Заявка успешно добавлена!',
+        ];
 
-        return true;
+        return response()->success($this->response);
     }
 }
