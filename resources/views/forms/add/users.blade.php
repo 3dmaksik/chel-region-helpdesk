@@ -22,7 +22,7 @@ col-lg-6
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" method="POST" action="{{ route(config('constants.users.store')) }}">
+        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.users.store')) }}">
             <div class="form-group">
                 <label for="">Логин</label>
                 <input type="text" name="name" value="" class="form-control" id="name" aria-describedby="textName"

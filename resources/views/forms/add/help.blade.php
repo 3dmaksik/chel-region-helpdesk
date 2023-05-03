@@ -22,7 +22,7 @@ col-lg-12
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" enctype="multipart/form-data" method="POST"
+        <form id="formValidate" class="form-submit" enctype="multipart/form-data" method="POST"
             action="{{ route(config('constants.help.store')) }}">
             <div class="form-group">
                 <label for="select2-category">Выберите категорию</label>

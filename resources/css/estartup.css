@@ -444,3 +444,13 @@ span {
 .user {
     padding: 1rem;
 }
+.base-alert-success, .base-alert-danger{
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: 70px;
+    z-index:2000;
+}
+

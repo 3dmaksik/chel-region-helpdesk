@@ -22,7 +22,7 @@ col-lg-6
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" method="POST" action="{{ route(config('constants.users.update'),$items['user']->id) }}">
+        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.users.update'),$items['user']->id) }}">
             @method('PATCH')
             <div class="form-group">
                 <label for="">Логин</label>

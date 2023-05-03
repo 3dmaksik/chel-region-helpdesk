@@ -36,7 +36,7 @@ col-lg-12 mb-4
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
                     </div>
-                    <form id="formRemove-{{$item->id}}" class="remove-form"
+                    <form id="formRemove-{{$item->id}}" class="form-submit"
                         action="{{ route(config('constants.news.destroy'),$item->id) }}" method="POST">
                         @method('DELETE')
                         @csrf

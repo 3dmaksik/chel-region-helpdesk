@@ -37,16 +37,6 @@ import "../vendor/select2/dist/js/i18n/ru.js";
             },
             error: function (data) {
                 $("#errors-list").empty().hide();
-                if (
-                    data.responseJSON.message == "validation.exists" ||
-                    data.responseJSON.message == "auth.failed"
-                ) {
-                    $("#errors-list")
-                        .append(
-                            "<div class='alert alert-danger'>Неверный логин или пароль!</div>"
-                        )
-                        .slideDown(700);
-                } else {
                     $("#errors-list")
                         .append(
                             "<div class='alert alert-danger'>Ошибка сервера. Обратитесь к администратору. Наименование ошибки:" +
@@ -54,7 +44,6 @@ import "../vendor/select2/dist/js/i18n/ru.js";
                                 "</div>"
                         )
                         .slideDown(700);
-                }
                 $(loginForm)
                     .find("input, textarea, select, button[type=submit]")
                     .prop("disabled", false);
@@ -65,64 +54,76 @@ import "../vendor/select2/dist/js/i18n/ru.js";
         });
     });
 
-    var helpForm = $("#formValidate");
-    helpForm.on("submit", function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        $.each($("input[type=file]"), function (i, obj) {
-            $.each(obj.files, function (j, file) {
-                formData.append("images[" + j + "]", file);
-                console.log("1");
+    $(".form-submit").each(function () {
+        $(this).on("submit", function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.each($("input[type=file]"), function (i, obj) {
+                $.each(obj.files, function (j, file) {
+                    formData.append("images[" + j + "]", file);
+                });
             });
-        });
-        $.ajax({
-            url: $(this).attr("action"),
-            type: "POST",
-            cache: false,
-            dataType: "json",
-            data: formData,
-            processData: false,
-            contentType: false,
-            timeout: 600000,
-            beforeSend: function () {
-                $(helpForm)
-                    .find("input, textarea, select, button[type=submit]")
-                    .prop("disabled", true);
-            },
-            error: function (data) {
-                $("#error-message").empty().hide();
-                $("#sent-message").empty().hide();
-                if (data.responseJSON.message == "validation.required") {
-                    $("#error-message")
-                        .append(
-                            "<div class='alert alert-danger'>Ошибка. Неверно заполнены поля!</div>"
-                        )
-                        .slideDown(700);
-                } else {
-                    $("#error-message")
-                        .append(
-                            "<div class='alert alert-danger'>Ошибка сервера. Обратитесь к администратору. Наименование ошибки:" +
-                                data.responseJSON.message +
-                                "</div>"
-                        )
-                        .slideDown(700);
-                }
-                $(helpForm)
-                    .find("input, textarea, select, button[type=submit]")
-                    .prop("disabled", false);
-            },
-            success: function (data) {
-                $("#error-message").empty().hide();
-                $("#sent-message").empty().hide();
-                $("#sent-message")
-                    .append(
-                        "<div class='alert alert-success'>Успех. Ваше сообщение отправлено и скоро будет рассмотрено!</div>"
-                    )
-                    .slideDown(700);
-                $(helpForm)
-                    .find("input, textarea, select, button[type=submit]")
-                    .prop("disabled", false);
-            },
+            $.ajax({
+                url: $(this).attr("action"),
+                type: "POST",
+                cache: false,
+                dataType: "json",
+                data: formData,
+                processData: false,
+                contentType: false,
+                timeout: 600000,
+                beforeSend: function () {
+                    $(this)
+                        .find("input, textarea, select, button[type=submit]")
+                        .prop("disabled", true);
+                },
+                error: function (data) {
+                         if (data.responseJSON.message == undefined)
+                        {
+                            data.responseJSON.message = data.message;
+                        }
+                        $(".alert-danger-title")
+                            .text(
+                                " Ошибка!"
+                        );
+                        $(".alert-danger-text")
+                        .html(
+                            "При отправке возникла ошибка:<br/>" +
+                            data.responseJSON.message
+                        );
+                        $(".base-alert-danger").fadeIn(2000);
+                        setTimeout(function(){
+                          $(".base-alert-danger").fadeOut(2000);
+                        }, 4500);
+
+                    $(this)
+                        .find("input, textarea, select, button[type=submit]")
+                        .prop("disabled", false);
+                },
+                success: function (data) {
+                    $(".modal").each(function () {
+                        $(this).modal('hide');
+                    })
+                    $(".alert-success-title")
+                            .text(
+                                " Успех"
+                        );
+                        $(".alert-success-text")
+                        .text(
+                            data.message
+                        );
+                        $(".base-alert-success").fadeIn(2000);
+                        setTimeout(function(){
+                          $(".base-alert-success").fadeOut(2000);
+                        }, 4500);
+                    $(this)
+                        .find("input, textarea, select, button[type=submit]")
+                        .prop("disabled", false);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 5000);
+                },
+            });
         });
     });
 

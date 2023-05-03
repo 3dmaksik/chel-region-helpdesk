@@ -5,7 +5,7 @@ namespace App\Requests;
 use App\Base\Requests\Request as BaseRequest;
 use Illuminate\Support\Facades\Auth;
 
-class SettingsRequest extends BaseRequest
+class AccountRequest extends BaseRequest
 {
     //Правила валидации
     public function rules(): array

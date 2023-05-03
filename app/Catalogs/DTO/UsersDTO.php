@@ -7,24 +7,30 @@ use App\Base\Helpers\StringUserHelper;
 use App\Base\Requests\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Base\Helpers\StoreFilesHelper;
 
 class UsersDTO extends DTO
 {
-    public string $name;
+    public ?string $name;
 
-    public string $email;
+    public ?string $email;
 
-    public string $password;
+    public ?string $password;
 
-    public string $firstname;
+    public ?string $firstname;
 
-    public string $lastname;
+    public ?string $lastname;
 
     public ?string $patronymic;
 
-    public string $role;
+    public ?string $role;
 
-    public int $cabinet_id;
+    public ?int $cabinet_id;
+
+    public ?string $avatar;
+
+    public ?string $sound_notify;
+
 
     public static function storeObjectRequest(Request $request): self
     {
@@ -37,6 +43,8 @@ class UsersDTO extends DTO
         $dto->cabinet_id = $request->get('cabinet_id');
         $dto->patronymic = StringUserHelper::run($request->get('patronymic'));
         $dto->role = $request->get('role');
+        $dto->avatar = json_encode(StoreFilesHelper::createOneFile($request->file('avatar'), 'avatar', 32, 32));
+        $dto->sound_notify = json_encode(StoreFilesHelper::createNotify($request->get('sound_notify'), 'sound'));
 
         return $dto;
     }

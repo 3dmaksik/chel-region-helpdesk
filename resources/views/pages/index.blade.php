@@ -34,6 +34,24 @@
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
         </div>
+        <div class="base-alert-success">
+            <div class="top-alert alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+                <h6><i class="fas fa-check"></i><b class="alert-success-title"> </b></h6>
+                <span class="alert-success-text"></span>
+            </div>
+        </div>
+        <div class="base-alert-danger">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+                <h6><i class="fas fa-ban"></i><b class="alert-danger-title"> </b></h6>
+                <span class="alert-danger-text"></span>
+              </div>
+        </div>
     </header><!-- End Header -->
 
     <!-- ======= Hero Section ======= -->
@@ -64,7 +82,7 @@
                 <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
                     <div class="col-lg-8 col-md-6">
                         <div class="form">
-                            <form name="form" id="formValidate" enctype="multipart/form-data" method="POST"
+                            <form name="form" id="formValidate" class="form-submit" enctype="multipart/form-data" method="POST"
                                 action="{{ route('index.store') }}" role="form" class="php-email-form">
                                 @csrf
                                 <div class="form-group">

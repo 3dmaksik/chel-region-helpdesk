@@ -100,15 +100,29 @@
     <hr class="sidebar-divider">
     @endhasrole
     <div class="sidebar-heading"> Дополнительное </div>
-    <li class="nav-item {{ request()->segment(1) == 'stats' ? 'active':'' }}"> <a class="nav-link"
+        <li id="settings" class="nav-item ">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SettingsForm" aria-expanded="false"
+                aria-controls="WorkForm">
+                <i class="fas fa-fw fa-cogs"></i>
+                <span>Настройки</span>
+            </a>
+            <div id="SettingsForm"
+                class="collapse {{ request()->segment(1) == 'settings' ? 'show':'' }}"
+                aria-labelledby="headingForm" data-parent="#workSidebar" style="">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item  {{ request()->segment(1) == 'settings' && request()->segment(2) == 'account' ? 'active':'' }}"
+                        href="{{ route(config('constants.settings.account')) }}">Настройки аккаунта
+                    </a>
+                    <a class="collapse-item  {{ request()->segment(1) == 'settings' && request()->segment(2) == 'password' ? 'active':'' }}"
+                        href="{{ route(config('constants.settings.password')) }}">Изменение пароля
+                    </a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item {{ request()->segment(1) == 'stats' ? 'active':'' }}"> <a class="nav-link"
             href="{{ route('stats') }}">
             <i class="fas fa-fw fa-star"></i>
             <span>Статистика</span>
-        </a> </li>
-    <li class="nav-item {{ request()->segment(1) == 'settings' ? 'active':'' }}"> <a class="nav-link"
-            href="{{ route(config('constants.settings.edit')) }}">
-            <i class="fas fa-fw fa-cogs"></i>
-            <span>Настройки</span>
         </a> </li>
     <hr class="sidebar-divider">
     <div class="version" id="version-ruangadmin"></div>

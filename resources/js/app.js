@@ -32,14 +32,6 @@ $(function () {
         format: "Y-m-d H:i:s",
     });
 
-    $("input[type=submit]").on('click', function () {
-        var formId = $(this)
-            .closest('form')
-            .attr('id');
-        let sendForm = $("#" + formId);
-        sendAllForm(sendForm);
-    })
-
     $(".custom-file-input").on("change", function () {
         if ($(this).val() != "")
             $(this)
@@ -52,7 +44,6 @@ $(function () {
         url: "/api/loader/get",
         method: "get",
         dataType: "json",
-        error: function (data) {},
         success: function (data) {
             if (data.avatar == null) {
                 $(".img-profile").attr(
@@ -122,27 +113,6 @@ $(function () {
         });
     })
 
-    $(".remove-form").on("submit", function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        $.ajax({
-            url: $(this).attr("action"),
-            type: "POST",
-            cache: false,
-            dataType: "json",
-            data: formData,
-            processData: false,
-            contentType: false,
-            timeout: 600000,
-            error: function (data) {},
-            success: function (data) {
-                setTimeout(function () {
-                    location.reload();
-                }, 3000);
-            },
-        });
-    });
-
     function loadNew(method, route) {
         if ($("div").hasClass(method)) {
             $.post(route + "?page=" + page + "", function (data) {
@@ -150,9 +120,8 @@ $(function () {
             });
         }
     }
-
-    function sendAllForm(form) {
-        form.on("submit", function (e) {
+    $(".form-submit").each(function () {
+        $(this).on("submit", function (e) {
             e.preventDefault();
             var formData = new FormData(this);
             $.each($("input[type=file]"), function (i, obj) {
@@ -170,12 +139,15 @@ $(function () {
                 contentType: false,
                 timeout: 600000,
                 beforeSend: function () {
-                    $(form)
+                    $(this)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", true);
                 },
                 error: function (data) {
-                    console.log(data.responseJSON.message);
+                         if (data.responseJSON.message == undefined)
+                        {
+                            data.responseJSON.message = data.message;
+                        }
                         $(".alert-danger-title")
                             .text(
                                 " Ошибка!"
@@ -190,11 +162,14 @@ $(function () {
                           $(".base-alert-danger").fadeOut(2000);
                         }, 4500);
 
-                    $(form)
+                    $(this)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                 },
                 success: function (data) {
+                    $(".modal").each(function () {
+                        $(this).modal('hide');
+                    })
                     $(".alert-success-title")
                             .text(
                                 " Успех"
@@ -207,7 +182,7 @@ $(function () {
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
                         }, 4500);
-                    $(form)
+                    $(this)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                     setTimeout(function () {
@@ -216,8 +191,7 @@ $(function () {
                 },
             });
         });
-    }
-
+    });
     function newCount() {
         $.ajax({
             url: "/api/help/new",

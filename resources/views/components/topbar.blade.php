@@ -68,7 +68,7 @@
                 <span class="name=profile ml-2 d-none d-lg-inline text-white small">{{ auth()->user()->firstname}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown"> <a
-                    class="dropdown-item" href="{{ route(config('constants.settings.edit')) }}">
+                    class="dropdown-item" href="{{ route(config('constants.settings.account')) }}">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Настройки
                 </a>

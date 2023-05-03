@@ -22,7 +22,7 @@ col-lg-4
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" method="POST" action="{{ route(config('constants.priority.store')) }}">
+        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.priority.store')) }}">
             <div class="form-group">
                 <label for="">Название</label>
                 <input type="text" name="description" value="" class="form-control" id="description"

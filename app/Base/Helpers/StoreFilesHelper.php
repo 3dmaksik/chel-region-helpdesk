@@ -61,7 +61,7 @@ class StoreFilesHelper extends CoreHelper
     public static function createFile(null|array $request, string $type = 'public', int $w = 1920, int $h = 1080): null|array
     {
         if ($request === null) {
-            return null;
+            return NULL;
         }
         foreach ($request as $file) {
             $url[self::$i] = self::createOneFile($file, $type, $w, $h);
@@ -97,8 +97,11 @@ class StoreFilesHelper extends CoreHelper
      * @param  int  $w
      * @param  int  $h
      */
-    public static function createOneFile(UploadedFile $file, string $type, $w, $h): array
+    public static function createOneFile(UploadedFile|null $file, string $type, $w, $h): null|array
     {
+        if ($file === null) {
+            return NULL;
+        }
         self::$fileName = self::createImageName();
         self::$img = Image::make($file->getRealPath());
         self::$resize = self::resizeFile(self::$img, $w, $h);
@@ -146,8 +149,11 @@ class StoreFilesHelper extends CoreHelper
     /**
      * [create one sound]
      */
-    public static function createNotify(UploadedFile $request): array
+    public static function createNotify(UploadedFile|null $request): null|array
     {
+        if ($request === null) {
+            return NULL;
+        }
         self::$fileName = self::createSoundName();
         self::$saveStorage = self::saveSoundStorage($request, '\\public\\sound\\', self::$fileName);
 

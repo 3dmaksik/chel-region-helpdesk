@@ -9,7 +9,8 @@ use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use App\Models\User;
 use App\Notifications\HelpNotification;
-use App\Requests\HelpRequest;
+use App\Requests\IndexRequest;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Notification;
@@ -26,7 +27,15 @@ class HomeAction extends Action
 
     public User $superAdmin;
 
+    private Carbon $calendar_request;
+
+    private array $dataClear;
+
     public User $users;
+
+    private string $app_number;
+
+    private SimpleCollection $options;
 
     public function getWorkerPagesPaginate(): array
     {
@@ -100,28 +109,36 @@ class HomeAction extends Action
         return $this->item;
     }
 
-    public function store(HelpRequest $request): JsonResponse
+    public function store(IndexRequest $request): JsonResponse
     {
-        $this->data = HelpDTO::storeObjectRequest($request);
-        if (! isset($this->data->user_id)) {
-            $this->data->user_id = auth()->user()->id;
-        }
         $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
-            $this->data->app_number = GeneratorAppNumberHelper::generate();
+            $this->app_number = GeneratorAppNumberHelper::generate();
         } else {
-            $this->data->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
+            $this->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
         }
-        $this->item = Model::create((array) $this->data);
+        $this->calendar_request = Carbon::now();
+        $this->options = collect([
+            'app_number' => $this->app_number,
+            'calendar_request' => $this->calendar_request,
+        ]);
+        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
+        $this->dataClear = $this->clear($this->data);
+        $this->item = Model::create($this->dataClear);
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
         Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
         Notification::send($users, new HelpNotification('newadm', route('help.new')));
+
         $this->response = [
             'message' => 'Заявка успешно добавлена!',
         ];
 
         return response()->success($this->response);
+    }
+    protected function clear(HelpDTO $data): array
+    {
+        return array_diff((array) $data, ['', null, false]);
     }
 }

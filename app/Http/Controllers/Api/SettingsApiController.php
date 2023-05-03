@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SettingsAction;
 use App\Requests\PasswordRequest;
-use App\Requests\SettingsRequest;
+use App\Requests\AccountRequest;
 use Illuminate\Http\JsonResponse;
 
 class SettingsApiController extends Controller
@@ -26,10 +26,10 @@ class SettingsApiController extends Controller
         return $this->data;
     }
 
-    public function updateSettings(SettingsRequest $request): JsonResponse
+    public function updateSettings(AccountRequest $request): JsonResponse
     {
         //DTO добавить и request
-        $this->data = $this->settings->updateSettings($request->validated());
+        $this->data = $this->settings->updateSettings($request);
 
         return $this->data;
     }

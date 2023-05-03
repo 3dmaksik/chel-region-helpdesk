@@ -22,7 +22,7 @@ col-lg-12
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" method="POST" action="{{ route(config('constants.news.store')) }}">
+        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.news.store')) }}">
             <div class="form-group">
                 <label for="">Название</label>
                 <input type="text" name="name" value="" class="form-control" id="name" aria-describedby="textName"

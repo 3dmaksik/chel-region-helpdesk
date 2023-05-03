@@ -3,11 +3,12 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Catalogs\DTO\SettingsDTO;
+use App\Catalogs\DTO\UsersDTO;
 use App\Models\User;
-use App\Requests\SettingsRequest;
+use App\Requests\AccountRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class SettingsAction extends Action
 {
@@ -31,10 +32,10 @@ class SettingsAction extends Action
                 'password' => Hash::make($request['password']),
             ]);
 
-            return response()->success('Пароль успешно обновлён!');
+            return response()->success(['message' => 'Пароль успешно обновлён!']);
         }
 
-        return response()->error('Пароль не обновлён');
+        return response()->error(['message' => 'Пароль не изменён! </br> Неверно указан текущий пароль']);
     }
 
     protected function checkPassword(string $password): bool
@@ -61,17 +62,17 @@ class SettingsAction extends Action
         return $this->user;
     }
 
-    public function updateSettings(SettingsRequest $request): JsonResponse
+    public function updateSettings(AccountRequest $request): JsonResponse
     {
         $this->user = User::findOrFail(auth()->user()->id);
-        $this->data = SettingsDTO::storeObjectRequest($request);
+        $this->data = UsersDTO::storeObjectRequest($request);
         if (isset($this->data->avatar) && $this->user->avatar != null) {
             $this->user->avatar = json_decode($this->user->avatar, true);
-            unlink(storage_path('app\\public\\avatar\\'.$this->user->avatar['url']));
+            Storage::disk('avatar')->delete($this->user->avatar['url']);
         }
         if (isset($this->data->sound_notify) && $this->user->sound_notify != null) {
             $this->user->sound_notify = json_decode($this->user->sound_notify, true);
-            unlink(storage_path('app\\public\\sound\\'.$this->user->sound_notify['url']));
+            Storage::disk('sound_notify')->delete($this->user->sound_notify['url']);
         }
         User::flushQueryCache();
         $this->dataClear = $this->clear($this->data);
@@ -80,8 +81,8 @@ class SettingsAction extends Action
         return response()->success('Настройки успешно обновлены');
     }
 
-    protected function clear(SettingsDTO $data): array
+    protected function clear(UsersDTO $data): array
     {
-        return array_diff((array) $data, ['', null, false]);
+        return array_diff((array) $data, ['', null, 'null', false]);
     }
 }

@@ -15,10 +15,14 @@ class SettingsController extends Controller
         $this->settings = $settings;
     }
 
-    public function edit(): View
+    public function editAccount(): View
     {
         $works = $this->settings->editSettings();
 
-        return view('forms.edit.settings', compact('works'));
+        return view('forms.edit.account', compact('works'));
+    }
+    public function editPassword(): View
+    {
+        return view('forms.edit.password');
     }
 }

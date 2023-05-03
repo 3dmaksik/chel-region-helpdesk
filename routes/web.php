@@ -131,7 +131,8 @@ Route::middleware('auth')->group(function () {
             ->prefix('settings')
             ->as('settings.')
             ->group(function () {
-                Route::get('edit', 'edit')->name('edit');
+                Route::get('password', 'editPassword')->name('editPassword');
+                Route::get('account', 'editAccount')->name('editAccount');
             });
         Route::controller(NewsController::class)
             ->prefix('news')

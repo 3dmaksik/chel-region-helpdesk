@@ -27,10 +27,10 @@ class ResponseServiceProvider extends ServiceProvider
     {
         $instance = $this;
         Response::macro('success', function ($data) {
-            return Response::json($data, 200);
+            return Response::json($data, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
         });
         Response::macro('error', function ($data) {
-            return Response::json($data, 500);
+            return Response::json($data, 422, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
         });
 
         Response::macro('created', function ($data) {

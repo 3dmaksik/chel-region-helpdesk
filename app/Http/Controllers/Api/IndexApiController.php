@@ -20,7 +20,7 @@ class IndexApiController extends Controller
 
     public function store(IndexRequest $request): JsonResponse
     {
-        $this->data = $this->helps->store($request->validated());
+        $this->data = $this->helps->store($request);
 
         return $this->data;
     }
