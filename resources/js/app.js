@@ -41,8 +41,8 @@ $(function () {
     });
 
     $.ajax({
-        url: "/api/loader/get",
-        method: "get",
+        url: "/api/loader/post",
+        method: "post",
         dataType: "json",
         success: function (data) {
             if (data.avatar == null) {

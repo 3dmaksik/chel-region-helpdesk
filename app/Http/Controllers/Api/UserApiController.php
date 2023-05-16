@@ -38,11 +38,4 @@ class UserApiController extends Controller
 
         return $this->data;
     }
-
-    public function users(): JsonResponse
-    {
-        $this->data = $this->users->getDataUser()->toJson();
-
-        return $this->data;
-    }
 }

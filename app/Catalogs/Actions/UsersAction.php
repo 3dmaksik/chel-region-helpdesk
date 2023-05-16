@@ -152,13 +152,8 @@ class UsersAction extends Action
         return response()->success($this->response);
     }
 
-    public function getDataUser(): Model
-    {
-        return Model::whereId(auth()->user()->id)->first();
-    }
-
     protected function clear(UsersDTO $data): array
     {
-        return array_diff((array) $data, ['', null, false]);
+        return array_diff((array) $data, ['', null, 'null', false]);
     }
 }

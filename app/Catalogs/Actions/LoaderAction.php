@@ -24,11 +24,11 @@ class LoaderAction extends Action
 
     public function getLoad(): JsonResponse
     {
-        if (auth()->user()->avatar != null) {
+        if (auth()->user()->avatar !== null) {
             $this->result['avatar'] = json_decode(auth()->user()->avatar, true);
             $this->setCooke('avatar', $this->result['avatar']['url'], $this->timer);
         }
-        if (auth()->user()->sound_notify != null) {
+        if (auth()->user()->sound_notify !== null) {
             $this->result['soundNotify'] = json_decode(auth()->user()->sound_notify, true);
         }
 

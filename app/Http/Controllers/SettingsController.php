@@ -21,6 +21,7 @@ class SettingsController extends Controller
 
         return view('forms.edit.account', compact('works'));
     }
+
     public function editPassword(): View
     {
         return view('forms.edit.password');

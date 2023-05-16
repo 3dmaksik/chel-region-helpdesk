@@ -3,11 +3,11 @@
 namespace App\Catalogs\DTO;
 
 use App\Base\DTO\DTO;
+use App\Base\Helpers\StoreFilesHelper;
 use App\Base\Helpers\StringUserHelper;
 use App\Base\Requests\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Base\Helpers\StoreFilesHelper;
 
 class UsersDTO extends DTO
 {
@@ -30,7 +30,6 @@ class UsersDTO extends DTO
     public ?string $avatar;
 
     public ?string $sound_notify;
-
 
     public static function storeObjectRequest(Request $request): self
     {

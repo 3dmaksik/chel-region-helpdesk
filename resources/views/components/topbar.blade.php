@@ -8,6 +8,7 @@
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-search fa-fw"></i>
             </a>
+            @can('all search')
             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                 aria-labelledby="searchDropdown">
                 <form class="navbar-search" method="GET" action="{{ route('search.all') }}">
@@ -24,19 +25,20 @@
                     </div>
                 </form>
             </div>
+            @endcan
         </li>
+        @if(auth()->user()->can('new help') || auth()->user()->can('worker help'))
         <li class="nav-item dropdown no-arrow mx-1"> <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown"
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
-                @hasanyrole('superAdmin|admin')
+                @can('new help')
                 <span id="counter" class="badge badge-danger badge-counter">@if(Cookie::get('newCount') > 0) {{ Cookie::get('newCount') }} @endif</span>
-                @endhasanyrole
+                @endcan
             </a>
-            @hasanyrole('superAdmin|admin|manager')
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header"> Оповещения </h6>
-                @hasanyrole('superAdmin|admin')
+                @can('new help')
                 <a class="dropdown-item d-flex align-items-center" href="{{ route(config('constants.help.new')) }}">
                     <div class="mr-3">
                         <div class="icon-circle bg-primary"> <i class="fas fa-file-alt text-white"></i> </div>
@@ -46,8 +48,8 @@
                             id="new_count_text">Новые заявки загружаются</span>
                     </div>
                 </a>
-                @endhasanyrole
-                @hasanyrole('superAdmin|admin|manager')
+                @endcan
+                @can('worker help')
                 <a class="dropdown-item d-flex align-items-center" href="{{ route(config('constants.help.worker')) }}">
                     <div class="mr-3">
                         <div class="icon-circle bg-success"> <i class="fas fa-walking text-white"></i> </div>
@@ -57,10 +59,10 @@
                             id="now_count_text">Заявки на исполнение загружаются</span>
                     </div>
                 </a>
-                @endhasanyrole
+                @endcan
             </div>
-            @endhasanyrole
         </li>
+        @endif
         <div class="topbar-divider d-none d-sm-block"></div>
         <li class="nav-item dropdown no-arrow"> <a class="nav-link dropdown-toggle" href="#" id="userDropdown"
                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

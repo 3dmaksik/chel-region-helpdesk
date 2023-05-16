@@ -15,7 +15,7 @@
     </li>
     <hr class="sidebar-divider">
     <div class="sidebar-heading"> Журнал </div>
-    @hasanyrole('superAdmin|admin|manager')
+    @can('work directory list')
     <li id="workSidebar" class="nav-item ">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#WorkForm" aria-expanded="false"
             aria-controls="WorkForm">
@@ -27,28 +27,31 @@
             aria-labelledby="headingForm" data-parent="#workSidebar" style="">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Рабочие заявки</h6>
-                @hasrole('superAdmin')
+                @can('all help')
                 <a class="collapse-item  {{ request()->segment(1) == 'admin' && request()->segment(3) == 'all' ? 'active':'' }}"
                     href="{{ route(config('constants.help.index')) }}">Все</a>
-                @endhasanyrole
-                @hasanyrole('superAdmin|admin')
+                @endcan
+                @can('new help')
                 <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(3) == 'new' ? 'active':'' }}"
                     href="{{ route(config('constants.help.new')) }}">Новые</a>
-                @endhasanyrole
-                @hasanyrole('superAdmin|admin|manager')
+                @endcan
+                @can('worker help')
                 <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(3) == 'worker'? 'active':'' }}"
                     href="{{ route(config('constants.help.worker')) }}">В работе</a>
+                @endcan
+                @can('completed help')
                 <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(3) == 'completed' ? 'active':'' }}"
                     href="{{ route(config('constants.help.completed')) }}">Выполненные</a>
-                @endhasanyrole
-                @hasanyrole('superAdmin|admin')
+                @endcan
+                @can('dismiss help')
                 <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(3) == 'dismiss' ? 'active':'' }}"
                     href="{{ route(config('constants.help.dismiss')) }}">Отклонённые</a>
-                @endhasanyrole
+                @endcan
             </div>
         </div>
     </li>
-    @endhasanyrole
+    @endcan
+    @can('home directory list')
     <li id="UserSidebar" class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#UserForm" aria-expanded="false"
             aria-controls="UserForm">
@@ -70,45 +73,62 @@
         </div>
     </li>
     <hr class="sidebar-divider">
-    @hasrole('superAdmin')
+    @endcan
+    @can('all directory list')
     <div class="sidebar-heading"> Списки </div>
+    @can('view category')
     <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'category' ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.category.index')) }}">
             <i class="fas fa-fw fa-angle-double-up"></i>
             <span>Категории</span>
-        </a> </li>
+        </a>
+    </li>
+    @endcan
+    @can('view status')
     <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'status' ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.status.index')) }}">
             <i class="fas fa-fw fa-star"></i>
             <span>Статусы</span>
-        </a> </li>
+        </a>
+    </li>
+    @endcan
+    @can('view cabinet')
     <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'cabinet' ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.cabinet.index')) }}">
             <i class="fas fa-fw fa-door-open"></i>
             <span>Кабинеты</span>
-        </a> </li>
+        </a>
+    </li>
+    @endcan
+    @can('view priority')
     <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'priority' ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.priority.index')) }}">
             <i class="fas fa-fw fa-signal"></i>
             <span>Приоритеты</span>
-        </a> </li>
+        </a>
+    </li>
+    @endcan
+    @can('view user')
     <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'users' ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.users.index')) }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Пользователи</span>
-        </a> </li>
+        </a>
+    </li>
+    @endcan
     <hr class="sidebar-divider">
-    @endhasrole
+    @endcan
+    @can('edit settings')
     <div class="sidebar-heading"> Дополнительное </div>
         <li id="settings" class="nav-item ">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#SettingsForm" aria-expanded="false"
-                aria-controls="WorkForm">
+                aria-controls="SettingsForm">
                 <i class="fas fa-fw fa-cogs"></i>
                 <span>Настройки</span>
             </a>
             <div id="SettingsForm"
                 class="collapse {{ request()->segment(1) == 'settings' ? 'show':'' }}"
-                aria-labelledby="headingForm" data-parent="#workSidebar" style="">
+                aria-labelledby="headingForm" data-parent="#settings" style="">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item  {{ request()->segment(1) == 'settings' && request()->segment(2) == 'account' ? 'active':'' }}"
                         href="{{ route(config('constants.settings.account')) }}">Настройки аккаунта
@@ -119,11 +139,15 @@
                 </div>
             </div>
         </li>
-        <li class="nav-item {{ request()->segment(1) == 'stats' ? 'active':'' }}"> <a class="nav-link"
+    @endcan
+    @can('view stats')
+    <li class="nav-item {{ request()->segment(1) == 'stats' ? 'active':'' }}"> <a class="nav-link"
             href="{{ route('stats') }}">
             <i class="fas fa-fw fa-star"></i>
             <span>Статистика</span>
-        </a> </li>
+        </a>
+    </li>
+    @endcan
     <hr class="sidebar-divider">
     <div class="version" id="version-ruangadmin"></div>
     <div class="version">Страница обновлена в: 1 мин.</div>

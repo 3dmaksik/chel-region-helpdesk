@@ -137,6 +137,7 @@ class HomeAction extends Action
 
         return response()->success($this->response);
     }
+
     protected function clear(HelpDTO $data): array
     {
         return array_diff((array) $data, ['', null, false]);

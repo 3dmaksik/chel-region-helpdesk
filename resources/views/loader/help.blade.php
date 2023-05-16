@@ -2,14 +2,13 @@
 <div class="card {{ $items['method'] }}">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Все заявки</h6>
-        @hasanyrole('superAdmin|admin')
+        @if(auth()->user()->can('create help') && auth()->user()->can('create home help'))
         <a href="{{ route(config('constants.help.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая
                 заявка</button></a>
-        @endhasanyrole
-        @hasrole('manager|user')
+        @else
         <a href="{{ route(config('constants.home.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая
                 заявка</button></a>
-        @endhasrole
+        @endif
     </div>
     <div class="table-responsive">
         <table class="table align-items-center table-flush">
@@ -33,12 +32,12 @@
                         @if(strtotime($now)> strtotime($item->calendar_execution) && $item->calendar_execution!=null &&
                         $item->calendar_final==null && request()->segment(1) != 'user') class="badge-{{config("color.4.slug") }}"@endif>
                         <td>{{ $item->app_number }}</td>
-                        <td class="badge-table"><a href="{{ route('search.category',$item->category_id) }}">{{
-                                $item->category->description }}</a></td>
-                        <td class="badge-table"><a href="{{ route('search.cabinet',$item->user->cabinet->id) }}">{{
-                                $item->user->cabinet->description }}</a></td>
-                        <td class="badge-table"><a href="{{ route('search.work',$item->user_id) }}">{{
-                                $item->user->lastname }} <br/> {{ $item->user->firstname }} <br/> {{ $item->user->patronymic }}</a>
+                        <td class="badge-table"><a @can('prefix search') href="{{ route('search.category',$item->category_id) }}"@endcan>
+                        {{$item->category->description }}</a></td>
+                        <td class="badge-table"><a @can('prefix search') href="{{ route('search.cabinet',$item->user->cabinet->id) }}"@endcan>
+                        {{ $item->user->cabinet->description }}</a></td>
+                        <td class="badge-table"><a @can('prefix search') href="{{ route('search.work',$item->user_id) }}"@endcan>
+                        {{$item->user->lastname }} <br/> {{ $item->user->firstname }} <br/> {{ $item->user->patronymic }}</a>
                         </td>
                         <td>{{ $item->calendar_request}}</td>
                         <td>
@@ -59,14 +58,13 @@
                         </td>
                         <td class="d-print-none">
                             <div class="block">
-                                @hasanyrole('superAdmin|admin|manager')
+                                @if(auth()->user()->can('create help') && auth()->user()->can('create home help'))
                                 <a href="{{ route(config('constants.help.show'),$item->id) }}"> <button type="button"
                                         class="btn btn-info mb-1">Открыть</button></a>
-                                @endhasanyrole
-                                @hasrole('user')
+                                @else
                                 <a href="{{ route(config('constants.home.show'),$item->id) }}"> <button type="button"
                                         class="btn btn-info mb-1">Открыть</button></a>
-                                @endhasrole
+                                @endif
                             </div>
                         </td>
                 </tr>

@@ -8,7 +8,7 @@ col-lg-6
         <h6 class="m-0 font-weight-bold text-primary">Редактировать пользователя</h6>
         <div class="card-title">
             <div class="block">
-                <a style="color: #757575;" class="hover" href="{{ route(config('constants.users.index')) }}">
+                <a style="color: #757575;" class="hover" href="{{ url()->previous() }}">
                     <i class="fas fa-arrow-left fa-lg"></i>
                 </a> <span class="hidden">Назад</span>
                 <!-- скрытый элемент -->
@@ -78,7 +78,7 @@ col-lg-6
                 <small id="textCabinet" class="form-text text-muted">Выберите роль пользователя</small>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
-            <a class="btn btn-secondary" href="{{ route(config('constants.users.index')) }}">Отменить</a>
+            <a class="btn btn-secondary" href="{{ url()->previous() }}">Отменить</a>
         </form>
     </div>
 </div>

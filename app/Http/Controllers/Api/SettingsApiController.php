@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SettingsAction;
-use App\Requests\PasswordRequest;
 use App\Requests\AccountRequest;
+use App\Requests\PasswordRequest;
 use Illuminate\Http\JsonResponse;
 
 class SettingsApiController extends Controller

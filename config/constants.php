@@ -103,7 +103,7 @@ return
         'name' => 'настройки',
         'slug' => 'settings',
         'account' => 'settings.editAccount',
-        'password'=> 'settings.editPassword',
+        'password' => 'settings.editPassword',
         'updatePassword' => 'settings.updatePassword',
         'updateSettings' => 'settings.updateSettings',
     ],
