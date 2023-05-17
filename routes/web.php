@@ -31,103 +31,103 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-        Route::controller(HelpController::class)
-            ->prefix('admin')
-            ->as('help.')
-            ->group(function () {
-                Route::get('helps/all', 'index')->name('index')->middleware('can:all help');
-                Route::post('helps/all', 'getIndex')->name('index')->middleware('can:all help');
-                Route::get('helps/new', 'new')->name('new')->middleware('can:new help');
-                Route::post('helps/new', 'getNew')->name('new')->middleware('can:new help');
-                Route::get('create', 'create')->name('create')->middleware('can:create help');
-                Route::get('helps/dismiss', 'dismiss')->name('dismiss')->middleware('can:dismiss help');
-                Route::post('helps/dismiss', 'getDismiss')->name('dismiss')->middleware('can:dismiss help');
-                Route::get('{help}/edit', 'edit')->name('edit')->middleware('can:edit help');
-                Route::get('{help}/show', 'show')->name('show')->middleware('can:view help');
-                Route::get('helps/worker', 'worker')->name('worker')->middleware('can:worker help');
-                Route::post('helps/worker', 'getWorker')->name('worker')->middleware('can:worker help');
-                Route::get('helps/completed', 'completed')->name('completed')->middleware('can:completed help');
-                Route::post('helps/completed', 'getCompleted')->name('completed')->middleware('can:completed help');
-            });
-        Route::controller(CabinetController::class)
-            ->prefix('admin/cabinet')
-            ->as('cabinet.')
-            ->group(function () {
-                Route::get('', 'index')->name('index')->middleware('can:view cabinet');
-                Route::get('create', 'create')->name('create')->middleware('can:create cabinet');
-                Route::get('{cabinet}/edit', 'edit')->name('edit')->middleware('can:edit cabinet');
-            });
-        Route::controller(CategoryController::class)
-            ->prefix('admin/category')
-            ->as('category.')
-            ->group(function () {
-                Route::get('', 'index')->name('index')->middleware('can:view category');
-                Route::get('create', 'create')->name('create')->middleware('can:create category');
-                Route::get('{category}/edit', 'edit')->name('edit')->middleware('can:edit category');
-            });
-        Route::controller(StatusController::class)
-            ->prefix('admin/status')
-            ->as('status.')
-            ->group(function () {
-                Route::get('', 'index')->name('index')->middleware('can:view status');
-                Route::get('{status}/edit', 'edit')->name('edit')->middleware('can:edit status');
-            });
-        Route::controller(PriorityController::class)
-            ->prefix('admin/priority')
-            ->as('priority.')
-            ->group(function () {
-                Route::get('', 'index')->name('index')->middleware('can:view priority');
-                Route::get('create', 'create')->name('create')->middleware('can:create priority');
-                Route::get('{priority}/show', 'show')->name('show')->middleware('can:view priority');
-                Route::get('{priority}/edit', 'edit')->name('edit')->middleware('can:edit priority');
-            });
-        Route::controller(UserController::class)
-            ->prefix('admin/users')
-            ->as('users.')
-            ->group(function () {
-                Route::get('', 'index')->name('index')->middleware('can:view user');
-                Route::get('create', 'create')->name('create')->middleware('can:create user');
-                Route::get('{work}/show', 'show')->name('show')->middleware('can:view user');
-                Route::get('{user}/edit', 'edit')->name('edit')->middleware('can:edit user');
-            });
-        Route::controller(NewsController::class)
-            ->prefix('news')
-            ->as('news.')
-            ->group(function () {
-                Route::get('create', 'create')->name('create')->middleware('can:create news');
-                Route::get('{news}/edit', 'edit')->name('edit')->middleware('can:edit news');
-                Route::get('', 'index')->name('index')->middleware('can:view news');
-                Route::get('{news}/show', 'show')->name('show')->middleware('can:view news');
-            });
-        Route::controller(HomeController::class)
-            ->prefix('home')
-            ->as('home.')
-            ->group(function () {
-                Route::get('helps/worker', 'worker')->name('worker')->middleware('can:worker home help');
-                Route::post('helps/worker', 'getWorker')->name('worker')->middleware('can:worker home help');
-                Route::get('helps/completed', 'completed')->name('completed')->middleware('can:completed home help');
-                Route::post('helps/completed', 'getCompleted')->name('completed')->middleware('can:completed home help');
-                Route::get('helps/dismiss', 'dismiss')->name('dismiss')->middleware('can:dismiss home help');
-                Route::post('helps/dismiss', 'getDismiss')->name('dismiss')->middleware('can:dismiss home help');
-                Route::get('helps/create', 'create')->name('create')->middleware('can:create home help');
-                Route::get('{help}/show', 'show')->name('show')->middleware('can:view help');
-            });
-        Route::controller(SettingsController::class)
-            ->prefix('settings')
-            ->as('settings.')
-            ->group(function () {
-                Route::get('password', 'editPassword')->name('editPassword')->middleware('can:edit settings');
-                Route::get('account', 'editAccount')->name('editAccount')->middleware('can:edit settings');
-            });
-        Route::controller(SearchController::class)
-            ->prefix('search')
-            ->as('search.')
-            ->group(function () {
-                Route::get('all', 'all')->name('all')->middleware('can:all search');
-                Route::get('{search}/work', 'work')->name('work')->middleware('can:prefix search');
-                Route::get('{search}/category', 'category')->name('category')->middleware('can:prefix search');
-                Route::get('{search}/cabinet', 'cabinet')->name('cabinet')->middleware('can:prefix search');
-            });
-        Route::get('/stats', [StatisticController::class, 'index'])->name('stats')->middleware('can:view stats');
-        Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::controller(HelpController::class)
+        ->prefix('admin')
+        ->as('help.')
+        ->group(function () {
+            Route::get('helps/all', 'index')->name('index')->middleware('can:all help');
+            Route::post('helps/all', 'getIndex')->name('index')->middleware('can:all help');
+            Route::get('helps/new', 'new')->name('new')->middleware('can:new help');
+            Route::post('helps/new', 'getNew')->name('new')->middleware('can:new help');
+            Route::get('create', 'create')->name('create')->middleware('can:create help');
+            Route::get('helps/dismiss', 'dismiss')->name('dismiss')->middleware('can:dismiss help');
+            Route::post('helps/dismiss', 'getDismiss')->name('dismiss')->middleware('can:dismiss help');
+            Route::get('{help}/edit', 'edit')->name('edit')->middleware('can:edit help');
+            Route::get('{help}/show', 'show')->name('show')->middleware('can:view help');
+            Route::get('helps/worker', 'worker')->name('worker')->middleware('can:worker help');
+            Route::post('helps/worker', 'getWorker')->name('worker')->middleware('can:worker help');
+            Route::get('helps/completed', 'completed')->name('completed')->middleware('can:completed help');
+            Route::post('helps/completed', 'getCompleted')->name('completed')->middleware('can:completed help');
+        });
+    Route::controller(CabinetController::class)
+        ->prefix('admin/cabinet')
+        ->as('cabinet.')
+        ->group(function () {
+            Route::get('', 'index')->name('index')->middleware('can:view cabinet');
+            Route::get('create', 'create')->name('create')->middleware('can:create cabinet');
+            Route::get('{cabinet}/edit', 'edit')->name('edit')->middleware('can:edit cabinet');
+        });
+    Route::controller(CategoryController::class)
+        ->prefix('admin/category')
+        ->as('category.')
+        ->group(function () {
+            Route::get('', 'index')->name('index')->middleware('can:view category');
+            Route::get('create', 'create')->name('create')->middleware('can:create category');
+            Route::get('{category}/edit', 'edit')->name('edit')->middleware('can:edit category');
+        });
+    Route::controller(StatusController::class)
+        ->prefix('admin/status')
+        ->as('status.')
+        ->group(function () {
+            Route::get('', 'index')->name('index')->middleware('can:view status');
+            Route::get('{status}/edit', 'edit')->name('edit')->middleware('can:edit status');
+        });
+    Route::controller(PriorityController::class)
+        ->prefix('admin/priority')
+        ->as('priority.')
+        ->group(function () {
+            Route::get('', 'index')->name('index')->middleware('can:view priority');
+            Route::get('create', 'create')->name('create')->middleware('can:create priority');
+            Route::get('{priority}/show', 'show')->name('show')->middleware('can:view priority');
+            Route::get('{priority}/edit', 'edit')->name('edit')->middleware('can:edit priority');
+        });
+    Route::controller(UserController::class)
+        ->prefix('admin/users')
+        ->as('users.')
+        ->group(function () {
+            Route::get('', 'index')->name('index')->middleware('can:view user');
+            Route::get('create', 'create')->name('create')->middleware('can:create user');
+            Route::get('{work}/show', 'show')->name('show')->middleware('can:view user');
+            Route::get('{user}/edit', 'edit')->name('edit')->middleware('can:edit user');
+        });
+    Route::controller(NewsController::class)
+        ->prefix('news')
+        ->as('news.')
+        ->group(function () {
+            Route::get('create', 'create')->name('create')->middleware('can:create news');
+            Route::get('{news}/edit', 'edit')->name('edit')->middleware('can:edit news');
+            Route::get('', 'index')->name('index')->middleware('can:view news');
+            Route::get('{news}/show', 'show')->name('show')->middleware('can:view news');
+        });
+    Route::controller(HomeController::class)
+        ->prefix('home')
+        ->as('home.')
+        ->group(function () {
+            Route::get('helps/worker', 'worker')->name('worker')->middleware('can:worker home help');
+            Route::post('helps/worker', 'getWorker')->name('worker')->middleware('can:worker home help');
+            Route::get('helps/completed', 'completed')->name('completed')->middleware('can:completed home help');
+            Route::post('helps/completed', 'getCompleted')->name('completed')->middleware('can:completed home help');
+            Route::get('helps/dismiss', 'dismiss')->name('dismiss')->middleware('can:dismiss home help');
+            Route::post('helps/dismiss', 'getDismiss')->name('dismiss')->middleware('can:dismiss home help');
+            Route::get('helps/create', 'create')->name('create')->middleware('can:create home help');
+            Route::get('{help}/show', 'show')->name('show')->middleware('can:view help');
+        });
+    Route::controller(SettingsController::class)
+        ->prefix('settings')
+        ->as('settings.')
+        ->group(function () {
+            Route::get('password', 'editPassword')->name('editPassword')->middleware('can:edit settings');
+            Route::get('account', 'editAccount')->name('editAccount')->middleware('can:edit settings');
+        });
+    Route::controller(SearchController::class)
+        ->prefix('search')
+        ->as('search.')
+        ->group(function () {
+            Route::get('all', 'all')->name('all')->middleware('can:all search');
+            Route::get('{search}/work', 'work')->name('work')->middleware('can:prefix search');
+            Route::get('{search}/category', 'category')->name('category')->middleware('can:prefix search');
+            Route::get('{search}/cabinet', 'cabinet')->name('cabinet')->middleware('can:prefix search');
+        });
+    Route::get('/stats', [StatisticController::class, 'index'])->name('stats')->middleware('can:view stats');
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 });

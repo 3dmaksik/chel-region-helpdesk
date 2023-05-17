@@ -9,7 +9,7 @@ use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
 use App\Models\User;
 use App\Notifications\HelpNotification;
-use App\Requests\IndexRequest;
+use App\Requests\HelpRequest;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection as SimpleCollection;
@@ -109,7 +109,7 @@ class HomeAction extends Action
         return $this->item;
     }
 
-    public function store(IndexRequest $request): JsonResponse
+    public function store(HelpRequest $request): JsonResponse
     {
         $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
@@ -123,6 +123,9 @@ class HomeAction extends Action
             'calendar_request' => $this->calendar_request,
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
+        if ($this->data->user_id == null) {
+            $this->data->user_id = auth()->user()->id;
+        }
         $this->dataClear = $this->clear($this->data);
         $this->item = Model::create($this->dataClear);
         $superAdmin = User::role(['superAdmin'])->get();
@@ -140,6 +143,6 @@ class HomeAction extends Action
 
     protected function clear(HelpDTO $data): array
     {
-        return array_diff((array) $data, ['', null, false]);
+        return array_diff((array) $data, ['', null, 'null', false]);
     }
 }

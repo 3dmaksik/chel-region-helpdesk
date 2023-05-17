@@ -14,7 +14,7 @@ class Action extends CoreAction
 {
     public LengthAwarePaginator|Collection|SimpleCollection $items;
 
-    public Model $item;
+    public ?Model $item;
 
     public RedirectResponse $redirect;
 

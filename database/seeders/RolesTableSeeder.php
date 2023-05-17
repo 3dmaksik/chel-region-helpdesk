@@ -88,33 +88,33 @@ class RolesTableSeeder extends Seeder
 
         Role::create(['name' => 'superAdmin'])->givePermissionTo(Permission::all());
 
-        $role=Role::create(['name' => 'admin']);
+        $role = Role::create(['name' => 'admin']);
         //web
-        $role->givePermissionTo(['new help','create help','dismiss help','worker help','completed help','edit help','view help',
-        'create news','edit news','view news',
-        'worker home help','completed home help','dismiss home help','create home help',
-        'edit settings','all search','prefix search','view stats','work directory list','home directory list']);
+        $role->givePermissionTo(['new help', 'create help', 'dismiss help', 'worker help', 'completed help', 'edit help', 'view help',
+            'create news', 'edit news', 'view news',
+            'worker home help', 'completed home help', 'dismiss home help', 'create home help',
+            'edit settings', 'all search', 'prefix search', 'view stats', 'work directory list', 'home directory list']);
         //api
-        $role->givePermissionTo(['update help','accept help','reject help','redefine help','execute help','count help',
-        'create news','update news','delete news',
-        'update settings','loader help']);
+        $role->givePermissionTo(['update help', 'accept help', 'reject help', 'redefine help', 'execute help', 'count help',
+            'create news', 'update news', 'delete news',
+            'update settings', 'loader help']);
 
-        $role=Role::create(['name' => 'manager']);
+        $role = Role::create(['name' => 'manager']);
         //web
-        $role->givePermissionTo(['worker help','completed help','view help','view news',
-        'worker home help','completed home help','dismiss home help','create home help',
-        'edit settings','all search','prefix search','view stats','work directory list','home directory list']);
+        $role->givePermissionTo(['worker help', 'completed help', 'view help', 'view news',
+            'worker home help', 'completed home help', 'dismiss home help', 'create home help',
+            'edit settings', 'all search', 'prefix search', 'view stats', 'work directory list', 'home directory list']);
         //api
-        $role->givePermissionTo(['update help','execute help','count help',
-        'update settings','loader help']);
+        $role->givePermissionTo(['update help', 'execute help', 'count help',
+            'update settings', 'loader help']);
 
-        $role=Role::create(['name' => 'user']);
+        $role = Role::create(['name' => 'user']);
         //web
-        $role->givePermissionTo(['view help','view news',
-        'worker home help','completed home help','dismiss home help','create home help',
-        'edit settings','all search','prefix search','view stats','home directory list']);
+        $role->givePermissionTo(['view help', 'view news',
+            'worker home help', 'completed home help', 'dismiss home help', 'create home help',
+            'edit settings', 'all search', 'prefix search', 'view stats', 'home directory list']);
         //api
-        $role->givePermissionTo(['count help','update settings','loader help']);
+        $role->givePermissionTo(['count help', 'update settings', 'loader help']);
 
     }
 }

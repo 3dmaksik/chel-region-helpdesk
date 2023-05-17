@@ -20,6 +20,8 @@ class SettingsAction extends Action
 
     private array $dataClear;
 
+    private int $countRole;
+
     public function __construct()
     {
         //parent::__construct();
@@ -49,7 +51,11 @@ class SettingsAction extends Action
 
     public function editSettings(): User
     {
+        $this->countRole = User::role(['superAdmin'])->count();
         $this->user = User::findOrFail(auth()->user()->id);
+        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1) {
+            return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
+        }
         if (isset($this->user->avatar)) {
             $this->avatar = json_decode($this->user->avatar, true);
             $this->user->avatar = $this->avatar['url'];

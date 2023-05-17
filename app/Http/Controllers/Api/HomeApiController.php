@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\HomeAction;
-use App\Requests\IndexRequest;
+use App\Requests\HelpRequest;
 use Illuminate\Http\JsonResponse;
 
 class HomeApiController extends Controller
@@ -18,7 +18,7 @@ class HomeApiController extends Controller
         $this->helps = $helps;
     }
 
-    public function store(IndexRequest $request): JsonResponse
+    public function store(HelpRequest $request): JsonResponse
     {
         $this->data = $this->helps->store($request);
 

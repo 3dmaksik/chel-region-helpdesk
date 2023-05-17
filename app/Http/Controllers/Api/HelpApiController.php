@@ -11,6 +11,8 @@ class HelpApiController extends Controller
 {
     private JsonResponse $data;
 
+    private string $dataCatalog;
+
     private HelpAction $helps;
 
     public function __construct(HelpAction $helps)
@@ -70,9 +72,9 @@ class HelpApiController extends Controller
 
     public function getAllPages(): JsonResponse
     {
-        $this->data = $this->helps->getAllCatalogs()->toJson();
+        $this->dataCatalog = $this->helps->getAllCatalogs()->toJson();
 
-        return $this->data;
+        return response()->json($this->dataCatalog);
     }
 
     public function checkHelp(int $id): JsonResponse

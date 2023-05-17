@@ -84,6 +84,18 @@ class Help extends Model
         return $builder;
     }
 
+    public function scopeRoleHelpShow(Builder $builder, int $id): Builder
+    {
+        if (auth()->user()->roles->pluck('name')[0] === 'superAdmin' || 'admin') {
+            return $builder->where('id', $id);
+        }
+        if (auth()->user()->roles->pluck('name')[0] === 'manager' || 'user') {
+            return $builder->where('user_id', '5');
+        }
+
+        return $builder;
+    }
+
     protected function calendarRequest(): Attribute
     {
         return $this->calendarView();

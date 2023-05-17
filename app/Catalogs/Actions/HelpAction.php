@@ -26,7 +26,7 @@ class HelpAction extends Action
 
     const dangerHelp = 4;
 
-    private Model|null $last;
+    private ?Model $last;
 
     private User $user;
 
@@ -56,11 +56,11 @@ class HelpAction extends Action
 
     private string $app_number;
 
-    public function getAllCatalogs(): JsonResponse
+    public function getAllCatalogs(): SimpleCollection
     {
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
 
-        return response()->json($this->items);
+        return $this->items;
     }
 
     public function getAllPagesPaginate(): array
@@ -164,7 +164,16 @@ class HelpAction extends Action
 
     public function show(int $id): Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->user = User::findOrFail(auth()->user()->id);
+        if ($this->user->can('new help')) {
+            $this->item = Model::dontCache()->findOrFail($id);
+        } else {
+            $this->item = Model::dontCache()->where('user_id', $this->user->id)->orWhere('executor_id', $this->user->id)->first();
+            if ($this->item === null) {
+                abort(404);
+            }
+
+        }
         $this->item->images = json_decode($this->item->images, true);
         $this->item->images_final = json_decode($this->item->images_final, true);
 
@@ -431,7 +440,8 @@ class HelpAction extends Action
 
     public function getNewPagesCount(): JsonResponse
     {
-        if (auth()->user()->hasAnyRole(['admin', 'superAdmin']) == true) {
+        $this->user = User::findOrFail(auth()->user()->id);
+        if ($this->user->can('new help')) {
             $this->count = Model::dontCache()->where('status_id', self::newHelp)->count();
             Cookie::queue('newCount', $this->count);
         } else {
