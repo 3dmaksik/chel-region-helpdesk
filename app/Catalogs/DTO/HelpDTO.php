@@ -3,7 +3,6 @@
 namespace App\Catalogs\DTO;
 
 use App\Base\DTO\DTO;
-use App\Base\Helpers\StoreFilesHelper;
 use App\Base\Requests\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Collection as SimpleCollection;
@@ -54,8 +53,8 @@ final class HelpDTO extends DTO
         $dto->description_long = $request->get('description_long');
         $dto->info = $request->get('info');
         $dto->info_final = $request->get('info_final');
-        $dto->images = json_encode(StoreFilesHelper::createFile($request->file('images'), 'images', 1920, 1080));
-        $dto->images_final = json_encode(StoreFilesHelper::createFile($request->file('images'), 'images', 1920, 1080));
+        $dto->images = $options?->get('images');
+        $dto->images_final = $options?->get('images_final');
         $dto->app_number = $options?->get('app_number');
         $dto->status_id = $options?->get('status_id');
         $dto->calendar_request = $options?->get('calendar_request');

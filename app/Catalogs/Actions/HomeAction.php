@@ -4,6 +4,7 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Base\Helpers\GeneratorAppNumberHelper;
+use App\Base\Helpers\StoreFilesHelper;
 use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
@@ -36,6 +37,10 @@ class HomeAction extends Action
     private string $app_number;
 
     private SimpleCollection $options;
+
+    private ?string $images;
+
+    private ?string $images_final;
 
     public function getWorkerPagesPaginate(): array
     {
@@ -118,9 +123,21 @@ class HomeAction extends Action
             $this->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
         }
         $this->calendar_request = Carbon::now();
+        if ($request->hasFile('images')) {
+            $this->images = json_encode(StoreFilesHelper::createFile($request->file('images'), 'images', 1920, 1080));
+        } else {
+            $this->images = $request->file('images');
+        }
+        if ($request->hasFile('images_final')) {
+            $this->images_final = json_encode(StoreFilesHelper::createFile($request->file('images_final'), 'images', 1920, 1080));
+        } else {
+            $this->images_final = $request->file('images_final');
+        }
         $this->options = collect([
             'app_number' => $this->app_number,
             'calendar_request' => $this->calendar_request,
+            'images' => $this->images,
+            'images_final' => $this->images_final,
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         if ($this->data->user_id == null) {
@@ -143,6 +160,6 @@ class HomeAction extends Action
 
     protected function clear(HelpDTO $data): array
     {
-        return array_diff((array) $data, ['', null, 'null', false]);
+        return array_diff((array) $data, ['', null, false]);
     }
 }
