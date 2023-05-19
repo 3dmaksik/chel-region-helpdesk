@@ -144,7 +144,7 @@
         -->
                     Основа дизайна- BootstrapMade
                 </div>
-                <p>copyright &copy; 2022 - сделано в
+                <p>copyright &copy; {{ $now->year }} - сделано в
                     <b><a href="/" target="_blank">Администрации</a></b>
                 </p>
             </div>
