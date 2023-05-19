@@ -51,11 +51,7 @@ class SettingsAction extends Action
 
     public function editSettings(): User
     {
-        $this->countRole = User::role(['superAdmin'])->count();
         $this->user = User::findOrFail(auth()->user()->id);
-        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1) {
-            return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
-        }
         if (isset($this->user->avatar)) {
             $this->avatar = json_decode($this->user->avatar, true);
             $this->user->avatar = $this->avatar['url'];
@@ -71,7 +67,11 @@ class SettingsAction extends Action
     public function updateSettings(AccountRequest $request): JsonResponse
     {
         $this->user = User::findOrFail(auth()->user()->id);
+        $this->countRole = User::role(['superAdmin'])->count();
         $this->data = UsersDTO::storeObjectRequest($request);
+        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data->role !== null) {
+            return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
+        }
         if (isset($this->data->avatar) && $this->user->avatar != null) {
             $this->user->avatar = json_decode($this->user->avatar, true);
             Storage::disk('avatar')->delete($this->user->avatar['url']);

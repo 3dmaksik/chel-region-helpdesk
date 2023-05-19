@@ -14,7 +14,7 @@ class Help extends Model
 
     protected $primaryKey = 'id';
 
-    protected $cacheFor = 1;
+    protected $cacheFor = 0;
 
     protected $fillable =
     ['app_number',

@@ -126,6 +126,7 @@ user=example_user
 `$ sudo supervisorctl update`  
 `$ sudo supervisorctl start websockets`  
 
+Аналогичные действия производятся для artisan schedule:work если нужна автоматическая очистка старых фото и artisan queue:work
 После чего проект готов к работе. 
 PS. Рады всем, кто сможет предоставить скрипт автоматического развёртывания.
                 

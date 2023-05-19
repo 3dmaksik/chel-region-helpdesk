@@ -8,7 +8,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
-            <form id="formAccept" class="update-form"
+            <form id="formAccept" class="form-submit"
                 action="{{ route(config('constants.help.accept'),$item->id,'accept') }}" method="POST">
                 @method('PATCH')
                 @csrf
@@ -48,7 +48,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
-            <form id="formExecute" enctype="multipart/form-data" class="update-form"
+            <form id="formExecute" enctype="multipart/form-data" class="form-submit"
                 action="{{ route(config('constants.help.execute'),$item->id,'execute') }}" method="POST">
                 @method('PATCH')
                 @csrf
@@ -87,7 +87,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
-            <form id="formRedefine" class="update-form"
+            <form id="formRedefine" class="form-submit"
                 action="{{ route(config('constants.help.redefine'),$item->id,'redefine') }}" method="POST">
                 @method('PATCH')
                 @csrf
@@ -118,7 +118,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
-            <form id="formReject" class="update-form"
+            <form id="formReject" class="form-submit"
                 action="{{ route(config('constants.help.reject'),$item->id,'reject') }}" method="POST">
                 @method('PATCH')
                 @csrf
