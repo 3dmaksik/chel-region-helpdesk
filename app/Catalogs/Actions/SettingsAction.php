@@ -80,6 +80,12 @@ class SettingsAction extends Action
             $this->user->sound_notify = json_decode($this->user->sound_notify, true);
             Storage::disk('sound_notify')->delete($this->user->sound_notify['url']);
         }
+        if ($this->data->avatar !== null) {
+            $this->data->avatar = json_encode($this->data->avatar);
+        }
+        if ($this->data->sound_notify !== null) {
+            $this->data->sound_notify = json_encode($this->data->sound_notify);
+        }
         User::flushQueryCache();
         $this->dataClear = $this->clear($this->data);
         $this->user->update($this->dataClear);

@@ -42,8 +42,8 @@ class UsersDTO extends DTO
         $dto->cabinet_id = $request->get('cabinet_id');
         $dto->patronymic = StringUserHelper::run($request->get('patronymic'));
         $dto->role = $request->get('role');
-        $dto->avatar = json_encode(StoreFilesHelper::createOneFile($request->file('avatar'), 'avatar', 32, 32));
-        $dto->sound_notify = json_encode(StoreFilesHelper::createNotify($request->get('sound_notify'), 'sound'));
+        $dto->avatar = StoreFilesHelper::createOneFile($request->file('avatar'), 'avatar', 32, 32);
+        $dto->sound_notify = StoreFilesHelper::createNotify($request->get('sound_notify'), 'sound');
 
         return $dto;
     }
