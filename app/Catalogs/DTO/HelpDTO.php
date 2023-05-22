@@ -41,6 +41,8 @@ final class HelpDTO extends DTO
 
     public ?Carbon $calendar_request;
 
+    public ?int $lead_at;
+
     public ?bool $check_write;
 
     public static function storeObjectRequest(Request $request, ?SimpleCollection $options = null): self
@@ -61,6 +63,7 @@ final class HelpDTO extends DTO
         $dto->calendar_accept = $options?->get('calendar_accept');
         $dto->calendar_warning = $options?->get('calendar_warning');
         $dto->calendar_execution = $options?->get('calendar_execution');
+        $dto->lead_at = $options?->get('lead_at');
         $dto->calendar_final = $options?->get('calendar_final');
         $dto->check_write = $options?->get('check_write');
 

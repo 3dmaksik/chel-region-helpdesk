@@ -61,6 +61,8 @@ class HelpAction extends Action
 
     private ?string $images_final;
 
+    private ?int $lead_at;
+
     public function getAllCatalogs(): SimpleCollection
     {
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
@@ -315,11 +317,13 @@ class HelpAction extends Action
         } else {
             $this->images_final = $request->file('images_final');
         }
+        $this->lead_at = Carbon::now()->diffInSeconds(Carbon::parse($this->item->calendar_accept));
         $this->options = collect([
             'status_id' => self::successHelp,
             'calendar_final' => Carbon::now(),
             'check_write' => false,
             'images_final' => $this->images_final,
+            'lead_at' => $this->lead_at,
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);

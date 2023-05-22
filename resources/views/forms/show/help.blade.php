@@ -7,8 +7,8 @@ col-lg-6
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Информация о заявке</h6>
         <div class="card-title">
-            <div class="block">
-                <a style="color: #757575;" class="hover" href="{{ url()->previous() }}">
+            <div class="block" style="cursor: pointer;">
+                <a style="color: #757575;" class="hover" onclick="window.history.back()">
                      <i class="fas fa-arrow-left fa-lg"></i>
                 </a> <span class="hidden">Назад</span>
                     <!-- скрытый элемент -->
@@ -162,6 +162,13 @@ col-lg-6
         Заявка ещё не взята в работу
         @else
         {{ $item->calendar_execution }}
+        @endif
+        <hr>
+        <p class="text-primary">Время выполнения заявки</p>
+        @if ($item->lead_at==null)
+        Заявка ещё не выполнена
+        @else
+        @if ($item->lead_at['day']>0){{ $item->lead_at['day'] }} дн. @endif @if ($item->lead_at['hour']>0){{ $item->lead_at['hour'] }} ч. @endif @if ($item->lead_at['minute']>0){{ $item->lead_at['minute'] }} мин. @endif
         @endif
         <hr>
         @if ($item->work_id!=auth()->user()->id)

@@ -16,6 +16,8 @@ class Help extends Model
 
     protected $cacheFor = 0;
 
+    protected array $lead;
+
     protected $fillable =
     ['app_number',
         'category_id',
@@ -28,6 +30,7 @@ class Help extends Model
         'calendar_warning',
         'calendar_final',
         'calendar_execution',
+        'lead_at',
         'images',
         'description_long',
         'info',
@@ -119,6 +122,24 @@ class Help extends Model
     protected function calendarWarning(): Attribute
     {
         return $this->calendarView();
+    }
+
+    protected function leadAt(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if ($value != null) {
+                    $this->lead =
+                    [
+                        'day' => (int) floor($value / 86400),
+                        'hour' => (int) floor($value / 3600),
+                        'minute' => (int) floor($value / 60),
+                    ];
+
+                    return $this->lead;
+                }
+            }
+        );
     }
 
    protected function calendarView(): Attribute
