@@ -50,7 +50,7 @@ class NotifyExpireJob extends Job implements ShouldQueue
         $this->count = Help::dontCache()->where('calendar_execution', '<', $this->warning)
             ->where('calendar_warning', '<', $this->warning)
             ->where('status_id', 2)
-            ->count()-1;
+            ->count() - 1;
         if ($this->items !== null) {
             foreach ($this->items as $item) {
                 $this->user = User::dontCache()->findOrFail($item->executor_id);

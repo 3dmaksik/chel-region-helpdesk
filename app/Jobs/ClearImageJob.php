@@ -37,33 +37,35 @@ class ClearImageJob extends Job implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->future = Carbon::now()->addMonth(config('settings.clearImage'));
-        $this->item = Model::dontCache()->where('calendar_final', '>', $this->future)
-            ->whereNotNull('images')
-            ->orWhereNotNull('images_final')
-            ->orderBy('id', 'DESC')
-            ->first();
-        if ($this->item !== null) {
-            if ($this->item->images !== null) {
-                $this->images = json_decode($this->item->images, true);
-                foreach ($this->images as $image) {
-                    Storage::disk('images')->delete($image['url']);
+        if (config('settings.clearImage') > 0) {
+            $this->future = Carbon::now()->addMonth(config('settings.clearImage'));
+            $this->item = Model::dontCache()->where('calendar_final', '>', $this->future)
+                ->whereNotNull('images')
+                ->orWhereNotNull('images_final')
+                ->orderBy('id', 'DESC')
+                ->first();
+            if ($this->item !== null) {
+                if ($this->item->images !== null) {
+                    $this->images = json_decode($this->item->images, true);
+                    foreach ($this->images as $image) {
+                        Storage::disk('images')->delete($image['url']);
+                    }
+                    $this->item->forceFill([
+                        'images' => null,
+                    ])->save();
                 }
-                $this->item->forceFill([
-                    'images' => null,
-                ])->save();
-            }
-            if ($this->item->images_final !== null) {
-                $this->images_final = json_decode($this->item->images_final, true);
-                foreach ($this->images_final as $image) {
-                    Storage::disk('images')->delete($image['url']);
+                if ($this->item->images_final !== null) {
+                    $this->images_final = json_decode($this->item->images_final, true);
+                    foreach ($this->images_final as $image) {
+                        Storage::disk('images')->delete($image['url']);
+                    }
+                    $this->item->forceFill([
+                        'images_final' => null,
+                    ])->save();
                 }
-                $this->item->forceFill([
-                    'images_final' => null,
-                ])->save();
             }
-        }
 
-        //
+            //
+        }
     }
 }

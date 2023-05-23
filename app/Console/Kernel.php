@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->job(new ClearImageJob)->everyMinute();
-        $schedule->job(new NotifyExpireJob)->everyMinute();
+        $schedule->job(new NotifyExpireJob)->hourly();
     }
 
     /**
