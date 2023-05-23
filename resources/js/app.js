@@ -20,6 +20,9 @@ $(function () {
             if (notification.method == "workeradm") {
                 nowCount();
             }
+            if (notification.method == "expire") {
+                expireNotify(notification.text, notification.count);
+            }
         }
     );
 
@@ -228,6 +231,35 @@ $(function () {
                 }
             },
         });
+    }
+
+    function expireNotify(text, count)
+    {
+        $(".alert-danger-title")
+            .text(
+            " Уведомление"
+            );
+        if (count > 0)
+        {
+            $(".alert-danger-text")
+            .html(
+            "У вас истекает или истёк срок заявки:<br/>" +
+                text +
+                "<br/>и ещё " + count
+                );
+        }
+        else
+        {
+            $(".alert-danger-text")
+            .html(
+            "У вас истекает или истёк срок заявки:<br/>" +
+               text
+                );
+        }
+        $(".base-alert-danger").fadeIn(2000);
+            setTimeout(function(){
+            $(".base-alert-danger").fadeOut(2000);
+            }, 6500);
     }
 
     $("#preloader").fadeOut("slow", function () {

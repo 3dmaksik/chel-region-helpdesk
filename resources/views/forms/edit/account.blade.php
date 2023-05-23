@@ -47,7 +47,6 @@ col-lg-4
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="Отправить" />
-                <a class="btn btn-secondary" href="{{ url()->previous() }}">Отменить</a>
         </form>
     </div>
 </div>
