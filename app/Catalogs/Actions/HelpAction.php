@@ -19,14 +19,6 @@ use Illuminate\Support\Facades\Notification;
 
 class HelpAction extends Action
 {
-    const newHelp = config('constants.request.new');
-
-    const workHelp = config('constants.request.work');
-
-    const successHelp = config('constants.request.success');
-
-    const dangerHelp = config('constants.request.danger');
-
     private ?Model $last;
 
     private User $user;
@@ -86,7 +78,7 @@ class HelpAction extends Action
 
     public function getNewPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', self::newHelp)
+        $this->items = Model::dontCache()->where('status_id', config('constants.request.new'))
             ->orderBy('calendar_request', 'ASC')
             ->paginate($this->page);
         $this->helps =
@@ -100,7 +92,7 @@ class HelpAction extends Action
 
     public function getWorkerPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', self::workHelp)
+        $this->items = Model::dontCache()->where('status_id', config('constants.request.work'))
             ->RoleHelp()
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
@@ -116,7 +108,7 @@ class HelpAction extends Action
 
     public function getCompletedPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', self::successHelp)
+        $this->items = Model::dontCache()->where('status_id', config('constants.request.success'))
             ->RoleHelp()
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
@@ -131,7 +123,7 @@ class HelpAction extends Action
 
     public function getDismissPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', self::dangerHelp)
+        $this->items = Model::dontCache()->where('status_id', config('constants.request.danger'))
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
         $this->helps =
@@ -244,7 +236,7 @@ class HelpAction extends Action
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->options = collect([
-            'status_id' => self::workHelp,
+            'status_id' => config('constants.request.work'),
             'calendar_accept' => Carbon::now(),
             'calendar_warning' => Carbon::now()->addHour($this->item->priority->warning_timer),
             'calendar_execution' => Carbon::now()->addHour($this->item->priority->danger_timer),
@@ -270,7 +262,7 @@ class HelpAction extends Action
 
             return response()->error($this->response);
         }
-        if ($this->item->status_id != self::newHelp) {
+        if ($this->item->status_id != config('constants.request.new')) {
             $this->response = [
                 'message' => 'Заявка уже принята или отклонена!',
             ];
@@ -308,7 +300,7 @@ class HelpAction extends Action
         }
         $this->lead_at = Carbon::now()->diffInSeconds(Carbon::parse($this->item->calendar_accept));
         $this->options = collect([
-            'status_id' => self::successHelp,
+            'status_id' => config('constants.request.success'),
             'calendar_final' => Carbon::now(),
             'check_write' => false,
             'images_final' => $this->images_final,
@@ -317,7 +309,7 @@ class HelpAction extends Action
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);
-        if ($this->item->status_id != self::workHelp) {
+        if ($this->item->status_id != config('constants.request.work')) {
             $this->response = [
                 'message' => 'Заявка уже выполнена или отклонена!',
             ];
@@ -365,7 +357,7 @@ class HelpAction extends Action
 
             return response()->error($this->response);
         }
-        if ($this->item->status_id != self::workHelp) {
+        if ($this->item->status_id != config('constants.request.work')) {
             $this->response = [
                 'message' => 'Заявка уже выполнена или отклонена!',
             ];
@@ -400,13 +392,13 @@ class HelpAction extends Action
     {
         $this->item = Model::dontCache()->findOrFail($id);
         $this->options = collect([
-            'status_id' => self::dangerHelp,
+            'status_id' => config('constants.request.danger'),
             'calendar_final' => Carbon::now(),
             'check_write' => false,
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);
-        if ($this->item->status_id != self::newHelp) {
+        if ($this->item->status_id != config('constants.request.new')) {
             $this->response = [
                 'message' => 'Заявка не может быть отклонена, так как уже принята в работу!',
             ];
@@ -455,7 +447,7 @@ class HelpAction extends Action
     {
         $this->user = User::findOrFail(auth()->user()->id);
         if ($this->user->can('new help')) {
-            $this->count = Model::dontCache()->where('status_id', self::newHelp)->count();
+            $this->count = Model::dontCache()->where('status_id', config('constants.request.new'))->count();
             Cookie::queue('newCount', $this->count);
         } else {
             $this->count = 0;
@@ -466,7 +458,7 @@ class HelpAction extends Action
 
     public function getNowPagesCount(): JsonResponse
     {
-        $this->count = Model::dontCache()->where('status_id', self::workHelp)
+        $this->count = Model::dontCache()->where('status_id', config('constants.request.work'))
             ->where('executor_id', auth()->user()->id)->count();
 
         return response()->json($this->count);
