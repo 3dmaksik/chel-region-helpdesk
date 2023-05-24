@@ -74,7 +74,7 @@
             </tbody>
         </table>
     </div>
-    <div class="card-footer clearfix">
+    <div class="card-footer d-flex flex-row justify-content-end clearfix">
         {{ $items['data']->links() }}
     </div>
     <div class="current-page" style="display: none">{{ $items['data']->currentPage() }}</div>

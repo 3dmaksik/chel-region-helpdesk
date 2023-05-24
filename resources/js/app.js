@@ -165,7 +165,7 @@ $(function () {
                           $(".base-alert-danger").fadeOut(2000);
                         }, 4500);
 
-                    $(this)
+                    $('form')
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                 },
@@ -184,13 +184,20 @@ $(function () {
                         $(".base-alert-success").fadeIn(2000);
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
-                        }, 4500);
+                        }, 6500);
                     $(this)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
-                    setTimeout(function () {
-                        location.reload();
-                    }, 5000);
+                    $(this)
+                        .find("input, textarea")
+                        .val('');
+                    if ($("div").hasClass('help_view')) {
+                        if (data.route !=='undefined') {
+                            $.post(data.route, function (data) {
+                                $(".help_view").html(data);
+                            });
+                            }
+                        }
                 },
             });
         });

@@ -14,8 +14,6 @@ class CategoryAction extends Action
 
     private array $response;
 
-    private int $total;
-
     private int $count;
 
     public function getAllPages(): Collection
@@ -29,11 +27,9 @@ class CategoryAction extends Action
     {
         $this->item = new Model();
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        $this->total = Model::count();
         $this->categories =
         [
             'data' => $this->items,
-            'total' => $this->total,
         ];
 
         return $this->categories;

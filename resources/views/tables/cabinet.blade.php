@@ -1,9 +1,7 @@
 @extends('layouts.app')
-@section('components.grid')
-col-lg-12 mb-4
-@endsection
 @section('row')
 <!-- Simple Tables -->
+<div class="col-lg-12 mb-4">
 <div class="card">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Все кабинеты</h6>
@@ -98,9 +96,9 @@ col-lg-12 mb-4
         </table>
     </div>
 </div>
-@endsection
-@section('paginate')
-<div class="card-footer clearfix">
+<div class="card-footer d-flex flex-row justify-content-end clearfix">
     {{ $items['data']->links() }}
 </div>
+</div>
+
 @endsection

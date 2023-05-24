@@ -90,3 +90,10 @@
     height: 70px;
     z-index:2000;
 }
+.card-footer
+{
+    padding-top: 0.75rem;
+    padding-bottom: 0;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}

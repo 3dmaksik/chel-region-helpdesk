@@ -1,8 +1,6 @@
 @extends('layouts.app')
-@section('components.grid')
-col-lg-12
-@endsection
 @section('row')
+<div class="col-lg-12">
 <div class="card mb-12">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Редактировать новость</h6>
@@ -55,6 +53,7 @@ col-lg-12
             <a class="btn btn-secondary" href="{{ url()->previous() }}">Отменить</a>
         </form>
     </div>
+</div>
 </div>
 <script src="{{ mix('/js/editor.js') }}"></script>
 @endsection

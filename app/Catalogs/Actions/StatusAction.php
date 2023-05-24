@@ -14,8 +14,6 @@ class StatusAction extends Action
 
     private array $response;
 
-    private int $total;
-
     private int $count;
 
     public function getAllPages(): Collection
@@ -28,11 +26,9 @@ class StatusAction extends Action
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        $this->total = Model::count();
         $this->statuses =
         [
             'data' => $this->items,
-            'total' => $this->total,
         ];
 
         return $this->statuses;

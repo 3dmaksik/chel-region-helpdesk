@@ -13,8 +13,6 @@ class CabinetAction extends Action
 
     private array $response;
 
-    private int $total;
-
     public function getAllPages(): Collection
     {
         $this->items = Model::orderBy('description', 'ASC')->get();
@@ -25,11 +23,9 @@ class CabinetAction extends Action
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        $this->total = Model::count();
         $this->cabinets =
         [
             'data' => $this->items,
-            'total' => $this->total,
         ];
 
         return $this->cabinets;

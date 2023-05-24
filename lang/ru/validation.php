@@ -213,6 +213,7 @@ return [
         'username' => 'никнейм',
         'year' => 'год',
         'description_long' => 'текст',
+        'info_final' => 'информация о выполнении',
         'rang' => 'позиция',
         'warning_timer' => 'время предупреждения',
         'danger_timer' => 'время просрочки',

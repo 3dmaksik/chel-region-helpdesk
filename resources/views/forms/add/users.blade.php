@@ -1,8 +1,6 @@
 @extends('layouts.app')
-@section('components.grid')
-col-lg-6
-@endsection
 @section('row')
+<div class="col-lg-6">
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Добавить пользователя</h6>
@@ -76,26 +74,24 @@ col-lg-6
         </form>
     </div>
 </div>
-@endsection
-@section('components.grid.right')
-col-lg-6
-@endsection
-@section('row.right')
-<div class="card mb-4">
-    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Описание ролей</h6>
-    </div>
-    <div class="card-body">
-        <ul class="list-group">
-            <li class="list-group-item"><strong>superAdmin</strong>-Роль Главного администратора. Доступны все права.
-            </li>
-            <li class="list-group-item"><strong>admin</strong>-Роль администратора. Доступны все права, кроме меню
-                списков. </li>
-            <li class="list-group-item"><strong>manager</strong>-Роль исполнителя. Доступны все права связанные с
-                исполнением заявки.</li>
-            <li class="list-group-item"><strong>user</strong>-Роль пользователя. Доступны все права связанные с подачей
-                заявки.</li>
-        </ul>
+</div>
+<div class="col-lg-6">
+    <div class="card mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Описание ролей</h6>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>superAdmin</strong>-Роль Главного администратора. Доступны все права.
+                </li>
+                <li class="list-group-item"><strong>admin</strong>-Роль администратора. Доступны все права, кроме меню
+                    списков. </li>
+                <li class="list-group-item"><strong>manager</strong>-Роль исполнителя. Доступны все права связанные с
+                    исполнением заявки.</li>
+                <li class="list-group-item"><strong>user</strong>-Роль пользователя. Доступны все права связанные с подачей
+                    заявки.</li>
+            </ul>
+        </div>
     </div>
 </div>
 @endsection

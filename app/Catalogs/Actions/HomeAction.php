@@ -24,8 +24,6 @@ class HomeAction extends Action
 
     private Model|null $last;
 
-    private int $total;
-
     public User $superAdmin;
 
     private Carbon $calendar_request;
@@ -44,19 +42,16 @@ class HomeAction extends Action
 
     public function getWorkerPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', '<', 3)
+        $this->items = Model::dontCache()->where('status_id', '<', config('constants.request.success'))
             ->where('user_id', auth()->user()->id)
             ->orderBy('status_id', 'ASC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
             ->orderBy('calendar_accept', 'ASC')
             ->paginate($this->page);
-        $this->total = Model::where('status_id', '<', 3)
-            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'workeruser',
-            'total' => $this->total,
             'data' => $this->items,
         ];
 
@@ -65,16 +60,13 @@ class HomeAction extends Action
 
     public function getCompletedPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', 3)
+        $this->items = Model::dontCache()->where('status_id', config('constants.request.success'))
             ->where('user_id', auth()->user()->id)
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
-        $this->total = Model::where('status_id', 3)
-            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'completeduser',
-            'total' => $this->total,
             'data' => $this->items,
         ];
 
@@ -83,16 +75,13 @@ class HomeAction extends Action
 
     public function getDismissPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', 4)
+        $this->items = Model::dontCache()->where('status_id', config('constants.request.danger'))
             ->where('user_id', auth()->user()->id)
             ->orderBy('calendar_request', 'DESC')
             ->paginate($this->page);
-        $this->total = Model::where('status_id', 4)
-            ->where('user_id', auth()->user()->id)->count();
         $this->helps =
         [
             'method' => 'dismissuser',
-            'total' => $this->total,
             'data' => $this->items,
         ];
 

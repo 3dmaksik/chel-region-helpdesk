@@ -12,17 +12,13 @@ class NewsAction extends Action
 
     private array $response;
 
-    private int $total;
-
     public function getAllPagesPaginate(): array
     {
         $this->item = new Model();
         $this->items = Model::dontCache()->orderBy('created_at', 'DESC')->paginate($this->page);
-        $this->total = Model::count();
         $this->news =
         [
             'data' => $this->items,
-            'total' => $this->total,
         ];
 
         return $this->news;

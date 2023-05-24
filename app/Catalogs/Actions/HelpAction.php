@@ -19,13 +19,13 @@ use Illuminate\Support\Facades\Notification;
 
 class HelpAction extends Action
 {
-    const newHelp = 1;
+    const newHelp = config('constants.request.new');
 
-    const workHelp = 2;
+    const workHelp = config('constants.request.work');
 
-    const successHelp = 3;
+    const successHelp = config('constants.request.success');
 
-    const dangerHelp = 4;
+    const dangerHelp = config('constants.request.danger');
 
     private ?Model $last;
 
@@ -51,8 +51,6 @@ class HelpAction extends Action
 
     private array $dataClear;
 
-    private int $total;
-
     private int $count;
 
     private string $app_number;
@@ -77,11 +75,9 @@ class HelpAction extends Action
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
-        $this->total = Model::count();
         $this->helps =
         [
             'method' => 'alladm',
-            'total' => $this->total,
             'data' => $this->items,
         ];
 
@@ -93,11 +89,9 @@ class HelpAction extends Action
         $this->items = Model::dontCache()->where('status_id', self::newHelp)
             ->orderBy('calendar_request', 'ASC')
             ->paginate($this->page);
-        $this->total = Model::where('status_id', self::newHelp)->count();
         $this->helps =
         [
             'method' => 'newadm',
-            'total' => $this->total,
             'data' => $this->items,
         ];
 
@@ -111,11 +105,9 @@ class HelpAction extends Action
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
             ->paginate($this->page);
-        $this->total = Model::where('status_id', self::workHelp)->count();
         $this->helps =
         [
             'method' => 'workeradm',
-            'total' => $this->total,
             'data' => $this->items,
         ];
 
@@ -128,11 +120,9 @@ class HelpAction extends Action
             ->RoleHelp()
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
-        $this->total = Model::where('status_id', self::successHelp)->count();
         $this->helps =
         [
             'method' => 'completedadm',
-            'total' => $this->total,
             'data' => $this->items,
         ];
 
@@ -144,11 +134,9 @@ class HelpAction extends Action
         $this->items = Model::dontCache()->where('status_id', self::dangerHelp)
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
-        $this->total = Model::where('status_id', self::dangerHelp)->count();
         $this->helps =
         [
             'method' => 'dismissadm',
-            'total' => $this->total,
             'data' => $this->items,
         ];
 
@@ -260,6 +248,7 @@ class HelpAction extends Action
             'calendar_accept' => Carbon::now(),
             'calendar_warning' => Carbon::now()->addHour($this->item->priority->warning_timer),
             'calendar_execution' => Carbon::now()->addHour($this->item->priority->danger_timer),
+            'route' => route(config('constants.help.show'), $this->item->id),
             'check_write' => true,
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
@@ -324,6 +313,7 @@ class HelpAction extends Action
             'check_write' => false,
             'images_final' => $this->images_final,
             'lead_at' => $this->lead_at,
+            'route' => route(config('constants.help.show'), $this->item->id),
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);
@@ -400,6 +390,7 @@ class HelpAction extends Action
 
         $this->response = [
             'message' => 'Заявка успешно перенаправлена!',
+            'route' => route(config('constants.help.show'), $this->item->id),
         ];
 
         return response()->success($this->response);
@@ -435,6 +426,7 @@ class HelpAction extends Action
 
         $this->response = [
             'message' => 'Заявка успешно отклонена!',
+            'route' => route(config('constants.help.show'), $this->item->id),
         ];
 
         return response()->success($this->response);

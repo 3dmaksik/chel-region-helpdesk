@@ -1,8 +1,6 @@
 @extends('layouts.app')
-@section('components.grid')
-col-lg-4
-@endsection
 @section('row')
+<div class="col-lg-4">
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Информация</h6>
@@ -31,5 +29,6 @@ col-lg-4
         <p class="text-primary">Время до просрочки</p>
         <p>{{ $item->danger_timer}}ч.</p>
     </div>
+</div>
 </div>
 @endsection

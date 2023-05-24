@@ -14,8 +14,6 @@ class PriorityAction extends Action
 
     private array $response;
 
-    private int $total;
-
     private int $count;
 
     public function getAllPages(): Collection
@@ -29,11 +27,9 @@ class PriorityAction extends Action
     {
         $this->item = new Model();
         $this->items = Model::orderBy('rang', 'ASC')->paginate($this->page);
-        $this->total = Model::count();
         $this->proirity =
         [
             'data' => $this->items,
-            'total' => $this->total,
         ];
 
         return $this->proirity;

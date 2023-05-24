@@ -38,7 +38,7 @@ class StatisticAction extends Action
             'error_work' => Help::join('users', 'users.id', '=', 'help.user_id')
                 ->select(DB::raw('count("user_id") AS userId,user_id,users.firstname,users.lastname,users.patronymic'))
                 ->whereYear('calendar_request', '=', $today->year)
-                ->where('status_id', '=', '4')
+                ->where('status_id', '=', config('constants.request.danger'))
                 ->groupBy('user_id', 'users.firstname', 'users.lastname', 'users.patronymic')
                 ->orderBy(DB::raw('count("user_id")'), 'DESC')
                 ->first(),

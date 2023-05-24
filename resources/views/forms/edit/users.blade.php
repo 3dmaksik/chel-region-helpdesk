@@ -1,8 +1,6 @@
 @extends('layouts.app')
-@section('components.grid')
-col-lg-6
-@endsection
 @section('row')
+<div class="col-lg-6">
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Редактировать пользователя</h6>
@@ -82,11 +80,8 @@ col-lg-6
         </form>
     </div>
 </div>
-@endsection
-@section('components.grid.right')
-col-lg-6
-@endsection
-@section('row.right')
+</div>
+<div class="col-lg-6">
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Описание ролей</h6>
@@ -103,5 +98,6 @@ col-lg-6
                 заявки.</li>
         </ul>
     </div>
+</div>
 </div>
 @endsection

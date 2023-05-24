@@ -99,6 +99,13 @@ class HelpController extends Controller
         return view('forms.show.help', compact('item'));
     }
 
+    public function getShow(int $help): View
+    {
+        $item = $this->helps->show($help);
+
+        return view('loader.help_view', compact('item'));
+    }
+
     public function create(): View
     {
         $items = $this->helps->create();

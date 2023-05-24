@@ -23,7 +23,7 @@ class HelpRequest extends BaseRequest
             'images.*' => 'nullable|mimes:jpg,gif,png,jpeg|max:20480',
             'description_long' => 'sometimes|required|string',
             'info' => 'nullable|string',
-            'info_final' => 'nullable|string',
+            'info_final' => 'sometimes|required|string',
             'images_final.*' => 'nullable|mimes:jpg,gif,png,jpeg|max:20480',
             'check_write' => 'nullable|integer|max:2|numeric',
         ];

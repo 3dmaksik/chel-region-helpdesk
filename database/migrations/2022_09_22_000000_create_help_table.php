@@ -27,7 +27,7 @@ return new class extends Migration
             $table->dateTime('calendar_warning')->nullable();
             $table->dateTime('calendar_execution')->nullable();
             $table->dateTime('calendar_final')->nullable();
-            $table->smallInteger('lead_at')->nullable();
+            $table->bigInteger('lead_at')->nullable();
             $table->longText('description_long');
             $table->longText('info')->nullable();
             $table->longText('info_final')->nullable();

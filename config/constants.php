@@ -107,4 +107,10 @@ return
         'updatePassword' => 'settings.updatePassword',
         'updateSettings' => 'settings.updateSettings',
     ],
+    'request' => [
+        'new' => 1,
+        'work' => 2,
+        'success' => 3,
+        'danger' => 4,
+    ],
 ];

@@ -13,15 +13,8 @@
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
                     @include('components.breadcrumbs')
-                    <div class="row">
-                        <div class="@yield('components.grid')">
-                            @yield('row')
-                            @yield('paginate')
-                        </div>
-                        <div class="@yield('components.grid.right')">
-                            @yield('row.right')
-                            @yield('paginate.right')
-                        </div>
+                    <div class="row @yield('view')">
+                        @yield('row')
                     </div>
                     <!--Row-->
                     @include('components.logout')
@@ -29,6 +22,7 @@
                 <!---Container Fluid-->
             </div>
             @include('components.footer')
+            @yield('modal')
         </div>
     </div>
     <!-- ./wrapper -->

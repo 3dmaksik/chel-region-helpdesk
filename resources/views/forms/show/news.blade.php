@@ -1,8 +1,6 @@
 @extends('layouts.app')
-@section('components.grid')
-col-lg-12
-@endsection
 @section('row')
+<div class="col-lg-12">
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Новость</h6>
@@ -30,5 +28,6 @@ col-lg-12
         <h6 class="text-primary">Дата публикации:</h6>
         <h6>{{ $item->created_at }}</h6>
     </div>
+</div>
 </div>
 @endsection

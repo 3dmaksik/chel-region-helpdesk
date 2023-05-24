@@ -1,7 +1,6 @@
 @extends('layouts.app')
-@section('components.grid')
-col-lg-12 mb-4
-@endsection
 @section('row')
+<div class="col-lg-12 mb-4">
 @include('loader.help')
+</div>
 @endsection

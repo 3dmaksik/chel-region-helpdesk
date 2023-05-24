@@ -1,8 +1,6 @@
 @extends('layouts.app')
-@section('components.grid')
-col-lg-4
-@endsection
 @section('row')
+<div class="col-lg-4">
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Добавить приоритет</h6>
@@ -53,5 +51,6 @@ col-lg-4
             <a class="btn btn-secondary" href="{{ route(config('constants.priority.index')) }}">Отменить</a>
         </form>
     </div>
+</div>
 </div>
 @endsection
