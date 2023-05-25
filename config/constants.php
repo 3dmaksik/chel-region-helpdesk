@@ -97,6 +97,7 @@ return
         'store' => 'users.store',
         'update' => 'users.update',
         'destroy' => 'users.destroy',
+        'password' => 'users.password',
 
     ],
     'settings' => [

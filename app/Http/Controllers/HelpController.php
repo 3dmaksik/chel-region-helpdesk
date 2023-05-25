@@ -103,7 +103,7 @@ class HelpController extends Controller
     {
         $item = $this->helps->show($help);
 
-        return view('loader.help_view', compact('item'));
+        return view('loader.help-view', compact('item'));
     }
 
     public function create(): View
