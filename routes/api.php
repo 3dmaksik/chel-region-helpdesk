@@ -66,7 +66,8 @@ Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
         ->as('users.')
         ->group(function () {
             Route::post('', 'store')->name('store')->middleware('can:create user');
-            Route::patch('{user}', 'update')->name('update')->middleware('can:update user');
+            Route::put('{user}', 'update')->name('update')->middleware('can:update user');
+            Route::patch('{user}', 'updatePassword')->name('password')->middleware('can:update user');
             Route::delete('{user}', 'destroy')->name('destroy')->middleware('can:delete user');
         });
     Route::controller(HelpApiController::class)

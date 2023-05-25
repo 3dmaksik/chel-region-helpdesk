@@ -159,8 +159,8 @@ class HelpAction extends Action
             if ($this->item === null) {
                 abort(404);
             }
-
         }
+        $this->item->update(['check_write' => true]);
         $this->item->images = json_decode($this->item->images, true);
         $this->item->images_final = json_decode($this->item->images_final, true);
 

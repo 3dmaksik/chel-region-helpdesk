@@ -126,7 +126,8 @@ user=example_user
 ````
 `$ sudo supervisorctl update`  
 
-Аналогичные действия производятся для artisan schedule:work и artisan queue:work
+Аналогичные действия производятся для artisan schedule:work и artisan queue:work.
+
 После чего проект готов к работе. 
 
 PS. Рады всем, кто сможет предоставить скрипт автоматического развёртывания.
@@ -134,8 +135,9 @@ PS. Рады всем, кто сможет предоставить скрипт
 
 ### Обновления
                 
-1. Обновления проекта `$ git pull origin master && sudo supervisorctl update`, рабочих библиотек `$ composer update`, библиотек разработки `$ npm update` соответственно.
-2. Если самостоятельно изменили файл `config/settings.php` и не хотите, чтобы в результате обновлений он изменялся обратно необходимо игнорировать 
+1. Обновления проекта `$ git pull origin master && sudo supervisorctl update`.
+2. Обновления рабочих библиотек `$ composer update`, библиотек разработки `$ npm update` соответственно.
+3. Если самостоятельно изменили файл `config/settings.php` и не хотите, чтобы в результате обновлений он изменялся обратно необходимо игнорировать.
 `$ git update-index --assume-unchanged config/settings.php`
                 
 

@@ -3,7 +3,7 @@
 help_view
 @endsection
 @section('row')
-@include('loader.help_view')
+@include('loader.help-view')
 @endsection
 @section('modal')
 @include('components.modal')

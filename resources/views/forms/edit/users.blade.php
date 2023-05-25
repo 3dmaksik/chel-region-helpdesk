@@ -21,18 +21,12 @@
     </div>
     <div class="card-body">
         <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.users.update'),$items['user']->id) }}">
-            @method('PATCH')
+            @method('PUT')
             <div class="form-group">
                 <label for="">Логин</label>
                 <input type="text" name="name" value="{{ $items['user']->name }}" class="form-control" id="name"
                     aria-describedby="textName" autocomplete="off">
                 <small id="textName" class="form-text text-muted">Введите логин пользователя</small>
-            </div>
-            <div class="form-group">
-                <label for="">Пароль</label>
-                <input type="password" name="password" class="form-control" id="password"
-                    aria-describedby="textPassword" autocomplete="off">
-                <small id="textPassword" class="form-text text-muted">Введите новый пароль пользователя</small>
             </div>
             <div class="form-group">
                 <label for="">Фамилия</label>

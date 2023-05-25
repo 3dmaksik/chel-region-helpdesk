@@ -40,6 +40,42 @@
                             </a>
                             <span class="hidden">Открыть пользователя</span> <!-- скрытый элемент -->
                         </div>
+                        @if (auth()->user()->id !=$item->id)
+                        <div class="block">
+                            <a data-toggle="modal" data-target="#passwordModal-{{ $item->id}}" href="#"
+                                class="btn btn-primary btn-sm hover password"><i class="fa-solid fa-key"></i></a>
+                            <span class="hidden">Изменить пароль</span> <!-- скрытый элемент -->
+                        </div>
+                        <!-- Окно изменения пароля-->
+                        <div class="modal fade" id="passwordModal-{{$item->id}}" tabindex="-1" role="dialog"
+                            aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Удаление</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form id="formPassword-{{$item->id}}" class="form-submit"
+                                        action="{{ route(config('constants.users.password'),$item->id) }}" method="POST">
+                                        @method('PATCH')
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="password-info">Изменить пароль</label>
+                                                <input type="password" name="password" class="form-control" id="password"
+                                                aria-describedby="textPassword" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer form-group">
+                                            <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Отменить</button>
+                                            <input class="btn btn-success update-submit" type="submit" value="Выполнить" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                         <div class="block">
                             <a href="{{ route(config('constants.users.edit'),$item->id) }}"
                                 class="btn btn-success btn-sm hover">
@@ -53,6 +89,7 @@
                                 class="btn btn-danger btn-sm hover remove"><i class="fas fa-trash"></i></a>
                             <span class="hidden">Удалить кабинет</span> <!-- скрытый элемент -->
                         </div>
+
                         <!-- Окно удаления-->
                         <div class="modal fade" id="removeModal-{{$item->id}}" tabindex="-1" role="dialog"
                             aria-hidden="true">
@@ -80,8 +117,8 @@
                                                 data-dismiss="modal">Отменить</button>
                                             <input class="btn btn-danger remove-submit" type="submit" value="Да" />
                                         </div>
+                                    </form>
                                 </div>
-                                </form>
                             </div>
                         </div>
                         @endif

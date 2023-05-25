@@ -7,6 +7,7 @@ use App\Catalogs\DTO\AllCatalogsDTO;
 use App\Catalogs\DTO\UsersDTO;
 use App\Models\Help;
 use App\Models\User as Model;
+use App\Requests\UserPasswordRequest;
 use App\Requests\UserRequest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
@@ -105,6 +106,25 @@ class UsersAction extends Action
 
         $this->response = [
             'message' => 'Пользователь успешно обновлён!',
+        ];
+
+        return response()->success($this->response);
+    }
+
+    public function updatePassword(UserPasswordRequest $request, int $id): JsonResponse
+    {
+        $this->user = Model::findOrFail($id);
+        $this->data = $request->validated();
+        $this->user->update($this->data);
+        if ($this->user->id === auth()->user()->id) {
+            $this->response = [
+                'message' => 'Пользователь не может изменить пароль самому себе в данной форме!',
+            ];
+
+            return response()->error($this->response);
+        }
+        $this->response = [
+            'message' => 'Пароль пользователя успешно изменён!',
         ];
 
         return response()->success($this->response);
