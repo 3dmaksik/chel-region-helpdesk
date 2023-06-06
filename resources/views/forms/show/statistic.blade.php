@@ -18,6 +18,8 @@
         <p>{{ $data['month'] }} шт</p>
         <p class="text-primary">Всего заявок за год</p>
         <p>{{ $data['year'] }} шт</p>
+        <p class="text-primary">Среднее время ответа за год</p>
+        <p> @if ($data['lead']['day']>0){{ $data['lead']['day'] }} дн. @endif @if ($data['lead']['hour']>0){{ $data['lead']['hour'] }} ч. @endif @if ($data['lead']['minute']>0){{ $data['lead']['minute'] }} мин. @endif</p>
         <p class="text-primary">Самая активная категория</p>
         @if ($data['active_work'] !=null)
         <p>{{ $data['active_category']->description }}</p>

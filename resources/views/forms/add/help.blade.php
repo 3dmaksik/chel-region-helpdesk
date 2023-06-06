@@ -6,7 +6,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Добавить новую заявку</h6>
         <div class="card-title">
             <div class="block">
-                <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.index')) }}">
+                <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.worker')) }}">
                     <i class="fas fa-arrow-left fa-lg"></i>
                 </a> <span class="hidden">Назад</span>
                 <!-- скрытый элемент -->

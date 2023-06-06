@@ -34,7 +34,7 @@
                 <small id="textDesription" class="form-text text-muted">Введите описание новости</small>
             </div>
             <div class="form-group">
-                <label for="news-text">Введите текст новости</label>
+                <label for="news-text">Введите текст новости </label>
                 <textarea class="wysiwyg form-control" id="news-text" rows="9" name="news_text"></textarea>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
