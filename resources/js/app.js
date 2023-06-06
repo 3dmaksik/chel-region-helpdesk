@@ -142,7 +142,7 @@ $(function () {
                 contentType: false,
                 timeout: 600000,
                 beforeSend: function () {
-                    $(this)
+                    $('form')
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", true);
                 },
@@ -185,11 +185,11 @@ $(function () {
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
                         }, 6500);
-                    $(this)
+                    $('form')
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
-                    $(this)
-                        .find("input, textarea")
+                    $('form')
+                        .find("input[type=text], textarea")
                         .val('');
                     if ($("div").hasClass('help_view')) {
                         if (data.route !=='undefined') {

@@ -6,7 +6,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Изменить статус</h6>
         <div class="card-title">
             <div class="block" style="cursor: pointer;">
-                <a style="color: #757575;" class="hover" onclick="window.history.back()">
+                <a style="color: #757575;" class="hover" href="{{ url()->previous() === url()->current() ? route(config('constants.status.index')): url()->previous()}}">
                      <i class="fas fa-arrow-left fa-lg"></i>
                 </a> <span class="hidden">Назад</span>
                     <!-- скрытый элемент -->

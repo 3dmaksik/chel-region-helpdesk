@@ -87,7 +87,7 @@
                         <div class="block">
                             <a data-toggle="modal" data-target="#removeModal-{{ $item->id}}" href="#"
                                 class="btn btn-danger btn-sm hover remove"><i class="fas fa-trash"></i></a>
-                            <span class="hidden">Удалить кабинет</span> <!-- скрытый элемент -->
+                            <span class="hidden">Удалить пользователя</span> <!-- скрытый элемент -->
                         </div>
 
                         <!-- Окно удаления-->

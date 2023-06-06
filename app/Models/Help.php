@@ -129,11 +129,16 @@ class Help extends Model
         return Attribute::make(
             get: function ($value) {
                 if ($value != null) {
+                    $day = floor($value / 86400);
+                    $value = $value % 86400;
+                    $hour = floor($value / 3600);
+                    $value = $value % 3600;
+                    $minute = floor($value / 60);
                     $this->lead =
                     [
-                        'day' => (int) floor($value / 86400),
-                        'hour' => (int) floor($value / 3600),
-                        'minute' => (int) floor($value / 60),
+                        'day' => (int)$day,
+                        'hour' => (int)$hour,
+                        'minute' => (int)$minute,
                     ];
 
                     return $this->lead;

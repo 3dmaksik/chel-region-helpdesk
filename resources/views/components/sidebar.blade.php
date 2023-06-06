@@ -28,23 +28,23 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Рабочие заявки</h6>
                 @can('all help')
-                <a class="collapse-item  {{ request()->segment(1) == 'admin' && request()->segment(3) == 'all' ? 'active':'' }}"
+                <a class="collapse-item  {{ Route::currentRouteName() === config('constants.help.index') ? 'active':'' }}"
                     href="{{ route(config('constants.help.index')) }}">Все</a>
                 @endcan
                 @can('new help')
-                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(3) == 'new' ? 'active':'' }}"
+                <a class="collapse-item {{ Route::currentRouteName() === config('constants.help.new') ? 'active':'' }}"
                     href="{{ route(config('constants.help.new')) }}">Новые</a>
                 @endcan
                 @can('worker help')
-                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(3) == 'worker'? 'active':'' }}"
+                <a class="collapse-item {{ Route::currentRouteName() === config('constants.help.worker') ? 'active':'' }}"
                     href="{{ route(config('constants.help.worker')) }}">В работе</a>
                 @endcan
                 @can('completed help')
-                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(3) == 'completed' ? 'active':'' }}"
+                <a class="collapse-item {{ Route::currentRouteName() === config('constants.help.active') ? 'active':'' }}"
                     href="{{ route(config('constants.help.completed')) }}">Выполненные</a>
                 @endcan
                 @can('dismiss help')
-                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(3) == 'dismiss' ? 'active':'' }}"
+                <a class="collapse-item {{ Route::currentRouteName() === config('constants.help.dismiss') ? 'active':'' }}"
                     href="{{ route(config('constants.help.dismiss')) }}">Отклонённые</a>
                 @endcan
             </div>
@@ -63,11 +63,11 @@
             aria-labelledby="headingForm" data-parent="#UserSidebar" style="">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Мои заявки</h6>
-                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(3) == 'worker' ? 'active':'' }}"
+                <a class="collapse-item {{ Route::currentRouteName() === config('constants.home.worker') ? 'active':'' }}"
                     href="{{ route(config('constants.home.worker')) }}">В работе</a>
-                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(3) == 'completed' ? 'active':'' }}"
+                <a class="collapse-item {{ Route::currentRouteName() === config('constants.home.completed') ? 'active':'' }}"
                     href="{{ route(config('constants.home.completed')) }}">Выполненные</a>
-                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(3) == 'dismiss' ? 'active':'' }}"
+                <a class="collapse-item {{ Route::currentRouteName() === config('constants.home.dismiss') ? 'active':'' }}"
                     href="{{ route(config('constants.home.dismiss')) }}">Отклонённые</a>
             </div>
         </div>
@@ -77,7 +77,7 @@
     @can('all directory list')
     <div class="sidebar-heading"> Списки </div>
     @can('view category')
-    <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'category' ? 'active':'' }}"> <a
+    <li class="nav-item {{ Route::currentRouteName() === config('constants.category.index') ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.category.index')) }}">
             <i class="fas fa-fw fa-angle-double-up"></i>
             <span>Категории</span>
@@ -85,7 +85,7 @@
     </li>
     @endcan
     @can('view status')
-    <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'status' ? 'active':'' }}"> <a
+    <li class="nav-item {{ Route::currentRouteName() === config('constants.status.index') ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.status.index')) }}">
             <i class="fas fa-fw fa-star"></i>
             <span>Статусы</span>
@@ -93,7 +93,7 @@
     </li>
     @endcan
     @can('view cabinet')
-    <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'cabinet' ? 'active':'' }}"> <a
+    <li class="nav-item {{ Route::currentRouteName() === config('constants.cabinet.index') ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.cabinet.index')) }}">
             <i class="fas fa-fw fa-door-open"></i>
             <span>Кабинеты</span>
@@ -101,7 +101,7 @@
     </li>
     @endcan
     @can('view priority')
-    <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'priority' ? 'active':'' }}"> <a
+    <li class="nav-item {{ Route::currentRouteName() === config('constants.priority.index') ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.priority.index')) }}">
             <i class="fas fa-fw fa-signal"></i>
             <span>Приоритеты</span>
@@ -109,7 +109,7 @@
     </li>
     @endcan
     @can('view user')
-    <li class="nav-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'users' ? 'active':'' }}"> <a
+    <li class="nav-item {{ Route::currentRouteName() === config('constants.users.index') ? 'active':'' }}"> <a
             class="nav-link" href="{{ route(config('constants.users.index')) }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Пользователи</span>
@@ -130,10 +130,10 @@
                 class="collapse {{ request()->segment(1) == 'settings' ? 'show':'' }}"
                 aria-labelledby="headingForm" data-parent="#settings" style="">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item  {{ request()->segment(1) == 'settings' && request()->segment(2) == 'account' ? 'active':'' }}"
+                    <a class="collapse-item  {{ Route::currentRouteName() === config('constants.settings.account') ? 'active':'' }}"
                         href="{{ route(config('constants.settings.account')) }}">Настройки аккаунта
                     </a>
-                    <a class="collapse-item  {{ request()->segment(1) == 'settings' && request()->segment(2) == 'password' ? 'active':'' }}"
+                    <a class="collapse-item  {{ Route::currentRouteName() === config('constants.settings.password') ? 'active':'' }}"
                         href="{{ route(config('constants.settings.password')) }}">Изменение пароля
                     </a>
                 </div>

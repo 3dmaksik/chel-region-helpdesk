@@ -11,14 +11,39 @@ class StatisticAction extends Action
 {
     public Carbon $today;
 
+    public array $lead;
+
+    public $leadSum;
+
+    public $leadCount;
+
     public function __construct()
     {
         //parent::__construct();
     }
 
+    private function getTime(float $value): array
+    {
+        $day = floor($value / 86400);
+        $value = $value % 86400;
+        $hour = floor($value / 3600);
+        $value = $value % 3600;
+        $minute = floor($value / 60);
+
+        return
+       [
+           'day' => (int)$day,
+           'hour' => (int)$hour,
+           'minute' => (int)$minute,
+       ];
+    }
+
     public function indexStatistic(): array
     {
         $today = Carbon::now();
+        $leadSum = Help::whereNotNull('calendar_final')->whereYear('calendar_accept', '=', $today->year)->sum('lead_at');
+        $leadCount = Help::whereNotNull('calendar_final')->whereYear('calendar_accept', '=', $today->year)->count();
+        $lead = $this->getTime($leadSum / $leadCount);
 
         return [
             'month' => Help::whereMonth('calendar_request', '=', $today->month)->count(),
@@ -42,6 +67,7 @@ class StatisticAction extends Action
                 ->groupBy('user_id', 'users.firstname', 'users.lastname', 'users.patronymic')
                 ->orderBy(DB::raw('count("user_id")'), 'DESC')
                 ->first(),
+            'lead' => $lead,
         ];
     }
 }
