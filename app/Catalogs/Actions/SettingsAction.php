@@ -30,7 +30,7 @@ class SettingsAction extends Action
     public function updatePassword(array $request): JsonResponse
     {
         if ($this->checkPassword($request['current_password']) === true && $this->checkPassword($request['password']) === false) {
-            User::whereId(auth()->user()->id)->update([
+            User::where('id', auth()->user()->id)->update([
                 'password' => Hash::make($request['password']),
             ]);
 

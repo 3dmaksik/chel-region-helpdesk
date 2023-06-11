@@ -23,8 +23,6 @@ class NotifyExpireJob extends Job implements ShouldQueue
 
     private User $user;
 
-    private int $count;
-
     private Carbon $warning;
 
     /**

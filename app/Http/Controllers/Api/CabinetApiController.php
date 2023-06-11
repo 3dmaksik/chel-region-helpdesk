@@ -9,32 +9,37 @@ use Illuminate\Http\JsonResponse;
 
 class CabinetApiController extends Controller
 {
+    /**
+     * [result data]
+     */
     private JsonResponse $data;
 
-    private CabinetAction $cabinets;
-
-    public function __construct(CabinetAction $cabinets)
+    /**
+     * [add new cabinet]
+     */
+    public function store(CabinetRequest $request, CabinetAction $cabinetAction): JsonResponse
     {
-        $this->cabinets = $cabinets;
-    }
-
-    public function store(CabinetRequest $request): JsonResponse
-    {
-        $this->data = $this->cabinets->store($request->validated());
+        $this->data = $cabinetAction->store($request->validated());
 
         return $this->data;
     }
 
-    public function update(CabinetRequest $request, int $cabinet): JsonResponse
+    /**
+     * [update cabinet]
+     */
+    public function update(CabinetRequest $request, int $cabinet, CabinetAction $cabinetAction): JsonResponse
     {
-        $this->data = $this->cabinets->update($request->validated(), $cabinet);
+        $this->data = $cabinetAction->update($request->validated(), $cabinet);
 
         return $this->data;
     }
 
-    public function destroy(int $cabinet): JsonResponse
+    /**
+     * [delete cabinet]
+     */
+    public function destroy(int $cabinet, CabinetAction $cabinetAction): JsonResponse
     {
-        $this->data = $this->cabinets->delete($cabinet);
+        $this->data = $cabinetAction->delete($cabinet);
 
         return $this->data;
     }

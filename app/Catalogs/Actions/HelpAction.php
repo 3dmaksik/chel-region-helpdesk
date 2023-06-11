@@ -438,7 +438,7 @@ class HelpAction extends Action
 
     public function updateView(int $id, bool $status = true): JsonResponse
     {
-        Model::whereId($id)->update(['check_write' => $status]);
+        Model::where('id', $id)->update(['check_write' => $status]);
 
         return response()->success('Заявка успешно прочитана!');
     }

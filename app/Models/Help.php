@@ -136,9 +136,9 @@ class Help extends Model
                     $minute = floor($value / 60);
                     $this->lead =
                     [
-                        'day' => (int)$day,
-                        'hour' => (int)$hour,
-                        'minute' => (int)$minute,
+                        'day' => (int) $day,
+                        'hour' => (int) $hour,
+                        'minute' => (int) $minute,
                     ];
 
                     return $this->lead;

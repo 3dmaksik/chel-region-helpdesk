@@ -17,43 +17,43 @@ class RolesTableSeeder extends Seeder
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Permission::create(['name' => 'delete cabinet']);
+        Permission::create(['name' => 'destroy cabinet']);
         Permission::create(['name' => 'create cabinet']);
         Permission::create(['name' => 'edit cabinet']);
         Permission::create(['name' => 'update cabinet']);
         Permission::create(['name' => 'view cabinet']);
 
-        Permission::create(['name' => 'delete category']);
+        Permission::create(['name' => 'destroy category']);
         Permission::create(['name' => 'create category']);
         Permission::create(['name' => 'edit category']);
         Permission::create(['name' => 'update category']);
         Permission::create(['name' => 'view category']);
 
-        Permission::create(['name' => 'delete status']);
+        Permission::create(['name' => 'destroy status']);
         Permission::create(['name' => 'create status']);
         Permission::create(['name' => 'edit status']);
         Permission::create(['name' => 'update status']);
         Permission::create(['name' => 'view status']);
 
-        Permission::create(['name' => 'delete priority']);
+        Permission::create(['name' => 'destroy priority']);
         Permission::create(['name' => 'create priority']);
         Permission::create(['name' => 'edit priority']);
         Permission::create(['name' => 'update priority']);
         Permission::create(['name' => 'view priority']);
 
-        Permission::create(['name' => 'delete user']);
+        Permission::create(['name' => 'destroy user']);
         Permission::create(['name' => 'create user']);
         Permission::create(['name' => 'edit user']);
         Permission::create(['name' => 'update user']);
         Permission::create(['name' => 'view user']);
 
-        Permission::create(['name' => 'delete news']);
+        Permission::create(['name' => 'destroy news']);
         Permission::create(['name' => 'create news']);
         Permission::create(['name' => 'edit news']);
         Permission::create(['name' => 'update news']);
         Permission::create(['name' => 'view news']);
 
-        Permission::create(['name' => 'delete help']);
+        Permission::create(['name' => 'destroy help']);
         Permission::create(['name' => 'create help']);
         Permission::create(['name' => 'edit help']);
         Permission::create(['name' => 'update help']);
@@ -96,7 +96,7 @@ class RolesTableSeeder extends Seeder
             'edit settings', 'all search', 'prefix search', 'view stats', 'work directory list', 'home directory list']);
         //api
         $role->givePermissionTo(['update help', 'accept help', 'reject help', 'redefine help', 'execute help', 'count help',
-            'create news', 'update news', 'delete news',
+            'create news', 'update news', 'destroy news',
             'update settings', 'loader help']);
 
         $role = Role::create(['name' => 'manager']);

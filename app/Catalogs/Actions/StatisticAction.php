@@ -32,9 +32,9 @@ class StatisticAction extends Action
 
         return
        [
-           'day' => (int)$day,
-           'hour' => (int)$hour,
-           'minute' => (int)$minute,
+           'day' => (int) $day,
+           'hour' => (int) $hour,
+           'minute' => (int) $minute,
        ];
     }
 

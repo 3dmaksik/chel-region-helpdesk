@@ -185,6 +185,12 @@ $(function () {
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
                         }, 6500);
+                    if (data.reload === true)
+                    {
+                        setTimeout(function(){
+                            location.reload();
+                          }, 6500);
+                    }
                     $('form')
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);

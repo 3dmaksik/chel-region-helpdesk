@@ -4,33 +4,38 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Models\Cabinet as Model;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class CabinetAction extends Action
 {
-    private array $cabinets;
-
+    /**
+     * [result cabinet]
+     */
     private array $response;
 
-    public function getAllPages(): Collection
-    {
-        $this->items = Model::orderBy('description', 'ASC')->get();
+    /**
+     * [count user for cabinet]
+     */
+    private int $countUser;
 
-        return $this->items;
-    }
-
+    /**
+     * [all cabinet with count items on page]
+     */
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        $this->cabinets =
+        $this->response =
         [
             'data' => $this->items,
         ];
 
-        return $this->cabinets;
+        return $this->response;
     }
 
+    /**
+     * [show one cabinet]
+     */
     public function show(int $id): Model
     {
         $this->item = Model::findOrFail($id);
@@ -38,6 +43,9 @@ class CabinetAction extends Action
         return $this->item;
     }
 
+    /**
+     * [add new cabinet]
+     */
     public function store(array $request): JsonResponse
     {
         $this->item = Model::create($request);
@@ -50,6 +58,9 @@ class CabinetAction extends Action
 
     }
 
+    /**
+     * [update cabinet]
+     */
     public function update(array $request, int $id): JsonResponse
     {
         $this->item = Model::findOrFail($id);
@@ -62,13 +73,25 @@ class CabinetAction extends Action
         return response()->success($this->response);
     }
 
+    /**
+     * [delete cabinet if there are no employees]
+     */
     public function delete(int $id): JsonResponse
     {
-        Model::flushQueryCache();
+        $this->countUser = User::dontCache()->where('cabinet_id', $id)->count();
+        if ($this->countUser > 0) {
+            $this->response = [
+                'message' => 'Кабинет не может быть удален, так как у кабинета есть сотрудники!',
+            ];
+
+            return response()->error($this->response);
+        }
         $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
+        Model::flushQueryCache();
         $this->response = [
             'message' => 'Кабинет успешно удалён!',
+            'reload' => true,
         ];
 
         return response()->success($this->response);
