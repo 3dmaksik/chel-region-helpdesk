@@ -5,12 +5,12 @@ namespace Tests\Feature\Controllers\Api;
 use App\Models\Cabinet;
 use App\Models\User;
 use Database\Seeders\RolesTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class CabinetTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     private User $superAdmin;
 
@@ -79,7 +79,7 @@ class CabinetTest extends TestCase
         $cabinet = Cabinet::orderBy('id', 'DESC')->first();
         $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.cabinet.destroy'), $cabinet->id));
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('cabinet', ['description' => 1]);
+        $this->assertDatabaseMissing('cabinet', ['id' => $cabinet->id]);
     }
 
     public function test_controller_cabinet_store_validation_error_required_super_admin(): void
@@ -103,7 +103,7 @@ class CabinetTest extends TestCase
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.cabinet.store')),
             [
-                'description' => 251,
+                'description' => 1000,
             ], [
                 'Accept' => 'application/json',
             ]);
@@ -129,8 +129,8 @@ class CabinetTest extends TestCase
         $cabinet = Cabinet::factory()->create([
             'description' => 2,
         ]);
-        User::factory()->create([
-            'cabinet_id' => 2,
+        $user = User::factory()->create([
+            'cabinet_id' => $cabinet->id,
         ]);
         $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.cabinet.destroy'), $cabinet->id));
         $response->assertStatus(422);

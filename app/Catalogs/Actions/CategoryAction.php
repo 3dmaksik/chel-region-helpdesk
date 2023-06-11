@@ -5,36 +5,38 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Models\Category as Model;
 use App\Models\Help;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class CategoryAction extends Action
 {
-    private array $categories;
-
+    /**
+     * result category]
+     */
     private array $response;
 
-    private int $count;
+    /**
+     * [count help for category]
+     */
+    private int $countHelp;
 
-    public function getAllPages(): Collection
-    {
-        $this->items = Model::orderBy('description', 'ASC')->get($this->page);
-
-        return $this->items;
-    }
-
+    /**
+     * [all category with count items on page]
+     */
     public function getAllPagesPaginate(): array
     {
         $this->item = new Model();
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        $this->categories =
+        $this->response =
         [
             'data' => $this->items,
         ];
 
-        return $this->categories;
+        return $this->response;
     }
 
+    /**
+     * [show one category]
+     */
     public function show(int $id): Model
     {
         $this->item = Model::findOrFail($id);
@@ -42,6 +44,9 @@ class CategoryAction extends Action
         return $this->item;
     }
 
+    /**
+     * [add new category]
+     */
     public function store(array $request): JsonResponse
     {
         Model::create($request);
@@ -52,6 +57,9 @@ class CategoryAction extends Action
         return response()->success($this->response);
     }
 
+    /**
+     * [update category]
+     */
     public function update(array $request, int $id): JsonResponse
     {
         $this->item = Model::findOrFail($id);
@@ -64,10 +72,13 @@ class CategoryAction extends Action
         return response()->success($this->response);
     }
 
+    /**
+     * [delete category if there are no help]
+     */
     public function delete(int $id): JsonResponse
     {
-        $this->count = Help::dontCache()->where('category_id', $id)->count();
-        if ($this->count > 0) {
+        $this->countHelp = Help::dontCache()->where('category_id', $id)->count();
+        if ($this->countHelp > 0) {
             $this->response = [
                 'message' => 'Категория не может быть удалена, так как не удалены все заявки связанные с ней!',
             ];

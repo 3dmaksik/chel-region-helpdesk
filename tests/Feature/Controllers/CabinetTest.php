@@ -5,12 +5,12 @@ namespace Tests\Feature\Controllers;
 use App\Models\Cabinet;
 use App\Models\User;
 use Database\Seeders\RolesTableSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class CabinetTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     private User $superAdmin;
 

@@ -8,7 +8,6 @@ use Illuminate\Validation\Rule;
 
 class CabinetRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -16,14 +15,12 @@ class CabinetRequest extends BaseRequest
                 'required',
                 'integer',
                 'numeric',
-                'max:250',
+                'max:999',
                 Rule::unique('cabinet')->ignore(empty($this->cabinet) ? 0 : $this->cabinet),
             ],
 
         ];
     }
-
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();
