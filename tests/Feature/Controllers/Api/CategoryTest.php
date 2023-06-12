@@ -34,17 +34,6 @@ class CategoryTest extends TestCase
         $this->user = User::factory()->create()->assignRole('user');
     }
 
-    public function test_controller_category_store_validation_super_admin(): void
-    {
-        $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.category.store')),
-            [
-                'description' => 'Общая',
-            ], [
-                'Accept' => 'application/json',
-            ]);
-        $response->assertStatus(200);
-    }
-
     public function test_controller_category_store_super_admin(): void
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.category.store')),
@@ -56,6 +45,7 @@ class CategoryTest extends TestCase
         $category = Category::first();
         $this->assertEquals('Общая', $category->description);
         $this->assertDatabaseHas('category', ['description' => 'Общая']);
+        $response->assertStatus(200);
     }
 
     public function test_controller_category_update_super_admin(): void
@@ -72,6 +62,7 @@ class CategoryTest extends TestCase
         $category = Category::first();
         $this->assertEquals('Новая', $category->description);
         $this->assertDatabaseHas('category', ['description' => 'Новая']);
+        $response->assertStatus(200);
     }
 
     public function test_controller_category_destroy_super_admin(): void
@@ -79,14 +70,15 @@ class CategoryTest extends TestCase
         Category::factory()->count(5)->create();
         $category = Category::orderBy('id', 'DESC')->first();
         $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.category.destroy'), $category->id));
-        $response->assertStatus(200);
         $this->assertDatabaseMissing('category', ['id' => $category->id]);
+        $response->assertStatus(200);
     }
 
     public function test_controller_category_store_validation_error_required_super_admin(): void
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.category.store')));
         $response->assertJsonValidationErrors(['description']);
+        $response->assertStatus(422);
     }
 
     public function test_controller_category_store_validation_error_max_super_admin(): void
@@ -98,6 +90,7 @@ class CategoryTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $response->assertJsonValidationErrors(['description']);
+        $response->assertStatus(422);
     }
 
     public function test_controller_category_store_validation_error_unique_super_admin(): void
@@ -112,9 +105,10 @@ class CategoryTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $response->assertJsonValidationErrors(['description']);
+        $response->assertStatus(422);
     }
 
-    public function test_controller_category_destroy_error_super_admin(): void
+    public function test_controller_category_destroy_error_category_check_super_admin(): void
     {
         $category = Category::factory()->create([
             'description' => 'Новая',
@@ -153,7 +147,7 @@ class CategoryTest extends TestCase
         ]);
         $response = $this->actingAs($this->admin, 'web')->patchJson(route(config('constants.category.update'), $category->id),
             [
-                'description' => 2,
+                'description' => 'Общая',
             ], [
                 'Accept' => 'application/json',
             ]);

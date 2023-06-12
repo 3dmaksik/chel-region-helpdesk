@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserPasswordRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -15,7 +14,6 @@ class UserPasswordRequest extends BaseRequest
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();

@@ -194,9 +194,6 @@ $(function () {
                     $('form')
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
-                    $('form')
-                        .find("input[type=text], textarea")
-                        .val('');
                     if ($("div").hasClass('help_view')) {
                         if (data.route !=='undefined') {
                             $.post(data.route, function (data) {

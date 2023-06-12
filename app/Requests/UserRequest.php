@@ -8,7 +8,6 @@ use Illuminate\Validation\Rule;
 
 class UserRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -26,7 +25,6 @@ class UserRequest extends BaseRequest
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();

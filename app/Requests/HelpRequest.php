@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class HelpRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -29,7 +28,6 @@ class HelpRequest extends BaseRequest
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();

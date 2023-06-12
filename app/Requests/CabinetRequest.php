@@ -21,6 +21,7 @@ class CabinetRequest extends BaseRequest
 
         ];
     }
+
     public function authorize(): bool
     {
         return Auth::check();

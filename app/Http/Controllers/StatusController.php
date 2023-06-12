@@ -8,23 +8,22 @@ use Illuminate\View\View;
 
 class StatusController extends Controller
 {
-    private StatusAction $statuses;
-
-    public function __construct(StatusAction $statuses)
+    /**
+     * [all status]
+     */
+    public function index(StatusAction $statusAction): View
     {
-        $this->statuses = $statuses;
-    }
-
-    public function index(): View
-    {
-        $items = $this->statuses->getAllPagesPaginate();
+        $items = $statusAction->getAllPagesPaginate();
 
         return view('tables.status', compact('items'));
     }
 
-    public function edit(int $status): View
+    /**
+     * [edit status]
+     */
+    public function edit(int $status, StatusAction $statusAction): View
     {
-        $item = $this->statuses->show($status);
+        $item = $statusAction->show($status);
 
         return view('forms.edit.status', compact('item'));
     }

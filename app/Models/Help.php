@@ -6,13 +6,10 @@ use App\Base\Models\Model;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Help extends Model
 {
-    use HasFactory;
-
     protected $table = 'help';
 
     protected $primaryKey = 'id';
@@ -21,8 +18,8 @@ class Help extends Model
 
     protected array $lead;
 
-    protected $fillable =
-    ['app_number',
+    protected $fillable = [
+        'app_number',
         'category_id',
         'status_id',
         'priority_id',
@@ -39,7 +36,8 @@ class Help extends Model
         'info',
         'info_final',
         'images_final',
-        'check_write', ];
+        'check_write',
+    ];
 
     public function category(): BelongsTo
     {

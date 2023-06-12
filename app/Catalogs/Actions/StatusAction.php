@@ -3,37 +3,30 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Models\Help;
 use App\Models\Status as Model;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class StatusAction extends Action
 {
-    private array $statuses;
-
+    /**
+     * [result status]
+     */
     private array $response;
-
-    private int $count;
-
-    public function getAllPages(): Collection
-    {
-        $this->items = Model::orderBy('description', 'ASC')->get();
-
-        return $this->items;
-    }
 
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
-        $this->statuses =
+        $this->response =
         [
             'data' => $this->items,
         ];
 
-        return $this->statuses;
+        return $this->response;
     }
 
+    /**
+     * [show one status]
+     */
     public function show(int $id): Model
     {
         $this->item = Model::findOrFail($id);
@@ -41,20 +34,14 @@ class StatusAction extends Action
         return $this->item;
     }
 
-    public function store(array $request): JsonResponse
-    {
-        $this->item = Model::create($request);
-        Model::flushQueryCache();
-        $this->response = [
-            'message' => 'Статус успешно добавлен!',
-        ];
-
-        return response()->success($this->response);
-
-    }
-
+    /**
+     * [update status for check existence color]
+     */
     public function update(array $request, int $id): JsonResponse
     {
+        if (! $this->checkColor(config('color'), $request['color'])) {
+            return response()->error(['message' => 'Статус не обновлён! </br> Неверно указан текущий цвет']);
+        }
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
         Model::flushQueryCache();
@@ -65,24 +52,18 @@ class StatusAction extends Action
         return response()->success($this->response);
     }
 
-    public function delete(int $id): JsonResponse
+    /**
+     * [checking for the existence of a color in config]
+     */
+    private function checkColor(array $color, string $check, bool $status = false): bool
     {
-        $this->count = Help::dontCache()->where('status_id', $id)->count();
-        if ($this->count > 0) {
-            $this->response = [
-                'message' => 'Статус не может быть удалён, так как не удалены все заявки связанные с ним!',
-            ];
-
-            return response()->error($this->response);
+        foreach ($color as $oneColor) {
+            if ($oneColor['slug'] === $check) {
+                $status = true;
+                break;
+            }
         }
 
-        $this->item = Model::findOrFail($id);
-        $this->item->forceDelete();
-        Model::flushQueryCache();
-        $this->response = [
-            'message' => 'Статус успешно удалён!',
-        ];
-
-        return response()->success($this->response);
+        return $status;
     }
 }

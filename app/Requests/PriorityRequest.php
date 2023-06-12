@@ -8,7 +8,6 @@ use Illuminate\Validation\Rule;
 
 class PriorityRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -38,11 +37,11 @@ class PriorityRequest extends BaseRequest
                 'integer',
                 'min: '.$this->warning_timer + 1,
                 'numeric',
+                Rule::unique('priority')->ignore(empty($this->priority) ? 0 : $this->priority),
             ],
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();

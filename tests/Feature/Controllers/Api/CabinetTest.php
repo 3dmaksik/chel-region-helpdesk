@@ -33,17 +33,6 @@ class CabinetTest extends TestCase
         $this->user = User::factory()->create()->assignRole('user');
     }
 
-    public function test_controller_cabinet_store_validation_super_admin(): void
-    {
-        $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.cabinet.store')),
-            [
-                'description' => 1,
-            ], [
-                'Accept' => 'application/json',
-            ]);
-        $response->assertStatus(200);
-    }
-
     public function test_controller_cabinet_store_super_admin(): void
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.cabinet.store')),
@@ -55,6 +44,7 @@ class CabinetTest extends TestCase
         $cabinet = Cabinet::first();
         $this->assertEquals(1, $cabinet->description);
         $this->assertDatabaseHas('cabinet', ['description' => 1]);
+        $response->assertStatus(200);
     }
 
     public function test_controller_cabinet_update_super_admin(): void
@@ -71,6 +61,7 @@ class CabinetTest extends TestCase
         $cabinet = Cabinet::first();
         $this->assertEquals(2, $cabinet->description);
         $this->assertDatabaseHas('cabinet', ['description' => 2]);
+        $response->assertStatus(200);
     }
 
     public function test_controller_cabinet_destroy_super_admin(): void
@@ -86,6 +77,7 @@ class CabinetTest extends TestCase
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.cabinet.store')));
         $response->assertJsonValidationErrors(['description']);
+        $response->assertStatus(422);
     }
 
     public function test_controller_cabinet_store_validation_error_integer_super_admin(): void
@@ -97,6 +89,7 @@ class CabinetTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $response->assertJsonValidationErrors(['description']);
+        $response->assertStatus(422);
     }
 
     public function test_controller_cabinet_store_validation_error_max_super_admin(): void
@@ -108,6 +101,7 @@ class CabinetTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $response->assertJsonValidationErrors(['description']);
+        $response->assertStatus(422);
     }
 
     public function test_controller_cabinet_store_validation_error_unique_super_admin(): void
@@ -122,14 +116,15 @@ class CabinetTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $response->assertJsonValidationErrors(['description']);
+        $response->assertStatus(422);
     }
 
-    public function test_controller_cabinet_destroy_error_super_admin(): void
+    public function test_controller_cabinet_destroy_error_user_check_super_admin(): void
     {
         $cabinet = Cabinet::factory()->create([
             'description' => 2,
         ]);
-        $user = User::factory()->create([
+        User::factory()->create([
             'cabinet_id' => $cabinet->id,
         ]);
         $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.cabinet.destroy'), $cabinet->id));
