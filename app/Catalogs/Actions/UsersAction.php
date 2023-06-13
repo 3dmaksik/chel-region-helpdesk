@@ -163,6 +163,7 @@ class UsersAction extends Action
 
         $this->response = [
             'message' => 'Пользователь успешно удалён!',
+            'reload' => true,
         ];
 
         return response()->success($this->response);

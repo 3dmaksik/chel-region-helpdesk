@@ -17,3 +17,4 @@ yarn-error.log
 /.vscode
 .phpunit.cache
 /.phpunit.cache
+/config/settings.php

@@ -55,13 +55,7 @@ class StatusTest extends TestCase
     public function test_controller_status_update_validation_error_required_super_admin(): void
     {
         $status = Status::first();
-        $response = $this->actingAs($this->superAdmin, 'web')->patchJson(route(config('constants.status.update'), $status->id),
-            [
-                'description' => '',
-                'color' => '',
-            ], [
-                'Accept' => 'application/json',
-            ]);
+        $response = $this->actingAs($this->superAdmin, 'web')->patchJson(route(config('constants.status.update'), $status->id));
         $response->assertJsonValidationErrors(['description', 'color']);
         $response->assertStatus(422);
     }

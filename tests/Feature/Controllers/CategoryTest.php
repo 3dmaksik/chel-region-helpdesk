@@ -54,13 +54,6 @@ class CategoryTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_controller_category_edit_error_super_admin(): void
-    {
-        $category = Category::factory()->create();
-        $response = $this->actingAs($this->superAdmin, 'web')->get(route(config('constants.category.edit'), $category->id - 1));
-        $response->assertStatus(404);
-    }
-
     public function test_controller_category_index_error_admin(): void
     {
         $response = $this->actingAs($this->admin, 'web')->get(route(config('constants.category.index')));

@@ -431,6 +431,7 @@ class HelpAction extends Action
 
         $this->response = [
             'message' => 'Заявка успешно удалена!',
+            'reload' => true,
         ];
 
         return response()->success($this->response);

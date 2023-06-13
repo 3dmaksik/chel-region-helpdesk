@@ -1,6 +1,18 @@
 # Chel-region-helpdesk
 
 ![](https://img.shields.io/github/v/release/3dmaksik/chel-region-helpdesk?display_name=release&include_prereleases&sort=date) ![](https://img.shields.io/packagist/dependency-v/laravel/laravel/php) ![](https://img.shields.io/github/issues/3dmaksik/chel-region-helpdesk)
+### О проекте
+
+Система является простым хелпдеском для органов местного самоуправления. 
+Основная цель — организация заявок от пользователей к службе айти, но может также использоваться для внутренней работы.
+Возможности проекта (раздел будет дополняться по мере разработки функционала):
+- Подача заявок как с регистрацией в системе, так и без неё с возможностью прикрепления скриншотов;
+- Установка четырёх статусов обработки заявок;
+- Возможность установки приоритета администратором для разделения заявок от более значимых к менее значимым;
+- Создание категорий заявок, определение кабинетов сотрудников с целью указания точного местоположения;
+- Push уведомления о новых заявках, о подходящих сроках предупреждения и просрочки заявок;
+- Простая новостная лента для уведомлений пользователей.
+
 ### Требования
 
 - Astra Linux 1.7+ или другая российская ОС, либо любая акутальная операционная система семейства Linux;
@@ -90,16 +102,12 @@ RewriteRule ^ index.php [L]
 
 `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
 
-2. Установить проект и библиотеки командой `$ composer install`  
+2. Установить проект и библиотеки командой `$ composer install --no-dev`  
 
-Если проект будет самостоятельно дорабатываться, то необходимо установить дополнительно библиотеки разработки командой  
-`$ npm run prod`, остальным этот шаг можно пропустить.
+3. Установить права доступа на папки с тем же пользователем, что и у сервера:  
 
-3. Установить права и ссылки для следующих папок:  
-
-`$ sudo chmod -R 777 ./storage`  
-`$ sudo chmod -R 777 ./bootstrap/cache/`  
-Более безопасный способ, это установить права 755 на папки и 644 на файлы  
+`$ sudo chgrp -R example-user ./storage ./bootstrap/cache`
+`$ sudo chmod -R ug+rwx ./storage ./bootstrap/cache`
 
 4. Создать символьные ссылки для загрузки файлов:  
 
@@ -107,11 +115,12 @@ RewriteRule ^ index.php [L]
 `$ sudo ln -s /srv/example.com/storage/app/public/avatar /srv/example.com/public/storage/avatar`  
 `$ sudo ln -s /srv/example.com/storage/app/public/sound /srv/example.com/public/storage/sound`  
 
-5. Создать файл настроек или скопировать его командой `$ cp .env.example .env`
+5. Скопировать файлы настроек `$ cp .env.example .env && cp config/settings.php.example config/settings.php`
 6. Сгенерировать ключ проекта командой `$ php artisan key:generate`
 7. В файле `.env` заполнить все незаполненные поля.
 8. Установить базу данных `$ php artisan migrate:fresh --seed`
-9. Настроить сокеты с помощью демона:  
+9. В файле `settings.php` по желанию отредактировать настройки.
+10. Настроить сокеты с помощью демона:  
 
 `$ sudo apt install supervisor`  
 `$ sudo systemctl enable supervisor`  
@@ -137,8 +146,8 @@ PS. Рады всем, кто сможет предоставить скрипт
                 
 1. Обновления проекта `$ git pull origin master && sudo supervisorctl update`.
 2. Обновления рабочих библиотек `$ composer update`, библиотек разработки `$ npm update` соответственно.
-3. Если самостоятельно изменили файл `config/settings.php` и не хотите, чтобы в результате обновлений он изменялся обратно необходимо игнорировать.
-`$ git update-index --assume-unchanged config/settings.php`
+3. В случае каких либо изменений файла `settings.php` необходимо из файла `settings.php.example` скопировать или изменить недостающие переменные, о чём будет сообщено в релизе.
+4. В случае каких либо изменений в базе необходимо выполнить `$ php artisan migrate` .
                 
 
 ### Вопросы и предложения

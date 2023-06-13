@@ -20,24 +20,22 @@ class PriorityRequest extends BaseRequest
             'rang' => [
                 'required',
                 'integer',
-                'max:9',
                 'numeric',
+                'max:9',
                 Rule::unique('priority')->ignore(empty($this->priority) ? 0 : $this->priority),
             ],
-            'color' => 'nullable|string|max:255',
             'warning_timer' => [
                 'required',
                 'integer',
-                'min:1',
-                'max:'.$this->danger_timer + 1,
                 'numeric',
+                'min:1',
+                'max:'.(int) $this->danger_timer + 1,
             ],
             'danger_timer' => [
                 'required',
                 'integer',
-                'min: '.$this->warning_timer + 1,
                 'numeric',
-                Rule::unique('priority')->ignore(empty($this->priority) ? 0 : $this->priority),
+                'min: '.(int) $this->warning_timer + 1,
             ],
         ];
     }

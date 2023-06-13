@@ -18,6 +18,9 @@ class CategoryController extends Controller
         return view('tables.category', compact('items'));
     }
 
+    /**
+     * [new category]
+     */
     public function create(): View
     {
         return view('forms.add.category');

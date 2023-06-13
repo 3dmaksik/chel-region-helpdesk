@@ -9,32 +9,37 @@ use Illuminate\Http\JsonResponse;
 
 class PriorityApiController extends Controller
 {
+    /**
+     * [result data]
+     */
     private JsonResponse $data;
 
-    private PriorityAction $priorities;
-
-    public function __construct(PriorityAction $priorities)
+    /**
+     * [add new priority]
+     */
+    public function store(PriorityRequest $request, PriorityAction $priorityAction): JsonResponse
     {
-        $this->priorities = $priorities;
-    }
-
-    public function store(PriorityRequest $request): JsonResponse
-    {
-        $this->data = $this->priorities->store($request->validated());
+        $this->data = $priorityAction->store($request->validated());
 
         return $this->data;
     }
 
-    public function update(PriorityRequest $request, int $priority): JsonResponse
+    /**
+     * [update priority]
+     */
+    public function update(PriorityRequest $request, int $priority, PriorityAction $priorityAction): JsonResponse
     {
-        $this->data = $this->priorities->update($request->validated(), $priority);
+        $this->data = $priorityAction->update($request->validated(), $priority);
 
         return $this->data;
     }
 
-    public function destroy(int $priority): JsonResponse
+    /**
+     * [delete priority]
+     */
+    public function destroy(int $priority, PriorityAction $priorityAction): JsonResponse
     {
-        $this->data = $this->priorities->delete($priority);
+        $this->data = $priorityAction->delete($priority);
 
         return $this->data;
     }

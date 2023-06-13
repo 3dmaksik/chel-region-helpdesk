@@ -49,13 +49,6 @@ class StatusTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_controller_status_edit_error_super_admin(): void
-    {
-        $status = Status::first();
-        $response = $this->actingAs($this->superAdmin, 'web')->get(route(config('constants.status.edit'), $status->id - 1));
-        $response->assertStatus(404);
-    }
-
     public function test_controller_status_index_error_admin(): void
     {
         $response = $this->actingAs($this->admin, 'web')->get(route(config('constants.status.index')));

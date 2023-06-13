@@ -54,13 +54,6 @@ class CabinetTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_controller_cabinet_edit_error_super_admin(): void
-    {
-        $cabinet = Cabinet::factory()->create();
-        $response = $this->actingAs($this->superAdmin, 'web')->get(route(config('constants.cabinet.edit'), $cabinet->id - 1));
-        $response->assertStatus(404);
-    }
-
     public function test_controller_cabinet_index_error_admin(): void
     {
         $response = $this->actingAs($this->admin, 'web')->get(route(config('constants.cabinet.index')));

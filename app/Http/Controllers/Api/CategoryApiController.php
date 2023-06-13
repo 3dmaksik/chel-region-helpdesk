@@ -9,6 +9,9 @@ use Illuminate\Http\JsonResponse;
 
 class CategoryApiController extends Controller
 {
+    /**
+     * [result data]
+     */
     private JsonResponse $data;
 
     /**

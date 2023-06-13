@@ -67,6 +67,7 @@ class NewsAction extends Action
         Model::flushQueryCache();
         $this->response = [
             'message' => 'Новость успешно удалена!',
+            'reload' => true,
         ];
 
         return response()->success($this->response);

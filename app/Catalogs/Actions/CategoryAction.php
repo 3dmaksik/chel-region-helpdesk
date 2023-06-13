@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 class CategoryAction extends Action
 {
     /**
-     * result category]
+     * [result category]
      */
     private array $response;
 
@@ -81,6 +81,7 @@ class CategoryAction extends Action
         if ($this->countHelp > 0) {
             $this->response = [
                 'message' => 'Категория не может быть удалена, так как не удалены все заявки связанные с ней!',
+                'reload' => true,
             ];
 
             return response()->error($this->response);
