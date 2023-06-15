@@ -9,32 +9,37 @@ use Illuminate\Http\JsonResponse;
 
 class CategoryApiController extends Controller
 {
+    /**
+     * [result data]
+     */
     private JsonResponse $data;
 
-    private CategoryAction $categories;
-
-    public function __construct(CategoryAction $categories)
+    /**
+     * [add new category]
+     */
+    public function store(CategoryRequest $request, CategoryAction $categoryAction): JsonResponse
     {
-        $this->categories = $categories;
-    }
-
-    public function store(CategoryRequest $request): JsonResponse
-    {
-        $this->data = $this->categories->store($request->validated());
+        $this->data = $categoryAction->store($request->validated());
 
         return $this->data;
     }
 
-    public function update(CategoryRequest $request, int $cabinet): JsonResponse
+    /**
+     * [update category]
+     */
+    public function update(CategoryRequest $request, int $category, CategoryAction $categoryAction): JsonResponse
     {
-        $this->data = $this->categories->update($request->validated(), $cabinet);
+        $this->data = $categoryAction->update($request->validated(), $category);
 
         return $this->data;
     }
 
-    public function destroy(int $cabinet): JsonResponse
+    /**
+     * [delete category]
+     */
+    public function destroy(int $category, CategoryAction $categoryAction): JsonResponse
     {
-        $this->data = $this->categories->delete($cabinet);
+        $this->data = $categoryAction->delete($category);
 
         return $this->data;
     }

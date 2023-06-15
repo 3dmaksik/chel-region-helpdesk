@@ -34,7 +34,7 @@ window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: "pusher",
-    key: "456",
+    key: "7355952",
     wsHost: window.location.hostname,
     wsPort: 6001,
     cluster: "mt1",

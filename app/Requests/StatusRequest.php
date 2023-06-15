@@ -8,7 +8,6 @@ use Illuminate\Validation\Rule;
 
 class StatusRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -18,11 +17,15 @@ class StatusRequest extends BaseRequest
                 'max:255',
                 Rule::unique('status')->ignore(empty($this->status) ? 0 : $this->status),
             ],
-            'color' => 'nullable|string|max:255',
+            'color' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('status')->ignore(empty($this->status) ? 0 : $this->status),
+            ],
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();

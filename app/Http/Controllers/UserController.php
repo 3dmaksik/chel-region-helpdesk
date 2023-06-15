@@ -8,37 +8,42 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    private UsersAction $users;
-
-    public function __construct(UsersAction $users)
+    /**
+     * [all users]
+     */
+    public function index(UsersAction $usersAction): View
     {
-        $this->users = $users;
-    }
-
-    public function index(): View
-    {
-        $items = $this->users->getAllPagesPaginate();
+        $items = $usersAction->getAllPagesPaginate();
 
         return view('tables.users', compact('items'));
     }
 
-    public function create(): View
+    /**
+     * [new user]
+     */
+    public function create(UsersAction $usersAction): View
     {
-        $items = $this->users->create();
+        $items = $usersAction->create();
 
         return view('forms.add.users', compact('items'));
     }
 
-    public function edit(int $user): View
+    /**
+     * [edit user]
+     */
+    public function edit(int $user, UsersAction $usersAction): View
     {
-        $items = $this->users->edit($user);
+        $items = $usersAction->edit($user);
 
         return view('forms.edit.users', compact('items'));
     }
 
-    public function show(int $user): View
+    /**
+     * [show one user]
+     */
+    public function show(int $user, UsersAction $usersAction): View
     {
-        $item = $this->users->show($user);
+        $item = $usersAction->show($user);
 
         return view('forms.show.user', compact('item'));
     }

@@ -18,8 +18,8 @@ class Help extends Model
 
     protected array $lead;
 
-    protected $fillable =
-    ['app_number',
+    protected $fillable = [
+        'app_number',
         'category_id',
         'status_id',
         'priority_id',
@@ -36,7 +36,8 @@ class Help extends Model
         'info',
         'info_final',
         'images_final',
-        'check_write', ];
+        'check_write',
+    ];
 
     public function category(): BelongsTo
     {
@@ -136,9 +137,9 @@ class Help extends Model
                     $minute = floor($value / 60);
                     $this->lead =
                     [
-                        'day' => (int)$day,
-                        'hour' => (int)$hour,
-                        'minute' => (int)$minute,
+                        'day' => (int) $day,
+                        'hour' => (int) $hour,
+                        'minute' => (int) $minute,
                     ];
 
                     return $this->lead;

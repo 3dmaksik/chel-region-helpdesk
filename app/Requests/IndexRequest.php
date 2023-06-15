@@ -6,7 +6,6 @@ use App\Base\Requests\Request as BaseRequest;
 
 class IndexRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -17,7 +16,6 @@ class IndexRequest extends BaseRequest
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return true;

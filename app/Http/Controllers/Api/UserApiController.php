@@ -10,39 +10,47 @@ use Illuminate\Http\JsonResponse;
 
 class UserApiController extends Controller
 {
+    /**
+     * [result data]
+     */
     private JsonResponse $data;
 
-    private UsersAction $users;
-
-    public function __construct(UsersAction $users)
+    /**
+     * [add new user]
+     */
+    public function store(UserRequest $request, UsersAction $usersAction): JsonResponse
     {
-        $this->users = $users;
-    }
-
-    public function store(UserRequest $request): JsonResponse
-    {
-        $this->data = $this->users->store($request);
+        $this->data = $usersAction->store($request);
 
         return $this->data;
     }
 
-    public function update(UserRequest $request, int $user): JsonResponse
+    /**
+     * [update user]
+     */
+    public function update(UserRequest $request, int $user, UsersAction $usersAction): JsonResponse
     {
-        $this->data = $this->users->update($request, $user);
+        $this->data = $usersAction->update($request, $user);
 
         return $this->data;
     }
 
-    public function updatePassword(UserPasswordRequest $request, int $user): JsonResponse
+    /**
+     * [update password for other user]
+     */
+    public function updatePassword(UserPasswordRequest $request, int $user, UsersAction $usersAction): JsonResponse
     {
-        $this->data = $this->users->updatePassword($request, $user);
+        $this->data = $usersAction->updatePassword($request, $user);
 
         return $this->data;
     }
 
-    public function destroy(int $user): JsonResponse
+    /**
+     * [delete other user]
+     */
+    public function destroy(int $user, UsersAction $usersAction): JsonResponse
     {
-        $this->data = $this->users->delete($user);
+        $this->data = $usersAction->delete($user);
 
         return $this->data;
     }

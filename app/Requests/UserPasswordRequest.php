@@ -7,15 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class UserPasswordRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
-            'password' => 'required|string|max:255',
+            'password' => 'sometimes|required|string|min:4|max:255',
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();

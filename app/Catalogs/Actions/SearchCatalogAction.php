@@ -3,8 +3,11 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Models\Cabinet;
 use App\Models\Help;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class SearchCatalogAction extends Action
@@ -12,6 +15,8 @@ class SearchCatalogAction extends Action
     protected User $user;
 
     private LengthAwarePaginator $helpSearch;
+
+    private Collection|array $userCabinetSearch;
 
     private array $searchData;
 
@@ -55,6 +60,22 @@ class SearchCatalogAction extends Action
         ];
 
         return $this->searchData;
+    }
+
+    public function searchUserCabinet(?int $description): JsonResponse
+    {
+        if ($description !== null) {
+            $this->userCabinetSearch = Cabinet::where('description', 'LIKE', '%'.$description.'%')->skip(0)->take(100)->get();
+        } else {
+            $this->userCabinetSearch =
+            [
+                'id' => null,
+                'description' => null,
+            ];
+        }
+
+        return response()->success($this->userCabinetSearch);
+
     }
 
     public function searchHelp(array $request): array

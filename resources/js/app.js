@@ -26,8 +26,25 @@ $(function () {
         }
     );
 
-    $(".select2-single").select2({
+    $(".select2-cabinet").select2({
         language: "ru",
+        placeholder: 'Введите номер кабинета',
+        ajax: {
+            url: '/api/select2/cabinet',
+            dataType: 'json',
+            delay: 200,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.description,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
     });
 
     jQuery.datetimepicker.setLocale("ru");
@@ -185,12 +202,15 @@ $(function () {
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
                         }, 6500);
+                    if (data.reload === true)
+                    {
+                        setTimeout(function(){
+                            location.reload();
+                          }, 6500);
+                    }
                     $('form')
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
-                    $('form')
-                        .find("input[type=text], textarea")
-                        .val('');
                     if ($("div").hasClass('help_view')) {
                         if (data.route !=='undefined') {
                             $.post(data.route, function (data) {

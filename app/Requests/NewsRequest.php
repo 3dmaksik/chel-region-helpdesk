@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NewsRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -18,7 +17,6 @@ class NewsRequest extends BaseRequest
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();

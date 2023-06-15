@@ -53,16 +53,13 @@
             </div>
             <div class="form-group">
                 <label for="select2-cabinet">Выберите кабинет</label>
-                <select class="select2-single form-control" name="cabinet_id" id="select2-cabinet">
-                    @foreach( $items['cabinets'] as $item)
-                    <option value="{{ $item->id }}">{{ $item->description }}</option>
-                    @endforeach
+                <select class="select2-cabinet form-control" name="cabinet_id" id="select2-cabinet">
                 </select>
                 <small id="textCabinet" class="form-text text-muted">Выберите кабинет пользователя</small>
             </div>
             <div class="form-group">
-                <label for="select2-role">Роль</label>
-                <select class="select2-single form-control" name="role" id="select2-role">
+                <label for="role">Роль</label>
+                <select class=" form-control" name="role" id="role">
                     @foreach( $items['roles'] as $item)
                     <option>{{ $item }}</option>
                     @endforeach

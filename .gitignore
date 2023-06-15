@@ -15,3 +15,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+.phpunit.cache
+/.phpunit.cache
+/config/settings.php

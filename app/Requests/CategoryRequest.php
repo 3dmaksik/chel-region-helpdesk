@@ -8,7 +8,6 @@ use Illuminate\Validation\Rule;
 
 class CategoryRequest extends BaseRequest
 {
-    //Правила валидации
     public function rules(): array
     {
         return [
@@ -21,7 +20,6 @@ class CategoryRequest extends BaseRequest
         ];
     }
 
-    //Проверка авторизации
     public function authorize(): bool
     {
         return Auth::check();

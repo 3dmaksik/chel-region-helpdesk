@@ -5,43 +5,38 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Models\Help;
 use App\Models\Priority as Model;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class PriorityAction extends Action
 {
-    private array $proirity;
-
+    /**
+     * [result priority]
+     */
     private array $response;
 
+    /**
+     * [count help for priority]
+     */
     private int $count;
 
-    public function getAllPages(): Collection
-    {
-        $this->items = Model::orderBy('rang', 'ASC')->get();
-
-        return $this->items;
-    }
-
+    /**
+     * [all priority with count items max]
+     */
     public function getAllPagesPaginate(): array
     {
         $this->item = new Model();
-        $this->items = Model::orderBy('rang', 'ASC')->paginate($this->page);
-        $this->proirity =
+        $this->items = Model::orderBy('rang', 'ASC')->paginate(10);
+        $this->response =
         [
             'data' => $this->items,
         ];
 
-        return $this->proirity;
+        return $this->response;
     }
 
-    public function findCatalogsById(int $id): Model
-    {
-        $this->item = Model::findOrFail($id);
-
-        return $this->item;
-    }
-
+    /**
+     * [show one priority]
+     */
     public function show(int $id): Model
     {
         $this->item = Model::findOrFail($id);
@@ -49,6 +44,9 @@ class PriorityAction extends Action
         return $this->item;
     }
 
+    /**
+     * [add new priority]
+     */
     public function store(array $request): JsonResponse
     {
         Model::create($request);
@@ -59,6 +57,9 @@ class PriorityAction extends Action
         return response()->success($this->response);
     }
 
+    /**
+     * [update priority]
+     */
     public function update(array $request, int $id): JsonResponse
     {
         $this->item = Model::findOrFail($id);
@@ -71,6 +72,9 @@ class PriorityAction extends Action
         return response()->success($this->response);
     }
 
+    /**
+     * [delete priority if there are no help]
+     */
     public function delete(int $id): JsonResponse
     {
         $this->count = Help::dontCache()->where('priority_id', $id)->count();
@@ -87,6 +91,7 @@ class PriorityAction extends Action
         Model::flushQueryCache();
         $this->response = [
             'message' => 'Приоритет успешно удалён!',
+            'reload' => true,
         ];
 
         return response()->success($this->response);
