@@ -47,6 +47,13 @@ class PriorityTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_controller_priority_show_super_admin(): void
+    {
+        $priority = Priority::factory()->create();
+        $response = $this->actingAs($this->superAdmin, 'web')->get(route(config('constants.priority.show'), $priority->id));
+        $response->assertStatus(200);
+    }
+
     public function test_controller_priority_edit_super_admin(): void
     {
         $priority = Priority::factory()->create();
@@ -108,6 +115,27 @@ class PriorityTest extends TestCase
     {
         $priority = Priority::factory()->create();
         $response = $this->actingAs($this->user, 'web')->get(route(config('constants.priority.edit'), $priority->id));
+        $response->assertStatus(403);
+    }
+
+    public function test_controller_priority_show_error_admin(): void
+    {
+        $priority = Priority::factory()->create();
+        $response = $this->actingAs($this->admin, 'web')->get(route(config('constants.priority.show'), $priority->id));
+        $response->assertStatus(403);
+    }
+
+    public function test_controller_priority_show_error_manager(): void
+    {
+        $priority = Priority::factory()->create();
+        $response = $this->actingAs($this->manager, 'web')->get(route(config('constants.priority.show'), $priority->id));
+        $response->assertStatus(403);
+    }
+
+    public function test_controller_priority_show_error_user(): void
+    {
+        $priority = Priority::factory()->create();
+        $response = $this->actingAs($this->user, 'web')->get(route(config('constants.priority.show'), $priority->id));
         $response->assertStatus(403);
     }
 }

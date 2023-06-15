@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('', 'index')->name('index')->middleware('can:view user');
             Route::get('create', 'create')->name('create')->middleware('can:create user');
-            Route::get('{work}/show', 'show')->name('show')->middleware('can:view user');
+            Route::get('{user}/show', 'show')->name('show')->middleware('can:view user');
             Route::get('{user}/edit', 'edit')->name('edit')->middleware('can:edit user');
         });
     Route::controller(NewsController::class)

@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\IndexApiController;
 use App\Http\Controllers\Api\LoaderApiController;
 use App\Http\Controllers\Api\NewsApiController;
 use App\Http\Controllers\Api\PriorityApiController;
+use App\Http\Controllers\Api\SearchApiController;
 use App\Http\Controllers\Api\SettingsApiController;
 use App\Http\Controllers\Api\StatusApiController;
 use App\Http\Controllers\Api\UserApiController;
@@ -31,6 +32,7 @@ Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
 
     Route::post('loader/post', [LoaderApiController::class, 'index'])->middleware('can:loader help');
     Route::post('help/all', [HelpApiController::class, 'getAllPages'])->middleware('can:all help');
+    Route::get('select2/cabinet', [SearchApiController::class, 'cabinet'])->name('select2.cabinet')->middleware('can:create cabinet');
     Route::controller(CabinetApiController::class)
         ->prefix('admin/cabinet')
         ->as('cabinet.')

@@ -20,7 +20,7 @@ class PriorityAction extends Action
     private int $count;
 
     /**
-     * [all category with count items max]
+     * [all priority with count items max]
      */
     public function getAllPagesPaginate(): array
     {

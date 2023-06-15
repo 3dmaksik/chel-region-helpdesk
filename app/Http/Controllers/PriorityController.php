@@ -9,7 +9,7 @@ use Illuminate\View\View;
 class PriorityController extends Controller
 {
     /**
-     * [all priority
+     * [all priority]
      */
     public function index(PriorityAction $priorityAction): View
     {

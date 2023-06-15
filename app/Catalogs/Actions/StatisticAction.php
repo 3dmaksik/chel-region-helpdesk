@@ -11,7 +11,7 @@ class StatisticAction extends Action
 {
     public Carbon $today;
 
-    public array $lead;
+    protected array $lead = ['day' => 0,'hour' => 0,'minute' => 0];
 
     public $leadSum;
 
@@ -43,7 +43,9 @@ class StatisticAction extends Action
         $today = Carbon::now();
         $leadSum = Help::whereNotNull('calendar_final')->whereYear('calendar_accept', '=', $today->year)->sum('lead_at');
         $leadCount = Help::whereNotNull('calendar_final')->whereYear('calendar_accept', '=', $today->year)->count();
-        $lead = $this->getTime($leadSum / $leadCount);
+        if ($leadSum !== 0 || $leadCount !== 0) {
+            $this->lead = $this->getTime($leadSum / $leadCount);
+        }
 
         return [
             'month' => Help::whereMonth('calendar_request', '=', $today->month)->count(),
@@ -67,7 +69,7 @@ class StatisticAction extends Action
                 ->groupBy('user_id', 'users.firstname', 'users.lastname', 'users.patronymic')
                 ->orderBy(DB::raw('count("user_id")'), 'DESC')
                 ->first(),
-            'lead' => $lead,
+            'lead' => $this->lead,
         ];
     }
 }

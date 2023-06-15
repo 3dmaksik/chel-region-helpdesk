@@ -3,7 +3,7 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Catalogs\DTO\UsersDTO;
+use App\Catalogs\DTO\AccountDTO;
 use App\Models\User;
 use App\Requests\AccountRequest;
 use Illuminate\Http\JsonResponse;
@@ -68,7 +68,7 @@ class SettingsAction extends Action
     {
         $this->user = User::findOrFail(auth()->user()->id);
         $this->countRole = User::role(['superAdmin'])->count();
-        $this->data = UsersDTO::storeObjectRequest($request);
+        $this->data = AccountDTO::storeObjectRequest($request);
         if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data->role !== null) {
             return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
         }
@@ -93,7 +93,7 @@ class SettingsAction extends Action
         return response()->success('Настройки успешно обновлены');
     }
 
-    protected function clear(UsersDTO $data): array
+    protected function clear(AccountDTO $data): array
     {
         return array_diff((array) $data, ['', null, 'null', false]);
     }

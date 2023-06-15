@@ -26,8 +26,25 @@ $(function () {
         }
     );
 
-    $(".select2-single").select2({
+    $(".select2-cabinet").select2({
         language: "ru",
+        placeholder: 'Введите номер кабинета',
+        ajax: {
+            url: '/api/select2/cabinet',
+            dataType: 'json',
+            delay: 200,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.description,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
     });
 
     jQuery.datetimepicker.setLocale("ru");
