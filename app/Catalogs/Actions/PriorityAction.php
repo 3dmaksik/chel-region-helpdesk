@@ -24,7 +24,6 @@ class PriorityAction extends Action
      */
     public function getAllPagesPaginate(): array
     {
-        $this->item = new Model();
         $this->items = Model::orderBy('rang', 'ASC')->paginate(10);
         $this->response =
         [

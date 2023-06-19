@@ -7,13 +7,15 @@ use App\Models\Help;
 use App\Models\User;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
+    use RefreshDatabase;
 
     private User $superAdmin;
 

@@ -11,30 +11,32 @@ class NewsApiController extends Controller
 {
     private JsonResponse $data;
 
-    private NewsAction $news;
-
-    public function __construct(NewsAction $news)
+    /**
+     * [add new article]
+     */
+    public function store(NewsRequest $request, NewsAction $newsAction): JsonResponse
     {
-        $this->news = $news;
-    }
-
-    public function store(NewsRequest $request): JsonResponse
-    {
-        $this->data = $this->news->store($request->validated());
+        $this->data = $newsAction->store($request->validated());
 
         return $this->data;
     }
 
-    public function update(NewsRequest $request, int $news): JsonResponse
+    /**
+     * [update article]
+     */
+    public function update(NewsRequest $request, int $news, NewsAction $newsAction): JsonResponse
     {
-        $this->data = $this->news->update($request->validated(), $news);
+        $this->data = $newsAction->update($request->validated(), $news);
 
         return $this->data;
     }
 
-    public function destroy(int $news): JsonResponse
+    /**
+     * [delete article]
+     */
+    public function destroy(int $news, NewsAction $newsAction): JsonResponse
     {
-        $this->data = $this->news->delete($news);
+        $this->data = $newsAction->delete($news);
 
         return $this->data;
     }

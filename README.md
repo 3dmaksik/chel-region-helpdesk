@@ -16,8 +16,10 @@
 ### Требования
 
 - Astra Linux 1.7+ или другая российская ОС, либо любая акутальная операционная система семейства Linux;
-- PHP 8.1-8.2 c расширениями fileinfo, redis или memcached, 
-а также со всеми стандартными расширениями, которые по умолчанию обычно включены iconv, gd, curl, mbstring, sockets;
+- PHP 8.1-8.2 c расширением fileinfo, 
+а также со всеми стандартными расширениями, которые по умолчанию обычно включены:
+[pgsql, sqlite3, gd, imagick, curl, imap, mysql, mbstring, xml, zip, bcmath, soap,
+intl, readline, ldap, msgpack, igbinary, redis, swoole, memcached, pcov]
 - СУБД на выбор MYSQL 8.0+/MariaDB 10.8+, PostgreSQL 14+;
 - Сервер Ngnix 1.23+, Apache не рекомендуется;
 - Кеш на выбор Memcashed 1.6+, Redis 7.0 или без него;

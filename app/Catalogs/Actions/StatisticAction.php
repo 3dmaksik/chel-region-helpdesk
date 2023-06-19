@@ -11,7 +11,7 @@ class StatisticAction extends Action
 {
     public Carbon $today;
 
-    protected array $lead = ['day' => 0,'hour' => 0,'minute' => 0];
+    protected array $lead = ['day' => 0, 'hour' => 0, 'minute' => 0];
 
     public $leadSum;
 

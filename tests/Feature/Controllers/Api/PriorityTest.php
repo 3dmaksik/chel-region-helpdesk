@@ -7,11 +7,13 @@ use App\Models\Priority;
 use App\Models\User;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PriorityTest extends TestCase
 {
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
+    use RefreshDatabase;
 
     private User $superAdmin;
 
