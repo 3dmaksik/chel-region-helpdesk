@@ -8,29 +8,25 @@ use Illuminate\Http\JsonResponse;
 
 class NewsAction extends Action
 {
-    private array $news;
-
+    /**
+     * [result news]
+     */
     private array $response;
 
     public function getAllPagesPaginate(): array
     {
-        $this->item = new Model();
         $this->items = Model::dontCache()->orderBy('created_at', 'DESC')->paginate($this->page);
-        $this->news =
+        $this->response =
         [
             'data' => $this->items,
         ];
 
-        return $this->news;
+        return $this->response;
     }
 
-    public function findCatalogsById(int $id): Model
-    {
-        $this->item = Model::dontCache()->findOrFail($id);
-
-        return $this->item;
-    }
-
+    /**
+     * [show one article]
+     */
     public function show(int $id): Model
     {
         $this->item = Model::dontCache()->findOrFail($id);
@@ -38,6 +34,9 @@ class NewsAction extends Action
         return $this->item;
     }
 
+    /**
+     * [add new article]
+     */
     public function store(array $request): JsonResponse
     {
         Model::create($request);
@@ -48,6 +47,9 @@ class NewsAction extends Action
         return response()->success($this->response);
     }
 
+    /**
+     * [update article]
+     */
     public function update(array $request, int $id): JsonResponse
     {
         $this->item = Model::findOrFail($id);
@@ -60,6 +62,9 @@ class NewsAction extends Action
         return response()->success($this->response);
     }
 
+    /**
+     * [delete article]
+     */
     public function delete(int $id): JsonResponse
     {
         $this->item = Model::findOrFail($id);

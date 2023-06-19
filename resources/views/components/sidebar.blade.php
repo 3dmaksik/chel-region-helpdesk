@@ -150,6 +150,6 @@
     @endcan
     <hr class="sidebar-divider">
     <div class="version" id="version-ruangadmin"></div>
-    <div class="version">Страница открыта в: {{ $now->hour }}:{{ $now->minute }}</div>
+    <div class="version">Страница открыта в {{ $now->format('H:i')}}</div>
 </ul>
 <!-- Sidebar -->

@@ -24,7 +24,6 @@ class CategoryAction extends Action
      */
     public function getAllPagesPaginate(): array
     {
-        $this->item = new Model();
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);
         $this->response =
         [
