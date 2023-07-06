@@ -10,8 +10,8 @@ class PasswordRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'current_password' => 'required|string',
-            'password' => 'required|string',
+            'current_password' => 'required|string|min:4|max:255',
+            'password' => 'required|string|min:4|max:255',
         ];
     }
 

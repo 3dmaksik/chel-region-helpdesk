@@ -98,10 +98,10 @@ class HelpApiController extends Controller
         return $this->data;
     }
 
-   /* public function getSoundNotify(): JsonResponse
-    {
-        $this->data = '/sound/sound.ogg';
-        return response()->json($this->data);
-    }
-    */
+    /* public function getSoundNotify(): JsonResponse
+     {
+         $this->data = '/sound/sound.ogg';
+         return response()->json($this->data);
+     }
+     */
 }

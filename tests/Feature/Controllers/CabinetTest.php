@@ -11,8 +11,8 @@ use Tests\TestCase;
 
 class CabinetTest extends TestCase
 {
-    //use DatabaseTransactions;
-    use RefreshDatabase;
+    use DatabaseTransactions;
+    //use RefreshDatabase;
 
     private User $superAdmin;
 
