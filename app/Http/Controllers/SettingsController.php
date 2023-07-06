@@ -8,20 +8,24 @@ use Illuminate\View\View;
 
 class SettingsController extends Controller
 {
-    private SettingsAction $settings;
+    /**
+     * [this work settings]
+     */
+    public SettingsAction $works;
 
-    public function __construct(SettingsAction $settings)
+    /**
+     * [edit account self user]
+     */
+    public function editAccount(SettingsAction $settingsAction): View
     {
-        $this->settings = $settings;
-    }
-
-    public function editAccount(): View
-    {
-        $works = $this->settings->editSettings();
+        $works = $settingsAction->editSettings();
 
         return view('forms.edit.account', compact('works'));
     }
 
+    /**
+     * [edit password self user]
+     */
     public function editPassword(): View
     {
         return view('forms.edit.password');

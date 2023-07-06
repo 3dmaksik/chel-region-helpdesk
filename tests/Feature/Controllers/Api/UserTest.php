@@ -14,8 +14,8 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    //use DatabaseTransactions;
-    use RefreshDatabase;
+    use DatabaseTransactions;
+    //use RefreshDatabase;
 
     private User $superAdmin;
 
@@ -255,6 +255,24 @@ class UserTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $this->assertFalse(Hash::check('password1', $testUser->password));
+        $response->assertStatus(422);
+    }
+
+    public function test_controller_user_update_error_help_check_super_admin(): void
+    {
+        $cabinet = Cabinet::factory()->create();
+        $response = $this->actingAs($this->superAdmin, 'web')->putJson(route(config('constants.users.update'), $this->superAdmin->id),
+            [
+                'name' => 'testUpdate',
+                'password' => 'password1',
+                'firstname' => 'Имя',
+                'lastname' => 'Фамилия',
+                'patronymic' => 'Отчество',
+                'cabinet_id' => $cabinet->id,
+                'role' => 'admin',
+            ], [
+                'Accept' => 'application/json',
+            ]);
         $response->assertStatus(422);
     }
 

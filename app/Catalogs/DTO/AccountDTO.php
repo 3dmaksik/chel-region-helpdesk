@@ -18,7 +18,7 @@ class AccountDTO extends DTO
     {
         $dto = new self();
         $dto->avatar = StoreFilesHelper::createOneFile($request->file('avatar'), 'avatar', 32, 32);
-        $dto->sound_notify = StoreFilesHelper::createNotify($request->get('sound_notify'), 'sound');
+        $dto->sound_notify = StoreFilesHelper::createNotify($request->file('sound_notify'), 'sound');
         $dto->role = $request->get('role');
 
         return $dto;

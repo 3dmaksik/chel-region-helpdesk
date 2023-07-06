@@ -11,8 +11,8 @@ use Tests\TestCase;
 
 class NewsTest extends TestCase
 {
-    //use DatabaseTransactions;
-    use RefreshDatabase;
+    use DatabaseTransactions;
+    //use RefreshDatabase;
 
     private User $superAdmin;
 

@@ -53,7 +53,7 @@ class StoreFilesHelper extends CoreHelper
     /**
      * [saved file]
      */
-    private static array $saveStorage;
+    private static string $saveStorage;
 
     /**
      * [creating multiple images]
@@ -97,7 +97,7 @@ class StoreFilesHelper extends CoreHelper
      * @param  int  $w
      * @param  int  $h
      */
-    public static function createOneFile(?UploadedFile $file, string $type, $w, $h): ?array
+    public static function createOneFile(?UploadedFile $file, string $type, $w, $h): ?string
     {
         if ($file === null) {
             return null;
@@ -129,33 +129,33 @@ class StoreFilesHelper extends CoreHelper
     /**
      * [save image]
      */
-    protected static function saveImageStorage(string $type, string $fileName, Img $img): array
+    protected static function saveImageStorage(string $type, string $fileName, Img $img): string
     {
         Storage::disk($type)->put($fileName, $img);
 
-        return ['url' => $fileName];
+        return json_encode(['url' => $fileName]);
     }
 
     /**
      * [save sound]
      */
-    protected static function saveSoundStorage(UploadedFile $file, string $path, string $fileName): array
+    protected static function saveSoundStorage(UploadedFile $file, string $type, string $fileName): string
     {
-        $file->storeAs($path, $fileName);
+        Storage::disk($type)->put($fileName, file_get_contents($file));
 
-        return ['url' => $fileName];
+        return json_encode(['url' => $fileName]);
     }
 
     /**
      * [create one sound]
      */
-    public static function createNotify(?UploadedFile $request): ?array
+    public static function createNotify(?UploadedFile $request, string $type): ?string
     {
         if ($request === null) {
             return null;
         }
         self::$fileName = self::createSoundName();
-        self::$saveStorage = self::saveSoundStorage($request, '\\public\\sound\\', self::$fileName);
+        self::$saveStorage = self::saveSoundStorage($request, $type, self::$fileName);
 
         return self::$saveStorage;
     }

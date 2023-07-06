@@ -124,7 +124,11 @@ class UsersAction extends Action
     public function update(UserRequest $request, int $id): JsonResponse
     {
         $this->user = Model::findOrFail($id);
+        $this->countRole = Model::role(['superAdmin'])->count();
         $this->data = UsersDTO::storeObjectRequest($request);
+        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data->role !== null) {
+            return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
+        }
         if ($this->data->password !== null) {
             $this->data->password = null;
         }
