@@ -158,11 +158,4 @@ class Help extends Model
             }
         );
     }
-
-    protected function getCacheBaseTags(): array
-    {
-        return [
-            'help',
-        ];
-    }
 }

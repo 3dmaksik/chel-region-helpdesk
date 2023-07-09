@@ -62,7 +62,7 @@ class HelpAction extends Action
 
     public function getAllPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->orderBy('status_id', 'ASC')
+        $this->items = Model::orderBy('status_id', 'ASC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
             ->orderBy('calendar_final', 'DESC')
@@ -78,7 +78,7 @@ class HelpAction extends Action
 
     public function getNewPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', config('constants.request.new'))
+        $this->items = Model::where('status_id', config('constants.request.new'))
             ->orderBy('calendar_request', 'ASC')
             ->paginate($this->page);
         $this->helps =
@@ -92,7 +92,7 @@ class HelpAction extends Action
 
     public function getWorkerPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', config('constants.request.work'))
+        $this->items = Model::where('status_id', config('constants.request.work'))
             ->RoleHelp()
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
@@ -108,7 +108,7 @@ class HelpAction extends Action
 
     public function getCompletedPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', config('constants.request.success'))
+        $this->items = Model::where('status_id', config('constants.request.success'))
             ->RoleHelp()
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
@@ -123,7 +123,7 @@ class HelpAction extends Action
 
     public function getDismissPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', config('constants.request.danger'))
+        $this->items = Model::where('status_id', config('constants.request.danger'))
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
         $this->helps =
@@ -137,7 +137,7 @@ class HelpAction extends Action
 
     public function findCatalogsById(int $id): Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
 
         return $this->item;
     }
@@ -153,9 +153,9 @@ class HelpAction extends Action
     {
         $this->user = User::findOrFail(auth()->user()->id);
         if ($this->user->can('new help')) {
-            $this->item = Model::dontCache()->findOrFail($id);
+            $this->item = Model::findOrFail($id);
         } else {
-            $this->item = Model::dontCache()->where('user_id', $this->user->id)->orWhere('executor_id', $this->user->id)->first();
+            $this->item = Model::where('user_id', $this->user->id)->orWhere('executor_id', $this->user->id)->first();
             if ($this->item === null) {
                 abort(404);
             }
@@ -174,7 +174,7 @@ class HelpAction extends Action
 
     public function store(HelpRequest $request): JsonResponse
     {
-        $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
+        $this->last = Model::select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
             $this->app_number = GeneratorAppNumberHelper::generate();
         } else {
@@ -182,7 +182,7 @@ class HelpAction extends Action
         }
         $this->calendar_request = Carbon::now();
         if ($request->hasFile('images')) {
-            $this->images = json_encode(StoreFilesHelper::createFile($request->file('images'), 'images', 1920, 1080));
+            $this->images = json_encode(StoreFilesHelper::createFileImages($request->file('images'), 'images', 1920, 1080));
         } else {
             $this->images = $request->file('images');
         }
@@ -209,7 +209,7 @@ class HelpAction extends Action
 
     public function edit(int $id): array
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->items = AllCatalogsDTO::getAllCatalogsCollection();
 
         return [
@@ -220,7 +220,7 @@ class HelpAction extends Action
 
     public function update(HelpRequest $request, int $id): JsonResponse
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->data = HelpDTO::storeObjectRequest($request);
         $this->dataClear = $this->clear($this->data);
         $this->item->update($this->dataClear);
@@ -234,7 +234,7 @@ class HelpAction extends Action
 
     public function accept(HelpRequest $request, int $id): JsonResponse
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->options = collect([
             'status_id' => config('constants.request.work'),
             'calendar_accept' => Carbon::now(),
@@ -245,7 +245,7 @@ class HelpAction extends Action
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);
-        $this->user = User::dontCache()->findOrFail($this->data->executor_id);
+        $this->user = User::findOrFail($this->data->executor_id);
         if ($this->user->id == auth()->user()->id) {
             if ($this->user->getRoleNames()[0] != 'admin' && $this->user->getRoleNames()[0] != 'superAdmin') {
                 $this->response = [
@@ -292,9 +292,9 @@ class HelpAction extends Action
 
     public function execute(HelpRequest $request, int $id): JsonResponse
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         if ($request->hasFile('images_final')) {
-            $this->images_final = json_encode(StoreFilesHelper::createFile($request->file('images_final'), 'images', 1920, 1080));
+            $this->images_final = json_encode(StoreFilesHelper::createFileImages($request->file('images_final'), 'images', 1920, 1080));
         } else {
             $this->images_final = $request->file('images_final');
         }
@@ -336,7 +336,7 @@ class HelpAction extends Action
 
     public function redefine(HelpRequest $request, int $id): JsonResponse
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->options = collect([
             'calendar_accept' => Carbon::now(),
         ]);
@@ -390,7 +390,7 @@ class HelpAction extends Action
 
     public function reject(HelpRequest $request, int $id): JsonResponse
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->options = collect([
             'status_id' => config('constants.request.danger'),
             'calendar_final' => Carbon::now(),
@@ -426,7 +426,7 @@ class HelpAction extends Action
 
     public function delete(int $id): JsonResponse
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
 
         $this->response = [
@@ -448,10 +448,13 @@ class HelpAction extends Action
     {
         $this->user = User::findOrFail(auth()->user()->id);
         if ($this->user->can('new help')) {
-            $this->count = Model::dontCache()->where('status_id', config('constants.request.new'))->count();
+            $this->count = Model::where('status_id', config('constants.request.new'))->count();
             Cookie::queue('newCount', $this->count);
         } else {
             $this->count = 0;
+            if (Cookie::get('newCount') !== null) {
+                Cookie::forget('newCount');
+            }
         }
 
         return response()->json($this->count);
@@ -459,7 +462,7 @@ class HelpAction extends Action
 
     public function getNowPagesCount(): JsonResponse
     {
-        $this->count = Model::dontCache()->where('status_id', config('constants.request.work'))
+        $this->count = Model::where('status_id', config('constants.request.work'))
             ->where('executor_id', auth()->user()->id)->count();
 
         return response()->json($this->count);

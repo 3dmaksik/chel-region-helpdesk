@@ -110,7 +110,6 @@ class UsersAction extends Action
         $this->data = UsersDTO::storeObjectRequest($request);
         $this->dataClear = $this->clear($this->data);
         Model::create($this->dataClear)->assignRole($this->dataClear['role']);
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Пользователь успешно добавлен!',
         ];
@@ -135,7 +134,6 @@ class UsersAction extends Action
         $this->dataClear = $this->clear($this->data);
         $this->user->update($this->dataClear);
         $this->user->syncRoles($this->dataClear['role']);
-        Model::flushQueryCache();
 
         $this->response = [
             'message' => 'Пользователь успешно обновлён!',
@@ -173,7 +171,7 @@ class UsersAction extends Action
      */
     public function delete(int $id): JsonResponse
     {
-        $this->count = Help::dontCache()->where('user_id', $id)->orWhere('executor_id', $id)->count();
+        $this->count = Help::where('user_id', $id)->orWhere('executor_id', $id)->count();
         if ($this->count > 0) {
             $this->response = [
                 'message' => 'Пользователь не может быть удалён, так как не удалены все заявки связанные с ним!',
@@ -194,7 +192,6 @@ class UsersAction extends Action
         }
         $this->user->syncRoles([]);
         $this->user->forceDelete();
-        Model::flushQueryCache();
 
         $this->response = [
             'message' => 'Пользователь успешно удалён!',

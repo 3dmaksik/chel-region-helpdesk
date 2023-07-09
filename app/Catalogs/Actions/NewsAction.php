@@ -15,7 +15,7 @@ class NewsAction extends Action
 
     public function getAllPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->orderBy('created_at', 'DESC')->paginate($this->page);
+        $this->items = Model::orderBy('created_at', 'DESC')->paginate($this->page);
         $this->response =
         [
             'data' => $this->items,
@@ -29,7 +29,7 @@ class NewsAction extends Action
      */
     public function show(int $id): Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
 
         return $this->item;
     }
@@ -54,7 +54,6 @@ class NewsAction extends Action
     {
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Новость успешно обновлена!',
         ];
@@ -69,7 +68,6 @@ class NewsAction extends Action
     {
         $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Новость успешно удалена!',
             'reload' => true,

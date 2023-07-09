@@ -6,14 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Rennokki\QueryCache\Traits\QueryCacheable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     //use HasApiTokens;
-    use QueryCacheable;
     use HasFactory;
     use Notifiable;
     use HasRoles;
@@ -28,8 +26,6 @@ class User extends Authenticatable
 
     public $timestamps = true;
 
-    protected $cacheFor = 10080;
-
     protected $fillable = [
         'name',
         'email',
@@ -38,8 +34,8 @@ class User extends Authenticatable
         'lastname',
         'patronymic',
         'cabinet_id',
-        'sound_notify',
         'avatar',
+        'sound_notify',
     ];
 
     protected $hidden = [
@@ -56,12 +52,5 @@ class User extends Authenticatable
     public function cabinet(): BelongsTo
     {
         return $this->belongsTo(Cabinet::class);
-    }
-
-    protected function getCacheBaseTags(): array
-    {
-        return [
-            'users',
-        ];
     }
 }

@@ -31,9 +31,14 @@
         <i class="fas fa-angle-up"></i>
     </a>
     <script>
+        let sound ="{{ auth()->user()->sound_notify }}";
         window.Laravel = {!! json_encode([
         'user' => auth()->check() ? auth()->user()->id : null,
     ]) !!};
+        if (localStorage.getItem('sound') === null)
+        {
+            localStorage.setItem('sound', sound.url);
+        }
     </script>
     <script src="{{ mix('/js/app.js') }}"></script>
 </body>

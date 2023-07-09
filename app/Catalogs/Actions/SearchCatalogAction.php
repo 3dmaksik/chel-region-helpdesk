@@ -65,7 +65,7 @@ class SearchCatalogAction extends Action
     public function searchUserCabinet(?int $description): JsonResponse
     {
         if ($description !== null) {
-            $this->userCabinetSearch = Cabinet::where('description', 'LIKE', '%'.$description.'%')->skip(0)->take(100)->get();
+            $this->userCabinetSearch = Cabinet::where('description', 'LIKE', '%'.$description.'%')->skip(0)->take(10)->get();
         } else {
             $this->userCabinetSearch =
             [

@@ -14,13 +14,6 @@ class Article extends Model
 
     protected $fillable = ['name', 'description', 'news_text', 'created_at'];
 
-    protected function getCacheBaseTags(): array
-    {
-        return [
-            'news',
-        ];
-    }
-
     protected function createdAt(): Attribute
     {
         return Attribute::make(

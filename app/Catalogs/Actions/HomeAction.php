@@ -42,7 +42,7 @@ class HomeAction extends Action
 
     public function getWorkerPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', '<', config('constants.request.success'))
+        $this->items = Model::where('status_id', '<', config('constants.request.success'))
             ->where('user_id', auth()->user()->id)
             ->orderBy('status_id', 'ASC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
@@ -60,7 +60,7 @@ class HomeAction extends Action
 
     public function getCompletedPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', config('constants.request.success'))
+        $this->items = Model::where('status_id', config('constants.request.success'))
             ->where('user_id', auth()->user()->id)
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
@@ -75,7 +75,7 @@ class HomeAction extends Action
 
     public function getDismissPagesPaginate(): array
     {
-        $this->items = Model::dontCache()->where('status_id', config('constants.request.danger'))
+        $this->items = Model::where('status_id', config('constants.request.danger'))
             ->where('user_id', auth()->user()->id)
             ->orderBy('calendar_request', 'DESC')
             ->paginate($this->page);
@@ -97,7 +97,7 @@ class HomeAction extends Action
 
     public function show(int $id): Model
     {
-        $this->item = Model::dontCache()->findOrFail($id);
+        $this->item = Model::findOrFail($id);
         $this->item->images = json_decode($this->item->images, true);
 
         return $this->item;
@@ -105,7 +105,7 @@ class HomeAction extends Action
 
     public function store(HelpRequest $request): JsonResponse
     {
-        $this->last = Model::dontCache()->select('app_number')->orderBy('id', 'desc')->first();
+        $this->last = Model::select('app_number')->orderBy('id', 'desc')->first();
         if ($this->last == null) {
             $this->app_number = GeneratorAppNumberHelper::generate();
         } else {
@@ -113,12 +113,12 @@ class HomeAction extends Action
         }
         $this->calendar_request = Carbon::now();
         if ($request->hasFile('images')) {
-            $this->images = json_encode(StoreFilesHelper::createFile($request->file('images'), 'images', 1920, 1080));
+            $this->images = json_encode(StoreFilesHelper::createFileImages($request->file('images'), 'images', 1920, 1080));
         } else {
             $this->images = $request->file('images');
         }
         if ($request->hasFile('images_final')) {
-            $this->images_final = json_encode(StoreFilesHelper::createFile($request->file('images_final'), 'images', 1920, 1080));
+            $this->images_final = json_encode(StoreFilesHelper::createFileImages($request->file('images_final'), 'images', 1920, 1080));
         } else {
             $this->images_final = $request->file('images_final');
         }

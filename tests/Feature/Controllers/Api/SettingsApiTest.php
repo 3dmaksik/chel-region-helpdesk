@@ -41,7 +41,7 @@ class SettingsApiTest extends TestCase
         ])->assignRole('superAdmin');
         Auth::login($testUser);
         Storage::fake('local');
-        $avatar = UploadedFile::fake()->image('avatar.jpg', 100, 100)->size(100);
+        $avatar = UploadedFile::fake()->image('avatar.png', 100, 100)->size(100);
         $sound = UploadedFile::fake()->create('sound.ogg')->size(100);
         $response = $this->actingAs($testUser, 'web')->patchJson(route(config('constants.settings.updateSettings')),
             [
@@ -51,10 +51,8 @@ class SettingsApiTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $updateUser = User::findOrFail(auth()->user()->id);
-        $clearAvatar = json_decode($updateUser->avatar, true);
-        Storage::disk('avatar')->delete($clearAvatar['url']);
-        $clearSound = json_decode($updateUser->sound_notify, true);
-        Storage::disk('sound')->delete($clearSound['url']);
+        Storage::disk('avatar')->delete($updateUser->avatar);
+        Storage::disk('sound')->delete($updateUser->sound_notify);
         $response->assertStatus(200);
         $this->assertNotEquals(null, $updateUser->avatar);
         $this->assertNotEquals(null, $updateUser->sound_notify);
@@ -75,7 +73,7 @@ class SettingsApiTest extends TestCase
         ])->assignRole('admin');
         Auth::login($testUser);
         Storage::fake('local');
-        $avatar = UploadedFile::fake()->image('avatar.jpg', 100, 100)->size(100);
+        $avatar = UploadedFile::fake()->image('avatar.png', 100, 100)->size(100);
         $sound = UploadedFile::fake()->create('sound.ogg')->size(100);
         $response = $this->actingAs($testUser, 'web')->patchJson(route(config('constants.settings.updateSettings')),
             [
@@ -85,10 +83,8 @@ class SettingsApiTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $updateUser = User::findOrFail(auth()->user()->id);
-        $clearAvatar = json_decode($updateUser->avatar, true);
-        Storage::disk('avatar')->delete($clearAvatar['url']);
-        $clearSound = json_decode($updateUser->sound_notify, true);
-        Storage::disk('sound')->delete($clearSound['url']);
+        Storage::disk('avatar')->delete($updateUser->avatar);
+        Storage::disk('sound')->delete($updateUser->sound_notify);
         $response->assertStatus(200);
         $this->assertNotEquals(null, $updateUser->avatar);
         $this->assertNotEquals(null, $updateUser->sound_notify);
@@ -109,7 +105,7 @@ class SettingsApiTest extends TestCase
         ])->assignRole('manager');
         Auth::login($testUser);
         Storage::fake('local');
-        $avatar = UploadedFile::fake()->image('avatar.jpg', 100, 100)->size(100);
+        $avatar = UploadedFile::fake()->image('avatar.png', 100, 100)->size(100);
         $sound = UploadedFile::fake()->create('sound.ogg')->size(100);
         $response = $this->actingAs($testUser, 'web')->patchJson(route(config('constants.settings.updateSettings')),
             [
@@ -119,10 +115,8 @@ class SettingsApiTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $updateUser = User::findOrFail(auth()->user()->id);
-        $clearAvatar = json_decode($updateUser->avatar, true);
-        Storage::disk('avatar')->delete($clearAvatar['url']);
-        $clearSound = json_decode($updateUser->sound_notify, true);
-        Storage::disk('sound')->delete($clearSound['url']);
+        Storage::disk('avatar')->delete($updateUser->avatar);
+        Storage::disk('sound')->delete($updateUser->sound_notify);
         $response->assertStatus(200);
         $this->assertNotEquals(null, $updateUser->avatar);
         $this->assertNotEquals(null, $updateUser->sound_notify);
@@ -143,7 +137,7 @@ class SettingsApiTest extends TestCase
         ])->assignRole('user');
         Auth::login($testUser);
         Storage::fake('local');
-        $avatar = UploadedFile::fake()->image('avatar.jpg', 100, 100)->size(100);
+        $avatar = UploadedFile::fake()->image('avatar.png', 100, 100)->size(100);
         $sound = UploadedFile::fake()->create('sound.ogg')->size(100);
         $response = $this->actingAs($testUser, 'web')->patchJson(route(config('constants.settings.updateSettings')),
             [
@@ -153,10 +147,8 @@ class SettingsApiTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $updateUser = User::findOrFail(auth()->user()->id);
-        $clearAvatar = json_decode($updateUser->avatar, true);
-        Storage::disk('avatar')->delete($clearAvatar['url']);
-        $clearSound = json_decode($updateUser->sound_notify, true);
-        Storage::disk('sound')->delete($clearSound['url']);
+        Storage::disk('avatar')->delete($updateUser->avatar);
+        Storage::disk('sound')->delete($updateUser->sound_notify);
         $response->assertStatus(200);
         $this->assertNotEquals(null, $updateUser->avatar);
         $this->assertNotEquals(null, $updateUser->sound_notify);
@@ -281,7 +273,7 @@ class SettingsApiTest extends TestCase
         ])->assignRole('superAdmin');
         Auth::login($testUser);
         Storage::fake('local');
-        $avatar = UploadedFile::fake()->image('avatar.jpg', 100, 100)->size(30720);
+        $avatar = UploadedFile::fake()->image('avatar.png', 100, 100)->size(30720);
         $sound = UploadedFile::fake()->create('sound.ogg')->size(30720);
         $response = $this->actingAs($testUser, 'web')->patchJson(route(config('constants.settings.updateSettings')),
             [
@@ -310,7 +302,7 @@ class SettingsApiTest extends TestCase
         Auth::login($testUser);
         Storage::fake('local');
         $avatar = UploadedFile::fake()->create('sound.ogg')->size(100);
-        $sound = UploadedFile::fake()->image('avatar.jpg', 100, 100)->size(100);
+        $sound = UploadedFile::fake()->image('avatar.png', 100, 100)->size(100);
         $response = $this->actingAs($testUser, 'web')->patchJson(route(config('constants.settings.updateSettings')),
             [
                 'avatar' => $avatar,

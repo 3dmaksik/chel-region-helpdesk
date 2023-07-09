@@ -58,13 +58,13 @@ class StoreFilesHelper extends CoreHelper
     /**
      * [creating multiple images]
      */
-    public static function createFile(?array $request, string $type = 'public', int $w = 1920, int $h = 1080): ?array
+    public static function createFileImages(?array $request, string $type = 'public', int $w = 1920, int $h = 1080): ?array
     {
         if ($request === null) {
             return null;
         }
         foreach ($request as $file) {
-            $url[self::$i] = self::createOneFile($file, $type, $w, $h);
+            $url[self::$i] = self::createOneImage($file, $type, $w, $h);
             self::$i++;
         }
 
@@ -97,7 +97,7 @@ class StoreFilesHelper extends CoreHelper
      * @param  int  $w
      * @param  int  $h
      */
-    public static function createOneFile(?UploadedFile $file, string $type, $w, $h): ?string
+    public static function createOneImage(?UploadedFile $file, string $type, $w, $h): ?string
     {
         if ($file === null) {
             return null;

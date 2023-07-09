@@ -44,7 +44,6 @@ class StatusAction extends Action
         }
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Статус успешно обновлён!',
         ];

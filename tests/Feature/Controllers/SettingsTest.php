@@ -34,8 +34,8 @@ class SettingsTest extends TestCase
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => fake()->text(10),
             'cabinet_id' => $cabinet->id,
-            'avatar' => json_encode(['url' => 'avatar.jpg']),
-            'sound_notify' => json_encode(['url' => 'sound.ogg']),
+            'avatar' => 'avatar.jpg',
+            'sound_notify' => 'sound.ogg',
         ])->assignRole('superAdmin');
         $response = $this->actingAs($testUser, 'web')->get(route(config('constants.settings.account')));
         $response->assertStatus(200);
@@ -53,8 +53,8 @@ class SettingsTest extends TestCase
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => fake()->text(10),
             'cabinet_id' => $cabinet->id,
-            'avatar' => json_encode(['url' => 'avatar.jpg']),
-            'sound_notify' => json_encode(['url' => 'sound.ogg']),
+            'avatar' => 'avatar.jpg',
+            'sound_notify' => 'sound.ogg',
         ])->assignRole('admin');
         $response = $this->actingAs($testUser, 'web')->get(route(config('constants.settings.account')));
         $response->assertStatus(200);
@@ -72,8 +72,8 @@ class SettingsTest extends TestCase
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => fake()->text(10),
             'cabinet_id' => $cabinet->id,
-            'avatar' => json_encode(['url' => 'avatar.jpg']),
-            'sound_notify' => json_encode(['url' => 'sound.ogg']),
+            'avatar' => 'avatar.jpg',
+            'sound_notify' => 'sound.ogg',
         ])->assignRole('manager');
         $response = $this->actingAs($testUser, 'web')->get(route(config('constants.settings.account')));
         $response->assertStatus(200);
@@ -91,8 +91,8 @@ class SettingsTest extends TestCase
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => fake()->text(10),
             'cabinet_id' => $cabinet->id,
-            'avatar' => json_encode(['url' => 'avatar.jpg']),
-            'sound_notify' => json_encode(['url' => 'sound.ogg']),
+            'avatar' => 'avatar.jpg',
+            'sound_notify' => 'sound.ogg',
         ])->assignRole('user');
         $response = $this->actingAs($testUser, 'web')->get(route(config('constants.settings.account')));
         $response->assertStatus(200);

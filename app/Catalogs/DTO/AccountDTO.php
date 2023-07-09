@@ -17,7 +17,7 @@ class AccountDTO extends DTO
     public static function storeObjectRequest(Request $request): self
     {
         $dto = new self();
-        $dto->avatar = StoreFilesHelper::createOneFile($request->file('avatar'), 'avatar', 32, 32);
+        $dto->avatar = StoreFilesHelper::createOneImage($request->file('avatar'), 'avatar', 32, 32);
         $dto->sound_notify = StoreFilesHelper::createNotify($request->file('sound_notify'), 'sound');
         $dto->role = $request->get('role');
 

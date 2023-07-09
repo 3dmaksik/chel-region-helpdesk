@@ -5,7 +5,6 @@ $(function () {
     let page = $(".current-page").text();
     newCount();
     nowCount();
-
     $.ajaxSetup({
         headers: { "X-CSRF-TOKEN": CSRF_TOKEN },
     });
@@ -13,14 +12,14 @@ $(function () {
     Echo.private("App.Models.User." + window.Laravel.user).notification(
         (notification) => {
             loadNew(notification.method, notification.route);
-            if (notification.method == "newadm") {
+            if (notification.method === "newadm") {
                 newCount();
                 sound.play();
             }
-            if (notification.method == "workeradm") {
+            if (notification.method === "workeradm") {
                 nowCount();
             }
-            if (notification.method == "expire") {
+            if (notification.method === "expire") {
                 expireNotify(notification.text, notification.count);
             }
         }
@@ -32,7 +31,7 @@ $(function () {
         ajax: {
             url: '/api/select2/cabinet',
             dataType: 'json',
-            delay: 200,
+            delay: 10,
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
@@ -47,6 +46,13 @@ $(function () {
         }
     });
 
+    if (localStorage.getItem('sound') === null)
+    {
+        const sound = new Howl({
+            src: ["/sound/sound.ogg"],
+            html5: true,
+        });
+    }
     jQuery.datetimepicker.setLocale("ru");
     jQuery("#datetimepicker").datetimepicker({
         format: "Y-m-d H:i:s",
@@ -59,33 +65,6 @@ $(function () {
                 .text("Выбрано файлов: " + $(this)[0].files.length);
         else $(this).prev().text("Выберите файлы");
     });
-
-    $.ajax({
-        url: "/api/loader/post",
-        method: "post",
-        dataType: "json",
-        success: function (data) {
-            if (data.avatar == null) {
-                $(".img-profile").attr(
-                    "src",
-                    "/img/boy.png"
-                );
-            }
-            if (data.soundNotify != null) {
-                const sound = new Howl({
-                    src: ["/storage/sound/" + data.soundNotify.url],
-                    html5: true,
-                });
-            }
-            else
-            {
-                const sound = new Howl({
-                    src: ["/sound/sound.ogg"],
-                    html5: true,
-                });
-            }
-        },
-    });
     $(".btn-modal").on('click', function () {
         $.ajax({
             url: "/api/help/all",
@@ -95,7 +74,7 @@ $(function () {
                 const obj = JSON.parse(data);
                 for (var i = 0; i < obj.user.length; i++) {
                     var counter = obj.user[i];
-                    if (counter.patronymic == null) counter.patronymic = "";
+                    if (counter.patronymic === null) counter.patronymic = "";
                     $("#accept-select2-user").append(
                         '<option value="' +
                             counter.id +
@@ -164,7 +143,7 @@ $(function () {
                         .prop("disabled", true);
                 },
                 error: function (data) {
-                         if (data.responseJSON.message == undefined)
+                         if (data.responseJSON.message === undefined)
                         {
                             data.responseJSON.message = data.message;
                         }
@@ -229,7 +208,7 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 let datacount = JSON.parse(data);
-                if (datacount == 0) {
+                if (datacount === 0) {
                     $("#counter").text("");
                     $("#new_count_text").text("Нет новых заявок");
                 } else {
