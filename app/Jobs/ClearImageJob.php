@@ -40,7 +40,7 @@ class ClearImageJob extends Job implements ShouldQueue
     {
         if (config('settings.clearImage') > 0) {
             $this->future = Carbon::now()->addMonth(config('settings.clearImage'));
-            $this->items = Help::dontCache()->where('calendar_final', '>', $this->future)
+            $this->items = Help::where('calendar_final', '>', $this->future)
                 ->whereNotNull('images')
                 ->orWhereNotNull('images_final')
                 ->orderBy('id', 'DESC')

@@ -11,11 +11,4 @@ class Category extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = ['description'];
-
-    protected function getCacheBaseTags(): array
-    {
-        return [
-            'category',
-        ];
-    }
 }

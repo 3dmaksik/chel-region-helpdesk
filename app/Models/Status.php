@@ -11,11 +11,4 @@ class Status extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = ['description', 'color'];
-
-    protected function getCacheBaseTags(): array
-    {
-        return [
-            'status',
-        ];
-    }
 }

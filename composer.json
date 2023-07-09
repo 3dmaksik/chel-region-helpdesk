@@ -15,7 +15,6 @@
         "laravel/ui": "^4",
         "nesbot/carbon": "^2",
         "pusher/pusher-php-server": "^7",
-        "rennokki/laravel-eloquent-query-cache": "^3",
         "simplesoftwareio/simple-qrcode": "^4",
         "spatie/laravel-permission": "^5"
     },

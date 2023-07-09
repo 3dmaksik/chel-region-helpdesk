@@ -49,7 +49,6 @@ class CabinetAction extends Action
     public function store(array $request): JsonResponse
     {
         $this->item = Model::create($request);
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Кабинет успешно добавлен!',
         ];
@@ -65,7 +64,6 @@ class CabinetAction extends Action
     {
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Кабинет успешно обновлён!',
         ];
@@ -78,7 +76,7 @@ class CabinetAction extends Action
      */
     public function delete(int $id): JsonResponse
     {
-        $this->countUser = User::dontCache()->where('cabinet_id', $id)->count();
+        $this->countUser = User::where('cabinet_id', $id)->count();
         if ($this->countUser > 0) {
             $this->response = [
                 'message' => 'Кабинет не может быть удален, так как у кабинета есть сотрудники!',
@@ -88,7 +86,6 @@ class CabinetAction extends Action
         }
         $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Кабинет успешно удалён!',
             'reload' => true,

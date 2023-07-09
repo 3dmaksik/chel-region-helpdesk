@@ -63,7 +63,6 @@ class PriorityAction extends Action
     {
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Приоритет успешно обновлён!',
         ];
@@ -76,7 +75,7 @@ class PriorityAction extends Action
      */
     public function delete(int $id): JsonResponse
     {
-        $this->count = Help::dontCache()->where('priority_id', $id)->count();
+        $this->count = Help::where('priority_id', $id)->count();
         if ($this->count > 0) {
             $this->response = [
                 'message' => 'Приоритет не может быть удалён, так как не удалены все заявки связанные с ним!',
@@ -87,7 +86,6 @@ class PriorityAction extends Action
 
         $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Приоритет успешно удалён!',
             'reload' => true,

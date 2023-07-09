@@ -39,7 +39,7 @@ class NotifyExpireJob extends Job implements ShouldQueue
     public function handle(): void
     {
         $this->warning = Carbon::now();
-        $this->items = Help::dontCache()->where('calendar_execution', '<', $this->warning)
+        $this->items = Help::where('calendar_execution', '<', $this->warning)
             ->where('calendar_warning', '<', $this->warning)
             ->where('status_id', config('constants.request.work'))
             ->orderBy('calendar_execution', 'DESC')
@@ -47,7 +47,7 @@ class NotifyExpireJob extends Job implements ShouldQueue
             ->get();
         if ($this->items !== null) {
             foreach ($this->items as $item) {
-                $this->user = User::dontCache()->findOrFail($item->executor_id);
+                $this->user = User::findOrFail($item->executor_id);
                 if ($this->user->getRoleNames()[0] != 'user') {
                     Notification::send($this->user, new ExpireNotification('expire', $item->app_number, $this->items->count() - 1));
                 }

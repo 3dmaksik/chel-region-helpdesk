@@ -71,24 +71,6 @@ class SettingsAction extends Action
     }
 
     /**
-     * [edit settings]
-     */
-    public function editSettings(): User
-    {
-        $this->user = User::findOrFail(auth()->user()->id);
-        if (isset($this->user->avatar)) {
-            $this->avatar = json_decode($this->user->avatar, true);
-            $this->user->avatar = $this->avatar['url'];
-        }
-        if (isset($this->user->sound_notify)) {
-            $this->soundNotify = json_decode($this->user->sound_notify, true);
-            $this->user->sound_notify = $this->soundNotify['url'];
-        }
-
-        return $this->user;
-    }
-
-    /**
      * [update settings]
      */
     public function updateSettings(AccountRequest $request): JsonResponse
@@ -99,17 +81,24 @@ class SettingsAction extends Action
         if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data->role !== null) {
             return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
         }
-        if (isset($this->data->avatar) && $this->user->avatar != null) {
-            $this->user->avatar = json_decode($this->user->avatar, true);
-            Storage::disk('avatar')->delete($this->user->avatar['url']);
+        if (isset($this->data->avatar)) {
+            if ($this->user->avatar !== null) {
+                Storage::disk('avatar')->delete($this->user->avatar);
+            }
+            $this->avatar = json_decode($this->data->avatar, true);
+            $this->data->avatar = $this->avatar['url'];
         }
-        if (isset($this->data->sound_notify) && $this->user->sound_notify != null) {
-            $this->user->sound_notify = json_decode($this->user->sound_notify, true);
-            Storage::disk('sound')->delete($this->user->sound_notify['url']);
+        if (isset($this->data->sound_notify)) {
+            if ($this->user->sound_notify !== null) {
+                Storage::disk('sound')->delete($this->user->sound_notify);
+            }
+            $this->soundNotify = json_decode($this->data->sound_notify, true);
+            $this->data->sound_notify = $this->soundNotify['url'];
         }
-        User::flushQueryCache();
         $this->dataClear = $this->clear($this->data);
-        $this->user->update($this->dataClear);
+        if (! empty($this->dataClear)) {
+            $this->user->update($this->dataClear);
+        }
 
         return response()->success('Настройки успешно обновлены');
     }

@@ -109,6 +109,7 @@ RewriteRule ^ index.php [L]
 3. Установить права доступа на папки с тем же пользователем, что и у сервера:  
 
 `$ sudo chgrp -R example-user ./storage ./bootstrap/cache`
+
 `$ sudo chmod -R ug+rwx ./storage ./bootstrap/cache`
 
 4. Создать символьные ссылки для загрузки файлов:  
@@ -158,17 +159,16 @@ PS. Рады всем, кто сможет предоставить скрипт
 #### Лицензии используемых библиотек, связных библиотек, шрифта и другой текст, который никто не читает.
                 
 1. Laravel- [MIT](https://github.com/laravel/laravel#license)
-2. Cache- [Apache 2.0](https://github.com/renoki-co/laravel-eloquent-query-cache/blob/master/LICENSE)
-3. Permission- [MIT](https://github.com/spatie/laravel-permission/blob/main/LICENSE.md)
-4. Pusher- [MIT](https://github.com/pusher/pusher-http-php#license)
-5. Websockets- [MIT](https://github.com/beyondcode/laravel-websockets/blob/master/LICENSE)
-6. Boostrap- [MIT](https://github.com/twbs/bootstrap#copyright-and-license)
-7. JQuery- [MIT](https://github.com/jquery/jquery/blob/main/LICENSE.txt)
-8. RuangAdmin- [MIT](https://github.com/indrijunanda/RuangAdmin#license)
-9. eStartup- [CC](https://bootstrapmade.com/license/)
-10. Fancybox- [GPLv3](https://github.com/fancyapps/fancybox#license)
-11. FontAwesome- [CC BY 4.0, SIL OFL 1.1, MIT](https://github.com/FortAwesome/Font-Awesome#license)
-12. Select2- [MIT](https://github.com/select2/select2/blob/develop/LICENSE.md)
-13. Nunito Font-  [OFL](https://github.com/googlefonts/nunito/blob/main/OFL.txt)
+2. Permission- [MIT](https://github.com/spatie/laravel-permission/blob/main/LICENSE.md)
+3. Pusher- [MIT](https://github.com/pusher/pusher-http-php#license)
+4. Websockets- [MIT](https://github.com/beyondcode/laravel-websockets/blob/master/LICENSE)
+5. Boostrap- [MIT](https://github.com/twbs/bootstrap#copyright-and-license)
+6. JQuery- [MIT](https://github.com/jquery/jquery/blob/main/LICENSE.txt)
+7. RuangAdmin- [MIT](https://github.com/indrijunanda/RuangAdmin#license)
+8. eStartup- [CC](https://bootstrapmade.com/license/)
+9. Fancybox- [GPLv3](https://github.com/fancyapps/fancybox#license)
+10. FontAwesome- [CC BY 4.0, SIL OFL 1.1, MIT](https://github.com/FortAwesome/Font-Awesome#license)
+11. Select2- [MIT](https://github.com/select2/select2/blob/develop/LICENSE.md)
+12. Nunito Font-  [OFL](https://github.com/googlefonts/nunito/blob/main/OFL.txt)
                 
 ### Конец

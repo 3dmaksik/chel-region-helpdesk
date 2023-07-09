@@ -63,7 +63,6 @@ class CategoryAction extends Action
     {
         $this->item = Model::findOrFail($id);
         $this->item->update($request);
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Категория успешно обновлена!',
         ];
@@ -76,7 +75,7 @@ class CategoryAction extends Action
      */
     public function delete(int $id): JsonResponse
     {
-        $this->countHelp = Help::dontCache()->where('category_id', $id)->count();
+        $this->countHelp = Help::where('category_id', $id)->count();
         if ($this->countHelp > 0) {
             $this->response = [
                 'message' => 'Категория не может быть удалена, так как не удалены все заявки связанные с ней!',
@@ -87,7 +86,6 @@ class CategoryAction extends Action
         }
         $this->item = Model::findOrFail($id);
         $this->item->forceDelete();
-        Model::flushQueryCache();
         $this->response = [
             'message' => 'Категория успешно удалена!',
         ];

@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('sound_notify')->nullable();
             $table->string('avatar')->nullable();
+            $table->string('sound_notify')->nullable();
             $table->string('firstname');
             $table->string('lastname');
             $table->string('patronymic')->nullable();

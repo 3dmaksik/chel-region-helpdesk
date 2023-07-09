@@ -63,7 +63,6 @@ class RolesTableSeeder extends Seeder
         Permission::create(['name' => 'redefine help']);
         Permission::create(['name' => 'execute help']);
         Permission::create(['name' => 'count help']);
-        Permission::create(['name' => 'loader help']);
         Permission::create(['name' => 'all help']);
         Permission::create(['name' => 'new help']);
         Permission::create(['name' => 'dismiss help']);
@@ -97,7 +96,7 @@ class RolesTableSeeder extends Seeder
         //api
         $role->givePermissionTo(['update help', 'accept help', 'reject help', 'redefine help', 'execute help', 'count help',
             'create news', 'update news', 'destroy news',
-            'update settings', 'loader help']);
+            'update settings']);
 
         $role = Role::create(['name' => 'manager']);
         //web
@@ -106,7 +105,7 @@ class RolesTableSeeder extends Seeder
             'edit settings', 'all search', 'prefix search', 'view stats', 'work directory list', 'home directory list']);
         //api
         $role->givePermissionTo(['update help', 'execute help', 'count help',
-            'update settings', 'loader help']);
+            'update settings']);
 
         $role = Role::create(['name' => 'user']);
         //web
@@ -114,7 +113,7 @@ class RolesTableSeeder extends Seeder
             'worker home help', 'completed home help', 'dismiss home help', 'create home help',
             'edit settings', 'all search', 'prefix search', 'view stats', 'home directory list']);
         //api
-        $role->givePermissionTo(['count help', 'update settings', 'loader help']);
+        $role->givePermissionTo(['count help', 'update settings']);
 
     }
 }

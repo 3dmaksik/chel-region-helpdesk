@@ -8,15 +8,11 @@
     <div class="card-body">
         <form id="formValidateSettings" class="form-submit" enctype="multipart/form-data" method="POST" action="{{ route(config('constants.settings.updateSettings')) }}">
             @method('PATCH')
-            <div class="form-group">
-                <div class="text-center">
-                    <div id="sent-message-upSettings" style="display: none"> </div>
-                </div>
                 <div class="form-group">
                     <label for="img-profile">Текущая аватарка</label>
                     <div class="form-group">
                         <img class="img-profile rounded-circle"
-                            src="@if($works['avatar']==null)/img/boy.png @else{{asset('/storage/avatar/'.$works['avatar']) }} @endif"
+                            src="@if(auth()->user()->avatar===null)/img/boy.png @else{{asset('/storage/avatar/'.auth()->user()->avatar) }} @endif"
                             style="max-width: 60px">
                     </div>
                 </div>
@@ -33,7 +29,7 @@
                         <figure>
                             <figcaption>Текущее оповещение</figcaption>
                             <audio controls
-                                src="@if($works['sound_notify']==null)/sound/sound.ogg @else{{ asset('/storage/sound/'.$works['sound_notify']) }} @endif">
+                                src="@if(auth()->user()->sound_notify===null)/sound/sound.ogg @else{{ asset('/storage/sound/'.auth()->user()->sound_notify) }} @endif">
                             </audio>
                         </figure>
                     </div>

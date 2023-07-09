@@ -10,26 +10,22 @@ use Illuminate\Http\JsonResponse;
 
 class SettingsApiController extends Controller
 {
+    /**
+     * [result data]
+     */
     private JsonResponse $data;
 
-    private SettingsAction $settings;
-
-    public function __construct(SettingsAction $settings)
+    public function updatePassword(PasswordRequest $request, SettingsAction $settingsAction): JsonResponse
     {
-        $this->settings = $settings;
-    }
-
-    public function updatePassword(PasswordRequest $request): JsonResponse
-    {
-        $this->data = $this->settings->updatePassword($request->validated());
+        $this->data = $settingsAction->updatePassword($request->validated());
 
         return $this->data;
     }
 
-    public function updateSettings(AccountRequest $request): JsonResponse
+    public function updateSettings(AccountRequest $request, SettingsAction $settingsAction): JsonResponse
     {
         //DTO добавить и request
-        $this->data = $this->settings->updateSettings($request);
+        $this->data = $settingsAction->updateSettings($request);
 
         return $this->data;
     }
