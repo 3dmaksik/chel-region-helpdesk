@@ -19,7 +19,7 @@ class CategoryApiController extends Controller
      */
     public function store(CategoryRequest $request, CategoryAction $categoryAction): JsonResponse
     {
-        $this->data = $categoryAction->store($request->validated());
+        $this->data = $categoryAction->store($request->validated(null, null));
 
         return $this->data;
     }
@@ -29,7 +29,7 @@ class CategoryApiController extends Controller
      */
     public function update(CategoryRequest $request, int $category, CategoryAction $categoryAction): JsonResponse
     {
-        $this->data = $categoryAction->update($request->validated(), $category);
+        $this->data = $categoryAction->update($request->validated(null, null), $category);
 
         return $this->data;
     }

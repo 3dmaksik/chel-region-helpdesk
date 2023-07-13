@@ -10,30 +10,19 @@ class ExpireNotification extends BaseNotification
 {
     public Model $model;
 
-    public string $method;
-
-    public string $text;
-
-    public int $count;
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($method, $text, $count)
+    public function __construct(public string $method, public string $text, public int $count)
     {
-        $this->method = $method;
-        $this->text = $text;
-        $this->count = $count;
     }
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
      */
-    public function via($notifiable): array
+    public function via(mixed $notifiable): array
     {
         return ['broadcast'];
     }

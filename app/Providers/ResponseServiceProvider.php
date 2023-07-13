@@ -26,45 +26,28 @@ class ResponseServiceProvider extends ServiceProvider
     protected function descriptiveResponseMethods()
     {
         $instance = $this;
-        Response::macro('success', function ($data) {
-            return Response::json($data, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
-        });
-        Response::macro('error', function ($data) {
-            return Response::json($data, 422, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
-        });
+        Response::macro('success', fn ($data): \Illuminate\Http\JsonResponse => Response::json($data, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE));
+        Response::macro('error', fn ($data): \Illuminate\Http\JsonResponse => Response::json($data, 422, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE));
 
-        Response::macro('created', function ($data) {
-            if (count($data)) {
+        Response::macro('created', function ($data): \Illuminate\Http\JsonResponse {
+            if (is_countable($data) ? count($data) : 0) {
                 return Response::json($data, 201);
             }
 
             return Response::json([], 201);
         });
 
-        Response::macro('noContent', function ($data = []) {
-            return Response::json([], 204);
-        });
+        Response::macro('noContent', fn ($data = []): \Illuminate\Http\JsonResponse => Response::json([], 204));
 
-        Response::macro('badRequest', function ($message = 'Validation Failure', $errors = []) use ($instance) {
-            return $instance->handleErrorResponse($message, $errors, 400);
-        });
+        Response::macro('badRequest', fn ($message = 'Validation Failure', $errors = []) => $instance->handleErrorResponse($message, $errors, 400));
 
-        Response::macro('unauthorized', function ($message = 'User unauthorized', $errors = []) use ($instance) {
-            return $instance->handleErrorResponse($message, $errors, 401);
-        });
+        Response::macro('unauthorized', fn ($message = 'User unauthorized', $errors = []) => $instance->handleErrorResponse($message, $errors, 401));
 
-        Response::macro('forbidden', function ($message = 'Access denied', $errors = []) use ($instance) {
-            return $instance->handleErrorResponse($message, $errors, 403);
+        Response::macro('forbidden', fn ($message = 'Access denied', $errors = []) => $instance->handleErrorResponse($message, $errors, 403));
 
-        });
+        Response::macro('notFound', fn ($message = 'Resource not found.', $errors = []) => $instance->handleErrorResponse($message, $errors, 404));
 
-        Response::macro('notFound', function ($message = 'Resource not found.', $errors = []) use ($instance) {
-            return $instance->handleErrorResponse($message, $errors, 404);
-        });
-
-        Response::macro('internalServerError', function ($message = 'Internal Server Error.', $errors = []) use ($instance) {
-            return $instance->handleErrorResponse($message, $errors, 500);
-        });
+        Response::macro('internalServerError', fn ($message = 'Internal Server Error.', $errors = []) => $instance->handleErrorResponse($message, $errors, 500));
     }
 
     public function handleErrorResponse($message, $errors, $status)
@@ -73,7 +56,7 @@ class ResponseServiceProvider extends ServiceProvider
             'message' => $message,
         ];
 
-        if (count($errors)) {
+        if (is_countable($errors) ? count($errors) : 0) {
             $response['errors'] = $errors;
         }
 

@@ -22,7 +22,7 @@ class HomeAction extends Action
 
     private array $response;
 
-    private Model|null $last;
+    private Model|null $last = null;
 
     public User $superAdmin;
 
@@ -36,10 +36,13 @@ class HomeAction extends Action
 
     private SimpleCollection $options;
 
-    private ?string $images;
+    private ?string $images = null;
 
-    private ?string $images_final;
+    private ?string $images_final = null;
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function getWorkerPagesPaginate(): array
     {
         $this->items = Model::where('status_id', '<', config('constants.request.success'))
@@ -58,6 +61,9 @@ class HomeAction extends Action
         return $this->helps;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function getCompletedPagesPaginate(): array
     {
         $this->items = Model::where('status_id', config('constants.request.success'))
@@ -73,6 +79,9 @@ class HomeAction extends Action
         return $this->helps;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function getDismissPagesPaginate(): array
     {
         $this->items = Model::where('status_id', config('constants.request.danger'))
@@ -98,7 +107,7 @@ class HomeAction extends Action
     public function show(int $id): Model
     {
         $this->item = Model::findOrFail($id);
-        $this->item->images = json_decode($this->item->images, true);
+        $this->item->images = json_decode((string) $this->item->images, true, 512, JSON_THROW_ON_ERROR);
 
         return $this->item;
     }
@@ -113,12 +122,12 @@ class HomeAction extends Action
         }
         $this->calendar_request = Carbon::now();
         if ($request->hasFile('images')) {
-            $this->images = json_encode(StoreFilesHelper::createFileImages($request->file('images'), 'images', 1920, 1080));
+            $this->images = json_encode(StoreFilesHelper::createFileImages($request->file('images'), 'images', 1920, 1080), JSON_THROW_ON_ERROR);
         } else {
             $this->images = $request->file('images');
         }
         if ($request->hasFile('images_final')) {
-            $this->images_final = json_encode(StoreFilesHelper::createFileImages($request->file('images_final'), 'images', 1920, 1080));
+            $this->images_final = json_encode(StoreFilesHelper::createFileImages($request->file('images_final'), 'images', 1920, 1080), JSON_THROW_ON_ERROR);
         } else {
             $this->images_final = $request->file('images_final');
         }

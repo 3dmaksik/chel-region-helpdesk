@@ -329,7 +329,7 @@ class SettingsApiTest extends TestCase
         ])->assignRole('admin');
         Auth::login($testUser);
         $response = $this->actingAs($testUser, 'web')->patchJson(route(config('constants.settings.updatePassword')));
-        $response->assertJsonValidationErrors(['current_password', 'password']);
+        $response->assertJsonValidationErrors(['password']);
         $response->assertStatus(422);
     }
 

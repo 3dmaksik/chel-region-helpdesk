@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ClearImageJob extends Job implements ShouldQueue
 {
-    private ?Collection $items;
+    private ?Collection $items = null;
 
     private array $images;
 
@@ -39,7 +39,7 @@ class ClearImageJob extends Job implements ShouldQueue
     public function handle(): void
     {
         if (config('settings.clearImage') > 0) {
-            $this->future = Carbon::now()->addMonth(config('settings.clearImage'));
+            $this->future = Carbon::now()->addMonth();
             $this->items = Help::where('calendar_final', '>', $this->future)
                 ->whereNotNull('images')
                 ->orWhereNotNull('images_final')
@@ -48,7 +48,7 @@ class ClearImageJob extends Job implements ShouldQueue
             if ($this->items !== null) {
                 foreach ($this->items as $item) {
                     if ($item->images !== null) {
-                        $this->images = json_decode($item->images, true);
+                        $this->images = json_decode((string) $item->images, true, 512, JSON_THROW_ON_ERROR);
                         foreach ($this->images as $image) {
                             Storage::disk('images')->delete($image['url']);
                         }
@@ -57,7 +57,7 @@ class ClearImageJob extends Job implements ShouldQueue
                         ])->save();
                     }
                     if ($item->images_final !== null) {
-                        $this->images_final = json_decode($item->images_final, true);
+                        $this->images_final = json_decode((string) $item->images_final, true, 512, JSON_THROW_ON_ERROR);
                         foreach ($this->images_final as $image) {
                             Storage::disk('images')->delete($image['url']);
                         }

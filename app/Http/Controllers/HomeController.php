@@ -8,11 +8,8 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    private HomeAction $helps;
-
-    public function __construct(HomeAction $helps)
+    public function __construct(private readonly HomeAction $helps)
     {
-        $this->helps = $helps;
     }
 
     public function worker(): View

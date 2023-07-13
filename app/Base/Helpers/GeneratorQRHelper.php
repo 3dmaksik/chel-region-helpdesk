@@ -12,6 +12,6 @@ class GeneratorQRHelper extends CoreHelper
      */
     public static function generate(string $generator): string
     {
-        return base64_encode(QrCode::encoding('UTF-8')->format('png')->size(200)->generate(route('test').'/'.$generator));
+        return base64_encode((string) QrCode::encoding('UTF-8')->format('png')->size(200)->generate(route('test').'/'.$generator));
     }
 }

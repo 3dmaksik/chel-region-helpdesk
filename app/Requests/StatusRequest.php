@@ -8,6 +8,9 @@ use Illuminate\Validation\Rule;
 
 class StatusRequest extends BaseRequest
 {
+    /**
+     * @return array{description: \Illuminate\Validation\Rules\Unique[]|string[], color: \Illuminate\Validation\Rules\Unique[]|string[]}
+     */
     public function rules(): array
     {
         return [

@@ -60,6 +60,7 @@ class StoreFilesHelper extends CoreHelper
      */
     public static function createFileImages(?array $request, string $type = 'public', int $w = 1920, int $h = 1080): ?array
     {
+        $url = [];
         if ($request === null) {
             return null;
         }
@@ -76,7 +77,7 @@ class StoreFilesHelper extends CoreHelper
      */
     protected static function createImageName(): string
     {
-        self::$nameGenerate = time().'_'.mt_rand().'.png';
+        self::$nameGenerate = time().'_'.random_int(0, mt_getrandmax()).'.png';
 
         return self::$nameGenerate;
     }
@@ -86,18 +87,15 @@ class StoreFilesHelper extends CoreHelper
      */
     protected static function createSoundName(): string
     {
-        self::$nameGenerate = time().'_'.mt_rand().'.ogg';
+        self::$nameGenerate = time().'_'.random_int(0, mt_getrandmax()).'.ogg';
 
         return self::$nameGenerate;
     }
 
     /**
      * [create one image]
-     *
-     * @param  int  $w
-     * @param  int  $h
      */
-    public static function createOneImage(?UploadedFile $file, string $type, $w, $h): ?string
+    public static function createOneImage(?UploadedFile $file, string $type, int $w, int $h): ?string
     {
         if ($file === null) {
             return null;
@@ -121,7 +119,7 @@ class StoreFilesHelper extends CoreHelper
         (self::$width < $w) ?: $w = self::$width;
         (self::$height < $h) ?: $h = self::$height;
 
-        return $img->resize($w, $h, function ($constraint) {
+        return $img->resize($w, $h, function ($constraint): void {
             $constraint->aspectRatio();
         });
     }
@@ -133,7 +131,7 @@ class StoreFilesHelper extends CoreHelper
     {
         Storage::disk($type)->put($fileName, $img);
 
-        return json_encode(['url' => $fileName]);
+        return json_encode(['url' => $fileName], JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -143,7 +141,7 @@ class StoreFilesHelper extends CoreHelper
     {
         Storage::disk($type)->put($fileName, file_get_contents($file));
 
-        return json_encode(['url' => $fileName]);
+        return json_encode(['url' => $fileName], JSON_THROW_ON_ERROR);
     }
 
     /**

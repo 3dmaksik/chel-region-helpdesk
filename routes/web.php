@@ -25,16 +25,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('guest')->group(function () {
+Route::middleware('guest')->group(function (): void {
     Route::get('/', [IndexController::class, 'index'])->name('index');
     Route::post('login', [LoginController::class, 'login'])->name('login')->middleware('start.form')->middleware('throttle:10,10');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function (): void {
     Route::controller(HelpController::class)
         ->prefix('admin')
         ->as('help.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('helps/all', 'index')->name('index')->middleware('can:all help');
             Route::post('helps/all', 'getIndex')->name('index')->middleware('can:all help');
             Route::get('helps/new', 'new')->name('new')->middleware('can:new help');
@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(CabinetController::class)
         ->prefix('admin/cabinet')
         ->as('cabinet.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('', 'index')->name('index')->middleware('can:view cabinet');
             Route::get('create', 'create')->name('create')->middleware('can:create cabinet');
             Route::get('{cabinet}/edit', 'edit')->name('edit')->middleware('can:edit cabinet');
@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(CategoryController::class)
         ->prefix('admin/category')
         ->as('category.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('', 'index')->name('index')->middleware('can:view category');
             Route::get('create', 'create')->name('create')->middleware('can:create category');
             Route::get('{category}/edit', 'edit')->name('edit')->middleware('can:edit category');
@@ -69,14 +69,14 @@ Route::middleware('auth')->group(function () {
     Route::controller(StatusController::class)
         ->prefix('admin/status')
         ->as('status.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('', 'index')->name('index')->middleware('can:view status');
             Route::get('{status}/edit', 'edit')->name('edit')->middleware('can:edit status');
         });
     Route::controller(PriorityController::class)
         ->prefix('admin/priority')
         ->as('priority.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('', 'index')->name('index')->middleware('can:view priority');
             Route::get('create', 'create')->name('create')->middleware('can:create priority');
             Route::get('{priority}/show', 'show')->name('show')->middleware('can:view priority');
@@ -85,7 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(UserController::class)
         ->prefix('admin/users')
         ->as('users.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('', 'index')->name('index')->middleware('can:view user');
             Route::get('create', 'create')->name('create')->middleware('can:create user');
             Route::get('{user}/show', 'show')->name('show')->middleware('can:view user');
@@ -94,7 +94,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(NewsController::class)
         ->prefix('news')
         ->as('news.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('create', 'create')->name('create')->middleware('can:create news');
             Route::get('{news}/edit', 'edit')->name('edit')->middleware('can:edit news');
             Route::get('', 'index')->name('index')->middleware('can:view news');
@@ -103,7 +103,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(HomeController::class)
         ->prefix('home')
         ->as('home.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('helps/worker', 'worker')->name('worker')->middleware('can:worker home help');
             Route::post('helps/worker', 'getWorker')->name('worker')->middleware('can:worker home help');
             Route::get('helps/completed', 'completed')->name('completed')->middleware('can:completed home help');
@@ -116,14 +116,14 @@ Route::middleware('auth')->group(function () {
     Route::controller(SettingsController::class)
         ->prefix('settings')
         ->as('settings.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('password', 'editPassword')->name('editPassword')->middleware('can:edit settings');
             Route::get('account', 'editAccount')->name('editAccount')->middleware('can:edit settings');
         });
     Route::controller(SearchController::class)
         ->prefix('search')
         ->as('search.')
-        ->group(function () {
+        ->group(function (): void {
             Route::get('all', 'all')->name('all')->middleware('can:all search');
             Route::get('{search}/work', 'work')->name('work')->middleware('can:prefix search');
             Route::get('{search}/category', 'category')->name('category')->middleware('can:prefix search');

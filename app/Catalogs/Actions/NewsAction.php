@@ -13,6 +13,9 @@ class NewsAction extends Action
      */
     private array $response;
 
+    /**
+     * @return array{data: mixed}
+     */
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::orderBy('created_at', 'DESC')->paginate($this->page);

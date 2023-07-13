@@ -4,10 +4,10 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Catalogs\Collections\RoleCollection;
-use App\Catalogs\DTO\UsersDTO;
+use App\Http\Resources\UserResource;
 use App\Models\Help;
 use App\Models\User as Model;
-use App\Requests\UserPasswordRequest;
+use App\Requests\PasswordRequest;
 use App\Requests\UserRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
@@ -46,12 +46,9 @@ class UsersAction extends Action
     private int $countRole;
 
     /**
-     * [clear data]
-     */
-    private array $dataClear;
-
-    /**
      * [all users with count items max]
+     *
+     * @return array{data: mixed}
      */
     public function getAllPagesPaginate(): array
     {
@@ -66,6 +63,8 @@ class UsersAction extends Action
 
     /**
      * [create new user]
+     *
+     * @return array{roles: \Illuminate\Support\Collection}
      */
     public function create(): array
     {
@@ -88,6 +87,8 @@ class UsersAction extends Action
 
     /**
      * [edit user]
+     *
+     * @return array{user: mixed, roles: \Illuminate\Support\Collection, role: mixed}
      */
     public function edit(int $id): array
     {
@@ -107,9 +108,11 @@ class UsersAction extends Action
      */
     public function store(UserRequest $request): JsonResponse
     {
-        $this->data = UsersDTO::storeObjectRequest($request);
-        $this->dataClear = $this->clear($this->data);
-        Model::create($this->dataClear)->assignRole($this->dataClear['role']);
+        $this->resource = new UserResource($request);
+        $this->data = $this->resource->resolve();
+        $this->data['password'] = Hash::make($this->data['password']);
+        $this->data['email'] = mt_rand().time().'@1.ru';
+        Model::create($this->data)->assignRole($this->data['role']);
         $this->response = [
             'message' => 'Пользователь успешно добавлен!',
         ];
@@ -124,16 +127,13 @@ class UsersAction extends Action
     {
         $this->user = Model::findOrFail($id);
         $this->countRole = Model::role(['superAdmin'])->count();
-        $this->data = UsersDTO::storeObjectRequest($request);
-        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data->role !== null) {
+        $this->resource = new UserResource($request);
+        $this->data = $this->resource->resolve();
+        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data['role'] !== null) {
             return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
         }
-        if ($this->data->password !== null) {
-            $this->data->password = null;
-        }
-        $this->dataClear = $this->clear($this->data);
-        $this->user->update($this->dataClear);
-        $this->user->syncRoles($this->dataClear['role']);
+        $this->user->update($this->data);
+        $this->user->syncRoles($this->data['role']);
 
         $this->response = [
             'message' => 'Пользователь успешно обновлён!',
@@ -145,10 +145,11 @@ class UsersAction extends Action
     /**
      * [update password for other user]
      */
-    public function updatePassword(UserPasswordRequest $request, int $id): JsonResponse
+    public function updatePassword(PasswordRequest $request, int $id): JsonResponse
     {
         $this->user = Model::findOrFail($id);
-        $this->data = $request->validated();
+        $this->resource = new UserResource($request);
+        $this->data = $this->resource->resolve();
         if ($this->user->id === auth()->user()->id) {
             $this->response = [
                 'message' => 'Пользователь не может изменить пароль самому себе в данной форме!',
@@ -199,13 +200,5 @@ class UsersAction extends Action
         ];
 
         return response()->success($this->response);
-    }
-
-    /**
-     * [clear data from bad data]
-     */
-    protected function clear(UsersDTO $data): array
-    {
-        return array_diff((array) $data, ['', null, 'null', false]);
     }
 }

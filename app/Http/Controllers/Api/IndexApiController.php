@@ -11,11 +11,8 @@ class IndexApiController extends Controller
 {
     private JsonResponse $data;
 
-    private HomeAction $helps;
-
-    public function __construct(HomeAction $helps)
+    public function __construct(private readonly HomeAction $helps)
     {
-        $this->helps = $helps;
     }
 
     public function store(IndexRequest $request): JsonResponse

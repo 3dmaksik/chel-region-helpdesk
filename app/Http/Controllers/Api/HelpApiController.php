@@ -13,12 +13,9 @@ class HelpApiController extends Controller
 
     private string $dataCatalog;
 
-    private HelpAction $helps;
-
-    public function __construct(HelpAction $helps)
+    public function __construct(private readonly HelpAction $helps)
     {
         $this->middleware('auth');
-        $this->helps = $helps;
     }
 
     public function store(HelpRequest $request): JsonResponse

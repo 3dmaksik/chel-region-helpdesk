@@ -21,7 +21,7 @@ class StoreFileTest extends TestCase
             $avatar = UploadedFile::fake()->image('avatar.jpg', 100, 100)->size(10);
             $file = StoreFilesHelper::createOneImage($avatar, 'avatar', 32, 32);
             $this->assertJson($file);
-            $clearAvatar = json_decode($file, true);
+            $clearAvatar = json_decode($file, true, 512, JSON_THROW_ON_ERROR);
             Storage::disk('avatar')->delete($clearAvatar['url']);
         }
     }
@@ -33,7 +33,7 @@ class StoreFileTest extends TestCase
             $sound = UploadedFile::fake()->create('sound.ogg')->size(10);
             $file = StoreFilesHelper::createNotify($sound, 'sound');
             $this->assertJson($file);
-            $clearSound = json_decode($file, true);
+            $clearSound = json_decode($file, true, 512, JSON_THROW_ON_ERROR);
             Storage::disk('sound')->delete($clearSound['url']);
         }
     }

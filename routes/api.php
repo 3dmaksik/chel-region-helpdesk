@@ -24,16 +24,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('guest')->middleware('throttle:10,1')->group(function () {
+Route::middleware('guest')->middleware('throttle:10,1')->group(function (): void {
     Route::post('help/new', [IndexApiController::class, 'store'])->name('index.store')->middleware('can:store help');
 });
-Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
+Route::middleware('auth')->middleware('throttle:100,1')->group(function (): void {
     Route::post('help/all', [HelpApiController::class, 'getAllPages'])->middleware('can:all help');
     Route::get('select2/cabinet', [SearchApiController::class, 'cabinet'])->name('select2.cabinet')->middleware('can:create cabinet');
     Route::controller(CabinetApiController::class)
         ->prefix('admin/cabinet')
         ->as('cabinet.')
-        ->group(function () {
+        ->group(function (): void {
             Route::post('', 'store')->name('store')->middleware('can:create cabinet');
             Route::patch('{cabinet}', 'update')->name('update')->middleware('can:update cabinet');
             Route::delete('{cabinet}', 'destroy')->name('destroy')->middleware('can:destroy cabinet');
@@ -41,7 +41,7 @@ Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
     Route::controller(CategoryApiController::class)
         ->prefix('admin/category')
         ->as('category.')
-        ->group(function () {
+        ->group(function (): void {
             Route::post('', 'store')->name('store')->middleware('can:create category');
             Route::patch('{category}', 'update')->name('update')->middleware('can:update category');
             Route::delete('{category}', 'destroy')->name('destroy')->middleware('can:destroy category');
@@ -49,13 +49,13 @@ Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
     Route::controller(StatusApiController::class)
         ->prefix('admin/status')
         ->as('status.')
-        ->group(function () {
+        ->group(function (): void {
             Route::patch('{status}', 'update')->name('update')->middleware('can:update status');
         });
     Route::controller(PriorityApiController::class)
         ->prefix('admin/priority')
         ->as('priority.')
-        ->group(function () {
+        ->group(function (): void {
             Route::post('', 'store')->name('store')->middleware('can:create priority');
             Route::patch('{priority}', 'update')->name('update')->middleware('can:update priority');
             Route::delete('{priority}', 'destroy')->name('destroy')->middleware('can:destroy priority');
@@ -63,7 +63,7 @@ Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
     Route::controller(UserApiController::class)
         ->prefix('admin/users')
         ->as('users.')
-        ->group(function () {
+        ->group(function (): void {
             Route::post('', 'store')->name('store')->middleware('can:create user');
             Route::put('{user}', 'update')->name('update')->middleware('can:update user');
             Route::patch('{user}', 'updatePassword')->name('password')->middleware('can:update user');
@@ -72,7 +72,7 @@ Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
     Route::controller(HelpApiController::class)
         ->prefix('admin')
         ->as('help.')
-        ->group(function () {
+        ->group(function (): void {
             Route::post('help', 'store')->name('store')->middleware('can:create help');
             Route::patch('{help}', 'update')->name('update')->middleware('can:update help');
             Route::patch('{help}/accept', 'accept')->name('accept')->middleware('can:accept help');
@@ -85,7 +85,7 @@ Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
     Route::controller(NewsApiController::class)
         ->prefix('news')
         ->as('news.')
-        ->group(function () {
+        ->group(function (): void {
             Route::post('news', 'store')->name('store')->middleware('can:create news');
             Route::patch('{news}', 'update')->name('update')->middleware('can:update news');
             Route::delete('{news}', 'destroy')->name('destroy')->middleware('can:destroy news');
@@ -93,13 +93,13 @@ Route::middleware('auth')->middleware('throttle:100,1')->group(function () {
     Route::controller(HomeApiController::class)
         ->prefix('home')
         ->as('home.')
-        ->group(function () {
+        ->group(function (): void {
             Route::post('help', 'store')->name('store')->middleware('can:create home help');
         });
     Route::controller(SettingsApiController::class)
         ->prefix('settings')
         ->as('settings.')
-        ->group(function () {
+        ->group(function (): void {
             Route::patch('update/password', 'updatePassword')->name('updatePassword')->middleware('can:update settings');
             Route::patch('update/settings', 'updateSettings')->name('updateSettings')->middleware('can:update settings');
         });

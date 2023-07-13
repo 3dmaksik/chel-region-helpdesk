@@ -9,41 +9,41 @@ use Illuminate\Support\Collection as SimpleCollection;
 
 final class HelpDTO extends DTO
 {
-    public ?int $category_id;
+    public ?int $category_id = null;
 
-    public ?int $executor_id;
+    public ?int $executor_id = null;
 
-    public ?int $priority_id;
+    public ?int $priority_id = null;
 
-    public ?int $user_id;
+    public ?int $user_id = null;
 
-    public ?int $status_id;
+    public ?int $status_id = null;
 
-    public ?string $description_long;
+    public ?string $description_long = null;
 
-    public ?string $info;
+    public ?string $info = null;
 
-    public ?string $info_final;
+    public ?string $info_final = null;
 
-    public ?string $images;
+    public ?string $images = null;
 
-    public ?string $images_final;
+    public ?string $images_final = null;
 
-    public ?string $app_number;
+    public ?string $app_number = null;
 
-    public ?Carbon $calendar_warning;
+    public ?Carbon $calendar_warning = null;
 
-    public ?Carbon $calendar_final;
+    public ?Carbon $calendar_final = null;
 
-    public ?Carbon $calendar_accept;
+    public ?Carbon $calendar_accept = null;
 
-    public ?Carbon $calendar_execution;
+    public ?Carbon $calendar_execution = null;
 
-    public ?Carbon $calendar_request;
+    public ?Carbon $calendar_request = null;
 
-    public ?int $lead_at;
+    public ?int $lead_at = null;
 
-    public ?bool $check_write;
+    public ?bool $check_write = null;
 
     public static function storeObjectRequest(Request $request, ?SimpleCollection $options = null): self
     {

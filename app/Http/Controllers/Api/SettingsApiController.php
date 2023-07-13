@@ -17,7 +17,7 @@ class SettingsApiController extends Controller
 
     public function updatePassword(PasswordRequest $request, SettingsAction $settingsAction): JsonResponse
     {
-        $this->data = $settingsAction->updatePassword($request->validated());
+        $this->data = $settingsAction->updatePassword($request->validated(null, null));
 
         return $this->data;
     }

@@ -21,6 +21,8 @@ class PriorityAction extends Action
 
     /**
      * [all priority with count items max]
+     *
+     * @return array{data: mixed}
      */
     public function getAllPagesPaginate(): array
     {

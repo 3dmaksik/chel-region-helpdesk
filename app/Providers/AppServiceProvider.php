@@ -10,24 +10,20 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Paginator::useBootstrap();
         //global View
-        view()->composer('*', function ($view) {
+        view()->composer('*', function ($view): void {
             $view->with('now', Carbon::now());
         });
     }

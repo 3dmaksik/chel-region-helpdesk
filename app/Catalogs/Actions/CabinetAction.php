@@ -21,6 +21,8 @@ class CabinetAction extends Action
 
     /**
      * [all cabinet with count items on page]
+     *
+     * @return array{data: mixed}
      */
     public function getAllPagesPaginate(): array
     {

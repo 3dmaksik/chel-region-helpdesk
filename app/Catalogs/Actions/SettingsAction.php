@@ -3,7 +3,7 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Catalogs\DTO\AccountDTO;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Requests\AccountRequest;
 use Illuminate\Http\JsonResponse;
@@ -31,11 +31,6 @@ class SettingsAction extends Action
      * [count role for user]
      */
     private int $countRole;
-
-    /**
-     * [clear data]
-     */
-    private array $dataClear;
 
     public function __construct()
     {
@@ -77,37 +72,26 @@ class SettingsAction extends Action
     {
         $this->user = User::findOrFail(auth()->user()->id);
         $this->countRole = User::role(['superAdmin'])->count();
-        $this->data = AccountDTO::storeObjectRequest($request);
-        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data->role !== null) {
-            return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
-        }
-        if (isset($this->data->avatar)) {
+        $this->resource = new UserResource($request);
+        $this->data = $this->resource->resolve();
+        if (isset($this->data['avatar'])) {
             if ($this->user->avatar !== null) {
                 Storage::disk('avatar')->delete($this->user->avatar);
             }
-            $this->avatar = json_decode($this->data->avatar, true);
-            $this->data->avatar = $this->avatar['url'];
+            $this->avatar = json_decode($this->data['avatar'], true, 512, JSON_THROW_ON_ERROR);
+            $this->data['avatar'] = $this->avatar['url'];
         }
-        if (isset($this->data->sound_notify)) {
+        if (isset($this->data['sound_notify'])) {
             if ($this->user->sound_notify !== null) {
                 Storage::disk('sound')->delete($this->user->sound_notify);
             }
-            $this->soundNotify = json_decode($this->data->sound_notify, true);
-            $this->data->sound_notify = $this->soundNotify['url'];
+            $this->soundNotify = json_decode($this->data['sound_notify'], true, 512, JSON_THROW_ON_ERROR);
+            $this->data['sound_notify'] = $this->soundNotify['url'];
         }
-        $this->dataClear = $this->clear($this->data);
-        if (! empty($this->dataClear)) {
-            $this->user->update($this->dataClear);
+        if (! empty($this->data)) {
+            $this->user->update($this->data);
         }
 
         return response()->success('Настройки успешно обновлены');
-    }
-
-    /**
-     * [clear data from bad data]
-     */
-    protected function clear(AccountDTO $data): array
-    {
-        return array_diff((array) $data, ['', null, 'null', false]);
     }
 }

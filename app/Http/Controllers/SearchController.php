@@ -9,16 +9,13 @@ use Illuminate\View\View;
 
 class SearchController extends Controller
 {
-    private SearchCatalogAction $catalogs;
-
-    public function __construct(SearchCatalogAction $catalogs)
+    public function __construct(private readonly SearchCatalogAction $catalogs)
     {
-        $this->catalogs = $catalogs;
     }
 
     public function all(SearchRequest $request): View
     {
-        $items = $this->catalogs->searchHelp($request->validated());
+        $items = $this->catalogs->searchHelp($request->validated(null, null));
 
         return view('tables.help', compact('items'));
     }

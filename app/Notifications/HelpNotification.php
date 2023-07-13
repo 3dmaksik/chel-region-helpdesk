@@ -10,27 +10,19 @@ class HelpNotification extends BaseNotification
 {
     public Model $model;
 
-    public string $method;
-
-    public string $route;
-
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($method, $route)
+    public function __construct(public string $method, public string $route)
     {
-        $this->method = $method;
-        $this->route = $route;
     }
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
      */
-    public function via($notifiable): array
+    public function via(mixed $notifiable): array
     {
         return ['broadcast'];
     }

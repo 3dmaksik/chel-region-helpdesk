@@ -9,13 +9,10 @@ use Illuminate\View\View;
 
 class StatisticController extends Controller
 {
-    private StatisticAction $statistic;
-
     public Help $item;
 
-    public function __construct(StatisticAction $statistic)
+    public function __construct(private readonly StatisticAction $statistic)
     {
-        $this->statistic = $statistic;
     }
 
     public function index(): View

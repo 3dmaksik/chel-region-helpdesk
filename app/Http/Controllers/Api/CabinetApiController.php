@@ -19,7 +19,7 @@ class CabinetApiController extends Controller
      */
     public function store(CabinetRequest $request, CabinetAction $cabinetAction): JsonResponse
     {
-        $this->data = $cabinetAction->store($request->validated());
+        $this->data = $cabinetAction->store($request->validated(null, null));
 
         return $this->data;
     }
@@ -29,7 +29,7 @@ class CabinetApiController extends Controller
      */
     public function update(CabinetRequest $request, int $cabinet, CabinetAction $cabinetAction): JsonResponse
     {
-        $this->data = $cabinetAction->update($request->validated(), $cabinet);
+        $this->data = $cabinetAction->update($request->validated(null, null), $cabinet);
 
         return $this->data;
     }

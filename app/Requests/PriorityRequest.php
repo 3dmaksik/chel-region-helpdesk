@@ -8,6 +8,9 @@ use Illuminate\Validation\Rule;
 
 class PriorityRequest extends BaseRequest
 {
+    /**
+     * @return array{description: \Illuminate\Validation\Rules\Unique[]|string[], rang: \Illuminate\Validation\Rules\Unique[]|string[], warning_timer: mixed[], danger_timer: mixed[]}
+     */
     public function rules(): array
     {
         return [

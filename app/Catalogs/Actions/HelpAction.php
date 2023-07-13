@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Notification;
 
 class HelpAction extends Action
 {
-    private ?Model $last;
+    private ?Model $last = null;
 
     private User $user;
 
@@ -47,11 +47,11 @@ class HelpAction extends Action
 
     private string $app_number;
 
-    private ?string $images;
+    private ?string $images = null;
 
-    private ?string $images_final;
+    private ?string $images_final = null;
 
-    private ?int $lead_at;
+    private ?int $lead_at = null;
 
     public function getAllCatalogs(): SimpleCollection
     {
@@ -60,6 +60,9 @@ class HelpAction extends Action
         return $this->items;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::orderBy('status_id', 'ASC')
@@ -76,6 +79,9 @@ class HelpAction extends Action
         return $this->helps;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function getNewPagesPaginate(): array
     {
         $this->items = Model::where('status_id', config('constants.request.new'))
@@ -90,6 +96,9 @@ class HelpAction extends Action
         return $this->helps;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function getWorkerPagesPaginate(): array
     {
         $this->items = Model::where('status_id', config('constants.request.work'))
@@ -106,6 +115,9 @@ class HelpAction extends Action
         return $this->helps;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function getCompletedPagesPaginate(): array
     {
         $this->items = Model::where('status_id', config('constants.request.success'))
@@ -121,6 +133,9 @@ class HelpAction extends Action
         return $this->helps;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function getDismissPagesPaginate(): array
     {
         $this->items = Model::where('status_id', config('constants.request.danger'))
@@ -161,8 +176,8 @@ class HelpAction extends Action
             }
         }
         $this->item->update(['check_write' => true]);
-        $this->item->images = json_decode($this->item->images, true);
-        $this->item->images_final = json_decode($this->item->images_final, true);
+        $this->item->images = json_decode((string) $this->item->images, true, JSON_THROW_ON_ERROR);
+        $this->item->images_final = json_decode((string) $this->item->images_final, true, JSON_THROW_ON_ERROR);
 
         return $this->item;
     }
@@ -182,7 +197,7 @@ class HelpAction extends Action
         }
         $this->calendar_request = Carbon::now();
         if ($request->hasFile('images')) {
-            $this->images = json_encode(StoreFilesHelper::createFileImages($request->file('images'), 'images', 1920, 1080));
+            $this->images = json_encode(StoreFilesHelper::createFileImages($request->file('images'), 'images', 1920, 1080), JSON_THROW_ON_ERROR);
         } else {
             $this->images = $request->file('images');
         }
@@ -207,6 +222,9 @@ class HelpAction extends Action
         return response()->success($this->response);
     }
 
+    /**
+     * @return array{item: mixed, data: \Illuminate\Support\Collection}
+     */
     public function edit(int $id): array
     {
         $this->item = Model::findOrFail($id);
@@ -294,7 +312,7 @@ class HelpAction extends Action
     {
         $this->item = Model::findOrFail($id);
         if ($request->hasFile('images_final')) {
-            $this->images_final = json_encode(StoreFilesHelper::createFileImages($request->file('images_final'), 'images', 1920, 1080));
+            $this->images_final = json_encode(StoreFilesHelper::createFileImages($request->file('images_final'), 'images', 1920, 1080), JSON_THROW_ON_ERROR);
         } else {
             $this->images_final = $request->file('images_final');
         }

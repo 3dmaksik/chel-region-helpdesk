@@ -8,11 +8,8 @@ use Illuminate\View\View;
 
 class HelpController extends Controller
 {
-    private HelpAction $helps;
-
-    public function __construct(HelpAction $helps)
+    public function __construct(private readonly HelpAction $helps)
     {
-        $this->helps = $helps;
     }
 
     public function index(): View

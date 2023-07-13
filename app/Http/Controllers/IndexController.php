@@ -10,11 +10,8 @@ use Illuminate\View\View;
 
 class IndexController extends Controller
 {
-    private HelpAction $helps;
-
-    public function __construct(HelpAction $helps)
+    public function __construct(private readonly HelpAction $helps)
     {
-        $this->helps = $helps;
     }
 
     public function index(): View
@@ -26,7 +23,7 @@ class IndexController extends Controller
 
     public function store(IndexRequest $request): RedirectResponse
     {
-        $this->helps->store($request->validated());
+        $this->helps->store($request->validated(null, null));
 
         return redirect()->route('/');
     }

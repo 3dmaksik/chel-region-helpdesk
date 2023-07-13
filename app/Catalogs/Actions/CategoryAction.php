@@ -21,6 +21,8 @@ class CategoryAction extends Action
 
     /**
      * [all category with count items on page]
+     *
+     * @return array{data: mixed}
      */
     public function getAllPagesPaginate(): array
     {

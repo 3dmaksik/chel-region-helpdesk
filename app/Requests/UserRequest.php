@@ -8,6 +8,9 @@ use Illuminate\Validation\Rule;
 
 class UserRequest extends BaseRequest
 {
+    /**
+     * @return array{name: \Illuminate\Validation\Rules\Unique[]|string[], password: string, firstname: string, lastname: string, patronymic: string, cabinet_id: string, role: string}
+     */
     public function rules(): array
     {
         return [

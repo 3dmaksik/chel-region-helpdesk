@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 
 class SearchRequest extends BaseRequest
 {
+    /**
+     * @return array{search: string}
+     */
     public function rules(): array
     {
         return [

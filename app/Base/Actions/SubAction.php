@@ -6,7 +6,7 @@ use App\Core\Actions\CoreSubAction;
 
 class SubAction extends CoreSubAction
 {
-    public function run()
+    public function run(): void
     {
     }
 }

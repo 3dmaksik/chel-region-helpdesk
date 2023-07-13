@@ -16,7 +16,7 @@ class NewsApiController extends Controller
      */
     public function store(NewsRequest $request, NewsAction $newsAction): JsonResponse
     {
-        $this->data = $newsAction->store($request->validated());
+        $this->data = $newsAction->store($request->validated(null, null));
 
         return $this->data;
     }
@@ -26,7 +26,7 @@ class NewsApiController extends Controller
      */
     public function update(NewsRequest $request, int $news, NewsAction $newsAction): JsonResponse
     {
-        $this->data = $newsAction->update($request->validated(), $news);
+        $this->data = $newsAction->update($request->validated(null, null), $news);
 
         return $this->data;
     }

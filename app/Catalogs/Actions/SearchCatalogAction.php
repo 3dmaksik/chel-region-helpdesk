@@ -20,11 +20,9 @@ class SearchCatalogAction extends Action
 
     private array $searchData;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function searchHelpWork(int $id): array
     {
         $this->helpSearch = Help::where('user_id', $id)->RoleSearch()->paginate($this->page);
@@ -37,6 +35,9 @@ class SearchCatalogAction extends Action
         return $this->searchData;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function searchHelpCategory(int $id): array
     {
         $this->helpSearch = Help::where('category_id', $id)->RoleSearch()->paginate($this->page);
@@ -49,6 +50,9 @@ class SearchCatalogAction extends Action
         return $this->searchData;
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function searchHelpCabinet(int $id): array
     {
         $this->helpSearch =
@@ -78,6 +82,9 @@ class SearchCatalogAction extends Action
 
     }
 
+    /**
+     * @return array{method: string, data: mixed}
+     */
     public function searchHelp(array $request): array
     {
         $item = $request['search'];

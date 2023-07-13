@@ -7,10 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class PasswordRequest extends BaseRequest
 {
+    /**
+     * @return array{current_password: string, password: string}
+     */
     public function rules(): array
     {
         return [
-            'current_password' => 'required|string|min:4|max:255',
+            'current_password' => 'sometimes|required|string|min:4|max:255',
             'password' => 'required|string|min:4|max:255',
         ];
     }

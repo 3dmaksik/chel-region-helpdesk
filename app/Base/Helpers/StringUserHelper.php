@@ -9,7 +9,7 @@ class StringUserHelper extends CoreHelper
     /**
      * [processed string]
      */
-    protected static string|null $data;
+    protected static string|null $data = null;
 
     /**
      * [string processing by 3 parameters]
@@ -28,31 +28,25 @@ class StringUserHelper extends CoreHelper
 
     /**
      * [removing spaces]
-     *
-     * @param  mixed  $string
      */
-    protected static function stringTrim($string): string
+    protected static function stringTrim(mixed $string): string
     {
-        return static::$data = trim($string);
+        return static::$data = trim((string) $string);
     }
 
     /**
      * [convert all characters to lower case]
-     *
-     * @param  mixed  $string
      */
-    protected static function stringAllLower($string): string
+    protected static function stringAllLower(mixed $string): string
     {
-        return static::$data = strtolower($string);
+        return static::$data = strtolower((string) $string);
     }
 
     /**
      * [convert first character to upper case]
-     *
-     * @param  mixed  $string
      */
-    protected static function stringUpFirst($string): string
+    protected static function stringUpFirst(mixed $string): string
     {
-        return static::$data = mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
+        return static::$data = mb_convert_case((string) $string, MB_CASE_TITLE, 'UTF-8');
     }
 }

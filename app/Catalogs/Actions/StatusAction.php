@@ -13,6 +13,9 @@ class StatusAction extends Action
      */
     private array $response;
 
+    /**
+     * @return array{data: mixed}
+     */
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::orderBy('description', 'ASC')->paginate($this->page);

@@ -11,11 +11,8 @@ class HomeApiController extends Controller
 {
     private JsonResponse $data;
 
-    private HomeAction $helps;
-
-    public function __construct(HomeAction $helps)
+    public function __construct(private readonly HomeAction $helps)
     {
-        $this->helps = $helps;
     }
 
     public function store(HelpRequest $request): JsonResponse

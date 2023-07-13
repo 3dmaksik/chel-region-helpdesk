@@ -19,7 +19,7 @@ class PriorityApiController extends Controller
      */
     public function store(PriorityRequest $request, PriorityAction $priorityAction): JsonResponse
     {
-        $this->data = $priorityAction->store($request->validated());
+        $this->data = $priorityAction->store($request->validated(null, null));
 
         return $this->data;
     }
@@ -29,7 +29,7 @@ class PriorityApiController extends Controller
      */
     public function update(PriorityRequest $request, int $priority, PriorityAction $priorityAction): JsonResponse
     {
-        $this->data = $priorityAction->update($request->validated(), $priority);
+        $this->data = $priorityAction->update($request->validated(null, null), $priority);
 
         return $this->data;
     }
