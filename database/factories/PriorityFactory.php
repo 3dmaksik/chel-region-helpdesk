@@ -17,10 +17,10 @@ class PriorityFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => fake()->unique()->text(10),
-            'rang' => fake()->unique()->numberBetween(1, 9),
-            'warning_timer' => 1,
-            'danger_timer' => 2,
+            'description' => fake()->unique()->text(100),
+            'rang' => fake()->numberBetween(4, 255),
+            'warning_timer' => fake()->numberBetween(2, 255),
+            'danger_timer' => fake()->numberBetween(256, 512),
         ];
     }
 }

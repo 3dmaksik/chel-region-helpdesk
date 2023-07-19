@@ -4,7 +4,10 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Category;
 use App\Models\Help;
+use App\Models\Priority;
+use App\Models\Status;
 use App\Models\User;
+use Database\Seeders\CabinetTableSeeder;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -29,6 +32,7 @@ class CategoryTest extends TestCase
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->withoutMiddleware(RedirectIfAuthenticated::class);
         $this->seed(RolesTableSeeder::class);
+        $this->seed(CabinetTableSeeder::class);
 
         $this->superAdmin = User::factory()->create()->assignRole('superAdmin');
         $this->admin = User::factory()->create()->assignRole('admin');
@@ -115,9 +119,14 @@ class CategoryTest extends TestCase
         $category = Category::factory()->create([
             'description' => 'Новая',
         ]);
+        $priority = Priority::factory()->create();
+        $status = Status::factory()->create();
+        $testUser = User::factory()->create()->assignRole('user');
         Help::factory()->create([
             'category_id' => $category->id,
-            'user_id' => fake()->unique()->numberBetween(1, 999),
+            'status_id' => $status->id,
+            'user_id' => $testUser->id,
+            'priority_id' => $priority->id,
             'description_long' => fake()->text(),
         ]);
         $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.category.destroy'), $category->id));

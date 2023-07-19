@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Article;
 use App\Models\User;
+use Database\Seeders\CabinetTableSeeder;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,6 +29,7 @@ class NewsTest extends TestCase
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->withoutMiddleware(RedirectIfAuthenticated::class);
         $this->seed(RolesTableSeeder::class);
+        $this->seed(CabinetTableSeeder::class);
 
         $this->superAdmin = User::factory()->create()->assignRole('superAdmin');
         $this->admin = User::factory()->create()->assignRole('admin');

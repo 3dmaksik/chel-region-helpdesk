@@ -5,16 +5,15 @@ namespace App\Base\Actions;
 use App\Base\Models\Model;
 use App\Core\Actions\CoreAction;
 use App\Core\Resources\CoreResource;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection as SimpleCollection;
+use Illuminate\Support\Collection;
 
 class Action extends CoreAction
 {
     /**
      * [many items]
      */
-    public LengthAwarePaginator|Collection|SimpleCollection $items;
+    public Collection|LengthAwarePaginator $items;
 
     /**
      * [base model or null]

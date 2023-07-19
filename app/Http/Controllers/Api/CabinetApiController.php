@@ -16,6 +16,9 @@ class CabinetApiController extends Controller
 
     /**
      * [add new cabinet]
+     *
+     * @param array{description: int}
+     * @param type [$cabinetAction] cabinetAction
      */
     public function store(CabinetRequest $request, CabinetAction $cabinetAction): JsonResponse
     {
@@ -26,6 +29,9 @@ class CabinetApiController extends Controller
 
     /**
      * [update cabinet]
+     *
+     * @param array{description: int}
+     * @param type [$cabinetAction] cabinetAction
      */
     public function update(CabinetRequest $request, int $cabinet, CabinetAction $cabinetAction): JsonResponse
     {
@@ -36,10 +42,12 @@ class CabinetApiController extends Controller
 
     /**
      * [delete cabinet]
+     *
+     * @param type [$cabinetAction] cabinetAction
      */
     public function destroy(int $cabinet, CabinetAction $cabinetAction): JsonResponse
     {
-        $this->data = $cabinetAction->delete($cabinet);
+        $this->data = $cabinetAction->destroy($cabinet);
 
         return $this->data;
     }

@@ -17,9 +17,20 @@ class HelpFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id' => fake()->unique()->numberBetween(1, 999),
-            'user_id' => fake()->unique()->numberBetween(1, 999),
+            'category_id' => fake()->numberBetween(1, 99),
+            'status_id' => fake()->numberBetween(1, 4),
+            'priority_id' => fake()->numberBetween(1, 6),
+            'user_id' => fake()->numberBetween(1, 64500),
+            'executor_id' => fake()->numberBetween(1, 64500),
+            'info' => fake()->text(),
+            'info_final' => fake()->text(),
+            'calendar_request' => fake()->date(),
+            'calendar_accept' => fake()->date(),
+            'calendar_warning' => fake()->date(),
+            'calendar_execution' => fake()->date(),
+            'calendar_final' => fake()->date(),
             'description_long' => fake()->text(),
+            'lead_at' => fake()->numberBetween(1, 999),
         ];
     }
 }

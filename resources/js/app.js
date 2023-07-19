@@ -119,17 +119,18 @@ $(function () {
             });
         }
     }
-    $(".form-submit").each(function () {
-        $(this).on("submit", function (e) {
+        $(document).on("submit", '.form-submit', function (e) {
             e.preventDefault();
-            var formData = new FormData(this);
+            let formid = $(this).attr('id');
+            let form = document.querySelector('#'+formid);
+            let formData = new FormData(form);
             $.each($("input[type=file]"), function (i, obj) {
                 $.each(obj.files, function (j, file) {
                     formData.append("images[" + j + "]", file);
                 });
             });
             $.ajax({
-                url: $(this).attr("action"),
+                url: $(form).attr("action"),
                 type: "POST",
                 cache: false,
                 dataType: "json",
@@ -138,7 +139,7 @@ $(function () {
                 contentType: false,
                 timeout: 600000,
                 beforeSend: function () {
-                    $('form')
+                    $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", true);
                 },
@@ -161,7 +162,7 @@ $(function () {
                           $(".base-alert-danger").fadeOut(2000);
                         }, 4500);
 
-                    $('form')
+                    $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                 },
@@ -187,20 +188,20 @@ $(function () {
                             location.reload();
                           }, 6500);
                     }
-                    $('form')
+                    $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
-                    if ($("div").hasClass('help_view')) {
-                        if (data.route !=='undefined') {
-                            $.post(data.route, function (data) {
-                                $(".help_view").html(data);
-                            });
+                    if ($("div").hasClass('loader-table')) {
+                        if (data.route !== 'undefined') {
+                                $.post(data.route, function (dataloader) {
+                                    $(".loader-table").html(dataloader);
+                                });
                             }
-                        }
+                    }
                 },
             });
+            return false;
         });
-    });
     function newCount() {
         $.ajax({
             url: "/api/help/new",

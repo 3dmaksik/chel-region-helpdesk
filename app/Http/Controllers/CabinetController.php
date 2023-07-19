@@ -10,12 +10,26 @@ class CabinetController extends Controller
 {
     /**
      * [all cabinet]
+     *
+     * @param type [$cabinetAction] cabinetAction
      */
     public function index(CabinetAction $cabinetAction): View
     {
         $items = $cabinetAction->getAllPagesPaginate();
 
         return view('tables.cabinet', compact('items'));
+    }
+
+    /**
+     * [all cabinet for loader]
+     *
+     * @param type [$cabinetAction] cabinetAction
+     */
+    public function getIndex(CabinetAction $cabinetAction): View
+    {
+        $items = $cabinetAction->getAllPagesPaginate();
+
+        return view('loader.cabinet', compact('items'));
     }
 
     /**
@@ -28,6 +42,8 @@ class CabinetController extends Controller
 
     /**
      * [edit cabinet]
+     *
+     * @param type [$cabinetAction] cabinetAction
      */
     public function edit(int $cabinet, CabinetAction $cabinetAction): View
     {

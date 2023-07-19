@@ -16,6 +16,8 @@ class CabinetTableSeeder extends Seeder
     {
         DB::table('cabinet')->insert([
             'description' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

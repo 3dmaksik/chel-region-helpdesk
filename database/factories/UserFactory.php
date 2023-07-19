@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Cabinet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -17,6 +18,8 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $cabinet = Cabinet::orderBy('id', 'DESC')->first();
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -25,7 +28,7 @@ class UserFactory extends Factory
             'lastname' => 'Фамилия',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'cabinet_id' => 1,
+            'cabinet_id' => $cabinet->id,
         ];
     }
 

@@ -14,8 +14,6 @@ class Help extends Model
 
     protected $primaryKey = 'id';
 
-    protected $cacheFor = 0;
-
     protected array $lead;
 
     protected $fillable = [

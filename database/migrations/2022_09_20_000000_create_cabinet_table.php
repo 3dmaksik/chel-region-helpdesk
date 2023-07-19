@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('cabinet', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->float('description')->unique();
+            $table->float('description')->unique()->index();
             $table->timestamps();
         });
     }

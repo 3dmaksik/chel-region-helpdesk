@@ -3,8 +3,12 @@
 namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Cabinet;
+use App\Models\Category;
 use App\Models\Help;
+use App\Models\Priority;
+use App\Models\Status;
 use App\Models\User;
+use Database\Seeders\CabinetTableSeeder;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,6 +35,7 @@ class UserTest extends TestCase
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->withoutMiddleware(RedirectIfAuthenticated::class);
         $this->seed(RolesTableSeeder::class);
+        $this->seed(CabinetTableSeeder::class);
 
         $this->superAdmin = User::factory()->create()->assignRole('superAdmin');
         $this->admin = User::factory()->create()->assignRole('admin');
@@ -261,6 +266,10 @@ class UserTest extends TestCase
     public function test_controller_user_update_error_help_check_super_admin(): void
     {
         $cabinet = Cabinet::factory()->create();
+        $category = Category::factory()->create([
+            'description' => 'Новая',
+        ]);
+        $status = Status::factory()->create();
         $response = $this->actingAs($this->superAdmin, 'web')->putJson(route(config('constants.users.update'), $this->superAdmin->id),
             [
                 'name' => 'testUpdate',
@@ -269,6 +278,8 @@ class UserTest extends TestCase
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
                 'cabinet_id' => $cabinet->id,
+                'category_id' => $category->id,
+                'status_id' => $status->id,
                 'role' => 'admin',
             ], [
                 'Accept' => 'application/json',
@@ -279,6 +290,11 @@ class UserTest extends TestCase
     public function test_controller_user_destroy_error_help_check_super_admin(): void
     {
         $cabinet = Cabinet::factory()->create();
+        $priority = Priority::factory()->create();
+        $status = Status::factory()->create();
+        $category = Category::factory()->create([
+            'description' => 'Новая',
+        ]);
         $testUser = User::factory()->create([
             'name' => fake()->unique()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -290,9 +306,10 @@ class UserTest extends TestCase
             'cabinet_id' => $cabinet->id,
         ])->assignRole('superAdmin');
         Help::factory()->create([
-            'category_id' => 1,
-            'priority_id' => 1,
             'user_id' => $testUser->id,
+            'status_id' => $status->id,
+            'category_id' => $category->id,
+            'priority_id' => $priority->id,
             'description_long' => fake()->text(),
         ]);
         $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.users.destroy'), $testUser->id));

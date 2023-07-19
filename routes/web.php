@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function (): void {
         ->as('help.')
         ->group(function (): void {
             Route::get('helps/all', 'index')->name('index')->middleware('can:all help');
-            Route::post('helps/all', 'getIndex')->name('index')->middleware('can:all help');
+            Route::get('helps/pagination', 'getIndex')->name('getIndex')->middleware('can:all help');
             Route::get('helps/new', 'new')->name('new')->middleware('can:new help');
             Route::post('helps/new', 'getNew')->name('new')->middleware('can:new help');
             Route::get('create', 'create')->name('create')->middleware('can:create help');
@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function (): void {
         ->as('cabinet.')
         ->group(function (): void {
             Route::get('', 'index')->name('index')->middleware('can:view cabinet');
+            Route::post('', 'getIndex')->name('getIndex')->middleware('can:view cabinet');
             Route::get('create', 'create')->name('create')->middleware('can:create cabinet');
             Route::get('{cabinet}/edit', 'edit')->name('edit')->middleware('can:edit cabinet');
         });
