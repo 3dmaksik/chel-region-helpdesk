@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Core\Contracts\ICabinet;
 use App\Models\Cabinet as Model;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 final class CabinetAction extends Action implements ICabinet
 {
     /**
-     * [result cabinet]
+     * [result data]
      *
      * @var response [data => null|Illuminate\Pagination\LengthAwarePaginator,
      *                message => null|string,
-     *                route => null|string,
      *                reload => null|bool]
      */
     private array $response;
@@ -28,13 +31,17 @@ final class CabinetAction extends Action implements ICabinet
     private int $countUser;
 
     /**
-     * [all cabinet with count items on page]
+     * [all cabinet cache with count items on page]
      *
      * @return array{data: Illuminate\Pagination\LengthAwarePaginator}
      */
     public function getAllPagesPaginate(): array
     {
-        $this->items = Model::query()->orderBy('description', 'ASC')->paginate($this->page);
+        $this->currentPage = request()->get('page', 1);
+        $this->items = Cache::remember('cabinet.'.$this->currentPage, Carbon::now()->addDay(), function () {
+            return Model::query()->orderBy('description', 'ASC')->paginate($this->page);
+        });
+
         $this->response =
         [
             'data' => $this->items,
@@ -64,7 +71,7 @@ final class CabinetAction extends Action implements ICabinet
     /**
      * [add new cabinet]
      *
-     * @param array $request {description: int}
+     * @param  array  $request {description: int}
      */
     public function store(array $request): JsonResponse
     {
@@ -80,7 +87,7 @@ final class CabinetAction extends Action implements ICabinet
     /**
      * [update cabinet]
      *
-     * @param array $request {description: int}
+     * @param  array  $request {description: int}
      */
     public function update(array $request, int $id): JsonResponse
     {
@@ -127,7 +134,6 @@ final class CabinetAction extends Action implements ICabinet
         $this->item->query()->forceDelete();
         $this->response = [
             'message' => 'Кабинет успешно удалён!',
-            'route' => route('cabinet.getIndex'),
         ];
 
         return response()->success($this->response);

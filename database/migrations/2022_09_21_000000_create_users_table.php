@@ -20,7 +20,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('cabinet')
                 ->onDelete('cascade');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

@@ -39,7 +39,7 @@ class CategoryApiController extends Controller
      */
     public function destroy(int $category, CategoryAction $categoryAction): JsonResponse
     {
-        $this->data = $categoryAction->delete($category);
+        $this->data = $categoryAction->destroy($category);
 
         return $this->data;
     }

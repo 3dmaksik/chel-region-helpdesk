@@ -31,13 +31,16 @@ $(function () {
         ajax: {
             url: '/api/select2/cabinet',
             dataType: 'json',
-            delay: 10,
+            delay: 2,
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
-                        return {
-                            text: item.description,
-                            id: item.id
+                        if (item.description !== undefined)
+                        {
+                            return {
+                                text: item.description,
+                                id: item.id
+                            }
                         }
                     })
                 };
@@ -192,11 +195,7 @@ $(function () {
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                     if ($("div").hasClass('loader-table')) {
-                        if (data.route !== 'undefined') {
-                                $.post(data.route, function (dataloader) {
-                                    $(".loader-table").html(dataloader);
-                                });
-                            }
+                        $(form).parent().parent().parent().parent().parent().fadeOut(2000);
                     }
                 },
             });

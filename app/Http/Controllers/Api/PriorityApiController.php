@@ -39,7 +39,7 @@ class PriorityApiController extends Controller
      */
     public function destroy(int $priority, PriorityAction $priorityAction): JsonResponse
     {
-        $this->data = $priorityAction->delete($priority);
+        $this->data = $priorityAction->destroy($priority);
 
         return $this->data;
     }

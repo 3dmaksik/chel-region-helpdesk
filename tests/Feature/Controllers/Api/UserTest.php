@@ -47,7 +47,7 @@ class UserTest extends TestCase
     {
         $cabinet = Cabinet::factory()->create();
         $response = $this->actingAs($this->superAdmin, 'web')->get(route(('select2.cabinet'), 'q='.$cabinet->description));
-        $response->assertJsonFragment(['id' => $cabinet->id, 'description' => $cabinet->description]);
+        $response->assertJsonFragment(['id' => $cabinet->id, 'description' => (string) $cabinet->description]);
         $response->assertStatus(200);
     }
 
@@ -307,6 +307,7 @@ class UserTest extends TestCase
         ])->assignRole('superAdmin');
         Help::factory()->create([
             'user_id' => $testUser->id,
+            'executor_id' => $testUser->id,
             'status_id' => $status->id,
             'category_id' => $category->id,
             'priority_id' => $priority->id,

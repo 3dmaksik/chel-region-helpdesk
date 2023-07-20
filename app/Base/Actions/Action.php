@@ -31,9 +31,14 @@ class Action extends CoreAction
     public array $data;
 
     /**
-     * [Description for $page]
+     * [page in config paginate]
      */
     public int $page;
+
+    /**
+     * [Current page for cache]
+     */
+    public int|string $currentPage;
 
     /**
      * [setup for all pages]

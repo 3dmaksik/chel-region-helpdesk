@@ -24,7 +24,6 @@ class SettingsApiController extends Controller
 
     public function updateSettings(AccountRequest $request, SettingsAction $settingsAction): JsonResponse
     {
-        //DTO добавить и request
         $this->data = $settingsAction->updateSettings($request);
 
         return $this->data;

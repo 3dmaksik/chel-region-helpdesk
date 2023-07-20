@@ -55,7 +55,6 @@ Route::middleware('auth')->group(function (): void {
         ->as('cabinet.')
         ->group(function (): void {
             Route::get('', 'index')->name('index')->middleware('can:view cabinet');
-            Route::post('', 'getIndex')->name('getIndex')->middleware('can:view cabinet');
             Route::get('create', 'create')->name('create')->middleware('can:create cabinet');
             Route::get('{cabinet}/edit', 'edit')->name('edit')->middleware('can:edit cabinet');
         });

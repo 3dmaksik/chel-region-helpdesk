@@ -21,7 +21,7 @@ class UserFactory extends Factory
         $cabinet = Cabinet::orderBy('id', 'DESC')->first();
 
         return [
-            'name' => fake()->name(),
+            'name' => fake()->unique()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'firstname' => 'Имя',

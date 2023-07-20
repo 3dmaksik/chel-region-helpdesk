@@ -10,6 +10,8 @@ class StatusController extends Controller
 {
     /**
      * [all status]
+     *
+     * @param type [$statusAction] statusAction
      */
     public function index(StatusAction $statusAction): View
     {
@@ -20,6 +22,8 @@ class StatusController extends Controller
 
     /**
      * [edit status]
+     *
+     * @param type [$statustAction] statusAction
      */
     public function edit(int $status, StatusAction $statusAction): View
     {

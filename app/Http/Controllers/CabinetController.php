@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
@@ -18,18 +20,6 @@ class CabinetController extends Controller
         $items = $cabinetAction->getAllPagesPaginate();
 
         return view('tables.cabinet', compact('items'));
-    }
-
-    /**
-     * [all cabinet for loader]
-     *
-     * @param type [$cabinetAction] cabinetAction
-     */
-    public function getIndex(CabinetAction $cabinetAction): View
-    {
-        $items = $cabinetAction->getAllPagesPaginate();
-
-        return view('loader.cabinet', compact('items'));
     }
 
     /**

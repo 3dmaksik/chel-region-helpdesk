@@ -17,7 +17,7 @@ class UserRequest extends BaseRequest
             'name' => [
                 'required',
                 'string',
-                'max:256',
+                'max:255',
                 Rule::unique('users')->ignore(empty($this->user) ? 0 : $this->user),
             ],
             'password' => 'sometimes|required|string|min:4|max:255',

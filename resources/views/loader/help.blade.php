@@ -10,7 +10,7 @@
                 заявка</button></a>
         @endif
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive loader-table">
         <table class="table align-items-center table-flush">
             <thead class="thead-light">
                 <tr>

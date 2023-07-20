@@ -186,6 +186,7 @@ class PriorityTest extends TestCase
             'category_id' => $category->id,
             'status_id' => $status->id,
             'user_id' => $testUser->id,
+            'executor_id' => $testUser->id,
             'priority_id' => $priority->id,
             'description_long' => fake()->text(),
         ]);

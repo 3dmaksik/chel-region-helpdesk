@@ -17,7 +17,7 @@ class CabinetFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => fake()->unique()->numberBetween(2, 70000),
+            'description' => fake()->unique()->numberBetween(2, 255),
         ];
     }
 }

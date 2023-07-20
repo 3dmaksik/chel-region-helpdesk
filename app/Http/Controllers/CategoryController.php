@@ -10,6 +10,8 @@ class CategoryController extends Controller
 {
     /**
      * [all category]
+     *
+     * @param type [$categorytAction] categoryAction
      */
     public function index(CategoryAction $categoryAction): View
     {
