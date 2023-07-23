@@ -7,13 +7,8 @@ use App\Catalogs\Actions\CategoryAction;
 use App\Requests\CategoryRequest;
 use Illuminate\Http\JsonResponse;
 
-class CategoryApiController extends Controller
+final class CategoryApiController extends Controller
 {
-    /**
-     * [result data]
-     */
-    private JsonResponse $data;
-
     /**
      * [add new category]
      */

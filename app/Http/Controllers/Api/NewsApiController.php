@@ -7,10 +7,8 @@ use App\Catalogs\Actions\NewsAction;
 use App\Requests\NewsRequest;
 use Illuminate\Http\JsonResponse;
 
-class NewsApiController extends Controller
+final class NewsApiController extends Controller
 {
-    private JsonResponse $data;
-
     /**
      * [add new article]
      */
@@ -36,7 +34,7 @@ class NewsApiController extends Controller
      */
     public function destroy(int $news, NewsAction $newsAction): JsonResponse
     {
-        $this->data = $newsAction->delete($news);
+        $this->data = $newsAction->destroy($news);
 
         return $this->data;
     }

@@ -39,8 +39,6 @@ class HelpAction extends Action
 
     private array $helps;
 
-    private array $response;
-
     private array $dataClear;
 
     private int $count;

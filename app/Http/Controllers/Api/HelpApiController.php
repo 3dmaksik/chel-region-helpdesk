@@ -9,8 +9,6 @@ use Illuminate\Http\JsonResponse;
 
 class HelpApiController extends Controller
 {
-    private JsonResponse $data;
-
     private string $dataCatalog;
 
     public function __construct(private readonly HelpAction $helps)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
@@ -26,11 +28,6 @@ class SettingsAction extends Action
      * [this sound notify]
      */
     private array $soundNotify;
-
-    /**
-     * [count role for user]
-     */
-    private int $countRole;
 
     public function __construct()
     {
@@ -71,7 +68,6 @@ class SettingsAction extends Action
     public function updateSettings(AccountRequest $request): JsonResponse
     {
         $this->user = User::findOrFail(auth()->user()->id);
-        $this->countRole = User::role(['superAdmin'])->count();
         $this->resource = new UserResource($request);
         $this->data = $this->resource->resolve();
         if (isset($this->data['avatar'])) {

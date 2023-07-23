@@ -20,30 +20,30 @@
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.priority.update'),$item->id) }}">
+        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.priority.update'),$item['data']->id) }}">
             @method('PATCH')
             <div class="form-group">
                 <label for="">Название</label>
-                <input type="text" name="description" value="{{ $item->description }}" class="form-control"
+                <input type="text" name="description" value="{{ $item['data']->description }}" class="form-control"
                     id="description" aria-describedby="textHelp" placeholder="Средний" autocomplete="off">
                 <small id="textHelp" class="form-text text-muted">Введите наименование приоритета</small>
             </div>
             <div class="form-group">
                 <label for="">Позиция</label>
-                <input type="text" name="rang" value="{{ $item->rang }}" class="form-control" id="rang"
+                <input type="text" name="rang" value="{{ $item['data']->rang }}" class="form-control" id="rang"
                     aria-describedby="textRang" placeholder="3" autocomplete="off">
                 <small id="textRang" class="form-text text-muted">Укажите позицию от 1 до 9</small>
             </div>
             <div class="form-group">
                 <label for="">Время</label>
-                <input type="text" name="warning_timer" value="{{ $item->warning_timer}}" class="form-control"
+                <input type="text" name="warning_timer" value="{{ $item['data']->warning_timer}}" class="form-control"
                     id="warning-timer" aria-describedby="textWarningTimer" placeholder="1" autocomplete="off">
                 <small id="textWarningTimer" class="form-text text-muted">Укажите длительность для предупреждения
                     приоритета в часах</small>
             </div>
             <div class="form-group">
                 <label for="">Время</label>
-                <input type="text" name="danger_timer" value="{{ $item->danger_timer }}" class="form-control"
+                <input type="text" name="danger_timer" value="{{ $item['data']->danger_timer }}" class="form-control"
                     id="danger-timer" aria-describedby="textDangerTimer" placeholder="2" autocomplete="off">
                 <small id="textDangerTimer" class="form-text text-muted">Укажите длительность для просрочки приоритета в
                     часах</small>

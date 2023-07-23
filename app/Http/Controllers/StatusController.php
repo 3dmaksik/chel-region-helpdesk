@@ -6,12 +6,10 @@ use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\StatusAction;
 use Illuminate\View\View;
 
-class StatusController extends Controller
+final class StatusController extends Controller
 {
     /**
      * [all status]
-     *
-     * @param type [$statusAction] statusAction
      */
     public function index(StatusAction $statusAction): View
     {
@@ -22,8 +20,6 @@ class StatusController extends Controller
 
     /**
      * [edit status]
-     *
-     * @param type [$statustAction] statusAction
      */
     public function edit(int $status, StatusAction $statusAction): View
     {

@@ -20,11 +20,11 @@
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.status.update'),$item->id) }}">
+        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.status.update'),$item['data']->id) }}">
             @method('PATCH')
             <div class="form-group">
                 <label for="">Наименование</label>
-                <input type="text" name="description" value="{{ $item->description }}"
+                <input type="text" name="description" value="{{ $item['data']->description }}"
                     class="form-control @error('description') is-invalid @enderror" id="description"
                     aria-describedby="textHelp" placeholder="Пр. 1" autocomplete="off">
                 <small id="textHelp" class="form-text text-muted">Введите статус</small>
@@ -36,7 +36,7 @@
                 <label for="select2-color">Выберите цвет статуса</label>
                 <select class="select2-single form-control" name="color" id="select2-color">
                     @foreach( config("color") as $color=>$value)
-                    <option @if ($value['slug']=="$item->color" ) selected @endif value="{{ $value['slug'] }}">{{
+                    <option @if ($value['slug']==$item['data']->color) selected @endif value="{{ $value['slug'] }}">{{
                         $value['name'] }}</option>
                     @endforeach
                 </select>

@@ -9,8 +9,6 @@ use Illuminate\Http\JsonResponse;
 
 class HomeApiController extends Controller
 {
-    private JsonResponse $data;
-
     public function __construct(private readonly HomeAction $helps)
     {
     }

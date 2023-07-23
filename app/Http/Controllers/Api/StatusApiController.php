@@ -7,13 +7,8 @@ use App\Catalogs\Actions\StatusAction;
 use App\Requests\StatusRequest;
 use Illuminate\Http\JsonResponse;
 
-class StatusApiController extends Controller
+final class StatusApiController extends Controller
 {
-    /**
-     * [result data]
-     */
-    private JsonResponse $data;
-
     /**
      * [update status]
      */

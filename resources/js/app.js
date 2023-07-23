@@ -189,14 +189,11 @@ $(function () {
                     {
                         setTimeout(function(){
                             location.reload();
-                          }, 6500);
+                          }, 7500);
                     }
                     $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
-                    if ($("div").hasClass('loader-table')) {
-                        $(form).parent().parent().parent().parent().parent().fadeOut(2000);
-                    }
                 },
             });
             return false;

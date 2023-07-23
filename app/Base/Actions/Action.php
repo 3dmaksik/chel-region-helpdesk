@@ -2,6 +2,7 @@
 
 namespace App\Base\Actions;
 
+use App\Base\DTO\DTO;
 use App\Base\Models\Model;
 use App\Core\Actions\CoreAction;
 use App\Core\Resources\CoreResource;
@@ -10,6 +11,15 @@ use Illuminate\Support\Collection;
 
 class Action extends CoreAction
 {
+    /**
+     * [result data]
+     *
+     * @var response [data => null|Illuminate\Pagination\LengthAwarePaginator,
+     *                message => null|string,
+     *                reload => null|bool]
+     */
+    public array $response;
+
     /**
      * [many items]
      */
@@ -29,6 +39,11 @@ class Action extends CoreAction
      * [data for database or result data]
      */
     public array $data;
+
+    /**
+     * [data object for database]
+     */
+    public DTO $dataObject;
 
     /**
      * [page in config paginate]

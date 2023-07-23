@@ -8,7 +8,7 @@
         <a href="{{ route(config('constants.category.create')) }}"> <button type="button"
                 class="btn btn-primary mb-1">Новая категория</button></a>
     </div>
-        <div class="table-responsive  loader-table">
+        <div class="table-responsive loader-table">
             <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                     <tr>

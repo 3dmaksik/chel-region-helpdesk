@@ -8,12 +8,10 @@ use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\CabinetAction;
 use Illuminate\View\View;
 
-class CabinetController extends Controller
+final class CabinetController extends Controller
 {
     /**
      * [all cabinet]
-     *
-     * @param type [$cabinetAction] cabinetAction
      */
     public function index(CabinetAction $cabinetAction): View
     {
@@ -32,8 +30,6 @@ class CabinetController extends Controller
 
     /**
      * [edit cabinet]
-     *
-     * @param type [$cabinetAction] cabinetAction
      */
     public function edit(int $cabinet, CabinetAction $cabinetAction): View
     {

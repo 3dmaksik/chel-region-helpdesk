@@ -1,25 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Catalogs\DTO\CategoryDTO;
+use App\Core\Contracts\ICatalog;
+use App\Core\Contracts\ICatalogExtented;
 use App\Models\Category as Model;
 use App\Models\Help;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
-final class CategoryAction extends Action
+final class CategoryAction extends Action implements ICatalog, ICatalogExtented
 {
-    /**
-     * [result data]
-     *
-     * @var response [data => null|Illuminate\Pagination\LengthAwarePaginator,
-     *                message => null|string,
-     *                reload => null|bool]
-     */
-    private array $response;
-
     /**
      * [count user for category]
      *
@@ -50,31 +46,37 @@ final class CategoryAction extends Action
     /**
      * [show one category]
      */
-    public function show(int $id): Model
+    public function show(int $id): array
     {
         $this->item = Model::query()->find($id);
-
         if (! $this->item) {
-            $this->response = [
-                'message' => 'Категория не найдена!',
-            ];
 
-            return response()->error($this->response);
+            return abort(404);
         }
+        $this->response =
+        [
+            'data' => $this->item,
+        ];
 
-        return $this->item;
+        return $this->response;
     }
 
     /**
      * [add new category]
      *
-     * @param  array  $request {description: int}
+     * @param  array  $request {description: string}
      */
     public function store(array $request): JsonResponse
     {
-        $this->item = Model::query()->create($request);
+        $this->dataObject = new CategoryDTO(
+            $request['description']
+        );
+        $this->item = new Model();
+        $this->item->description = $this->dataObject->description;
+        $this->item->save();
         $this->response = [
-            'message' => 'Категория успешно добавлена!',
+            'message' => 'Категория успешно добавлена в очередь на размещение!',
+            'reload' => true,
         ];
 
         return response()->success($this->response);
@@ -84,10 +86,13 @@ final class CategoryAction extends Action
     /**
      * [update category]
      *
-     * @param  array  $request {description: int}
+     * @param  array  $request {description: string}
      */
     public function update(array $request, int $id): JsonResponse
     {
+        $this->dataObject = new CategoryDTO(
+            $request['description']
+        );
         $this->item = Model::query()->find($id);
 
         if (! $this->item) {
@@ -97,9 +102,10 @@ final class CategoryAction extends Action
 
             return response()->error($this->response);
         }
-        $this->item->query()->update($request);
+        $this->item->description = $this->dataObject->description;
+        $this->item->save();
         $this->response = [
-            'message' => 'Категория успешно обновлёна!',
+            'message' => 'Категория успешно добавлена в очередь на обновление!',
         ];
 
         return response()->success($this->response);
@@ -114,7 +120,6 @@ final class CategoryAction extends Action
         if ($this->countHelp > 0) {
             $this->response = [
                 'message' => 'Категория не может быть удалена, так как не удалены все заявки связанные с ней!',
-                'reload' => true,
             ];
 
             return response()->error($this->response);
@@ -130,7 +135,7 @@ final class CategoryAction extends Action
         }
         $this->item->query()->forceDelete();
         $this->response = [
-            'message' => 'Категория успешно удалёна!',
+            'message' => 'Категория успешно поставлена в очередь на удаление!',
         ];
 
         return response()->success($this->response);

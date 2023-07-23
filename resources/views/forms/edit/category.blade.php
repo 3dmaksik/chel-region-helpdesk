@@ -20,11 +20,11 @@
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.category.update'),$item->id) }}">
+        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.category.update'),$item['data']->id) }}">
             @method('PATCH')
             <div class="form-group">
                 <label for="">Категория</label>
-                <input type="text" name="description" value="{{ $item->description }}" class="form-control"
+                <input type="text" name="description" value="{{ $item['data']->description }}" class="form-control"
                     id="description" aria-describedby="textHelp" placeholder="Категория" autocomplete="off">
                 <small id="textHelp" class="form-text text-muted">Введите категорию</small>
             </div>

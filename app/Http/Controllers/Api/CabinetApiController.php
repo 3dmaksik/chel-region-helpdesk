@@ -9,13 +9,8 @@ use App\Catalogs\Actions\CabinetAction;
 use App\Requests\CabinetRequest;
 use Illuminate\Http\JsonResponse;
 
-class CabinetApiController extends Controller
+final class CabinetApiController extends Controller
 {
-    /**
-     * [result data]
-     */
-    private JsonResponse $data;
-
     /**
      * [add new cabinet]
      */

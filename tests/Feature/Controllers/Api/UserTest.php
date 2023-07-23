@@ -239,6 +239,24 @@ class UserTest extends TestCase
         $response->assertStatus(422);
     }
 
+    public function test_controller_user_store_password_error_super_admin(): void
+    {
+        $cabinet = Cabinet::factory()->create();
+        $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.users.store')),
+            [
+                'name' => 'testStore',
+                'firstname' => 'Имя',
+                'lastname' => 'Фамилия',
+                'patronymic' => 'Отчество',
+                'cabinet_id' => $cabinet->id,
+                'role' => 'user',
+
+            ], [
+                'Accept' => 'application/json',
+            ]);
+        $response->assertStatus(422);
+    }
+
     public function test_controller_user_update_password_error_super_admin(): void
     {
         $cabinet = Cabinet::factory()->create();
@@ -273,7 +291,6 @@ class UserTest extends TestCase
         $response = $this->actingAs($this->superAdmin, 'web')->putJson(route(config('constants.users.update'), $this->superAdmin->id),
             [
                 'name' => 'testUpdate',
-                'password' => 'password1',
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',

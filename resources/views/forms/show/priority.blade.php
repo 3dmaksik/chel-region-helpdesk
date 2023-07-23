@@ -21,13 +21,16 @@
     </div>
     <div class="card-body">
         <p class="text-primary">Наименование приоритета</p>
-        <p>{{ $item->description }}</p>
+        <p>{{ $item['data']->description }}</p>
         <p class="text-primary">Позиция</p>
-        <p>{{ $item->rang }}</p>
+        <p>{{ $item['data']->rang }}</p>
         <p class="text-primary">Время до предупреждения</p>
-        <p>{{ $item->warning_timer}}ч.</p>
+        <p>{{ $item['data']->warning_timer}}ч.</p>
         <p class="text-primary">Время до просрочки</p>
-        <p>{{ $item->danger_timer}}ч.</p>
+        <p>{{ $item['data']->danger_timer}}ч.</p>
+        @can('edit priority')
+        <a class="btn btn-success" href="{{ route(config('constants.priority.edit'), $item['data']->id)}}">Редактировать приоритет</a>
+        @endcan
     </div>
 </div>
 </div>

@@ -7,13 +7,8 @@ use App\Catalogs\Actions\PriorityAction;
 use App\Requests\PriorityRequest;
 use Illuminate\Http\JsonResponse;
 
-class PriorityApiController extends Controller
+final class PriorityApiController extends Controller
 {
-    /**
-     * [result data]
-     */
-    private JsonResponse $data;
-
     /**
      * [add new priority]
      */

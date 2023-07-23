@@ -20,8 +20,6 @@ class HomeAction extends Action
 {
     private array $helps;
 
-    private array $response;
-
     private Model|null $last = null;
 
     public User $superAdmin;

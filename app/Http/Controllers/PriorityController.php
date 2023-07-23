@@ -6,7 +6,7 @@ use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\PriorityAction;
 use Illuminate\View\View;
 
-class PriorityController extends Controller
+final class PriorityController extends Controller
 {
     /**
      * [all priority]

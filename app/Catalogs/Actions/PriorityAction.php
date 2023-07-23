@@ -1,25 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Catalogs\DTO\PriorityDTO;
+use App\Core\Contracts\ICatalog;
+use App\Core\Contracts\ICatalogExtented;
 use App\Models\Help;
 use App\Models\Priority as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 
-final class PriorityAction extends Action
+final class PriorityAction extends Action implements ICatalog, ICatalogExtented
 {
-    /**
-     * [result data]
-     *
-     * @var response [data => null|Illuminate\Pagination\LengthAwarePaginator,
-     *                message => null|string,
-     *                reload => null|bool]
-     */
-    private array $response;
-
     /**
      * [count help for priority]
      *
@@ -50,11 +46,19 @@ final class PriorityAction extends Action
     /**
      * [show one priority]
      */
-    public function show(int $id): Model
+    public function show(int $id): array
     {
-        $this->item = Model::findOrFail($id);
+        $this->item = Model::query()->find($id);
+        if (! $this->item) {
 
-        return $this->item;
+            return abort(404);
+        }
+        $this->response =
+        [
+            'data' => $this->item,
+        ];
+
+        return $this->response;
     }
 
     /**
@@ -64,9 +68,21 @@ final class PriorityAction extends Action
      */
     public function store(array $request): JsonResponse
     {
-        $this->item = Model::query()->create($request);
+        $this->dataObject = new PriorityDTO(
+            $request['description'],
+            $request['rang'],
+            $request['warning_timer'],
+            $request['danger_timer']
+        );
+        $this->item = new Model();
+        $this->item->description = $this->dataObject->description;
+        $this->item->rang = $this->dataObject->rang;
+        $this->item->warning_timer = $this->dataObject->warning_timer;
+        $this->item->danger_timer = $this->dataObject->danger_timer;
+        $this->item->save();
         $this->response = [
-            'message' => 'Приоритет успешно добавлен!',
+            'message' => 'Приоритет успешно добавлен в очередь на размещение!',
+            'reload' => true,
         ];
 
         return response()->success($this->response);
@@ -88,9 +104,21 @@ final class PriorityAction extends Action
 
             return response()->error($this->response);
         }
-        $this->item->query()->update($request);
+
+        $this->dataObject = new PriorityDTO(
+            $request['description'],
+            $request['rang'],
+            $request['warning_timer'],
+            $request['danger_timer']
+        );
+        $this->item->description = $this->dataObject->description;
+        $this->item->rang = $this->dataObject->rang;
+        $this->item->warning_timer = $this->dataObject->warning_timer;
+        $this->item->danger_timer = $this->dataObject->danger_timer;
+        $this->item->save();
+
         $this->response = [
-            'message' => 'Приоритет успешно обновлён!',
+            'message' => 'Приоритет успешно добавлен в очередь на обновление!',
         ];
 
         return response()->success($this->response);
@@ -121,8 +149,7 @@ final class PriorityAction extends Action
         }
         $this->item->query()->forceDelete();
         $this->response = [
-            'message' => 'Приоритет успешно удалён!',
-            'reload' => true,
+            'message' => 'Приоритет успешно поставлен в очередь на удаление!',
         ];
 
         return response()->success($this->response);
