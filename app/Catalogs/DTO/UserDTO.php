@@ -14,7 +14,7 @@ final class UserDTO extends DTO
 
     public readonly string $lastname;
 
-    public readonly int $cabinetId;
+    public readonly string $cabinetId;
 
     public readonly string $role;
 
@@ -26,10 +26,10 @@ final class UserDTO extends DTO
         string $name,
         string $firstname,
         string $lastname,
-        int $cabinetId,
+        string $cabinetId,
         string $role,
         ?PasswordDTO $password,
-        ?string $patronymic = null,
+        string $patronymic = null,
     ) {
         $this->name = $name;
         $this->firstname = $firstname;

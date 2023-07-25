@@ -34,4 +34,9 @@ class HelpNotification extends BaseNotification
             'route' => $this->route,
         ]);
     }
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.User.'.$this->id;
+    }
 }

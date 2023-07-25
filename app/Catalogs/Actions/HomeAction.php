@@ -20,7 +20,7 @@ class HomeAction extends Action
 {
     private array $helps;
 
-    private Model|null $last = null;
+    private ?Model $last = null;
 
     public User $superAdmin;
 
@@ -135,11 +135,11 @@ class HomeAction extends Action
             'images' => $this->images,
             'images_final' => $this->images_final,
         ]);
-        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
-        if ($this->data->user_id == null) {
-            $this->data->user_id = auth()->user()->id;
+        $data1 = HelpDTO::storeObjectRequest($request, $this->options);
+        if ($data1->user_id == null) {
+            $data1->user_id = auth()->user()->id;
         }
-        $this->dataClear = $this->clear($this->data);
+        $this->dataClear = $this->clear($data1);
         $this->item = Model::create($this->dataClear);
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();

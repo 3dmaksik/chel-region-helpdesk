@@ -45,7 +45,7 @@ final class HelpDTO extends DTO
 
     public ?bool $check_write = null;
 
-    public static function storeObjectRequest(Request $request, ?SimpleCollection $options = null): self
+    public static function storeObjectRequest(Request $request, SimpleCollection $options = null): self
     {
         $dto = new self();
         $dto->category_id = $request->get('category_id');

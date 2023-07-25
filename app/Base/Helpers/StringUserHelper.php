@@ -9,12 +9,12 @@ class StringUserHelper extends CoreHelper
     /**
      * [processed string]
      */
-    protected static string|null $data = null;
+    protected static ?string $data = null;
 
     /**
      * [string processing by 3 parameters]
      */
-    public static function run(string|null $string): string|null
+    public static function run(?string $string): ?string
     {
         static::$data = $string;
         if (static::$data != null) {

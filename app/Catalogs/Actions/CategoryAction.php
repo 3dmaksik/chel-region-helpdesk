@@ -31,7 +31,7 @@ final class CategoryAction extends Action implements ICatalog, ICatalogExtented
     public function getAllPagesPaginate(): array
     {
         $this->currentPage = request()->get('page', 1);
-        $this->items = Cache::remember('category.'.$this->currentPage, Carbon::now()->addDay(), function () {
+        $this->items = Cache::tags('category')->remember('category.'.$this->currentPage, Carbon::now()->addDay(), function () {
             return Model::query()->orderBy('description', 'ASC')->paginate($this->page);
         });
 
@@ -79,6 +79,8 @@ final class CategoryAction extends Action implements ICatalog, ICatalogExtented
             'reload' => true,
         ];
 
+        Cache::tags('category')->flush();
+
         return response()->success($this->response);
 
     }
@@ -108,6 +110,8 @@ final class CategoryAction extends Action implements ICatalog, ICatalogExtented
             'message' => 'Категория успешно добавлена в очередь на обновление!',
         ];
 
+        Cache::tags('category')->flush();
+
         return response()->success($this->response);
     }
 
@@ -136,7 +140,10 @@ final class CategoryAction extends Action implements ICatalog, ICatalogExtented
         $this->item->query()->forceDelete();
         $this->response = [
             'message' => 'Категория успешно поставлена в очередь на удаление!',
+            'reload' => true,
         ];
+
+        Cache::tags('category')->flush();
 
         return response()->success($this->response);
     }

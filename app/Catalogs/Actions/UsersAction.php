@@ -24,26 +24,36 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
 {
     /**
      * [this user]
+     *
+     * @var user
      */
     private Model $user;
 
     /**
      * [collection roles]
+     *
+     * @var roles
      */
     private Collection $roles;
 
     /**
      * [one role]
+     *
+     * @var role
      */
     private string $role;
 
     /**
      * [count help for user]
+     *
+     * @var count
      */
     private int $count;
 
     /**
      * [count role for user]
+     *
+     * @var countRole
      */
     private int $countRole;
 
@@ -60,7 +70,7 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
     public function getAllPagesPaginate(): array
     {
         $this->currentPage = request()->get('page', 1);
-        $this->items = Cache::remember('users.'.$this->currentPage, Carbon::now()->addDay(), function () {
+        $this->items = Cache::tags('user')->remember('users.'.$this->currentPage, Carbon::now()->addDay(), function () {
             return Model::query()->orderBy('lastname', 'ASC')->paginate($this->page);
         });
 
@@ -133,6 +143,8 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
 
     /**
      * [add new user]
+     *
+     * @param  array  $request {name: string, firstname:string, cabinet_id: string, role: string, password: string, patronymic: string|null}
      */
     public function store(array $request): JsonResponse
     {
@@ -170,11 +182,15 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
             'reload' => true,
         ];
 
+        Cache::tags('user')->flush();
+
         return response()->success($this->response);
     }
 
     /**
      * [update user]
+     *
+     * @param  array  $request {name: string, firstname:string, cabinet_id: string, role: string, password: null, patronymic: string|null}
      */
     public function update(array $request, int $id): JsonResponse
     {
@@ -213,11 +229,15 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
             'message' => 'Пользователь успешно обновлён!',
         ];
 
+        Cache::tags('user')->flush();
+
         return response()->success($this->response);
     }
 
     /**
      * [update password for other user]
+     *
+     * @param  array  $request {password: string}
      */
     public function updatePassword(array $request, int $id): JsonResponse
     {
@@ -288,6 +308,8 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
             'message' => 'Пользователь успешно поставлен в очередь на удаление!',
             'reload' => true,
         ];
+
+        Cache::tags('user')->flush();
 
         return response()->success($this->response);
     }

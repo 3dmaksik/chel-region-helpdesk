@@ -31,7 +31,7 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
     public function getAllPagesPaginate(): array
     {
         $this->currentPage = request()->get('page', 1);
-        $this->items = Cache::remember('priority.'.$this->currentPage, Carbon::now()->addDay(), function () {
+        $this->items = Cache::tags('priority')->remember('priority.'.$this->currentPage, Carbon::now()->addDay(), function () {
             return Model::query()->orderBy('description', 'ASC')->paginate($this->page);
         });
 
@@ -85,6 +85,8 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
             'reload' => true,
         ];
 
+        Cache::tags('priority')->flush();
+
         return response()->success($this->response);
     }
 
@@ -121,6 +123,8 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
             'message' => 'Приоритет успешно добавлен в очередь на обновление!',
         ];
 
+        Cache::tags('priority')->flush();
+
         return response()->success($this->response);
     }
 
@@ -150,7 +154,10 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
         $this->item->query()->forceDelete();
         $this->response = [
             'message' => 'Приоритет успешно поставлен в очередь на удаление!',
+            'reload' => true,
         ];
+
+        Cache::tags('priority')->flush();
 
         return response()->success($this->response);
     }

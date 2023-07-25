@@ -96,7 +96,7 @@ class NewsTest extends TestCase
         $this->assertEquals('test', $article->description);
         $this->assertEquals('test', $article->news_text);
         $this->assertEquals('01.01.2000 00:00', $article->created_at);
-        $this->assertDatabaseHas('news', ['name' => 'test', 'description' => 'test', 'news_text' => 'test', 'created_at' => '01.01.2000 00:00']);
+        $this->assertDatabaseHas('news', ['name' => 'test', 'description' => 'test', 'news_text' => 'test', 'created_at' => '2000-01-01 00:00:00']);
         $response->assertStatus(200);
     }
 
@@ -112,6 +112,7 @@ class NewsTest extends TestCase
                 'name' => 'test',
                 'description' => 'test',
                 'news_text' => 'test',
+                'created_at' => '01.01.2000 00:00',
             ], [
                 'Accept' => 'application/json',
             ]);
@@ -120,7 +121,7 @@ class NewsTest extends TestCase
         $this->assertEquals('test', $article->description);
         $this->assertEquals('test', $article->news_text);
         $this->assertEquals('01.01.2000 00:00', $article->created_at);
-        $this->assertDatabaseHas('news', ['name' => 'test', 'description' => 'test', 'news_text' => 'test', 'created_at' => '01.01.2000 00:00']);
+        $this->assertDatabaseHas('news', ['name' => 'test', 'description' => 'test', 'news_text' => 'test', 'created_at' => '2000-01-01 00:00:00']);
         $response->assertStatus(200);
     }
 

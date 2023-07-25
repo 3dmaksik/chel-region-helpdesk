@@ -61,7 +61,7 @@ class UserTest extends TestCase
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
-                'cabinet_id' => $cabinet->id,
+                'cabinet_id' => (string) $cabinet->id,
                 'role' => 'user',
 
             ], [
@@ -99,7 +99,7 @@ class UserTest extends TestCase
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
-                'cabinet_id' => $newCabinet->id,
+                'cabinet_id' => (string) $newCabinet->id,
                 'role' => 'admin',
             ], [
                 'Accept' => 'application/json',
@@ -164,25 +164,6 @@ class UserTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_controller_user_store_validation_error_integer_super_admin(): void
-    {
-        $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.users.store')),
-            [
-                'name' => 'testStore',
-                'password' => 'password',
-                'firstname' => 'Имя',
-                'lastname' => 'Фамилия',
-                'patronymic' => 'Отчество',
-                'cabinet_id' => 'test',
-                'role' => 'user',
-
-            ], [
-                'Accept' => 'application/json',
-            ]);
-        $response->assertJsonValidationErrors(['cabinet_id']);
-        $response->assertStatus(422);
-    }
-
     public function test_controller_user_store_validation_error_exists_super_admin(): void
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.users.store')),
@@ -212,7 +193,7 @@ class UserTest extends TestCase
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
-                'cabinet_id' => $cabinet->id,
+                'cabinet_id' => (string) $cabinet->id,
                 'role' => 'user',
             ], [
                 'Accept' => 'application/json',
@@ -230,7 +211,7 @@ class UserTest extends TestCase
                 'firstname' => fake()->text(1000),
                 'lastname' => fake()->text(1000),
                 'patronymic' => fake()->text(1000),
-                'cabinet_id' => 1000,
+                'cabinet_id' => (string) 1000,
                 'role' => 'user',
             ], [
                 'Accept' => 'application/json',
@@ -248,7 +229,7 @@ class UserTest extends TestCase
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
-                'cabinet_id' => $cabinet->id,
+                'cabinet_id' => (string) $cabinet->id,
                 'role' => 'user',
 
             ], [
@@ -294,7 +275,7 @@ class UserTest extends TestCase
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
-                'cabinet_id' => $cabinet->id,
+                'cabinet_id' => (string) $cabinet->id,
                 'category_id' => $category->id,
                 'status_id' => $status->id,
                 'role' => 'admin',
@@ -391,7 +372,7 @@ class UserTest extends TestCase
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
-                'cabinet_id' => $newCabinet->id,
+                'cabinet_id' => (string) $newCabinet->id,
                 'role' => 'admin',
             ], [
                 'Accept' => 'application/json',
@@ -420,7 +401,7 @@ class UserTest extends TestCase
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
-                'cabinet_id' => $newCabinet->id,
+                'cabinet_id' => (string) $newCabinet->id,
                 'role' => 'admin',
             ], [
                 'Accept' => 'application/json',
@@ -449,7 +430,7 @@ class UserTest extends TestCase
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
-                'cabinet_id' => $newCabinet->id,
+                'cabinet_id' => (string) $newCabinet->id,
                 'role' => 'admin',
             ], [
                 'Accept' => 'application/json',

@@ -21,7 +21,7 @@ final class ArticleDTO extends DTO
         string $name,
         string $description,
         string $newsText,
-        ?Carbon $createdAt = null,
+        Carbon $createdAt = null,
     ) {
         $this->name = $name;
         $this->description = $description;

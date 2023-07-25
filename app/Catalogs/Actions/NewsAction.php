@@ -23,7 +23,7 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
     public function getAllPagesPaginate(): array
     {
         $this->currentPage = request()->get('page', 1);
-        $this->items = Cache::remember('article.'.$this->currentPage, 30, function () {
+        $this->items = Cache::tags('article')->remember('article.'.$this->currentPage, 30, function () {
             return Model::orderBy('created_at', 'DESC')->paginate($this->page);
         });
         $this->response =
@@ -74,6 +74,8 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
             'reload' => true,
         ];
 
+        Cache::tags('article')->flush();
+
         return response()->success($this->response);
 
     }
@@ -109,6 +111,8 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
             'message' => 'Новость успешно добавлена в очередь на обновление!',
         ];
 
+        Cache::tags('article')->flush();
+
         return response()->success($this->response);
     }
 
@@ -129,7 +133,10 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
         $this->item->forceDelete();
         $this->response = [
             'message' => 'Новость успешно поставлена в очередь на удаление!',
+            'reload' => true,
         ];
+
+        Cache::tags('article')->flush();
 
         return response()->success($this->response);
     }

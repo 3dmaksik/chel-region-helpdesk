@@ -204,8 +204,8 @@ class HelpAction extends Action
             'calendar_request' => $this->calendar_request,
             'images' => $this->images,
         ]);
-        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
-        $this->dataClear = $this->clear($this->data);
+        $data1 = HelpDTO::storeObjectRequest($request, $this->options);
+        $this->dataClear = $this->clear($data1);
         $this->item = Model::create($this->dataClear);
         $superAdmin = User::role(['superAdmin'])->get();
         $users = User::role(['admin'])->get();

@@ -126,19 +126,63 @@ RewriteRule ^ index.php [L]
 10. Настроить сокеты с помощью демона:  
 
 `$ sudo apt install supervisor`  
+`$ sudo npm install -g @soketi/soketi`  
 `$ sudo systemctl enable supervisor`  
-`$ sudo nano /etc/supervisor/conf.d/websockets.conf`  
+`$ sudo nano /etc/supervisor/conf.d/soketi.conf`  
 ````
-[program:websockets]
-command=/path/php /srv/example.com/artisan websockets:serve
+[program:soketi]
+command=soketi start --config=/srv/example.com/soketi.json
 numprocs=1
 autostart=true
 autorestart=true
+stopasgroup=true
+killasgroup=true
+stopwaitsecs=60
+stopsignal=sigint
+minfds=10240
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+user=example_user
+````
+`$ sudo nano /etc/supervisor/conf.d/schedule.conf`  
+````
+[program:schedule]
+command=/usr/bin/php /srv/example.com/artisan schedule:work
+numprocs=1
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+stopwaitsecs=60
+stopsignal=sigint
+minfds=10240
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+user=example_user
+````
+`$ sudo nano /etc/supervisor/conf.d/queue.conf`  
+````
+[program:queue]
+command=/usr/bin/php /srv/example.com/artisan queue:work
+numprocs=1
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+stopwaitsecs=60
+stopsignal=sigint
+minfds=10240
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
 user=example_user
 ````
 `$ sudo supervisorctl update`  
-
-Аналогичные действия производятся для artisan schedule:work и artisan queue:work.
 
 После чего проект готов к работе. 
 
@@ -148,7 +192,7 @@ PS. Рады всем, кто сможет предоставить скрипт
 ### Обновления
                 
 1. Обновления проекта `$ git pull origin master && sudo supervisorctl update`.
-2. Обновления рабочих библиотек `$ composer update`, библиотек разработки `$ npm update` соответственно.
+2. Обновления рабочих библиотек `$ composer update`, библиотек разработки, для тех кто возможно согласен участвовать в проекте `$ npm update`.
 3. В случае каких либо изменений файла `settings.php` необходимо из файла `settings.php.example` скопировать или изменить недостающие переменные, о чём будет сообщено в релизе.
 4. В случае каких либо изменений в базе необходимо выполнить `$ php artisan migrate` .
                 
@@ -161,7 +205,7 @@ PS. Рады всем, кто сможет предоставить скрипт
 1. Laravel- [MIT](https://github.com/laravel/laravel#license)
 2. Permission- [MIT](https://github.com/spatie/laravel-permission/blob/main/LICENSE.md)
 3. Pusher- [MIT](https://github.com/pusher/pusher-http-php#license)
-4. Websockets- [MIT](https://github.com/beyondcode/laravel-websockets/blob/master/LICENSE)
+4. Websockets- [GNU](https://github.com/soketi/soketi/blob/1.x/LICENSE)
 5. Boostrap- [MIT](https://github.com/twbs/bootstrap#copyright-and-license)
 6. JQuery- [MIT](https://github.com/jquery/jquery/blob/main/LICENSE.txt)
 7. RuangAdmin- [MIT](https://github.com/indrijunanda/RuangAdmin#license)

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('priority', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('description');
-            $table->tinyInteger('rang');
+            $table->tinyInteger('rang')->unique();
             $table->integer('warning_timer');
             $table->integer('danger_timer');
             $table->timestamps();

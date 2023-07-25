@@ -15,32 +15,12 @@ return new class extends Migration
     {
         Schema::create('help', function (Blueprint $table) {
             $table->id()->index();
-            $table->string('app_number')->nullable()->index();
-            $table->unsignedSmallInteger('category_id');
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('category')
-                ->onDelete('cascade');
-            $table->unsignedTinyInteger('status_id');
-            $table->foreign('status_id')
-                ->references('id')
-                ->on('status')
-                ->onDelete('cascade');
-            $table->unsignedTinyInteger('priority_id')->default(1);
-            $table->foreign('priority_id')
-                ->references('id')
-                ->on('priority')
-                ->onDelete('cascade');
-            $table->unsignedSmallInteger('user_id');
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
-            $table->unsignedSmallInteger('executor_id')->nullable();
-            $table->foreign('executor_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+            $table->string('app_number')->nullable()->index()->unique();
+            $table->smallInteger('category_id');
+            $table->tinyInteger('status_id')->default(1);
+            $table->tinyInteger('priority_id')->default(1);
+            $table->smallInteger('user_id');
+            $table->smallInteger('executor_id')->nullable();
             $table->json('images')->nullable();
             $table->json('images_final')->nullable();
             $table->longText('info')->nullable();

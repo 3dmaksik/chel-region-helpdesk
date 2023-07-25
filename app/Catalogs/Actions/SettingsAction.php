@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Http\Resources\UserResource;
+use App\Base\Helpers\StoreFilesHelper;
+use App\Catalogs\DTO\AccountDTO;
+use App\Catalogs\DTO\PasswordDTO;
+use App\Core\Contracts\ISettings;
 use App\Models\User;
-use App\Requests\AccountRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class SettingsAction extends Action
+final class SettingsAction extends Action implements ISettings
 {
     /**
      * [this user]
@@ -21,13 +23,27 @@ class SettingsAction extends Action
 
     /**
      * [this avatar]
+     *
+     * @var avatar
      */
     private array $avatar;
 
     /**
      * [this sound notify]
+     *
+     * @var soundNotify
      */
     private array $soundNotify;
+
+    /**
+     * [password data]
+     */
+    private PasswordDTO $passwordDTO;
+
+    /**
+     * [account data]
+     */
+    private AccountDTO $accountDTO;
 
     public function __construct()
     {
@@ -36,18 +52,40 @@ class SettingsAction extends Action
 
     /**
      * [update password]
+     *
+     * @param  array  $request {current_password: string, password: string}
      */
     public function updatePassword(array $request): JsonResponse
     {
-        if ($this->checkPassword($request['current_password']) === true && $this->checkPassword($request['password']) === false) {
-            User::where('id', auth()->user()->id)->update([
-                'password' => Hash::make($request['password']),
-            ]);
+        $this->user = User::query()->find(auth()->user()->id);
 
-            return response()->success(['message' => 'Пароль успешно обновлён!']);
+        if (! $this->user) {
+            $this->response = [
+                'message' => 'Пользователь не найден!',
+            ];
+
+            return response()->error($this->response);
         }
+        $this->passwordDTO = new PasswordDTO(
+            $request['password'],
+            $request['current_password'],
+        );
+        if ($this->checkPassword($request['current_password']) === false && $this->checkPassword($request['password']) === true) {
+            $this->response = [
+                'message' => 'Пароль не изменён! </br> Неверно указан текущий пароль',
+            ];
 
-        return response()->error(['message' => 'Пароль не изменён! </br> Неверно указан текущий пароль']);
+            return response()->error($this->response);
+        }
+        $this->user->password = Hash::make($this->passwordDTO->password);
+        $this->user->save();
+
+        $this->response = [
+            'message' => 'Пароль успешно обновлён!',
+        ];
+
+        return response()->success($this->response);
+
     }
 
     /**
@@ -65,29 +103,41 @@ class SettingsAction extends Action
     /**
      * [update settings]
      */
-    public function updateSettings(AccountRequest $request): JsonResponse
+    public function updateSettings(array $request): JsonResponse
     {
-        $this->user = User::findOrFail(auth()->user()->id);
-        $this->resource = new UserResource($request);
-        $this->data = $this->resource->resolve();
-        if (isset($this->data['avatar'])) {
-            if ($this->user->avatar !== null) {
+        $this->user = User::query()->find(auth()->user()->id);
+
+        if (! $this->user) {
+            $this->response = [
+                'message' => 'Пользователь не найден!',
+            ];
+
+            return response()->error($this->response);
+        }
+        $this->accountDTO = new AccountDTO(
+            $request['avatar'] ?? null,
+            $request['sound_notify'] ?? null,
+        );
+        if ($this->accountDTO->avatar) {
+            if ($this->user->avatar) {
                 Storage::disk('avatar')->delete($this->user->avatar);
             }
-            $this->avatar = json_decode($this->data['avatar'], true, 512, JSON_THROW_ON_ERROR);
-            $this->data['avatar'] = $this->avatar['url'];
+            $this->avatar = json_decode(StoreFilesHelper::createOneImage($this->accountDTO->avatar, 'avatar', 32, 32), true, 512, JSON_THROW_ON_ERROR);
+            $this->user->avatar = $this->avatar['url'];
         }
-        if (isset($this->data['sound_notify'])) {
-            if ($this->user->sound_notify !== null) {
+        if ($this->accountDTO->soundNotify) {
+            if ($this->user->sound_notify) {
                 Storage::disk('sound')->delete($this->user->sound_notify);
             }
-            $this->soundNotify = json_decode($this->data['sound_notify'], true, 512, JSON_THROW_ON_ERROR);
-            $this->data['sound_notify'] = $this->soundNotify['url'];
+            $this->soundNotify = json_decode(StoreFilesHelper::createNotify($this->accountDTO->soundNotify, 'sound'), true, 512, JSON_THROW_ON_ERROR);
+            $this->user->sound_notify = $this->soundNotify['url'];
         }
-        if (! empty($this->data)) {
-            $this->user->update($this->data);
-        }
+        $this->user->save();
+        $this->response = [
+            'message' => 'Настройки успешно обновлены',
+            'reload' => true,
+        ];
 
-        return response()->success('Настройки успешно обновлены');
+        return response()->success($this->response);
     }
 }

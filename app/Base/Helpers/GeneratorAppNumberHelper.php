@@ -42,7 +42,7 @@ class GeneratorAppNumberHelper extends CoreHelper
      *
      * @param mixed string
      */
-    public static function generate(string|null $last = null): string
+    public static function generate(string $last = null): string
     {
         self::$nowYear = Carbon::now()->year;
         self::$parse = explode('-', $last);

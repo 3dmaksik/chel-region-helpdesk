@@ -22,7 +22,7 @@ final class StatusAction extends Action implements ICatalog
     public function getAllPagesPaginate(): array
     {
         $this->currentPage = request()->get('page', 1);
-        $this->items = Cache::remember('status.'.$this->currentPage, Carbon::now()->addDay(), function () {
+        $this->items = Cache::tags('status')->remember('status.'.$this->currentPage, Carbon::now()->addDay(), function () {
             return Model::query()->orderBy('description', 'ASC')->paginate($this->page);
         });
 
@@ -69,6 +69,7 @@ final class StatusAction extends Action implements ICatalog
         $this->item->save();
         $this->response = [
             'message' => 'Статус не может быть добавлен, так как все статусы уже созданы!',
+            'reload' => true,
         ];
 
         return response()->success($this->response);
@@ -104,6 +105,8 @@ final class StatusAction extends Action implements ICatalog
         $this->response = [
             'message' => 'Статус успешно добавлен в очередь на обновление!',
         ];
+
+        Cache::tags('status')->flush();
 
         return response()->success($this->response);
     }

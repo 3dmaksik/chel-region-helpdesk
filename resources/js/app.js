@@ -11,6 +11,7 @@ $(function () {
 
     Echo.private("App.Models.User." + window.Laravel.user).notification(
         (notification) => {
+            console.log('алё, у телефона');
             loadNew(notification.method, notification.route);
             if (notification.method === "newadm") {
                 newCount();
