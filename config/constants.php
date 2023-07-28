@@ -108,10 +108,12 @@ return
         'updatePassword' => 'settings.updatePassword',
         'updateSettings' => 'settings.updateSettings',
     ],
-    'request' => [
-        'new' => 1,
-        'work' => 2,
-        'success' => 3,
-        'danger' => 4,
+    'search' => [
+        'name' => 'поиск',
+        'slug' => 'search',
+        'all' => 'search.all',
+        'work' => 'search.work',
+        'category' => 'search.category',
+        'cabinet' => 'search.cabinet',
     ],
 ];

@@ -4,7 +4,7 @@ namespace App\Base\Helpers;
 
 use App\Core\Helpers\CoreHelper;
 
-class StringUserHelper extends CoreHelper
+class StringHelper extends CoreHelper
 {
     /**
      * [processed string]

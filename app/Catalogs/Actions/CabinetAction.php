@@ -138,7 +138,7 @@ final class CabinetAction extends Action implements ICatalog, ICatalogExtented
 
             return response()->error($this->response);
         }
-        $this->item->query()->forceDelete();
+        $this->item->forceDelete();
         $this->response = [
             'message' => 'Кабинет успешно поставлен в очередь на удаление!',
             'reload' => true,

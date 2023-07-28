@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\PriorityDTO;
 use App\Core\Contracts\ICatalog;
 use App\Core\Contracts\ICatalogExtented;
@@ -75,7 +76,7 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
             $request['danger_timer']
         );
         $this->item = new Model();
-        $this->item->description = $this->dataObject->description;
+        $this->item->description = StringHelper::run($this->dataObject->description);
         $this->item->rang = $this->dataObject->rang;
         $this->item->warning_timer = $this->dataObject->warning_timer;
         $this->item->danger_timer = $this->dataObject->danger_timer;
@@ -113,7 +114,7 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
             $request['warning_timer'],
             $request['danger_timer']
         );
-        $this->item->description = $this->dataObject->description;
+        $this->item->description = StringHelper::run($this->dataObject->description);
         $this->item->rang = $this->dataObject->rang;
         $this->item->warning_timer = $this->dataObject->warning_timer;
         $this->item->danger_timer = $this->dataObject->danger_timer;
@@ -151,7 +152,7 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
 
             return response()->error($this->response);
         }
-        $this->item->query()->forceDelete();
+        $this->item->forceDelete();
         $this->response = [
             'message' => 'Приоритет успешно поставлен в очередь на удаление!',
             'reload' => true,

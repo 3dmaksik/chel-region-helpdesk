@@ -51,18 +51,14 @@ class StoreFilesHelper extends CoreHelper
     private static string $nameGenerate;
 
     /**
-     * [saved file]
-     */
-    private static string $saveStorage;
-
-    /**
      * [creating multiple images]
      */
-    public static function createFileImages(array $request, string $type = 'public', int $w = 1920, int $h = 1080): ?array
+    public static function createFileImages(array $request, string $type = 'public', int $w = 1920, int $h = 1080): array
     {
         $url = [];
         foreach ($request as $file) {
-            $url[self::$i] = self::createOneImage($file, $type, $w, $h);
+            self::$fileName = self::createImageName();
+            $url[self::$i] = self::createOneImage(self::$fileName, $file, $type, $w, $h);
             self::$i++;
         }
 
@@ -72,7 +68,7 @@ class StoreFilesHelper extends CoreHelper
     /**
      * [generate image name]
      */
-    protected static function createImageName(): string
+    public static function createImageName(): string
     {
         self::$nameGenerate = time().'_'.random_int(0, mt_getrandmax()).'.png';
 
@@ -82,7 +78,7 @@ class StoreFilesHelper extends CoreHelper
     /**
      * [generate sound name]
      */
-    protected static function createSoundName(): string
+    public static function createSoundName(): string
     {
         self::$nameGenerate = time().'_'.random_int(0, mt_getrandmax()).'.ogg';
 
@@ -92,15 +88,13 @@ class StoreFilesHelper extends CoreHelper
     /**
      * [create one image]
      */
-    public static function createOneImage(UploadedFile $file, string $type, int $w, int $h): ?string
+    public static function createOneImage(string $filename, UploadedFile $file, string $type, int $w, int $h): void
     {
-        self::$fileName = self::createImageName();
+        self::$fileName = $filename;
         self::$img = Image::make($file->getRealPath());
         self::$resize = self::resizeFile(self::$img, $w, $h);
         self::$resize->stream();
-        self::$saveStorage = self::saveImageStorage($type, self::$fileName, self::$resize);
-
-        return self::$saveStorage;
+        self::saveImageStorage($type, self::$fileName, self::$resize);
     }
 
     /**
@@ -121,31 +115,26 @@ class StoreFilesHelper extends CoreHelper
     /**
      * [save image]
      */
-    protected static function saveImageStorage(string $type, string $fileName, Img $img): string
+    protected static function saveImageStorage(string $type, string $fileName, Img $img): void
     {
         Storage::disk($type)->put($fileName, $img);
-
-        return json_encode(['url' => $fileName], JSON_THROW_ON_ERROR);
     }
 
     /**
      * [save sound]
      */
-    protected static function saveSoundStorage(UploadedFile $file, string $type, string $fileName): string
+    protected static function saveSoundStorage(UploadedFile $file, string $type, string $fileName): void
     {
         Storage::disk($type)->put($fileName, file_get_contents($file));
 
-        return json_encode(['url' => $fileName], JSON_THROW_ON_ERROR);
     }
 
     /**
      * [create one sound]
      */
-    public static function createNotify(UploadedFile $request, string $type): ?string
+    public static function createNotify(string $filename, UploadedFile $request, string $type): void
     {
-        self::$fileName = self::createSoundName();
-        self::$saveStorage = self::saveSoundStorage($request, $type, self::$fileName);
-
-        return self::$saveStorage;
+        self::$fileName = $filename;
+        self::saveSoundStorage($request, $type, self::$fileName);
     }
 }

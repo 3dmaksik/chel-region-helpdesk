@@ -5,7 +5,6 @@ namespace App\Base\Actions;
 use App\Base\DTO\DTO;
 use App\Base\Models\Model;
 use App\Core\Actions\CoreAction;
-use App\Core\Resources\CoreResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -29,11 +28,6 @@ class Action extends CoreAction
      * [base model or null]
      */
     public ?Model $item = null;
-
-    /**
-     * [resource for database or result data]
-     */
-    public CoreResource $resource;
 
     /**
      * [data for database or result data]

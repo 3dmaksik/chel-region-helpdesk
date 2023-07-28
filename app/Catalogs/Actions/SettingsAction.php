@@ -22,20 +22,6 @@ final class SettingsAction extends Action implements ISettings
     private User $user;
 
     /**
-     * [this avatar]
-     *
-     * @var avatar
-     */
-    private array $avatar;
-
-    /**
-     * [this sound notify]
-     *
-     * @var soundNotify
-     */
-    private array $soundNotify;
-
-    /**
      * [password data]
      */
     private PasswordDTO $passwordDTO;
@@ -44,6 +30,13 @@ final class SettingsAction extends Action implements ISettings
      * [account data]
      */
     private AccountDTO $accountDTO;
+
+    /**
+     * [filename for upload]
+     *
+     * @var filenName
+     */
+    private string $fileName;
 
     public function __construct()
     {
@@ -122,15 +115,17 @@ final class SettingsAction extends Action implements ISettings
             if ($this->user->avatar) {
                 Storage::disk('avatar')->delete($this->user->avatar);
             }
-            $this->avatar = json_decode(StoreFilesHelper::createOneImage($this->accountDTO->avatar, 'avatar', 32, 32), true, 512, JSON_THROW_ON_ERROR);
-            $this->user->avatar = $this->avatar['url'];
+            $this->fileName = StoreFilesHelper::createImageName();
+            $this->user->avatar = $this->fileName;
+            StoreFilesHelper::createOneImage($this->fileName, $this->accountDTO->avatar, 'avatar', 32, 32);
         }
         if ($this->accountDTO->soundNotify) {
             if ($this->user->sound_notify) {
                 Storage::disk('sound')->delete($this->user->sound_notify);
             }
-            $this->soundNotify = json_decode(StoreFilesHelper::createNotify($this->accountDTO->soundNotify, 'sound'), true, 512, JSON_THROW_ON_ERROR);
-            $this->user->sound_notify = $this->soundNotify['url'];
+            $this->fileName = StoreFilesHelper::createSoundName();
+            $this->user->sound_notify = $this->fileName;
+            StoreFilesHelper::createNotify($this->fileName, $this->accountDTO->soundNotify, 'sound');
         }
         $this->user->save();
         $this->response = [

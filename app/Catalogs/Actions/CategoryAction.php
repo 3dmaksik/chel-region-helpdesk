@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\CategoryDTO;
 use App\Core\Contracts\ICatalog;
 use App\Core\Contracts\ICatalogExtented;
@@ -72,7 +73,7 @@ final class CategoryAction extends Action implements ICatalog, ICatalogExtented
             $request['description']
         );
         $this->item = new Model();
-        $this->item->description = $this->dataObject->description;
+        $this->item->description = StringHelper::run($this->dataObject->description);
         $this->item->save();
         $this->response = [
             'message' => 'Категория успешно добавлена в очередь на размещение!',
@@ -104,7 +105,7 @@ final class CategoryAction extends Action implements ICatalog, ICatalogExtented
 
             return response()->error($this->response);
         }
-        $this->item->description = $this->dataObject->description;
+        $this->item->description = StringHelper::run($this->dataObject->description);
         $this->item->save();
         $this->response = [
             'message' => 'Категория успешно добавлена в очередь на обновление!',
@@ -137,7 +138,7 @@ final class CategoryAction extends Action implements ICatalog, ICatalogExtented
 
             return response()->error($this->response);
         }
-        $this->item->query()->forceDelete();
+        $this->item->forceDelete();
         $this->response = [
             'message' => 'Категория успешно поставлена в очередь на удаление!',
             'reload' => true,

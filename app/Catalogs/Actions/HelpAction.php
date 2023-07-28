@@ -17,6 +17,13 @@ use Illuminate\Support\Collection as SimpleCollection;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Notification;
 
+enum Status: int
+{
+    case New = 1;
+    case Work = 2;
+    case Success = 3;
+    case Danger = 4;
+}
 class HelpAction extends Action
 {
     private ?Model $last = null;
@@ -82,7 +89,7 @@ class HelpAction extends Action
      */
     public function getNewPagesPaginate(): array
     {
-        $this->items = Model::where('status_id', config('constants.request.new'))
+        $this->items = Model::where('status_id', Status::New)
             ->orderBy('calendar_request', 'ASC')
             ->paginate($this->page);
         $this->helps =
@@ -99,7 +106,7 @@ class HelpAction extends Action
      */
     public function getWorkerPagesPaginate(): array
     {
-        $this->items = Model::where('status_id', config('constants.request.work'))
+        $this->items = Model::where('status_id', Status::Work)
             ->RoleHelp()
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
@@ -118,7 +125,7 @@ class HelpAction extends Action
      */
     public function getCompletedPagesPaginate(): array
     {
-        $this->items = Model::where('status_id', config('constants.request.success'))
+        $this->items = Model::where('status_id', Status::Success)
             ->RoleHelp()
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
@@ -136,7 +143,7 @@ class HelpAction extends Action
      */
     public function getDismissPagesPaginate(): array
     {
-        $this->items = Model::where('status_id', config('constants.request.danger'))
+        $this->items = Model::where('status_id', Status::Danger)
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
         $this->helps =
@@ -252,7 +259,7 @@ class HelpAction extends Action
     {
         $this->item = Model::findOrFail($id);
         $this->options = collect([
-            'status_id' => config('constants.request.work'),
+            'status_id' => Status::Work,
             'calendar_accept' => Carbon::now(),
             'calendar_warning' => Carbon::now()->addHour($this->item->priority->warning_timer),
             'calendar_execution' => Carbon::now()->addHour($this->item->priority->danger_timer),
@@ -278,7 +285,7 @@ class HelpAction extends Action
 
             return response()->error($this->response);
         }
-        if ($this->item->status_id != config('constants.request.new')) {
+        if ($this->item->status_id !== Status::New) {
             $this->response = [
                 'message' => 'Заявка уже принята или отклонена!',
             ];
@@ -316,7 +323,7 @@ class HelpAction extends Action
         }
         $this->lead_at = Carbon::now()->diffInSeconds(Carbon::parse($this->item->calendar_accept));
         $this->options = collect([
-            'status_id' => config('constants.request.success'),
+            'status_id' => Status::Success,
             'calendar_final' => Carbon::now(),
             'check_write' => false,
             'images_final' => $this->images_final,
@@ -325,7 +332,7 @@ class HelpAction extends Action
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);
-        if ($this->item->status_id != config('constants.request.work')) {
+        if ($this->item->status_id !== Status::Work) {
             $this->response = [
                 'message' => 'Заявка уже выполнена или отклонена!',
             ];
@@ -373,7 +380,7 @@ class HelpAction extends Action
 
             return response()->error($this->response);
         }
-        if ($this->item->status_id != config('constants.request.work')) {
+        if ($this->item->status_id !== Status::Work) {
             $this->response = [
                 'message' => 'Заявка уже выполнена или отклонена!',
             ];
@@ -408,13 +415,13 @@ class HelpAction extends Action
     {
         $this->item = Model::findOrFail($id);
         $this->options = collect([
-            'status_id' => config('constants.request.danger'),
+            'status_id' => Status::Danger,
             'calendar_final' => Carbon::now(),
             'check_write' => false,
         ]);
         $this->data = HelpDTO::storeObjectRequest($request, $this->options);
         $this->dataClear = $this->clear($this->data);
-        if ($this->item->status_id != config('constants.request.new')) {
+        if ($this->item->status_id !== Status::New) {
             $this->response = [
                 'message' => 'Заявка не может быть отклонена, так как уже принята в работу!',
             ];
@@ -464,7 +471,7 @@ class HelpAction extends Action
     {
         $this->user = User::findOrFail(auth()->user()->id);
         if ($this->user->can('new help')) {
-            $this->count = Model::where('status_id', config('constants.request.new'))->count();
+            $this->count = Model::where('status_id', Status::New)->count();
             Cookie::queue('newCount', $this->count);
         } else {
             $this->count = 0;
@@ -478,7 +485,7 @@ class HelpAction extends Action
 
     public function getNowPagesCount(): JsonResponse
     {
-        $this->count = Model::where('status_id', config('constants.request.work'))
+        $this->count = Model::where('status_id', Status::Work)
             ->where('executor_id', auth()->user()->id)->count();
 
         return response()->json($this->count);

@@ -11,18 +11,53 @@ use Illuminate\Support\Facades\Storage;
 
 class ClearImageJob extends Job implements ShouldQueue
 {
+    /**
+     * [all items]
+     *
+     * @var items
+     */
     private ?Collection $items = null;
 
+    /**
+     * [images in items]
+     *
+     * @var images
+     */
     private array $images;
 
+    /**
+     * [images in items]
+     *
+     * @var images_final
+     */
     private array $images_final;
 
+    /**
+     * [date for remove images]
+     *
+     * @var future
+     */
     private Carbon $future;
 
+    /**
+     * [tries for job]
+     *
+     * @var tries
+     */
     public $tries = 10;
 
+    /**
+     * [max exceptions for job]
+     *
+     * @var maxExceptions
+     */
     public $maxExceptions = 2;
 
+    /**
+     * [timeout for job]
+     *
+     * @var timeout
+     */
     public $timeout = 120;
 
     /**

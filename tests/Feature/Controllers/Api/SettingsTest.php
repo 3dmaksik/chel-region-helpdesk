@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class SettingsApiTest extends TestCase
+class SettingsTest extends TestCase
 {
     use DatabaseTransactions;
     //use RefreshDatabase;

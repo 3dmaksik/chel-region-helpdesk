@@ -13,16 +13,42 @@ use Illuminate\Support\Facades\Notification;
 
 class NotifyExpireJob extends Job implements ShouldQueue
 {
+    /**
+     * [tries for job]
+     *
+     * @var tries
+     */
     public $tries = 10;
 
+    /**
+     * [max exceptions for job]
+     *
+     * @var maxExceptions
+     */
     public $maxExceptions = 2;
 
+    /**
+     * [timeout for job]
+     *
+     * @var timeout
+     */
     public $timeout = 120;
 
+    /**
+     * [all items]
+     *
+     * @var items
+     */
     private Collection $items;
 
+    /**
+     * [this user for notify]
+     */
     private User $user;
 
+    /**
+     * [now date]
+     */
     private Carbon $warning;
 
     /**

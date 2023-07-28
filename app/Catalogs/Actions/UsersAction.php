@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Base\Helpers\StringUserHelper;
+use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\PasswordDTO;
 use App\Catalogs\DTO\UserDTO;
 use App\Core\Contracts\ICatalog;
@@ -18,6 +18,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 final class UsersAction extends Action implements ICatalog, ICatalogExtented, IUser
@@ -169,9 +170,9 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
         );
         $this->user = new Model();
         $this->user->name = $this->dataObject->name;
-        $this->user->firstname = StringUserHelper::run($this->dataObject->firstname);
-        $this->user->lastname = StringUserHelper::run($this->dataObject->lastname);
-        $this->user->patronymic = StringUserHelper::run($this->dataObject->patronymic) ?? null;
+        $this->user->firstname = StringHelper::run($this->dataObject->firstname);
+        $this->user->lastname = StringHelper::run($this->dataObject->lastname);
+        $this->user->patronymic = StringHelper::run($this->dataObject->patronymic) ?? null;
         $this->user->cabinet_id = $this->dataObject->cabinetId;
         $this->user->password = Hash::make($this->dataObject->password);
         $this->user->email = mt_rand().time().'@1.ru';
@@ -218,9 +219,9 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
             return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
         }
         $this->user->name = $this->dataObject->name;
-        $this->user->firstname = StringUserHelper::run($this->dataObject->firstname);
-        $this->user->lastname = StringUserHelper::run($this->dataObject->lastname);
-        $this->user->patronymic = StringUserHelper::run($this->dataObject->patronymic) ?? $this->user->patronymic;
+        $this->user->firstname = StringHelper::run($this->dataObject->firstname);
+        $this->user->lastname = StringHelper::run($this->dataObject->lastname);
+        $this->user->patronymic = StringHelper::run($this->dataObject->patronymic) ?? $this->user->patronymic;
         $this->user->cabinet_id = $this->dataObject->cabinetId;
         $this->user->save();
         $this->user->syncRoles($this->dataObject->role);
@@ -300,6 +301,12 @@ final class UsersAction extends Action implements ICatalog, ICatalogExtented, IU
             ];
 
             return response()->error($this->response);
+        }
+        if ($this->user->avatar) {
+            Storage::disk('avatar')->delete($this->user->avatar);
+        }
+        if ($this->user->sound_notify) {
+            Storage::disk('sound')->delete($this->user->sound_notify);
         }
         $this->user->syncRoles([]);
         $this->user->forceDelete();
