@@ -111,6 +111,17 @@ class Help extends Model
         return $this->calendarView();
     }
 
+    protected function calendarView(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if ($value !== null) {
+                    return Carbon::parse($value)->format('d.m.Y H:i');
+                }
+            }
+        );
+    }
+
     protected function leadAt(): Attribute
     {
         return Attribute::make(
@@ -134,12 +145,22 @@ class Help extends Model
         );
     }
 
-    protected function calendarView(): Attribute
+    protected function images(): Attribute
+    {
+        return $this->imagesJson();
+    }
+
+    protected function imagesFinal(): Attribute
+    {
+        return $this->imagesJson();
+    }
+
+    protected function imagesJson(): Attribute
     {
         return Attribute::make(
             get: function ($value) {
                 if ($value !== null) {
-                    return Carbon::parse($value)->format('d.m.Y H:i');
+                    return json_decode((string) $value, true, JSON_THROW_ON_ERROR);
                 }
             }
         );

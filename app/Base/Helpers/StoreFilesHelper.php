@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Base\Helpers;
 
 use App\Core\Helpers\CoreHelper;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as Img;
 
-class StoreFilesHelper extends CoreHelper
+final class StoreFilesHelper extends CoreHelper
 {
     /**
      * [url one file or more files]
@@ -55,14 +58,15 @@ class StoreFilesHelper extends CoreHelper
      */
     public static function createFileImages(array $request, string $type = 'public', int $w = 1920, int $h = 1080): array
     {
-        $url = [];
+        self::$url = [];
         foreach ($request as $file) {
             self::$fileName = self::createImageName();
-            $url[self::$i] = self::createOneImage(self::$fileName, $file, $type, $w, $h);
+            self::createOneImage(self::$fileName, $file, $type, $w, $h);
+            self::$url[] = ['url' => self::$fileName];
             self::$i++;
         }
 
-        return $url;
+        return self::$url;
     }
 
     /**
@@ -125,7 +129,7 @@ class StoreFilesHelper extends CoreHelper
      */
     protected static function saveSoundStorage(UploadedFile $file, string $type, string $fileName): void
     {
-        Storage::disk($type)->put($fileName, file_get_contents($file));
+        Storage::disk($type)->put($fileName, File::get($file));
 
     }
 

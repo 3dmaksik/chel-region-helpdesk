@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label for="select2-category">Изменить категорию</label>
                     <select class="select2-single form-control" name="category_id" id="select2-category">
-                        @foreach( $items['data']['category'] as $category)
+                        @foreach( $items['category'] as $category)
                         <option
                             value="@if ($category->id==$items['item']->category->id) {{ $items['item']->category->id }} @else {{ $category->id }}@endif">
                             @if ($category->id==$items['item']->category->id) {{ $items['item']->category->description}} @else {{ $category->description }}@endif</option>
@@ -35,8 +35,8 @@
                 </div>
                 <div class="form-group">
                     <label for="select2-user">Изменить сотрудника</label>
-                    <select class="select2-single form-control" name="user_id" id="select2-user">
-                        @foreach( $items['data']['user'] as $user)
+                    <select class="select2-single select2-user form-control" name="user_id" id="select2-user">
+                        @foreach( $items['user'] as $user)
                         <option
                             value="@if ($user->id==$items['item']->user->id) {{ $items['item']->user->id }} @else {{ $user->id }}@endif">
                             @if ($user->id==$items['item']->user->id) {{ $items['item']->user->lastname }} {{
@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <label for="select2-priority">Изменить приоритет</label>
                     <select class="select2-single form-control" name="priority_id" id="select2-priority">
-                        @foreach( $items['data']['priority'] as $priority)
+                        @foreach( $items['priority'] as $priority)
                         <option
                             value="@if ($priority->id==$items['item']->priority->id) {{ $items['item']->priority->id }} @else {{ $priority->id }}@endif">
                             @if ($priority->id==$items['item']->priority->id) {{ $items['item']->priority->description}}

@@ -7,88 +7,86 @@ use App\Catalogs\Actions\HelpAction;
 use App\Requests\HelpRequest;
 use Illuminate\Http\JsonResponse;
 
-class HelpApiController extends Controller
+final class HelpApiController extends Controller
 {
-    private string $dataCatalog;
-
-    public function __construct(private readonly HelpAction $helps)
+    public function __construct()
     {
         $this->middleware('auth');
     }
 
-    public function store(HelpRequest $request): JsonResponse
+    public function store(HelpRequest $request, HelpAction $helps): JsonResponse
     {
-        $this->data = $this->helps->store($request);
+        $this->data = $helps->store($request->validated(null, null));
 
         return $this->data;
     }
 
-    public function update(HelpRequest $request, int $help): JsonResponse
+    public function update(HelpRequest $request, HelpAction $helps, int $help): JsonResponse
     {
-        $this->data = $this->helps->update($request, $help);
+        $this->data = $helps->update($request->validated(null, null), $help);
 
         return $this->data;
     }
 
-    public function accept(HelpRequest $request, int $help): JsonResponse
+    public function accept(HelpRequest $request, HelpAction $helps, int $help): JsonResponse
     {
-        $this->data = $this->helps->accept($request, $help);
+        $this->data = $helps->accept($request->validated(null, null), $help);
 
         return $this->data;
     }
 
-    public function execute(HelpRequest $request, int $help): JsonResponse
+    public function execute(HelpRequest $request, HelpAction $helps, int $help): JsonResponse
     {
-        $this->data = $this->helps->execute($request, $help);
+        $this->data = $helps->execute($request->validated(null, null), $help);
 
         return $this->data;
     }
 
-    public function redefine(HelpRequest $request, int $help): JsonResponse
+    public function redefine(HelpRequest $request, HelpAction $helps, int $help): JsonResponse
     {
-        $this->data = $this->helps->redefine($request, $help);
+        $this->data = $helps->redefine($request->validated(null, null), $help);
 
         return $this->data;
     }
 
-    public function reject(HelpRequest $request, int $help): JsonResponse
+    public function reject(HelpRequest $request, HelpAction $helps, int $help): JsonResponse
     {
-        $this->data = $this->helps->reject($request, $help);
+        $this->data = $helps->reject($request->validated(null, null), $help);
 
         return $this->data;
     }
 
-    public function destroy(int $help): JsonResponse
+    public function destroy(HelpAction $helps, int $help): JsonResponse
     {
-        $this->data = $this->helps->delete($help);
+        $this->data = $helps->destroy($help);
 
         return $this->data;
     }
 
-    public function getAllPages(): JsonResponse
+    public function getApiCatalog(HelpAction $helps): JsonResponse
     {
-        $this->dataCatalog = $this->helps->getAllCatalogs()->toJson();
-
-        return response()->json($this->dataCatalog);
-    }
-
-    public function checkHelp(int $id): JsonResponse
-    {
-        $this->data = $this->helps->updateView($id);
+        $this->data = $helps->getApiCatalog();
 
         return $this->data;
     }
 
-    public function newPagesCount(): JsonResponse
+    public function checkHelp(HelpAction $helps, int $id): JsonResponse
     {
-        $this->data = $this->helps->getNewPagesCount();
+        $this->data = $helps->updateView($id);
 
         return $this->data;
     }
 
-    public function nowPagesCount(): JsonResponse
+    public function newPagesCount(HelpAction $helps): JsonResponse
     {
-        $this->data = $this->helps->getNowPagesCount();
+        $this->data = $helps->getNewPagesCount();
+
+        return $this->data;
+    }
+
+    public function nowPagesCount(HelpAction $helps): JsonResponse
+    {
+        $this->data = $helps->getNowPagesCount();
 
         return $this->data;
     }

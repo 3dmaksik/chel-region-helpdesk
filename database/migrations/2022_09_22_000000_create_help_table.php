@@ -25,7 +25,7 @@ return new class extends Migration
             $table->json('images_final')->nullable();
             $table->longText('info')->nullable();
             $table->longText('info_final')->nullable();
-            $table->dateTime('calendar_request')->nullable();
+            $table->dateTime('calendar_request');
             $table->dateTime('calendar_accept')->nullable();
             $table->dateTime('calendar_warning')->nullable();
             $table->dateTime('calendar_execution')->nullable();

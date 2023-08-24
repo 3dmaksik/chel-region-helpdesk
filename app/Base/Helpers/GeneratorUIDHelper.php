@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Base\Helpers;
 
 use App\Core\Helpers\CoreHelper;
 
-class GeneratorUIDHelper extends CoreHelper
+final class GeneratorUIDHelper extends CoreHelper
 {
     /**
      * [checking division by 4]

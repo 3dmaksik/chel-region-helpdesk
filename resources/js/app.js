@@ -36,10 +36,38 @@ $(function () {
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
-                        if (item.description !== undefined)
+                        if (item.id !== undefined)
                         {
                             return {
                                 text: item.description,
+                                id: item.id
+                            }
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $(".select2-user").select2({
+        language: "ru",
+        placeholder: 'Введите ФИО',
+        ajax: {
+            url: '/api/select2/user',
+            dataType: 'json',
+            delay: 2,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        if (item.id !== undefined)
+                        {
+                            if (item.patronymic === null)
+                            {
+                                item.patronymic = ''
+                            }
+                            return {
+                                text: item.lastname+ ' '+item.firstname+' '+item.patronymic,
                                 id: item.id
                             }
                         }
@@ -70,14 +98,16 @@ $(function () {
         else $(this).prev().text("Выберите файлы");
     });
     $(".btn-modal").on('click', function () {
+        $("#accept-select2-user").empty();
+        $("#redefine-select2-user").empty();
         $.ajax({
             url: "/api/help/all",
             method: "post",
             dataType: "json",
             success: function (data) {
                 const obj = JSON.parse(data);
-                for (var i = 0; i < obj.user.length; i++) {
-                    var counter = obj.user[i];
+                for (let i = 0; i < obj.user.length; i++) {
+                    let counter = obj.user[i];
                     if (counter.patronymic === null) counter.patronymic = "";
                     $("#accept-select2-user").append(
                         '<option value="' +
@@ -102,8 +132,8 @@ $(function () {
                             "</option>"
                     );
                 }
-                for (var i = 0; i < obj.priority.length; i++) {
-                    var counter = obj.priority[i];
+                for (let i = 0; i < obj.priority.length; i++) {
+                    let counter = obj.priority[i];
                     $("#accept-select2-priority").append(
                         '<option value="' +
                             counter.id +
@@ -185,12 +215,12 @@ $(function () {
                         $(".base-alert-success").fadeIn(2000);
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
-                        }, 6500);
+                        }, 5500);
                     if (data.reload === true)
                     {
                         setTimeout(function(){
                             location.reload();
-                          }, 7500);
+                          }, 6000);
                     }
                     $(form)
                         .find("input, textarea, select, button[type=submit]")

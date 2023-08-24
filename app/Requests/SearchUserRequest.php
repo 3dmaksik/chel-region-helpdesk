@@ -5,7 +5,7 @@ namespace App\Requests;
 use App\Base\Requests\Request as BaseRequest;
 use Illuminate\Support\Facades\Auth;
 
-class SearchCabinetRequest extends BaseRequest
+class SearchUserRequest extends BaseRequest
 {
     /**
      * @return array{q: string}

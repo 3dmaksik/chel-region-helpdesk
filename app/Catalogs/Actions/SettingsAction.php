@@ -34,7 +34,7 @@ final class SettingsAction extends Action implements ISettings
     /**
      * [filename for upload]
      *
-     * @var filenName
+     * @var fileName
      */
     private string $fileName;
 
@@ -94,7 +94,9 @@ final class SettingsAction extends Action implements ISettings
     }
 
     /**
-     * [update settings]
+     * [update password]
+     *
+     * @param  array  $request {avatar: \Illuminate\Http\UploadedFile|null, sound_notify: \Illuminate\Http\UploadedFile|null}
      */
     public function updateSettings(array $request): JsonResponse
     {

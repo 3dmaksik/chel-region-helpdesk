@@ -28,8 +28,9 @@ Route::middleware('guest')->middleware('throttle:10,1')->group(function (): void
     Route::post('help/new', [IndexApiController::class, 'store'])->name('index.store')->middleware('can:store help');
 });
 Route::middleware('auth')->middleware('throttle:100,1')->group(function (): void {
-    Route::post('help/all', [HelpApiController::class, 'getAllPages'])->middleware('can:all help');
+    Route::post('help/all', [HelpApiController::class, 'getApiCatalog'])->middleware('can:all help');
     Route::get('select2/cabinet', [SearchApiController::class, 'cabinet'])->name('select2.cabinet')->middleware('can:create cabinet');
+    Route::get('select2/user', [SearchApiController::class, 'user'])->name('select2.user')->middleware('can:create help');
     Route::controller(CabinetApiController::class)
         ->prefix('admin/cabinet')
         ->as('cabinet.')

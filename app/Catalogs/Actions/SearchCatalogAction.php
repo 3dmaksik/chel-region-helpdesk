@@ -7,6 +7,7 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Models\Cabinet;
 use App\Models\Help;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -25,7 +26,14 @@ final class SearchCatalogAction extends Action
      *
      * @var userCabinetSearch
      */
-    private Collection|array $userCabinetSearch;
+    private Collection $userCabinetSearch;
+
+    /**
+     * [data model user search]
+     *
+     * @var userHelpSearch
+     */
+    private Collection $userHelpSearch;
 
     /**
      * [result data]
@@ -39,7 +47,14 @@ final class SearchCatalogAction extends Action
      *
      * @var cabinet
      */
-    private string $cabinet;
+    private ?string $cabinet;
+
+    /**
+     * [help user search]
+     *
+     * @var cabinet
+     */
+    private ?string $user;
 
     /**
      * [search help users sent help with role]
@@ -98,18 +113,40 @@ final class SearchCatalogAction extends Action
      */
     public function searchUserCabinet(array $request): JsonResponse
     {
-        $this->cabinet = $request['q'];
-        if ($this->cabinet !== null) {
-            $this->userCabinetSearch = Cabinet::query()->where('description', 'LIKE', '%'.$this->cabinet.'%')->skip(0)->take(10)->get();
+        $this->cabinet = $request['q'] ?? null;
+        if ($this->cabinet) {
+            $this->userCabinetSearch = Cabinet::query()->where('description', 'LIKE', '%'.$this->cabinet.'%')
+                ->orderBy('description', 'ASC')
+                ->skip(0)->take(10)->get();
         } else {
-            $this->userCabinetSearch =
-            [
-                'id' => null,
-                'description' => null,
-            ];
+            $this->userCabinetSearch = Cabinet::query()
+                ->orderBy('description', 'ASC')
+                ->skip(0)->take(100)->get();
         }
 
         return response()->success($this->userCabinetSearch);
+
+    }
+
+    /**
+     * [search help user with 10 limit count]
+     */
+    public function searchUserHelp(array $request): JsonResponse
+    {
+        $this->user = $request['q'] ?? null;
+        if ($this->user) {
+            $this->userHelpSearch = User::query()->where('firstname', 'LIKE', '%'.$this->user.'%')
+                ->orWhere('lastname', 'LIKE', '%'.$this->user.'%')
+                ->orWhere('patronymic', 'LIKE', '%'.$this->user.'%')
+                ->orderBy('lastname', 'ASC')
+                ->skip(0)->take(10)->get();
+        } else {
+            $this->userHelpSearch = User::query()
+                ->orderBy('lastname', 'ASC')
+                ->skip(0)->take(100)->get();
+        }
+
+        return response()->success($this->userHelpSearch);
 
     }
 

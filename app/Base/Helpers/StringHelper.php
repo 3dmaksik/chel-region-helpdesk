@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Base\Helpers;
 
 use App\Core\Helpers\CoreHelper;
 
-class StringHelper extends CoreHelper
+final class StringHelper extends CoreHelper
 {
     /**
      * [processed string]
@@ -16,37 +18,37 @@ class StringHelper extends CoreHelper
      */
     public static function run(?string $string): ?string
     {
-        static::$data = $string;
-        if (static::$data != null) {
-            self::stringTrim(static::$data);
-            self::stringAllLower(static::$data);
-            self::stringUpFirst(static::$data);
+        self::$data = $string;
+        if (! self::$data) {
+            self::stringTrim(self::$data);
+            self::stringAllLower(self::$data);
+            self::stringUpFirst(self::$data);
         }
 
-        return static::$data;
+        return self::$data;
     }
 
     /**
      * [removing spaces]
      */
-    protected static function stringTrim(mixed $string): string
+    protected static function stringTrim(string $string): string
     {
-        return static::$data = trim((string) $string);
+        return self::$data = trim((string) $string);
     }
 
     /**
      * [convert all characters to lower case]
      */
-    protected static function stringAllLower(mixed $string): string
+    protected static function stringAllLower(string $string): string
     {
-        return static::$data = strtolower((string) $string);
+        return self::$data = strtolower((string) $string);
     }
 
     /**
      * [convert first character to upper case]
      */
-    protected static function stringUpFirst(mixed $string): string
+    protected static function stringUpFirst(string $string): string
     {
-        return static::$data = mb_convert_case((string) $string, MB_CASE_TITLE, 'UTF-8');
+        return self::$data = mb_convert_case((string) $string, MB_CASE_TITLE, 'UTF-8');
     }
 }

@@ -19,29 +19,29 @@
     </div>
     <div class="card-body">
         <p class="text-primary">Номер заявки</p>
-        <p>{{ $item->app_number}}</p>
+        <p>{{ $item['data']->app_number}}</p>
         <hr>
         <p class="text-primary">Категория заявки</p>
-        <p>{{ $item->category->description }}</p>
+        <p>{{ $item['data']->category->description }}</p>
         <hr>
         <p class="text-primary">Кабинет</p>
-        <p>№{{ $item->user->cabinet->description}}</p>
+        <p>№{{ $item['data']->user->cabinet->description}}</p>
         <hr>
         <p class="text-primary">ФИО отправителя заявки</p>
-        <p>{{ $item->user->lastname }} {{ $item->user->firstname }} {{ $item->user->patronymic }}</p>
+        <p>{{ $item['data']->user->lastname }} {{ $item['data']->user->firstname }} {{ $item['data']->user->patronymic }}</p>
         <hr>
         <p class="text-primary">Дата подачи заявки</p>
-        <p>{{ $item->calendar_request }}</p>
+        <p>{{ $item['data']->calendar_request }}</p>
         <hr>
         <p class="text-primary">Описание заявки</p>
-        <p>{{ $item->description_long }}</p>
+        <p>{{ $item['data']->description_long }}</p>
         <hr>
         <p class="text-primary">Вложения</p>
-        @if ($item->images==null)
+        @if ($item['data']->images==null)
         Вложения отсуствуют
         @else
         <div class="slider">
-            @foreach ($item->images as $image)
+            @foreach ($item['data']->images as $image)
             <a href="{{ asset('storage/images/'.$image['url'].'') }}" data-fancybox="images">
                 Посмотреть вложение
             </a>
@@ -50,18 +50,18 @@
         @endif
         <hr>
         <p class="text-primary">Ответ о выполнении заявки</p>
-        @if ($item->info_final==null)
+        @if ($item['data']->info_final==null)
         Заявка ещё не выполнена или не взята в работу
         @else
-        {{ $item->info_final }}
+        {{ $item['data']->info_final }}
         @endif
         <hr>
         <p class="text-primary">Вложения к ответам</p>
-        @if ($item->images_final==null)
+        @if ($item['data']->images_final==null)
         Вложения отсуствуют
         @else
         <div class="slider">
-            @foreach ($item->images_final as $image)
+            @foreach ($item['data']->images_final as $image)
             <a href="{{ asset('storage/images/'.$image['url'].'') }}" data-fancybox="images">
                 Посмотреть вложение
             </a>
@@ -69,38 +69,38 @@
         </div>
         @endif
         <hr>
-        @if ($item->status->id ===1)
+        @if ($item['data']->status->id ===1)
         <div class="block">
         @can('accept help')
             <a href="" class="btn btn-primary btn-sm hover btn-modal" data-toggle="modal" data-target="#acceptHelp"
-                data-id="{{$item->id}}">
+                data-id="{{$item['data']->id}}">
                 Назначить исполнителя
             </a>
         @endcan
         @can('edit help')
-            <a href="{{ route(config('constants.help.edit'),$item->id) }}" class="btn btn-success btn-sm hover">
+            <a href="{{ route(config('constants.help.edit'),$item['data']->id) }}" class="btn btn-success btn-sm hover">
                 Редактировать заявку
             </a>
         @endcan
         @can('reject help')
             <a href="" class="btn btn-danger btn-sm hover btn-modal" data-toggle="modal" data-target="#rejectHelp"
-                data-id="{{$item->id}}">
+                data-id="{{$item['data']->id}}">
                 Отклонить заявку
             </a>
         @endcan
         </div>
         @endif
-        @if($item->status->id ===2)
+        @if($item['data']->status->id ===2)
         <div class="block">
             <a href="" class="btn btn-primary btn-sm hover btn-modal" data-toggle="modal" data-target="#executeHelp"
-                data-id="{{$item->id}}">
+                data-id="{{$item['data']->id}}">
                 Выполнить заявку
             </a>
         </div>
         <div class="block">
         @can('redefine help')
             <a href="" class="btn btn-info btn-sm hover btn-modal" data-toggle="modal" data-target="#redefineHelp"
-                data-id="{{$item->id}}">
+                data-id="{{$item['data']->id}}">
                 Передать заявку
             </a>
         @endcan
@@ -116,59 +116,59 @@
         </div>
         <div class="card-body">
             <p class="text-primary">Статус заявки</p>
-            <p class="badge badge-{{ $item->status->color }}">{{ $item->status->description }}</p>
+            <p class="badge badge-{{ $item['data']->status->color }}">{{ $item['data']->status->description }}</p>
             <hr>
             <p class="text-primary">Приоритет заявки</p>
-            <p>{{ $item->priority->description }}</p>
+            <p>{{ $item['data']->priority->description }}</p>
             <hr>
             <p class="text-primary">Исполнитель заявки</p>
-            @if ($item->executor_id==null)
+            @if ($item['data']->executor_id==null)
             Исполнитель ещё не назначен
             @else
-            {{ $item->executor->lastname }} {{ $item->executor->firstname }} {{ $item->executor->patronymic }}
+            {{ $item['data']->executor->lastname }} {{ $item['data']->executor->firstname }} {{ $item['data']->executor->patronymic }}
             @endif
             <hr>
             <p class="text-primary">Дата принятия заявки</p>
-            @if ($item->calendar_accept==null)
+            @if ($item['data']->calendar_accept==null)
             Заявка ещё не принята
             @else
-            {{ $item->calendar_accept }}
+            {{ $item['data']->calendar_accept }}
             @endif
             <hr>
             <p class="text-primary">Дата выполнения заявки</p>
-            @if ($item->calendar_final==null)
+            @if ($item['data']->calendar_final==null)
             Заявка ещё не выполнена
             @else
-            {{ $item->calendar_final }}
+            {{ $item['data']->calendar_final }}
             @endif
             <hr>
             <p class="text-primary">Дата предупреждения о просрочке заявки</p>
-            @if ($item->calendar_warning==null)
+            @if ($item['data']->calendar_warning==null)
             Заявка ещё не взята в работу
             @else
-            {{ $item->calendar_warning }}
+            {{ $item['data']->calendar_warning }}
             @endif
             <hr>
             <p class="text-primary">Максимальная дата для выполнения заявки</p>
-            @if ($item->calendar_execution==null)
+            @if ($item['data']->calendar_execution==null)
             Заявка ещё не взята в работу
             @else
-            {{ $item->calendar_execution }}
+            {{ $item['data']->calendar_execution }}
             @endif
             <hr>
             <p class="text-primary">Время выполнения заявки</p>
-            @if ($item->lead_at==null)
+            @if ($item['data']->lead_at==null)
             Заявка ещё не выполнена
             @else
-            @if ($item->lead_at['day']>0){{ $item->lead_at['day'] }} дн. @endif @if ($item->lead_at['hour']>0){{ $item->lead_at['hour'] }} ч. @endif @if ($item->lead_at['minute']>0){{ $item->lead_at['minute'] }} мин. @endif
+            @if ($item['data']->lead_at['day']>0){{ $item['data']->lead_at['day'] }} дн. @endif @if ($item['data']->lead_at['hour']>0){{ $item['data']->lead_at['hour'] }} ч. @endif @if ($item['data']->lead_at['minute']>0){{ $item['data']->lead_at['minute'] }} мин. @endif
             @endif
             <hr>
-            @if ($item->work_id!=auth()->user()->id)
+            @if ($item['data']->work_id!=auth()->user()->id)
             <p class="text-primary">Информация для выполнения</p>
-            @if ($item->info==null)
+            @if ($item['data']->info==null)
             Информация отсуствует
             @else
-            {{ $item->info }}
+            {{ $item['data']->info }}
             @endif
             <hr>
             @endif

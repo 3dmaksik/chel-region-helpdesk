@@ -22,7 +22,11 @@ class TestTableSeeder extends Seeder
     {
         Category::factory()->count(100)->create();
         Priority::factory()->count(5)->create();
-        Cabinet::factory()->count(65000)->create();
+        for ($i = 1; $i <= 65000; $i++) {
+            Cabinet::create([
+                'description' => $i,
+            ]);
+        }
         for ($i = 1; $i <= 64000; $i++) {
             User::factory()->create([
                 'name' => mt_rand().Str::random(100).$i,
