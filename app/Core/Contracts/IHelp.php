@@ -31,5 +31,4 @@ interface IHelp
     public function getNewPagesCount(): \Illuminate\Http\JsonResponse;
 
     public function getNowPagesCount(): \Illuminate\Http\JsonResponse;
-
 }

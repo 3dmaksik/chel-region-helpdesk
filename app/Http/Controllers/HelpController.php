@@ -8,6 +8,9 @@ use Illuminate\View\View;
 
 class HelpController extends Controller
 {
+    /**
+     * [all helps]
+     */
     public function index(HelpAction $helps): View
     {
         $items = $helps->getAllPagesPaginate();
@@ -15,6 +18,9 @@ class HelpController extends Controller
         return view('tables.help', compact('items'));
     }
 
+    /**
+     * [all helps in api]
+     */
     public function getIndex(HelpAction $helps): View
     {
         $items = $helps->getAllPagesPaginate();
@@ -22,6 +28,9 @@ class HelpController extends Controller
         return view('loader.help', compact('items'));
     }
 
+    /**
+     * [new help]
+     */
     public function new(HelpAction $helps): View
     {
         $items = $helps->getNewPagesPaginate();
@@ -29,6 +38,9 @@ class HelpController extends Controller
         return view('tables.help', compact('items'));
     }
 
+    /**
+     * [new help in api]
+     */
     public function getNew(HelpAction $helps): View
     {
         $items = $helps->getNewPagesPaginate();
@@ -36,6 +48,9 @@ class HelpController extends Controller
         return view('loader.help', compact('items'));
     }
 
+    /**
+     * [edit help]
+     */
     public function edit(HelpAction $helps, int $help): View
     {
         $items = $helps->edit($help);
@@ -43,6 +58,9 @@ class HelpController extends Controller
         return view('forms.edit.help', compact('items'));
     }
 
+    /**
+     * [worker help]
+     */
     public function worker(HelpAction $helps): View
     {
         $items = $helps->getWorkerPagesPaginate();
@@ -50,6 +68,9 @@ class HelpController extends Controller
         return view('tables.help', compact('items'));
     }
 
+    /**
+     * [worker help in api]
+     */
     public function getWorker(HelpAction $helps): View
     {
         $items = $helps->getWorkerPagesPaginate();
@@ -57,6 +78,9 @@ class HelpController extends Controller
         return view('loader.help', compact('items'));
     }
 
+    /**
+     * [completed help]
+     */
     public function completed(HelpAction $helps): View
     {
         $items = $helps->getCompletedPagesPaginate();
@@ -64,6 +88,9 @@ class HelpController extends Controller
         return view('tables.help', compact('items'));
     }
 
+    /**
+     * [completed help in api]
+     */
     public function getCompleted(HelpAction $helps): View
     {
         $items = $helps->getCompletedPagesPaginate();
@@ -71,6 +98,9 @@ class HelpController extends Controller
         return view('loader.help', compact('items'));
     }
 
+    /**
+     * [dismiss help]
+     */
     public function dismiss(HelpAction $helps): View
     {
         $items = $helps->getDismissPagesPaginate();
@@ -78,6 +108,9 @@ class HelpController extends Controller
         return view('tables.help', compact('items'));
     }
 
+    /**
+     * [dismiss help in api]
+     */
     public function getDismiss(HelpAction $helps): View
     {
         $items = $helps->getDismissPagesPaginate();
@@ -85,6 +118,9 @@ class HelpController extends Controller
         return view('loader.help', compact('items'));
     }
 
+    /**
+     * [show one help]
+     */
     public function show(HelpAction $helps, int $help): View
     {
         $item = $helps->show($help);
@@ -92,6 +128,9 @@ class HelpController extends Controller
         return view('forms.show.help', compact('item'));
     }
 
+    /**
+     * [show one help in api]
+     */
     public function getShow(HelpAction $helps, int $help): View
     {
         $item = $helps->show($help);
@@ -99,6 +138,9 @@ class HelpController extends Controller
         return view('loader.help-view', compact('item'));
     }
 
+    /**
+     * [create help]
+     */
     public function create(HelpAction $helps): View
     {
         $items = $helps->create();

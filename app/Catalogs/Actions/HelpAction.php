@@ -152,6 +152,13 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
     private int $count;
 
     /**
+     * [request user or auth]
+     *
+     * @var userId
+     */
+    private int $userId;
+
+    /**
      * [all helps with count items on page]
      *
      * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}
@@ -286,7 +293,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         if ($this->user->can('new help')) {
             $this->item = Model::query()->find($id);
         } else {
-            $this->item = Model::query()->where('user_id', $this->user->id)->orWhere('executor_id', $this->user->id)->first();
+            $this->item = Model::query()->where('id',$id)->where('user_id', $this->user->id)->orWhere('executor_id', $this->user->id)->first();
         }
         if (! $this->item) {
 
@@ -329,12 +336,13 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         $this->last = Model::select('app_number')->orderBy('id', 'desc')->first();
         $this->last ? $this->app_number = GeneratorAppNumberHelper::generate($this->last->app_number) : $this->app_number = GeneratorAppNumberHelper::generate();
         $this->calendar_request = Carbon::now();
+        $this->userId = $request['user_id'] ?? auth()->user()->id;
 
         $this->dataObject = new HelpDTO(
             number : $this->app_number,
             category : (int) $request['category_id'],
             status : Status::New,
-            user : (int) $request['user_id'],
+            user : $this->userId,
             description_long : $request['description_long'],
             request : $this->calendar_request,
             images : $request['images'] ?? null,
@@ -730,6 +738,10 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         return response()->success($this->response);
     }
 
+    /**
+     * [remove help]
+     *
+     */
     public function destroy(int $id): JsonResponse
     {
         $this->item = Model::query()->find($id);
@@ -747,6 +759,10 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         return response()->success($this->response);
     }
 
+    /**
+     * [writable help]
+     *
+     */
     public function updateView(int $id, bool $status = true): JsonResponse
     {
         $this->item = Model::query()->find($id);
@@ -768,6 +784,10 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         return response()->success($this->response);
     }
 
+    /**
+     * [get new help count]
+     *
+     */
     public function getNewPagesCount(): JsonResponse
     {
         $this->user = User::findOrFail(auth()->user()->id);
@@ -784,6 +804,10 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         return response()->json($this->count);
     }
 
+    /**
+     * [get now help count]
+     *
+     */
     public function getNowPagesCount(): JsonResponse
     {
         $this->count = Model::where('status_id', Status::Work)

@@ -37,7 +37,7 @@
         <p>{{ $item['data']->description_long }}</p>
         <hr>
         <p class="text-primary">Вложения</p>
-        @if ($item['data']->images==null)
+        @if ($item['data']->images===null)
         Вложения отсуствуют
         @else
         <div class="slider">
@@ -57,7 +57,7 @@
         @endif
         <hr>
         <p class="text-primary">Вложения к ответам</p>
-        @if ($item['data']->images_final==null)
+        @if ($item['data']->images_final===null)
         Вложения отсуствуют
         @else
         <div class="slider">
@@ -69,7 +69,7 @@
         </div>
         @endif
         <hr>
-        @if ($item['data']->status->id ===1)
+        @if ($item['data']->status->id === 1)
         <div class="block">
         @can('accept help')
             <a href="" class="btn btn-primary btn-sm hover btn-modal" data-toggle="modal" data-target="#acceptHelp"
@@ -157,13 +157,13 @@
             @endif
             <hr>
             <p class="text-primary">Время выполнения заявки</p>
-            @if ($item['data']->lead_at==null)
+            @if ($item['data']->lead_at===null)
             Заявка ещё не выполнена
             @else
             @if ($item['data']->lead_at['day']>0){{ $item['data']->lead_at['day'] }} дн. @endif @if ($item['data']->lead_at['hour']>0){{ $item['data']->lead_at['hour'] }} ч. @endif @if ($item['data']->lead_at['minute']>0){{ $item['data']->lead_at['minute'] }} мин. @endif
             @endif
             <hr>
-            @if ($item['data']->work_id!=auth()->user()->id)
+            @if ($item['data']->executor_id===auth()->user()->id || auth()->user()->getRoleNames()[0] === 'superAdmin' || auth()->user()->getRoleNames()[0] === 'admin')
             <p class="text-primary">Информация для выполнения</p>
             @if ($item['data']->info==null)
             Информация отсуствует
