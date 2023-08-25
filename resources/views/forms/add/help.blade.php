@@ -25,18 +25,14 @@
             <div class="form-group">
                 <label for="select2-category">Выберите категорию</label>
                 <select class="select2-single form-control" name="category_id" id="select2-category">
-                    @foreach( $items['category'] as $item)
-                    <option value="{{ $item->id }}">{{ $item->description }}</option>
+                    @foreach( $items['categories'] as $category)
+                    <option value="{{ $category->id }}">{{ $category->description }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
                 <label for="select2-user">Выберите сотрудника</label>
-                <select class="select2-single form-control" name="user_id" id="select2-user">
-                    @foreach( $items['user'] as $item)
-                    <option value="{{ $item->id }}">{{ $item->lastname }} {{ $item->firstname }} {{ $item->patronymic }}
-                    </option>
-                    @endforeach
+                <select class="select2-user select2-single form-control" name="user_id" id="select2-user">
                 </select>
             </div>
             <div class="form-group">

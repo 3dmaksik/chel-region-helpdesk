@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use App\Models\Status;
 use App\Models\User;
+use Database\Seeders\CabinetTableSeeder;
 use Database\Seeders\RolesTableSeeder;
 use Database\Seeders\StatusesTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -29,6 +30,7 @@ class StatusTest extends TestCase
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->withoutMiddleware(RedirectIfAuthenticated::class);
         $this->seed(RolesTableSeeder::class);
+        $this->seed(CabinetTableSeeder::class);
         $this->seed(StatusesTableSeeder::class);
 
         $this->superAdmin = User::factory()->create()->assignRole('superAdmin');

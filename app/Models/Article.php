@@ -18,7 +18,7 @@ class Article extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                if ($value != null) {
+                if ($value !== null) {
                     return Carbon::parse($value)->format('d.m.Y H:i');
                 }
             }

@@ -7,19 +7,14 @@ use App\Catalogs\Actions\StatusAction;
 use App\Requests\StatusRequest;
 use Illuminate\Http\JsonResponse;
 
-class StatusApiController extends Controller
+final class StatusApiController extends Controller
 {
-    /**
-     * [result data]
-     */
-    private JsonResponse $data;
-
     /**
      * [update status]
      */
     public function update(StatusRequest $request, int $status, StatusAction $statusAction): JsonResponse
     {
-        $this->data = $statusAction->update($request->validated(), $status);
+        $this->data = $statusAction->update($request->validated(null, null), $status);
 
         return $this->data;
     }

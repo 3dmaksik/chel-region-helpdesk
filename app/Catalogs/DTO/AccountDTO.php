@@ -1,26 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Catalogs\DTO;
 
 use App\Base\DTO\DTO;
-use App\Base\Helpers\StoreFilesHelper;
-use App\Base\Requests\Request;
+use Illuminate\Http\UploadedFile;
 
-class AccountDTO extends DTO
+final class AccountDTO extends DTO
 {
-    public ?string $role;
+    public readonly ?UploadedFile $avatar;
 
-    public ?string $avatar;
+    public readonly ?UploadedFile $soundNotify;
 
-    public ?string $sound_notify;
-
-    public static function storeObjectRequest(Request $request): self
-    {
-        $dto = new self();
-        $dto->avatar = StoreFilesHelper::createOneImage($request->file('avatar'), 'avatar', 32, 32);
-        $dto->sound_notify = StoreFilesHelper::createNotify($request->file('sound_notify'), 'sound');
-        $dto->role = $request->get('role');
-
-        return $dto;
+    public function __construct(
+        UploadedFile $avatar = null,
+        UploadedFile $soundNotify = null,
+    ) {
+        $this->avatar = $avatar;
+        $this->soundNotify = $soundNotify;
     }
 }

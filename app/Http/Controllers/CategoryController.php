@@ -6,7 +6,7 @@ use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\CategoryAction;
 use Illuminate\View\View;
 
-class CategoryController extends Controller
+final class CategoryController extends Controller
 {
     /**
      * [all category]

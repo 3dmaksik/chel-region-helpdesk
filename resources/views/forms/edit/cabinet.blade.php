@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('row')
-<div class="col-lg-6">
+<div class="col-lg-4">
 <div class="card mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Изменить кабинет</h6>
@@ -20,11 +20,11 @@
         </div>
     </div>
     <div class="card-body">
-        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.cabinet.update'),$item->id) }}">
+        <form id="formValidate" class="form-submit" method="POST" action="{{ route(config('constants.cabinet.update'),$item['data']->id) }}">
             @method('PATCH')
             <div class="form-group">
                 <label for="">Номер</label>
-                <input type="text" name="description" value="{{ $item->description }}" class="form-control"
+                <input type="text" name="description" value="{{ $item['data']->description }}" class="form-control"
                     id="description" aria-describedby="textHelp" placeholder="№ 1" autocomplete="off">
                 <small id="textHelp" class="form-text text-muted">Введите номер кабинета</small>
             </div>

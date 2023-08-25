@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use App\Models\Cabinet;
 use App\Models\User;
+use Database\Seeders\CabinetTableSeeder;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,6 +29,7 @@ class CabinetTest extends TestCase
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->withoutMiddleware(RedirectIfAuthenticated::class);
         $this->seed(RolesTableSeeder::class);
+        $this->seed(CabinetTableSeeder::class);
 
         $this->superAdmin = User::factory()->create()->assignRole('superAdmin');
         $this->admin = User::factory()->create()->assignRole('admin');
@@ -38,7 +40,7 @@ class CabinetTest extends TestCase
     public function test_controller_cabinet_index_super_admin(): void
     {
         Cabinet::factory()->count(config('settings.pages'))->create();
-        $this->assertDatabaseCount('cabinet', config('settings.pages'));
+        $this->assertDatabaseCount('cabinet', config('settings.pages') + 1);
         $response = $this->actingAs($this->superAdmin, 'web')->get(route(config('constants.cabinet.index')));
         $response->assertStatus(200);
     }

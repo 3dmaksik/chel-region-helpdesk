@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label for="select2-category">Выберите категорию</label>
                 <select class="select2-single form-control" name="category_id" id="select2-category">
-                    @foreach( $items['category'] as $item)
+                    @foreach( $items['categories'] as $item)
                     <option @if (old('category_id')=="$item->id" ) selected @endif value="{{ $item->id }}">{{
                         $item->description }}</option>
                     @endforeach

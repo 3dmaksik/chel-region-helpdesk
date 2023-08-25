@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Article;
 use App\Models\User;
+use Database\Seeders\CabinetTableSeeder;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,6 +29,7 @@ class NewsTest extends TestCase
         $this->withoutMiddleware(VerifyCsrfToken::class);
         $this->withoutMiddleware(RedirectIfAuthenticated::class);
         $this->seed(RolesTableSeeder::class);
+        $this->seed(CabinetTableSeeder::class);
 
         $this->superAdmin = User::factory()->create()->assignRole('superAdmin');
         $this->admin = User::factory()->create()->assignRole('admin');
@@ -85,6 +87,7 @@ class NewsTest extends TestCase
                 'name' => 'test',
                 'description' => 'test',
                 'news_text' => 'test',
+                'created_at' => '01.01.2000 00:00',
             ], [
                 'Accept' => 'application/json',
             ]);
@@ -92,7 +95,8 @@ class NewsTest extends TestCase
         $this->assertEquals('test', $article->name);
         $this->assertEquals('test', $article->description);
         $this->assertEquals('test', $article->news_text);
-        $this->assertDatabaseHas('news', ['name' => 'test', 'description' => 'test', 'news_text' => 'test']);
+        $this->assertEquals('01.01.2000 00:00', $article->created_at);
+        $this->assertDatabaseHas('news', ['name' => 'test', 'description' => 'test', 'news_text' => 'test', 'created_at' => '2000-01-01 00:00:00']);
         $response->assertStatus(200);
     }
 
@@ -108,6 +112,7 @@ class NewsTest extends TestCase
                 'name' => 'test',
                 'description' => 'test',
                 'news_text' => 'test',
+                'created_at' => '01.01.2000 00:00',
             ], [
                 'Accept' => 'application/json',
             ]);
@@ -115,7 +120,8 @@ class NewsTest extends TestCase
         $this->assertEquals('test', $article->name);
         $this->assertEquals('test', $article->description);
         $this->assertEquals('test', $article->news_text);
-        $this->assertDatabaseHas('news', ['name' => 'test', 'description' => 'test', 'news_text' => 'test']);
+        $this->assertEquals('01.01.2000 00:00', $article->created_at);
+        $this->assertDatabaseHas('news', ['name' => 'test', 'description' => 'test', 'news_text' => 'test', 'created_at' => '2000-01-01 00:00:00']);
         $response->assertStatus(200);
     }
 

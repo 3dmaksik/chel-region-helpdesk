@@ -8,15 +8,16 @@ use Illuminate\Validation\Rule;
 
 class CabinetRequest extends BaseRequest
 {
+    /**
+     * @return array{description: \Illuminate\Validation\Rules\Unique[]|string[]}
+     */
     public function rules(): array
     {
         return [
             'description' => [
                 'required',
-                'integer',
-                'numeric',
-                'min:1',
-                'max:999',
+                'string',
+                'max:255',
                 Rule::unique('cabinet')->ignore(empty($this->cabinet) ? 0 : $this->cabinet),
             ],
 

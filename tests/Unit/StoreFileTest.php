@@ -19,10 +19,10 @@ class StoreFileTest extends TestCase
         Storage::fake('avatar');
         for ($i = 1; $i <= 10; $i++) {
             $avatar = UploadedFile::fake()->image('avatar.jpg', 100, 100)->size(10);
-            $file = StoreFilesHelper::createOneImage($avatar, 'avatar', 32, 32);
-            $this->assertJson($file);
-            $clearAvatar = json_decode($file, true);
-            Storage::disk('avatar')->delete($clearAvatar['url']);
+            $filename = StoreFilesHelper::createImageName();
+            $file = StoreFilesHelper::createOneImage($filename, $avatar, 'avatar', 32, 32);
+            $this->assertNull($file);
+            Storage::disk('avatar')->delete($filename);
         }
     }
 
@@ -31,10 +31,10 @@ class StoreFileTest extends TestCase
         Storage::fake('sound');
         for ($i = 1; $i <= 10; $i++) {
             $sound = UploadedFile::fake()->create('sound.ogg')->size(10);
-            $file = StoreFilesHelper::createNotify($sound, 'sound');
-            $this->assertJson($file);
-            $clearSound = json_decode($file, true);
-            Storage::disk('sound')->delete($clearSound['url']);
+            $filename = StoreFilesHelper::createSoundName();
+            $file = StoreFilesHelper::createNotify($filename, $sound, 'sound');
+            $this->assertNull($file);
+            Storage::disk('sound')->delete($filename);
         }
     }
 }

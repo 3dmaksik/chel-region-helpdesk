@@ -18,6 +18,7 @@ class StatusFactory extends Factory
     {
         return [
             'description' => fake()->unique()->text(10),
+            'color' => 'info',
         ];
     }
 }

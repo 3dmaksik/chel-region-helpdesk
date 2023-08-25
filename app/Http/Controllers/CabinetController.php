@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\CabinetAction;
 use Illuminate\View\View;
 
-class CabinetController extends Controller
+final class CabinetController extends Controller
 {
     /**
      * [all cabinet]

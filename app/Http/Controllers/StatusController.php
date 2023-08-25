@@ -6,7 +6,7 @@ use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\StatusAction;
 use Illuminate\View\View;
 
-class StatusController extends Controller
+final class StatusController extends Controller
 {
     /**
      * [all status]

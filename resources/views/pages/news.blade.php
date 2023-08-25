@@ -5,10 +5,10 @@
 <div class="card">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Все Новости</h6>
-        @hasanyrole('superAdmin|admin')
+        @can('create news')
         <a href="{{ route(config('constants.news.create')) }}"> <button type="button"
                 class="btn btn-primary mb-1">Добавить новость</button></a>
-        @endhasanyrole
+        @endcan
     </div>
     <div class="col-lg-12 mb-4">
         @forelse ($items['data'] as $item)
@@ -16,13 +16,14 @@
             <h3 class="text-primary">{{ $item->name }}</h3>
         </a>
         <h6 class="text-primary">{{ $item->description }}</h6>
-        <br>
-        <h6>Дата публикации: {{ date( 'd.m.Y H:i', strtotime($item->created_at))}}</h6>
+        <hr/>
         <a href="{{ route(config('constants.news.show'),$item->id) }}"> <button type="button"
                 class="btn btn-info">Читать далее</button></a>
-        @hasanyrole('superAdmin|admin')
+        @can('edit news')
         <a href="{{ route(config('constants.news.edit'),$item->id) }}"> <button type="button"
                 class="btn btn-success">Редактировать новость</button></a>
+        @endcan
+        @can('destroy news')
         <a data-toggle="modal" data-target="#removeModal-{{ $item->id}}" href="#"> <button type="button"
                 class="btn btn-danger remove">Удалить новость</button></a>
         <!-- Окно удаления-->
@@ -51,8 +52,10 @@
                 </form>
             </div>
         </div>
-        @endhasanyrole
-        <hr>
+        @endcan
+        <hr/>
+        <small>Дата публикации: {{ $item->created_at}}</small>
+        <br/>
         @empty
         <div></div>
         @endforelse

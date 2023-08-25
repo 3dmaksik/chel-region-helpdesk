@@ -16,9 +16,9 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
 
-    const CREATED_AT = 'created_at';
+    final public const CREATED_AT = 'created_at';
 
-    const UPDATED_AT = 'updated_at';
+    final public const UPDATED_AT = 'updated_at';
 
     protected $table = 'users';
 

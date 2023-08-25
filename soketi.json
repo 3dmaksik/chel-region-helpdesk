@@ -1,0 +1,17 @@
+{
+    "debug": false,
+    "port": 6001,
+    "appManager.array.apps": [
+        {
+            "id": "590854",
+            "key": "IiUD9GSRa3jrLNuo",
+            "secret": "8boO5RT2wujfC3NcvinUdKaDI4FMQ79m",
+            "webhooks": [
+                {
+                    "url": "http://127.0.0.1",
+                    "event_types": ["channel_occupied"]
+                }
+            ]
+        }
+    ]
+}

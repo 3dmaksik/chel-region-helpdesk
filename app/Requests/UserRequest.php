@@ -5,19 +5,23 @@ namespace App\Requests;
 use App\Base\Requests\Request as BaseRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserRequest extends BaseRequest
 {
+    /**
+     * @return array{name: \Illuminate\Validation\Rules\Unique[]|string[], password: string, firstname: string, lastname: string, patronymic: string, cabinet_id: string, role: string}
+     */
     public function rules(): array
     {
         return [
             'name' => [
                 'required',
                 'string',
-                'max:256',
+                'max:255',
                 Rule::unique('users')->ignore(empty($this->user) ? 0 : $this->user),
             ],
-            'password' => 'sometimes|required|string|min:4|max:255',
+            'password' => ['sometimes', 'required', 'string', Password::min(8), 'max:255'],
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'patronymic' => 'nullable|string|max:255',

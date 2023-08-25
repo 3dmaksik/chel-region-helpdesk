@@ -6,7 +6,7 @@ use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\NewsAction;
 use Illuminate\View\View;
 
-class NewsController extends Controller
+final class NewsController extends Controller
 {
     /**
      * [all news]

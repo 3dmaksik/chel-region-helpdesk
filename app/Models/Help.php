@@ -14,8 +14,6 @@ class Help extends Model
 
     protected $primaryKey = 'id';
 
-    protected $cacheFor = 0;
-
     protected array $lead;
 
     protected $fillable = [
@@ -88,18 +86,6 @@ class Help extends Model
         return $builder;
     }
 
-    public function scopeRoleHelpShow(Builder $builder, int $id): Builder
-    {
-        if (auth()->user()->roles->pluck('name')[0] === 'superAdmin' || 'admin') {
-            return $builder->where('id', $id);
-        }
-        if (auth()->user()->roles->pluck('name')[0] === 'manager' || 'user') {
-            return $builder->where('user_id', '5');
-        }
-
-        return $builder;
-    }
-
     protected function calendarRequest(): Attribute
     {
         return $this->calendarView();
@@ -125,15 +111,26 @@ class Help extends Model
         return $this->calendarView();
     }
 
+    protected function calendarView(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if ($value !== null) {
+                    return Carbon::parse($value)->format('d.m.Y H:i');
+                }
+            }
+        );
+    }
+
     protected function leadAt(): Attribute
     {
         return Attribute::make(
             get: function ($value) {
-                if ($value != null) {
+                if ($value !== null) {
                     $day = floor($value / 86400);
-                    $value = $value % 86400;
+                    $value %= 86400;
                     $hour = floor($value / 3600);
-                    $value = $value % 3600;
+                    $value %= 3600;
                     $minute = floor($value / 60);
                     $this->lead =
                     [
@@ -148,12 +145,22 @@ class Help extends Model
         );
     }
 
-    protected function calendarView(): Attribute
+    protected function images(): Attribute
+    {
+        return $this->imagesJson();
+    }
+
+    protected function imagesFinal(): Attribute
+    {
+        return $this->imagesJson();
+    }
+
+    protected function imagesJson(): Attribute
     {
         return Attribute::make(
             get: function ($value) {
-                if ($value != null) {
-                    return Carbon::parse($value)->format('d.m.Y H:i');
+                if ($value !== null) {
+                    return json_decode((string) $value, true, JSON_THROW_ON_ERROR);
                 }
             }
         );

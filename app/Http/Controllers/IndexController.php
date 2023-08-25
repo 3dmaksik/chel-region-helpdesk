@@ -10,23 +10,22 @@ use Illuminate\View\View;
 
 class IndexController extends Controller
 {
-    private HelpAction $helps;
-
-    public function __construct(HelpAction $helps)
+     /**
+     * [index page helpdesk]
+     */
+    public function index(HelpAction $helps): View
     {
-        $this->helps = $helps;
-    }
-
-    public function index(): View
-    {
-        $items = $this->helps->create();
+        $items = $helps->create();
 
         return view('pages.index', compact('items'));
     }
 
-    public function store(IndexRequest $request): RedirectResponse
+    /**
+     * [add new help]
+     */
+    public function store(IndexRequest $request, HelpAction $helps): RedirectResponse
     {
-        $this->helps->store($request->validated());
+        $helps->store($request->validated(null, null));
 
         return redirect()->route('/');
     }

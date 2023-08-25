@@ -9,7 +9,7 @@
                     <span aria-hidden="true">&times;</span></button>
             </div>
             <form id="formAccept" class="form-submit"
-                action="{{ route(config('constants.help.accept'),$item->id,'accept') }}" method="POST">
+                action="{{ route(config('constants.help.accept'),$item['data']->id,'accept') }}" method="POST">
                 @method('PATCH')
                 @csrf
                 <div class="modal-body">
@@ -49,7 +49,7 @@
                     <span aria-hidden="true">&times;</span></button>
             </div>
             <form id="formExecute" enctype="multipart/form-data" class="form-submit"
-                action="{{ route(config('constants.help.execute'),$item->id,'execute') }}" method="POST">
+                action="{{ route(config('constants.help.execute'),$item['data']->id,'execute') }}" method="POST">
                 @method('PATCH')
                 @csrf
                 <div class="modal-body">
@@ -88,7 +88,7 @@
                     <span aria-hidden="true">&times;</span></button>
             </div>
             <form id="formRedefine" class="form-submit"
-                action="{{ route(config('constants.help.redefine'),$item->id,'redefine') }}" method="POST">
+                action="{{ route(config('constants.help.redefine'),$item['data']->id,'redefine') }}" method="POST">
                 @method('PATCH')
                 @csrf
                 <div class="modal-body">
@@ -119,7 +119,7 @@
                     <span aria-hidden="true">&times;</span></button>
             </div>
             <form id="formReject" class="form-submit"
-                action="{{ route(config('constants.help.reject'),$item->id,'reject') }}" method="POST">
+                action="{{ route(config('constants.help.reject'),$item['data']->id,'reject') }}" method="POST">
                 @method('PATCH')
                 @csrf
                 <div class="modal-body">

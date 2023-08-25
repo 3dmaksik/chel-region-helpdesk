@@ -4,23 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\UsersAction;
-use App\Requests\UserPasswordRequest;
+use App\Requests\PasswordRequest;
 use App\Requests\UserRequest;
 use Illuminate\Http\JsonResponse;
 
 class UserApiController extends Controller
 {
     /**
-     * [result data]
-     */
-    private JsonResponse $data;
-
-    /**
      * [add new user]
      */
     public function store(UserRequest $request, UsersAction $usersAction): JsonResponse
     {
-        $this->data = $usersAction->store($request);
+        $this->data = $usersAction->store($request->validated(null, null));
 
         return $this->data;
     }
@@ -30,7 +25,7 @@ class UserApiController extends Controller
      */
     public function update(UserRequest $request, int $user, UsersAction $usersAction): JsonResponse
     {
-        $this->data = $usersAction->update($request, $user);
+        $this->data = $usersAction->update($request->validated(null, null), $user);
 
         return $this->data;
     }
@@ -38,9 +33,9 @@ class UserApiController extends Controller
     /**
      * [update password for other user]
      */
-    public function updatePassword(UserPasswordRequest $request, int $user, UsersAction $usersAction): JsonResponse
+    public function updatePassword(PasswordRequest $request, int $user, UsersAction $usersAction): JsonResponse
     {
-        $this->data = $usersAction->updatePassword($request, $user);
+        $this->data = $usersAction->updatePassword($request->validated(null, null), $user);
 
         return $this->data;
     }
@@ -50,7 +45,7 @@ class UserApiController extends Controller
      */
     public function destroy(int $user, UsersAction $usersAction): JsonResponse
     {
-        $this->data = $usersAction->delete($user);
+        $this->data = $usersAction->destroy($user);
 
         return $this->data;
     }

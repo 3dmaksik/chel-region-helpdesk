@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         $items = $usersAction->create();
 
-        return view('forms.add.users', compact('items'));
+        return view('forms.add.user', compact('items'));
     }
 
     /**
@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $items = $usersAction->edit($user);
 
-        return view('forms.edit.users', compact('items'));
+        return view('forms.edit.user', compact('items'));
     }
 
     /**

@@ -8,7 +8,7 @@
         <a href="{{ route(config('constants.users.create')) }}"> <button type="button"
                 class="btn btn-primary mb-1">Новый пользователь </button></a>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive loader-table">
         <table class="table align-items-center table-flush">
             <thead class="thead-light">
                 <tr>
@@ -63,7 +63,7 @@
                                         <div class="modal-body">
                                             <div class="form-group">
                                                 <label for="password-info">Изменить пароль</label>
-                                                <input type="password" name="password" class="form-control" id="password"
+                                                <input type="password" name="password" class="form-control" id="password-{{$item->id}}"
                                                 aria-describedby="textPassword" autocomplete="off">
                                             </div>
                                         </div>

@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Helpers\StoreFilesHelper;
 use App\Catalogs\DTO\AccountDTO;
+use App\Catalogs\DTO\PasswordDTO;
+use App\Core\Contracts\ISettings;
 use App\Models\User;
-use App\Requests\AccountRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class SettingsAction extends Action
+final class SettingsAction extends Action implements ISettings
 {
     /**
      * [this user]
@@ -18,24 +22,21 @@ class SettingsAction extends Action
     private User $user;
 
     /**
-     * [this avatar]
+     * [password data]
      */
-    private array $avatar;
+    private PasswordDTO $passwordDTO;
 
     /**
-     * [this sound notify]
+     * [account data]
      */
-    private array $soundNotify;
+    private AccountDTO $accountDTO;
 
     /**
-     * [count role for user]
+     * [filename for upload]
+     *
+     * @var fileName
      */
-    private int $countRole;
-
-    /**
-     * [clear data]
-     */
-    private array $dataClear;
+    private string $fileName;
 
     public function __construct()
     {
@@ -44,18 +45,40 @@ class SettingsAction extends Action
 
     /**
      * [update password]
+     *
+     * @param  array  $request {current_password: string, password: string}
      */
     public function updatePassword(array $request): JsonResponse
     {
-        if ($this->checkPassword($request['current_password']) === true && $this->checkPassword($request['password']) === false) {
-            User::where('id', auth()->user()->id)->update([
-                'password' => Hash::make($request['password']),
-            ]);
+        $this->user = User::query()->find(auth()->user()->id);
 
-            return response()->success(['message' => 'Пароль успешно обновлён!']);
+        if (! $this->user) {
+            $this->response = [
+                'message' => 'Пользователь не найден!',
+            ];
+
+            return response()->error($this->response);
         }
+        $this->passwordDTO = new PasswordDTO(
+            $request['password'],
+            $request['current_password'],
+        );
+        if ($this->checkPassword($request['current_password']) === false && $this->checkPassword($request['password']) === true) {
+            $this->response = [
+                'message' => 'Пароль не изменён! </br> Неверно указан текущий пароль',
+            ];
 
-        return response()->error(['message' => 'Пароль не изменён! </br> Неверно указан текущий пароль']);
+            return response()->error($this->response);
+        }
+        $this->user->password = Hash::make($this->passwordDTO->password);
+        $this->user->save();
+
+        $this->response = [
+            'message' => 'Пароль успешно обновлён!',
+        ];
+
+        return response()->success($this->response);
+
     }
 
     /**
@@ -71,43 +94,47 @@ class SettingsAction extends Action
     }
 
     /**
-     * [update settings]
+     * [update password]
+     *
+     * @param  array  $request {avatar: \Illuminate\Http\UploadedFile|null, sound_notify: \Illuminate\Http\UploadedFile|null}
      */
-    public function updateSettings(AccountRequest $request): JsonResponse
+    public function updateSettings(array $request): JsonResponse
     {
-        $this->user = User::findOrFail(auth()->user()->id);
-        $this->countRole = User::role(['superAdmin'])->count();
-        $this->data = AccountDTO::storeObjectRequest($request);
-        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data->role !== null) {
-            return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
+        $this->user = User::query()->find(auth()->user()->id);
+
+        if (! $this->user) {
+            $this->response = [
+                'message' => 'Пользователь не найден!',
+            ];
+
+            return response()->error($this->response);
         }
-        if (isset($this->data->avatar)) {
-            if ($this->user->avatar !== null) {
+        $this->accountDTO = new AccountDTO(
+            $request['avatar'] ?? null,
+            $request['sound_notify'] ?? null,
+        );
+        if ($this->accountDTO->avatar) {
+            if ($this->user->avatar) {
                 Storage::disk('avatar')->delete($this->user->avatar);
             }
-            $this->avatar = json_decode($this->data->avatar, true);
-            $this->data->avatar = $this->avatar['url'];
+            $this->fileName = StoreFilesHelper::createImageName();
+            $this->user->avatar = $this->fileName;
+            StoreFilesHelper::createOneImage($this->fileName, $this->accountDTO->avatar, 'avatar', 32, 32);
         }
-        if (isset($this->data->sound_notify)) {
-            if ($this->user->sound_notify !== null) {
+        if ($this->accountDTO->soundNotify) {
+            if ($this->user->sound_notify) {
                 Storage::disk('sound')->delete($this->user->sound_notify);
             }
-            $this->soundNotify = json_decode($this->data->sound_notify, true);
-            $this->data->sound_notify = $this->soundNotify['url'];
+            $this->fileName = StoreFilesHelper::createSoundName();
+            $this->user->sound_notify = $this->fileName;
+            StoreFilesHelper::createNotify($this->fileName, $this->accountDTO->soundNotify, 'sound');
         }
-        $this->dataClear = $this->clear($this->data);
-        if (! empty($this->dataClear)) {
-            $this->user->update($this->dataClear);
-        }
+        $this->user->save();
+        $this->response = [
+            'message' => 'Настройки успешно обновлены',
+            'reload' => true,
+        ];
 
-        return response()->success('Настройки успешно обновлены');
-    }
-
-    /**
-     * [clear data from bad data]
-     */
-    protected function clear(AccountDTO $data): array
-    {
-        return array_diff((array) $data, ['', null, 'null', false]);
+        return response()->success($this->response);
     }
 }

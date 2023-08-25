@@ -3,24 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
-use App\Catalogs\Actions\HomeAction;
+use App\Catalogs\Actions\HelpAction;
 use App\Requests\IndexRequest;
 use Illuminate\Http\JsonResponse;
 
 class IndexApiController extends Controller
 {
-    private JsonResponse $data;
-
-    private HomeAction $helps;
-
-    public function __construct(HomeAction $helps)
+    /**
+     * [add new help]
+     */
+    public function store(IndexRequest $request, HelpAction $helps): JsonResponse
     {
-        $this->helps = $helps;
-    }
-
-    public function store(IndexRequest $request): JsonResponse
-    {
-        $this->data = $this->helps->store($request);
+        $this->data = $helps->store($request->validated(null, null));
 
         return $this->data;
     }

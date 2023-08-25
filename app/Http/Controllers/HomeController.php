@@ -3,70 +3,88 @@
 namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
+use App\Catalogs\Actions\HelpAction;
 use App\Catalogs\Actions\HomeAction;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    private HomeAction $helps;
-
-    public function __construct(HomeAction $helps)
+    /**
+     * [worker help]
+     */
+    public function worker(HomeAction $helps): View
     {
-        $this->helps = $helps;
-    }
-
-    public function worker(): View
-    {
-        $items = $this->helps->getWorkerPagesPaginate();
+        $items = $helps->getWorkerPagesPaginate();
 
         return view('tables.help', compact('items'));
     }
 
-    public function getWorker(): View
+    /**
+     * [worker help in api]
+     */
+    public function getWorker(HomeAction $helps): View
     {
-        $items = $this->helps->getWorkerPagesPaginate();
+        $items = $helps->getWorkerPagesPaginate();
 
         return view('loader.help', compact('items'));
     }
 
-    public function completed(): View
+    /**
+     * [completed help]
+     */
+    public function completed(HomeAction $helps): View
     {
-        $items = $this->helps->getCompletedPagesPaginate();
+        $items = $helps->getCompletedPagesPaginate();
 
         return view('tables.help', compact('items'));
     }
 
-    public function getCompleted(): View
+    /**
+     * [completed help in api]
+     */
+    public function getCompleted(HomeAction $helps): View
     {
-        $items = $this->helps->getCompletedPagesPaginate();
+        $items = $helps->getCompletedPagesPaginate();
 
         return view('loader.help', compact('items'));
     }
 
-    public function dismiss(): View
+    /**
+     * [dismiss]
+     */
+    public function dismiss(HomeAction $helps): View
     {
-        $items = $this->helps->getDismissPagesPaginate();
+        $items = $helps->getDismissPagesPaginate();
 
         return view('tables.help', compact('items'));
     }
 
-    public function getDismiss(): View
+    /**
+     * [dismiss help in api]
+     */
+    public function getDismiss(HomeAction $helps): View
     {
-        $items = $this->helps->getDismissPagesPaginate();
+        $items = $helps->getDismissPagesPaginate();
 
         return view('loader.help', compact('items'));
     }
 
-    public function show(int $help): View
+    /**
+     * [show one help]
+     */
+    public function show(int $help, HelpAction $helps): View
     {
-        $item = $this->helps->show($help);
+        $item = $helps->show($help);
 
         return view('forms.show.help', compact('item'));
     }
 
-    public function create(): View
+    /**
+     * [create help]
+     */
+    public function create(HelpAction $helps): View
     {
-        $items = $this->helps->create();
+        $items = $helps->create();
 
         return view('forms.add.home', compact('items'));
     }

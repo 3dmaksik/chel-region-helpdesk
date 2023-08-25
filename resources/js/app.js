@@ -11,6 +11,7 @@ $(function () {
 
     Echo.private("App.Models.User." + window.Laravel.user).notification(
         (notification) => {
+            console.log('алё, у телефона');
             loadNew(notification.method, notification.route);
             if (notification.method === "newadm") {
                 newCount();
@@ -31,13 +32,44 @@ $(function () {
         ajax: {
             url: '/api/select2/cabinet',
             dataType: 'json',
-            delay: 10,
+            delay: 2,
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
-                        return {
-                            text: item.description,
-                            id: item.id
+                        if (item.id !== undefined)
+                        {
+                            return {
+                                text: item.description,
+                                id: item.id
+                            }
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $(".select2-user").select2({
+        language: "ru",
+        placeholder: 'Введите ФИО',
+        ajax: {
+            url: '/api/select2/user',
+            dataType: 'json',
+            delay: 2,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        if (item.id !== undefined)
+                        {
+                            if (item.patronymic === null)
+                            {
+                                item.patronymic = ''
+                            }
+                            return {
+                                text: item.lastname+ ' '+item.firstname+' '+item.patronymic,
+                                id: item.id
+                            }
                         }
                     })
                 };
@@ -66,14 +98,16 @@ $(function () {
         else $(this).prev().text("Выберите файлы");
     });
     $(".btn-modal").on('click', function () {
+        $("#accept-select2-user").empty();
+        $("#redefine-select2-user").empty();
         $.ajax({
             url: "/api/help/all",
             method: "post",
             dataType: "json",
             success: function (data) {
                 const obj = JSON.parse(data);
-                for (var i = 0; i < obj.user.length; i++) {
-                    var counter = obj.user[i];
+                for (let i = 0; i < obj.user.length; i++) {
+                    let counter = obj.user[i];
                     if (counter.patronymic === null) counter.patronymic = "";
                     $("#accept-select2-user").append(
                         '<option value="' +
@@ -98,8 +132,8 @@ $(function () {
                             "</option>"
                     );
                 }
-                for (var i = 0; i < obj.priority.length; i++) {
-                    var counter = obj.priority[i];
+                for (let i = 0; i < obj.priority.length; i++) {
+                    let counter = obj.priority[i];
                     $("#accept-select2-priority").append(
                         '<option value="' +
                             counter.id +
@@ -119,17 +153,18 @@ $(function () {
             });
         }
     }
-    $(".form-submit").each(function () {
-        $(this).on("submit", function (e) {
+        $(document).on("submit", '.form-submit', function (e) {
             e.preventDefault();
-            var formData = new FormData(this);
+            let formid = $(this).attr('id');
+            let form = document.querySelector('#'+formid);
+            let formData = new FormData(form);
             $.each($("input[type=file]"), function (i, obj) {
                 $.each(obj.files, function (j, file) {
                     formData.append("images[" + j + "]", file);
                 });
             });
             $.ajax({
-                url: $(this).attr("action"),
+                url: $(form).attr("action"),
                 type: "POST",
                 cache: false,
                 dataType: "json",
@@ -138,7 +173,7 @@ $(function () {
                 contentType: false,
                 timeout: 600000,
                 beforeSend: function () {
-                    $('form')
+                    $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", true);
                 },
@@ -161,7 +196,7 @@ $(function () {
                           $(".base-alert-danger").fadeOut(2000);
                         }, 4500);
 
-                    $('form')
+                    $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                 },
@@ -180,27 +215,20 @@ $(function () {
                         $(".base-alert-success").fadeIn(2000);
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
-                        }, 6500);
+                        }, 5500);
                     if (data.reload === true)
                     {
                         setTimeout(function(){
                             location.reload();
-                          }, 6500);
+                          }, 6000);
                     }
-                    $('form')
+                    $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
-                    if ($("div").hasClass('help_view')) {
-                        if (data.route !=='undefined') {
-                            $.post(data.route, function (data) {
-                                $(".help_view").html(data);
-                            });
-                            }
-                        }
                 },
             });
+            return false;
         });
-    });
     function newCount() {
         $.ajax({
             url: "/api/help/new",

@@ -14,7 +14,7 @@
         "laravel/tinker": "^2",
         "laravel/ui": "^4",
         "nesbot/carbon": "^2",
-        "pusher/pusher-php-server": "^7",
+        "pusher/pusher-php-server": "^7.0.2",
         "simplesoftwareio/simple-qrcode": "^4",
         "spatie/laravel-permission": "^5"
     },

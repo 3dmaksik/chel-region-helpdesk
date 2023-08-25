@@ -1,61 +1,80 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Catalogs\Collections\RoleCollection;
-use App\Catalogs\DTO\UsersDTO;
+use App\Base\Helpers\StringHelper;
+use App\Catalogs\DTO\PasswordDTO;
+use App\Catalogs\DTO\UserDTO;
+use App\Core\Contracts\ICatalog;
+use App\Core\Contracts\ICatalogExtented;
+use App\Core\Contracts\IUser;
 use App\Models\Help;
 use App\Models\User as Model;
-use App\Requests\UserPasswordRequest;
-use App\Requests\UserRequest;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
-class UsersAction extends Action
+final class UsersAction extends Action implements ICatalog, ICatalogExtented, IUser
 {
     /**
      * [this user]
+     *
+     * @var user
      */
     private Model $user;
 
     /**
      * [collection roles]
+     *
+     * @var roles
      */
     private Collection $roles;
 
     /**
      * [one role]
+     *
+     * @var role
      */
     private string $role;
 
     /**
-     * [result users]
-     */
-    private array $response;
-
-    /**
      * [count help for user]
+     *
+     * @var count
      */
     private int $count;
 
     /**
      * [count role for user]
+     *
+     * @var countRole
      */
     private int $countRole;
 
     /**
-     * [clear data]
+     * [password data]
      */
-    private array $dataClear;
+    private PasswordDTO $passwordDTO;
 
     /**
      * [all users with count items max]
+     *
+     * @return array{data: Illuminate\Pagination\LengthAwarePaginator}
      */
     public function getAllPagesPaginate(): array
     {
-        $this->items = Model::orderBy('lastname', 'ASC')->paginate($this->page);
+        $this->currentPage = request()->get('page', 1);
+        $this->items = Cache::tags('user')->remember('users.'.$this->currentPage, Carbon::now()->addDay(), function () {
+            return Model::query()->orderBy('lastname', 'ASC')->paginate($this->page);
+        });
+
         $this->response =
         [
             'data' => $this->items,
@@ -66,10 +85,12 @@ class UsersAction extends Action
 
     /**
      * [create new user]
+     *
+     * @return array{roles: \Illuminate\Support\Collection}
      */
     public function create(): array
     {
-        $this->roles = RoleCollection::getRoles();
+        $this->roles = $this->getRoles();
 
         return [
             'roles' => $this->roles,
@@ -79,20 +100,39 @@ class UsersAction extends Action
     /**
      * [show one user]
      */
-    public function show(int $id): Model
+    public function show(int $id): array
     {
-        $this->user = Model::findOrFail($id);
 
-        return $this->user;
+        $this->user = Model::query()->find($id);
+        if (! $this->user) {
+
+            return abort(404);
+        }
+        $this->response =
+        [
+            'data' => $this->user,
+        ];
+
+        return $this->response;
     }
 
     /**
      * [edit user]
+     *
+     * @return array{user: \App\Models\User, roles: \Spatie\Permission\Models\Role, role: string}
      */
     public function edit(int $id): array
     {
-        $this->user = Model::findOrFail($id);
-        $this->roles = RoleCollection::getRoles();
+        $this->user = Model::query()->find($id);
+
+        if (! $this->user) {
+            $this->response = [
+                'message' => 'Пользователь не найден!',
+            ];
+
+            return response()->error($this->response);
+        }
+        $this->roles = $this->getRoles();
         $this->role = $this->user->getRoleNames()[0];
 
         return [
@@ -104,51 +144,116 @@ class UsersAction extends Action
 
     /**
      * [add new user]
+     *
+     * @param  array  $request {name: string, firstname:string, cabinet_id: string, role: string, password: string, patronymic: string|null}
      */
-    public function store(UserRequest $request): JsonResponse
+    public function store(array $request): JsonResponse
     {
-        $this->data = UsersDTO::storeObjectRequest($request);
-        $this->dataClear = $this->clear($this->data);
-        Model::create($this->dataClear)->assignRole($this->dataClear['role']);
+        if (! isset($request['password'])) {
+            $this->response = [
+                'message' => 'Пароль не задан!',
+            ];
+
+            return response()->error($this->response);
+        }
+        $this->passwordDTO = new PasswordDTO(
+            $request['password']
+        );
+        $this->dataObject = new UserDTO(
+            $request['name'],
+            $request['firstname'],
+            $request['lastname'],
+            $request['cabinet_id'],
+            $request['role'],
+            $this->passwordDTO,
+            $request['patronymic'],
+        );
+        $this->user = new Model();
+        $this->user->name = $this->dataObject->name;
+        $this->user->firstname = StringHelper::run($this->dataObject->firstname);
+        $this->user->lastname = StringHelper::run($this->dataObject->lastname);
+        $this->user->patronymic = StringHelper::run($this->dataObject->patronymic) ?? null;
+        $this->user->cabinet_id = $this->dataObject->cabinetId;
+        $this->user->password = Hash::make($this->dataObject->password);
+        $this->user->email = mt_rand().time().'@1.ru';
+        $this->user->save();
+        $this->user->assignRole($this->dataObject->role);
         $this->response = [
-            'message' => 'Пользователь успешно добавлен!',
+            'message' => 'Пользователь успешно добавлен в очередь на размещение!',
+            'reload' => true,
         ];
+
+        Cache::tags('user')->flush();
 
         return response()->success($this->response);
     }
 
     /**
      * [update user]
+     *
+     * @param  array  $request {name: string, firstname:string, cabinet_id: string, role: string, password: null, patronymic: string|null}
      */
-    public function update(UserRequest $request, int $id): JsonResponse
+    public function update(array $request, int $id): JsonResponse
     {
-        $this->user = Model::findOrFail($id);
+        $this->user = Model::query()->find($id);
+
+        if (! $this->user) {
+            $this->response = [
+                'message' => 'Пользователь не найден!',
+            ];
+
+            return response()->error($this->response);
+        }
+
+        $this->dataObject = new UserDTO(
+            $request['name'],
+            $request['firstname'],
+            $request['lastname'],
+            $request['cabinet_id'],
+            $request['role'],
+            null,
+            $request['patronymic'],
+        );
         $this->countRole = Model::role(['superAdmin'])->count();
-        $this->data = UsersDTO::storeObjectRequest($request);
-        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->data->role !== null) {
+        if ($this->user->getRoleNames()[0] === 'superAdmin' && $this->countRole === 1 && $this->dataObject->role !== null) {
             return response()->error(['message' => 'Настройки не изменены! </br> Вы не можете отключить последнего администратора']);
         }
-        if ($this->data->password !== null) {
-            $this->data->password = null;
-        }
-        $this->dataClear = $this->clear($this->data);
-        $this->user->update($this->dataClear);
-        $this->user->syncRoles($this->dataClear['role']);
+        $this->user->name = $this->dataObject->name;
+        $this->user->firstname = StringHelper::run($this->dataObject->firstname);
+        $this->user->lastname = StringHelper::run($this->dataObject->lastname);
+        $this->user->patronymic = StringHelper::run($this->dataObject->patronymic) ?? $this->user->patronymic;
+        $this->user->cabinet_id = $this->dataObject->cabinetId;
+        $this->user->save();
+        $this->user->syncRoles($this->dataObject->role);
 
         $this->response = [
             'message' => 'Пользователь успешно обновлён!',
         ];
+
+        Cache::tags('user')->flush();
 
         return response()->success($this->response);
     }
 
     /**
      * [update password for other user]
+     *
+     * @param  array  $request {password: string}
      */
-    public function updatePassword(UserPasswordRequest $request, int $id): JsonResponse
+    public function updatePassword(array $request, int $id): JsonResponse
     {
-        $this->user = Model::findOrFail($id);
-        $this->data = $request->validated();
+        $this->user = Model::query()->find($id);
+
+        if (! $this->user) {
+            $this->response = [
+                'message' => 'Пользователь не найден!',
+            ];
+
+            return response()->error($this->response);
+        }
+        $this->passwordDTO = new PasswordDTO(
+            $request['password']
+        );
         if ($this->user->id === auth()->user()->id) {
             $this->response = [
                 'message' => 'Пользователь не может изменить пароль самому себе в данной форме!',
@@ -156,9 +261,8 @@ class UsersAction extends Action
 
             return response()->error($this->response);
         }
-        $this->user->update([
-            'password' => Hash::make($this->data['password']),
-        ]);
+        $this->user->password = Hash::make($this->passwordDTO->password);
+        $this->user->save();
         $this->response = [
             'message' => 'Пароль пользователя успешно изменён!',
         ];
@@ -169,7 +273,7 @@ class UsersAction extends Action
     /**
      * [delete other user]
      */
-    public function delete(int $id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
         $this->count = Help::where('user_id', $id)->orWhere('executor_id', $id)->count();
         if ($this->count > 0) {
@@ -180,7 +284,15 @@ class UsersAction extends Action
             return response()->error($this->response);
         }
 
-        $this->user = Model::findOrFail($id);
+        $this->user = Model::query()->find($id);
+
+        if (! $this->user) {
+            $this->response = [
+                'message' => 'Пользователь не найден!',
+            ];
+
+            return response()->error($this->response);
+        }
         $this->role = $this->user->getRoleNames()[0];
         $this->countRole = Model::role(['superAdmin'])->count();
         if ($this->countRole === 1 && $this->role === 'superAdmin' || $this->user->id === auth()->user()->id) {
@@ -190,22 +302,30 @@ class UsersAction extends Action
 
             return response()->error($this->response);
         }
+        if ($this->user->avatar) {
+            Storage::disk('avatar')->delete($this->user->avatar);
+        }
+        if ($this->user->sound_notify) {
+            Storage::disk('sound')->delete($this->user->sound_notify);
+        }
         $this->user->syncRoles([]);
         $this->user->forceDelete();
 
         $this->response = [
-            'message' => 'Пользователь успешно удалён!',
+            'message' => 'Пользователь успешно поставлен в очередь на удаление!',
             'reload' => true,
         ];
+
+        Cache::tags('user')->flush();
 
         return response()->success($this->response);
     }
 
     /**
-     * [clear data from bad data]
+     * [get all roles name]
      */
-    protected function clear(UsersDTO $data): array
+    private function getRoles(): Collection
     {
-        return array_diff((array) $data, ['', null, 'null', false]);
+        return Role::query()->orderBy('id', 'DESC')->get()->pluck('name');
     }
 }

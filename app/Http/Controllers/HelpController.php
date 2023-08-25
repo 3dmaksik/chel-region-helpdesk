@@ -8,107 +8,142 @@ use Illuminate\View\View;
 
 class HelpController extends Controller
 {
-    private HelpAction $helps;
-
-    public function __construct(HelpAction $helps)
+    /**
+     * [all helps]
+     */
+    public function index(HelpAction $helps): View
     {
-        $this->helps = $helps;
-    }
-
-    public function index(): View
-    {
-        $items = $this->helps->getAllPagesPaginate();
+        $items = $helps->getAllPagesPaginate();
 
         return view('tables.help', compact('items'));
     }
 
-    public function getIndex(): View
+    /**
+     * [all helps in api]
+     */
+    public function getIndex(HelpAction $helps): View
     {
-        $items = $this->helps->getAllPagesPaginate();
+        $items = $helps->getAllPagesPaginate();
 
         return view('loader.help', compact('items'));
     }
 
-    public function new(): View
+    /**
+     * [new help]
+     */
+    public function new(HelpAction $helps): View
     {
-        $items = $this->helps->getNewPagesPaginate();
+        $items = $helps->getNewPagesPaginate();
 
         return view('tables.help', compact('items'));
     }
 
-    public function getNew(): View
+    /**
+     * [new help in api]
+     */
+    public function getNew(HelpAction $helps): View
     {
-        $items = $this->helps->getNewPagesPaginate();
+        $items = $helps->getNewPagesPaginate();
 
         return view('loader.help', compact('items'));
     }
 
-    public function edit(int $help): View
+    /**
+     * [edit help]
+     */
+    public function edit(HelpAction $helps, int $help): View
     {
-        $items = $this->helps->edit($help);
+        $items = $helps->edit($help);
 
         return view('forms.edit.help', compact('items'));
     }
 
-    public function worker(): View
+    /**
+     * [worker help]
+     */
+    public function worker(HelpAction $helps): View
     {
-        $items = $this->helps->getWorkerPagesPaginate();
+        $items = $helps->getWorkerPagesPaginate();
 
         return view('tables.help', compact('items'));
     }
 
-    public function getWorker(): View
+    /**
+     * [worker help in api]
+     */
+    public function getWorker(HelpAction $helps): View
     {
-        $items = $this->helps->getWorkerPagesPaginate();
+        $items = $helps->getWorkerPagesPaginate();
 
         return view('loader.help', compact('items'));
     }
 
-    public function completed(): View
+    /**
+     * [completed help]
+     */
+    public function completed(HelpAction $helps): View
     {
-        $items = $this->helps->getCompletedPagesPaginate();
+        $items = $helps->getCompletedPagesPaginate();
 
         return view('tables.help', compact('items'));
     }
 
-    public function getCompleted(): View
+    /**
+     * [completed help in api]
+     */
+    public function getCompleted(HelpAction $helps): View
     {
-        $items = $this->helps->getCompletedPagesPaginate();
+        $items = $helps->getCompletedPagesPaginate();
 
         return view('loader.help', compact('items'));
     }
 
-    public function dismiss(): View
+    /**
+     * [dismiss help]
+     */
+    public function dismiss(HelpAction $helps): View
     {
-        $items = $this->helps->getDismissPagesPaginate();
+        $items = $helps->getDismissPagesPaginate();
 
         return view('tables.help', compact('items'));
     }
 
-    public function getDismiss(): View
+    /**
+     * [dismiss help in api]
+     */
+    public function getDismiss(HelpAction $helps): View
     {
-        $items = $this->helps->getDismissPagesPaginate();
+        $items = $helps->getDismissPagesPaginate();
 
         return view('loader.help', compact('items'));
     }
 
-    public function show(int $help): View
+    /**
+     * [show one help]
+     */
+    public function show(HelpAction $helps, int $help): View
     {
-        $item = $this->helps->show($help);
+        $item = $helps->show($help);
 
         return view('forms.show.help', compact('item'));
     }
 
-    public function getShow(int $help): View
+    /**
+     * [show one help in api]
+     */
+    public function getShow(HelpAction $helps, int $help): View
     {
-        $item = $this->helps->show($help);
+        $item = $helps->show($help);
 
         return view('loader.help-view', compact('item'));
     }
 
-    public function create(): View
+    /**
+     * [create help]
+     */
+    public function create(HelpAction $helps): View
     {
-        $items = $this->helps->create();
+        $items = $helps->create();
 
         return view('forms.add.help', compact('items'));
     }

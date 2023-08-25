@@ -3,46 +3,38 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Base\Helpers\GeneratorAppNumberHelper;
-use App\Base\Helpers\StoreFilesHelper;
-use App\Catalogs\DTO\AllCatalogsDTO;
-use App\Catalogs\DTO\HelpDTO;
 use App\Models\Help as Model;
-use App\Models\User;
-use App\Notifications\HelpNotification;
-use App\Requests\HelpRequest;
-use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Collection as SimpleCollection;
-use Illuminate\Support\Facades\Notification;
+use App\Core\Contracts\IHome;
 
-class HomeAction extends Action
+/**
+ * [case status]
+ *
+ * @var'1'|'2'|'3'|'4'
+ */
+enum Status: int
 {
+    case New = 1;
+    case Work = 2;
+    case Success = 3;
+    case Danger = 4;
+}
+class HomeAction extends Action implements IHome
+{
+    /**
+     * [items help data paginate]
+     *
+     * @var helps
+     */
     private array $helps;
 
-    private array $response;
-
-    private Model|null $last;
-
-    public User $superAdmin;
-
-    private Carbon $calendar_request;
-
-    private array $dataClear;
-
-    public User $users;
-
-    private string $app_number;
-
-    private SimpleCollection $options;
-
-    private ?string $images;
-
-    private ?string $images_final;
-
+     /**
+     * [worker helps with count items on page]
+     *
+     * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}
+     */
     public function getWorkerPagesPaginate(): array
     {
-        $this->items = Model::where('status_id', '<', config('constants.request.success'))
+        $this->items = Model::where('status_id', '<', Status::Success)
             ->where('user_id', auth()->user()->id)
             ->orderBy('status_id', 'ASC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
@@ -58,9 +50,14 @@ class HomeAction extends Action
         return $this->helps;
     }
 
+    /**
+     * [completed helps with count items on page]
+     *
+     * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}
+     */
     public function getCompletedPagesPaginate(): array
     {
-        $this->items = Model::where('status_id', config('constants.request.success'))
+        $this->items = Model::where('status_id', Status::Success)
             ->where('user_id', auth()->user()->id)
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
@@ -73,9 +70,14 @@ class HomeAction extends Action
         return $this->helps;
     }
 
+    /**
+     * [danger helps with count items on page]
+     *
+     * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}
+     */
     public function getDismissPagesPaginate(): array
     {
-        $this->items = Model::where('status_id', config('constants.request.danger'))
+        $this->items = Model::where('status_id', Status::Danger)
             ->where('user_id', auth()->user()->id)
             ->orderBy('calendar_request', 'DESC')
             ->paginate($this->page);
@@ -86,69 +88,5 @@ class HomeAction extends Action
         ];
 
         return $this->helps;
-    }
-
-    public function create(): SimpleCollection
-    {
-        $this->items = AllCatalogsDTO::getAllCatalogsCollection();
-
-        return $this->items;
-    }
-
-    public function show(int $id): Model
-    {
-        $this->item = Model::findOrFail($id);
-        $this->item->images = json_decode($this->item->images, true);
-
-        return $this->item;
-    }
-
-    public function store(HelpRequest $request): JsonResponse
-    {
-        $this->last = Model::select('app_number')->orderBy('id', 'desc')->first();
-        if ($this->last == null) {
-            $this->app_number = GeneratorAppNumberHelper::generate();
-        } else {
-            $this->app_number = GeneratorAppNumberHelper::generate($this->last->app_number);
-        }
-        $this->calendar_request = Carbon::now();
-        if ($request->hasFile('images')) {
-            $this->images = json_encode(StoreFilesHelper::createFileImages($request->file('images'), 'images', 1920, 1080));
-        } else {
-            $this->images = $request->file('images');
-        }
-        if ($request->hasFile('images_final')) {
-            $this->images_final = json_encode(StoreFilesHelper::createFileImages($request->file('images_final'), 'images', 1920, 1080));
-        } else {
-            $this->images_final = $request->file('images_final');
-        }
-        $this->options = collect([
-            'app_number' => $this->app_number,
-            'calendar_request' => $this->calendar_request,
-            'images' => $this->images,
-            'images_final' => $this->images_final,
-        ]);
-        $this->data = HelpDTO::storeObjectRequest($request, $this->options);
-        if ($this->data->user_id == null) {
-            $this->data->user_id = auth()->user()->id;
-        }
-        $this->dataClear = $this->clear($this->data);
-        $this->item = Model::create($this->dataClear);
-        $superAdmin = User::role(['superAdmin'])->get();
-        $users = User::role(['admin'])->get();
-        Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
-        Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
-        Notification::send($users, new HelpNotification('newadm', route('help.new')));
-
-        $this->response = [
-            'message' => 'Заявка успешно добавлена!',
-        ];
-
-        return response()->success($this->response);
-    }
-
-    protected function clear(HelpDTO $data): array
-    {
-        return array_diff((array) $data, ['', null, false]);
     }
 }

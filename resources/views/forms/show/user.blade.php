@@ -21,25 +21,28 @@
     </div>
     <div class="card-body">
         <p class="text-primary">Фамилия</p>
-        <p>{{ $item->lastname }}</p>
+        <p>{{ $item['data']->lastname }}</p>
         <p class="text-primary">Имя</p>
-        <p>{{ $item->firstname}}</p>
+        <p>{{ $item['data']->firstname}}</p>
         <p class="text-primary">Отчество</p>
-        @empty ($item->patronymic)
+        @empty ($item['data']->patronymic)
         <p>Нет отчества</p>
         @else
-        <p>{{ $item->patronymic}}</p>
+        <p>{{ $item['data']->patronymic}}</p>
         @endempty
         <hr>
         <p class="text-primary">Кабинет</p>
-        <p>№{{ $item->cabinet->description }}</p>
+        <p>№{{ $item['data']->cabinet->description }}</p>
         <hr>
         <p class="text-primary">Пользователь</p>
-        <p>{{ $item->name }}</p>
-        @if(!empty($item->getRoleNames()))
+        <p>{{$item['data']->name }}</p>
+        @if(!empty($item['data']->getRoleNames()))
         <p class="text-primary">Роль</p>
-        <p> {{ $item->getRoleNames()[0] }}</p>
+        <p> {{ $item['data']->getRoleNames()[0] }}</p>
         @endif
+        @can('edit user')
+        <a class="btn btn-success" href="{{ route(config('constants.users.edit'), $item['data']->id)}}">Редактировать пользователя</a>
+        @endcan
     </div>
 </div>
 </div>

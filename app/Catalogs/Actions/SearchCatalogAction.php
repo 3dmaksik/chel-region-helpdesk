@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
@@ -10,24 +12,58 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class SearchCatalogAction extends Action
+final class SearchCatalogAction extends Action
 {
-    protected User $user;
-
+    /**
+     * [data model help search]
+     *
+     * @var helpSearch
+     */
     private LengthAwarePaginator $helpSearch;
 
-    private Collection|array $userCabinetSearch;
+    /**
+     * [data model cabinet search]
+     *
+     * @var userCabinetSearch
+     */
+    private Collection $userCabinetSearch;
 
+    /**
+     * [data model user search]
+     *
+     * @var userHelpSearch
+     */
+    private Collection $userHelpSearch;
+
+    /**
+     * [result data]
+     *
+     * @var searchData
+     */
     private array $searchData;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    /**
+     * [cabinet user search]
+     *
+     * @var cabinet
+     */
+    private ?string $cabinet;
 
+    /**
+     * [help user search]
+     *
+     * @var cabinet
+     */
+    private ?string $user;
+
+    /**
+     * [search help users sent help with role]
+     *
+     * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}
+     */
     public function searchHelpWork(int $id): array
     {
-        $this->helpSearch = Help::where('user_id', $id)->RoleSearch()->paginate($this->page);
+        $this->helpSearch = Help::query()->where('user_id', $id)->RoleSearch()->paginate($this->page);
         $this->searchData =
         [
             'method' => 'searchwork',
@@ -37,9 +73,14 @@ class SearchCatalogAction extends Action
         return $this->searchData;
     }
 
+    /**
+     * [search help category sent help with role]
+     *
+     * @return array{method: string, Illuminate\Pagination\LengthAwarePaginator}
+     */
     public function searchHelpCategory(int $id): array
     {
-        $this->helpSearch = Help::where('category_id', $id)->RoleSearch()->paginate($this->page);
+        $this->helpSearch = Help::query()->where('category_id', $id)->RoleSearch()->paginate($this->page);
         $this->searchData =
         [
             'method' => 'searchcategory',
@@ -49,6 +90,11 @@ class SearchCatalogAction extends Action
         return $this->searchData;
     }
 
+    /**
+     * [search help cabinet sent help with role]
+     *
+     * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}
+     */
     public function searchHelpCabinet(int $id): array
     {
         $this->helpSearch =
@@ -62,26 +108,55 @@ class SearchCatalogAction extends Action
         return $this->searchData;
     }
 
-    public function searchUserCabinet(?int $description): JsonResponse
+    /**
+     * [search cabinet number with 10 limit count]
+     */
+    public function searchUserCabinet(array $request): JsonResponse
     {
-        if ($description !== null) {
-            $this->userCabinetSearch = Cabinet::where('description', 'LIKE', '%'.$description.'%')->skip(0)->take(10)->get();
+        $this->cabinet = $request['q'] ?? null;
+        if ($this->cabinet) {
+            $this->userCabinetSearch = Cabinet::query()->where('description', 'LIKE', '%'.$this->cabinet.'%')
+                ->orderBy('description', 'ASC')
+                ->skip(0)->take(10)->get();
         } else {
-            $this->userCabinetSearch =
-            [
-                'id' => null,
-                'description' => null,
-            ];
+            $this->userCabinetSearch = Cabinet::query()
+                ->orderBy('description', 'ASC')
+                ->skip(0)->take(100)->get();
         }
 
         return response()->success($this->userCabinetSearch);
 
     }
 
+    /**
+     * [search help user with 10 limit count]
+     */
+    public function searchUserHelp(array $request): JsonResponse
+    {
+        $this->user = $request['q'] ?? null;
+        if ($this->user) {
+            $this->userHelpSearch = User::query()->where('firstname', 'LIKE', '%'.$this->user.'%')
+                ->orWhere('lastname', 'LIKE', '%'.$this->user.'%')
+                ->orWhere('patronymic', 'LIKE', '%'.$this->user.'%')
+                ->orderBy('lastname', 'ASC')
+                ->skip(0)->take(10)->get();
+        } else {
+            $this->userHelpSearch = User::query()
+                ->orderBy('lastname', 'ASC')
+                ->skip(0)->take(100)->get();
+        }
+
+        return response()->success($this->userHelpSearch);
+
+    }
+
+    /**
+     * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}
+     */
     public function searchHelp(array $request): array
     {
         $item = $request['search'];
-        $this->helpSearch = Help::join('users', 'users.id', '=', 'help.user_id')
+        $this->helpSearch = Help::query()->join('users', 'users.id', '=', 'help.user_id')
             ->join('category', 'category.id', '=', 'help.category_id')
             ->join('status', 'status.id', '=', 'help.status_id')
             ->join('cabinet', 'cabinet.id', '=', 'users.cabinet_id')

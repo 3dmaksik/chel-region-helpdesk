@@ -8,24 +8,18 @@ use App\Requests\AccountRequest;
 use App\Requests\PasswordRequest;
 use Illuminate\Http\JsonResponse;
 
-class SettingsApiController extends Controller
+final class SettingsApiController extends Controller
 {
-    /**
-     * [result data]
-     */
-    private JsonResponse $data;
-
     public function updatePassword(PasswordRequest $request, SettingsAction $settingsAction): JsonResponse
     {
-        $this->data = $settingsAction->updatePassword($request->validated());
+        $this->data = $settingsAction->updatePassword($request->validated(null, null));
 
         return $this->data;
     }
 
     public function updateSettings(AccountRequest $request, SettingsAction $settingsAction): JsonResponse
     {
-        //DTO добавить и request
-        $this->data = $settingsAction->updateSettings($request);
+        $this->data = $settingsAction->updateSettings($request->validated(null, null));
 
         return $this->data;
     }

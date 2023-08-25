@@ -8,7 +8,7 @@
         <a href="{{ route(config('constants.priority.create')) }}"> <button type="button"
                 class="btn btn-primary mb-1">Новый приоритет </button></a>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive loader-table">
         <table class="table align-items-center table-flush">
             <thead class="thead-light">
                 <tr>

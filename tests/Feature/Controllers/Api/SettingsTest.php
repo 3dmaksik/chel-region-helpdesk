@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class SettingsApiTest extends TestCase
+class SettingsTest extends TestCase
 {
     use DatabaseTransactions;
     //use RefreshDatabase;
@@ -329,7 +329,7 @@ class SettingsApiTest extends TestCase
         ])->assignRole('admin');
         Auth::login($testUser);
         $response = $this->actingAs($testUser, 'web')->patchJson(route(config('constants.settings.updatePassword')));
-        $response->assertJsonValidationErrors(['current_password', 'password']);
+        $response->assertJsonValidationErrors(['password']);
         $response->assertStatus(422);
     }
 

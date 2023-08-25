@@ -5,31 +5,49 @@ namespace App\Base\Actions;
 use App\Base\DTO\DTO;
 use App\Base\Models\Model;
 use App\Core\Actions\CoreAction;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection as SimpleCollection;
+use Illuminate\Support\Collection;
 
 class Action extends CoreAction
 {
     /**
+     * [result data]
+     *
+     * @var response [data => null|Illuminate\Pagination\LengthAwarePaginator,
+     *                message => null|string,
+     *                reload => null|bool]
+     */
+    public array $response;
+
+    /**
      * [many items]
      */
-    public LengthAwarePaginator|Collection|SimpleCollection $items;
+    public Collection|LengthAwarePaginator $items;
 
     /**
      * [base model or null]
      */
-    public ?Model $item;
+    public ?Model $item = null;
 
     /**
      * [data for database or result data]
      */
-    public array|DTO $data;
+    public array $data;
 
     /**
-     * [Description for $page]
+     * [data object for database]
+     */
+    public DTO $dataObject;
+
+    /**
+     * [page in config paginate]
      */
     public int $page;
+
+    /**
+     * [Current page for cache]
+     */
+    public int|string $currentPage;
 
     /**
      * [setup for all pages]

@@ -153,10 +153,9 @@ class LoginController extends Controller
     /**
      * The user has been authenticated.
      *
-     * @param  mixed  $user
      * @return mixed
      */
-    protected function authenticated(Request $request, $user)
+    protected function authenticated(Request $request, mixed $user)
     {
     }
 
@@ -167,7 +166,7 @@ class LoginController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function sendFailedLoginResponse(Request $request)
+    protected function sendFailedLoginResponse(Request $request): never
     {
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],
@@ -176,10 +175,8 @@ class LoginController extends Controller
 
     /**
      * Get the login username to be used by the controller.
-     *
-     * @return string
      */
-    public function username()
+    public function username(): string
     {
         return 'name';
     }

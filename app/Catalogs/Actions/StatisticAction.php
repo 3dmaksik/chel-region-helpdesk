@@ -22,6 +22,9 @@ class StatisticAction extends Action
         //parent::__construct();
     }
 
+    /**
+     * @return array{day: int, hour: int, minute: int}
+     */
     private function getTime(float $value): array
     {
         $day = floor($value / 86400);
@@ -38,6 +41,9 @@ class StatisticAction extends Action
        ];
     }
 
+    /**
+     * @return array{month: mixed, year: mixed, active_category: mixed, active_work: mixed, error_work: mixed, lead: mixed[]}
+     */
     public function indexStatistic(): array
     {
         $today = Carbon::now();

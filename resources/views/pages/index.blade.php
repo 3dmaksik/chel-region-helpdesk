@@ -89,7 +89,7 @@
                                     <label for="select2-category">Выберите категорию</label>
                                     <select class="select2-single form-control" data-aos-delay="100" name="category_id"
                                         id="select2-category">
-                                        @foreach( $items['category'] as $item)
+                                        @foreach( $items['categories'] as $item)
                                         <option value="{{ $item->id }}">{{ $item->description }}</option>
                                         @endforeach
                                     </select>
@@ -98,7 +98,7 @@
                                     <label for="select2-user">Выберите сотрудника</label>
                                     <select class="select2-single form-control" data-val="true" name="user_id"
                                         id="select2-user">
-                                        @foreach( $items['user'] as $item)
+                                        @foreach( $items['users'] as $item)
                                         <option value="{{ $item->id }}">{{ $item->lastname }} {{ $item->firstname }} {{
                                             $item->patronymic }}</option>
                                         @endforeach

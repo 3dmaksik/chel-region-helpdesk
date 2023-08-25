@@ -33,7 +33,7 @@
                     aria-describedby="textDescription" placeholder="Описание" autocomplete="off">
                 <small id="textDesription" class="form-text text-muted">Введите описание новости</small>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="min-height: 375px">
                 <label for="news-text">Введите текст новости </label>
                 <textarea class="wysiwyg form-control" id="news-text" rows="9" name="news_text"></textarea>
             </div>

@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AccountRequest extends BaseRequest
 {
+    /**
+     * @return array{avatar: string, sound_notify: string}
+     */
     public function rules(): array
     {
         return [
