@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     //use HasApiTokens;
     use HasFactory;
-    use Notifiable;
+    use HasPermissions;
     use HasRoles;
+    use Notifiable;
 
     final public const CREATED_AT = 'created_at';
 

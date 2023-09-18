@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\PriorityAction;
+use App\Models\Priority;
 use Illuminate\View\View;
 
 final class PriorityController extends Controller
@@ -21,7 +22,7 @@ final class PriorityController extends Controller
     /**
      * [show one priority]
      */
-    public function show(int $priority, PriorityAction $priorityAction): View
+    public function show(Priority $priority, PriorityAction $priorityAction): View
     {
         $item = $priorityAction->show($priority);
 
@@ -39,7 +40,7 @@ final class PriorityController extends Controller
     /**
      * [edit priority]
      */
-    public function edit(int $priority, PriorityAction $priorityAction): View
+    public function edit(Priority $priority, PriorityAction $priorityAction): View
     {
         $item = $priorityAction->show($priority);
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\PriorityAction;
+use App\Models\Priority;
 use App\Requests\PriorityRequest;
 use Illuminate\Http\JsonResponse;
 
@@ -22,7 +23,7 @@ final class PriorityApiController extends Controller
     /**
      * [update priority]
      */
-    public function update(PriorityRequest $request, int $priority, PriorityAction $priorityAction): JsonResponse
+    public function update(PriorityRequest $request, Priority $priority, PriorityAction $priorityAction): JsonResponse
     {
         $this->data = $priorityAction->update($request->validated(null, null), $priority);
 
@@ -32,7 +33,7 @@ final class PriorityApiController extends Controller
     /**
      * [delete priority]
      */
-    public function destroy(int $priority, PriorityAction $priorityAction): JsonResponse
+    public function destroy(Priority $priority, PriorityAction $priorityAction): JsonResponse
     {
         $this->data = $priorityAction->destroy($priority);
 

@@ -22,7 +22,7 @@ class HomeController extends Controller
     /**
      * [worker help in api]
      */
-    public function getWorker(HomeAction $helps): View
+    public function loadWorker(HomeAction $helps): View
     {
         $items = $helps->getWorkerPagesPaginate();
 
@@ -42,7 +42,7 @@ class HomeController extends Controller
     /**
      * [completed help in api]
      */
-    public function getCompleted(HomeAction $helps): View
+    public function loadCompleted(HomeAction $helps): View
     {
         $items = $helps->getCompletedPagesPaginate();
 
@@ -62,7 +62,7 @@ class HomeController extends Controller
     /**
      * [dismiss help in api]
      */
-    public function getDismiss(HomeAction $helps): View
+    public function loadDismiss(HomeAction $helps): View
     {
         $items = $helps->getDismissPagesPaginate();
 
@@ -77,6 +77,16 @@ class HomeController extends Controller
         $item = $helps->show($help);
 
         return view('forms.show.help', compact('item'));
+    }
+
+    /**
+     * [show one help in api]
+     */
+    public function loadShow(int $help, HelpAction $helps): View
+    {
+        $item = $helps->show($help);
+
+        return view('loader.help-view', compact('item'));
     }
 
     /**

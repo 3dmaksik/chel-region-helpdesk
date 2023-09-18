@@ -7,15 +7,15 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\PriorityDTO;
-use App\Core\Contracts\ICatalog;
-use App\Core\Contracts\ICatalogExtented;
+use App\Core\Contracts\IPriority;
 use App\Models\Help;
 use App\Models\Priority as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
-final class PriorityAction extends Action implements ICatalog, ICatalogExtented
+final class PriorityAction extends Action implements IPriority
 {
     /**
      * [count help for priority]
@@ -47,16 +47,11 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
     /**
      * [show one priority]
      */
-    public function show(int $id): array
+    public function show(Model $model): array
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
         $this->response =
         [
-            'data' => $this->item,
+            'data' => $model,
         ];
 
         return $this->response;
@@ -80,7 +75,9 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
         $this->item->rang = $this->dataObject->rang;
         $this->item->warning_timer = $this->dataObject->warning_timer;
         $this->item->danger_timer = $this->dataObject->danger_timer;
-        $this->item->save();
+        DB::transaction(
+            fn () => $this->item->save()
+        );
         $this->response = [
             'message' => 'Приоритет успешно добавлен в очередь на размещение!',
             'reload' => true,
@@ -96,17 +93,8 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
      *
      * @param  array  $request {description: string, rang: int, warning_timer: int, danger_timer: int}
      */
-    public function update(array $request, int $id): JsonResponse
+    public function update(array $request, Model $model): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-
-        if (! $this->item) {
-            $this->response = [
-                'message' => 'Приоритет не найден!',
-            ];
-
-            return response()->error($this->response);
-        }
 
         $this->dataObject = new PriorityDTO(
             $request['description'],
@@ -114,11 +102,13 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
             $request['warning_timer'],
             $request['danger_timer']
         );
-        $this->item->description = StringHelper::run($this->dataObject->description);
-        $this->item->rang = $this->dataObject->rang;
-        $this->item->warning_timer = $this->dataObject->warning_timer;
-        $this->item->danger_timer = $this->dataObject->danger_timer;
-        $this->item->save();
+        $model->description = StringHelper::run($this->dataObject->description);
+        $model->rang = $this->dataObject->rang;
+        $model->warning_timer = $this->dataObject->warning_timer;
+        $model->danger_timer = $this->dataObject->danger_timer;
+        DB::transaction(
+            fn () => $model->save()
+        );
 
         $this->response = [
             'message' => 'Приоритет успешно добавлен в очередь на обновление!',
@@ -132,9 +122,9 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
     /**
      * [delete priority if there are no help]
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Model $model): JsonResponse
     {
-        $this->count = Help::where('priority_id', $id)->count();
+        $this->count = Help::where('priority_id', $model->id)->count();
         if ($this->count > 0) {
             $this->response = [
                 'message' => 'Приоритет не может быть удалён, так как не удалены все заявки связанные с ним!',
@@ -142,17 +132,9 @@ final class PriorityAction extends Action implements ICatalog, ICatalogExtented
 
             return response()->error($this->response);
         }
-
-        $this->item = Model::query()->find($id);
-
-        if (! $this->item) {
-            $this->response = [
-                'message' => 'Приоритет не найден!',
-            ];
-
-            return response()->error($this->response);
-        }
-        $this->item->forceDelete();
+        DB::transaction(
+            fn () => $model->forceDelete()
+        );
         $this->response = [
             'message' => 'Приоритет успешно поставлен в очередь на удаление!',
             'reload' => true,

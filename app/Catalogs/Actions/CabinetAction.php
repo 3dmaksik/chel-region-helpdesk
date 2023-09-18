@@ -6,15 +6,15 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\CabinetDTO;
-use App\Core\Contracts\ICatalog;
-use App\Core\Contracts\ICatalogExtented;
+use App\Core\Contracts\ICabinet;
 use App\Models\Cabinet as Model;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
-final class CabinetAction extends Action implements ICatalog, ICatalogExtented
+final class CabinetAction extends Action implements ICabinet
 {
     /**
      * [count user for cabinet]
@@ -46,16 +46,11 @@ final class CabinetAction extends Action implements ICatalog, ICatalogExtented
     /**
      * [show one cabinet]
      */
-    public function show(int $id): array
+    public function show(Model $model): array
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
         $this->response =
         [
-            'data' => $this->item,
+            'data' => $model,
         ];
 
         return $this->response;
@@ -73,7 +68,9 @@ final class CabinetAction extends Action implements ICatalog, ICatalogExtented
         );
         $this->item = new Model();
         $this->item->description = $this->dataObject->description;
-        $this->item->save();
+        DB::transaction(
+            fn () => $this->item->save()
+        );
         $this->response = [
             'message' => 'Кабинет успешно добавлен в очередь на размещение!',
             'reload' => true,
@@ -90,22 +87,15 @@ final class CabinetAction extends Action implements ICatalog, ICatalogExtented
      *
      * @param  array  $request {description: string}
      */
-    public function update(array $request, int $id): JsonResponse
+    public function update(array $request, Model $model): JsonResponse
     {
         $this->dataObject = new CabinetDTO(
             $request['description']
         );
-        $this->item = Model::query()->find($id);
-
-        if (! $this->item) {
-            $this->response = [
-                'message' => 'Кабинет не найден!',
-            ];
-
-            return response()->error($this->response);
-        }
-        $this->item->description = $this->dataObject->description;
-        $this->item->save();
+        $model->description = $this->dataObject->description;
+        DB::transaction(
+            fn () => $model->save()
+        );
         $this->response = [
             'message' => 'Кабинет успешно добавлен в очередь на обновление!',
         ];
@@ -118,9 +108,9 @@ final class CabinetAction extends Action implements ICatalog, ICatalogExtented
     /**
      * [delete cabinet if there are no employees]
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Model $model): JsonResponse
     {
-        $this->countUser = User::query()->where('cabinet_id', $id)->count();
+        $this->countUser = User::query()->where('cabinet_id', $model->id)->count();
 
         if ($this->countUser > 0) {
             $this->response = [
@@ -129,16 +119,9 @@ final class CabinetAction extends Action implements ICatalog, ICatalogExtented
 
             return response()->error($this->response);
         }
-        $this->item = Model::query()->find($id);
-
-        if (! $this->item) {
-            $this->response = [
-                'message' => 'Кабинет не найден!',
-            ];
-
-            return response()->error($this->response);
-        }
-        $this->item->forceDelete();
+        DB::transaction(
+            fn () => $model->forceDelete()
+        );
         $this->response = [
             'message' => 'Кабинет успешно поставлен в очередь на удаление!',
             'reload' => true,

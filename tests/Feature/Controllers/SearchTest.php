@@ -52,7 +52,7 @@ class SearchTest extends TestCase
         ]);
         $user = User::factory()->create()->assignRole('superAdmin');
         $status = Status::first();
-        $help = Help::factory()->create([
+        Help::factory()->create([
             'category_id' => $category->id,
             'status_id' => $status->id,
             'user_id' => $user->id,
@@ -80,7 +80,7 @@ class SearchTest extends TestCase
         ]);
         $user = User::factory()->create()->assignRole('superAdmin');
         $status = Status::first();
-        $help = Help::factory()->create([
+        Help::factory()->create([
             'category_id' => $category->id,
             'status_id' => $status->id,
             'user_id' => $user->id,
@@ -108,7 +108,7 @@ class SearchTest extends TestCase
         ]);
         $user = User::factory()->create()->assignRole('superAdmin');
         $status = Status::first();
-        $help = Help::factory()->create([
+        Help::factory()->create([
             'category_id' => $category->id,
             'status_id' => $status->id,
             'user_id' => $user->id,

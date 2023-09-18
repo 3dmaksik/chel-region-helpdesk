@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\NewsAction;
+use App\Models\Article;
 use App\Requests\NewsRequest;
 use Illuminate\Http\JsonResponse;
 
@@ -22,7 +23,7 @@ final class NewsApiController extends Controller
     /**
      * [update article]
      */
-    public function update(NewsRequest $request, int $news, NewsAction $newsAction): JsonResponse
+    public function update(NewsRequest $request, Article $news, NewsAction $newsAction): JsonResponse
     {
         $this->data = $newsAction->update($request->validated(null, null), $news);
 
@@ -32,7 +33,7 @@ final class NewsApiController extends Controller
     /**
      * [delete article]
      */
-    public function destroy(int $news, NewsAction $newsAction): JsonResponse
+    public function destroy(Article $news, NewsAction $newsAction): JsonResponse
     {
         $this->data = $newsAction->destroy($news);
 

@@ -34,6 +34,9 @@
                 @can('new help')
                 <span id="counter" class="badge badge-danger badge-counter">@if(Cookie::get('newCount') > 0) {{ Cookie::get('newCount') }} @endif</span>
                 @endcan
+                @can('worker help')
+                <span id="counter" class="badge badge-success badge-counter">@if(Cookie::get('nowCount') > 0) {{ Cookie::get('nowCount') }} @endif</span>
+                @endcan
             </a>
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
@@ -56,7 +59,7 @@
                     </div>
                     <div>
                         <div id="now_count" class="small text-gray-500">На исполнении</div> <span
-                            id="now_count_text">Заявки на исполнение загружаются</span>
+                            id="now_count_text">@if(Cookie::get('nowCount') > 0) У вас заявок на исполнении:{{ Cookie::get('nowCount') }} @else Заявки на исполнение загружаются@endif </span>
                     </div>
                 </a>
                 @endcan

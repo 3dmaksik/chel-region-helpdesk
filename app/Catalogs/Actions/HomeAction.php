@@ -3,21 +3,10 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Models\Help as Model;
+use App\Base\Enums\Status;
 use App\Core\Contracts\IHome;
+use App\Models\Help as Model;
 
-/**
- * [case status]
- *
- * @var'1'|'2'|'3'|'4'
- */
-enum Status: int
-{
-    case New = 1;
-    case Work = 2;
-    case Success = 3;
-    case Danger = 4;
-}
 class HomeAction extends Action implements IHome
 {
     /**
@@ -27,7 +16,7 @@ class HomeAction extends Action implements IHome
      */
     private array $helps;
 
-     /**
+    /**
      * [worker helps with count items on page]
      *
      * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}

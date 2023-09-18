@@ -10,7 +10,7 @@ use Illuminate\View\View;
 
 class IndexController extends Controller
 {
-     /**
+    /**
      * [index page helpdesk]
      */
     public function index(HelpAction $helps): View

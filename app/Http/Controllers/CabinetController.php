@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\CabinetAction;
+use App\Models\Cabinet;
 use Illuminate\View\View;
 
 final class CabinetController extends Controller
@@ -31,7 +32,7 @@ final class CabinetController extends Controller
     /**
      * [edit cabinet]
      */
-    public function edit(int $cabinet, CabinetAction $cabinetAction): View
+    public function edit(Cabinet $cabinet, CabinetAction $cabinetAction): View
     {
         $item = $cabinetAction->show($cabinet);
 

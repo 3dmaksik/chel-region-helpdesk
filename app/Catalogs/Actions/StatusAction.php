@@ -6,13 +6,14 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\StatusDTO;
-use App\Core\Contracts\ICatalog;
+use App\Core\Contracts\IStatus;
 use App\Models\Status as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
-final class StatusAction extends Action implements ICatalog
+final class StatusAction extends Action implements IStatus
 {
     /**
      * [all status cache with count items on page]
@@ -37,16 +38,11 @@ final class StatusAction extends Action implements ICatalog
     /**
      * [show one status]
      */
-    public function show(int $id): array
+    public function show(Model $model): array
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
         $this->response =
         [
-            'data' => $this->item,
+            'data' => $model,
         ];
 
         return $this->response;
@@ -66,7 +62,9 @@ final class StatusAction extends Action implements ICatalog
         $this->item = new Model();
         $this->item->description = $this->dataObject->description;
         $this->item->color = $this->dataObject->color;
-        $this->item->save();
+        DB::transaction(
+            fn () => $this->item->save()
+        );
         $this->response = [
             'message' => 'Статус не может быть добавлен, так как все статусы уже созданы!',
             'reload' => true,
@@ -81,7 +79,7 @@ final class StatusAction extends Action implements ICatalog
      *
      * @param  array  $request {description: string, color: string}
      */
-    public function update(array $request, int $id): JsonResponse
+    public function update(array $request, Model $model): JsonResponse
     {
         if (! $this->checkColor(config('color'), $request['color'])) {
             return response()->error(['message' => 'Статус не обновлён! </br> Неверно указан текущий цвет']);
@@ -90,18 +88,11 @@ final class StatusAction extends Action implements ICatalog
             $request['description'],
             $request['color']
         );
-        $this->item = Model::query()->find($id);
-
-        if (! $this->item) {
-            $this->response = [
-                'message' => 'Статус не найден!',
-            ];
-
-            return response()->error($this->response);
-        }
-        $this->item->description = $this->dataObject->description;
-        $this->item->color = $this->dataObject->color;
-        $this->item->save();
+        $model->description = $this->dataObject->description;
+        $model->color = $this->dataObject->color;
+        DB::transaction(
+            fn () => $model->save()
+        );
         $this->response = [
             'message' => 'Статус успешно добавлен в очередь на обновление!',
         ];

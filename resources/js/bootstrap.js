@@ -35,7 +35,7 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'IiUD9GSRa3jrLNuo',
     cluster: 'soketi',
-    wsHost: '127.0.0.1',
+    wsHost: window.location.host,
     wsPort: '6001',
     forceTLS: false,
     encrypted: true,

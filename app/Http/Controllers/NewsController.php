@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\NewsAction;
+use App\Models\Article;
 use Illuminate\View\View;
 
 final class NewsController extends Controller
@@ -21,9 +22,9 @@ final class NewsController extends Controller
     /**
      * [show one article]
      */
-    public function show(int $priority, NewsAction $newsAction): View
+    public function show(Article $news, NewsAction $newsAction): View
     {
-        $item = $newsAction->show($priority);
+        $item = $newsAction->show($news);
 
         return view('forms.show.news', compact('item'));
     }
@@ -39,7 +40,7 @@ final class NewsController extends Controller
     /**
      * [edit article]
      */
-    public function edit(int $news, NewsAction $newsAction): View
+    public function edit(Article $news, NewsAction $newsAction): View
     {
         $item = $newsAction->show($news);
 

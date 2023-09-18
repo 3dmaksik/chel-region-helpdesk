@@ -19,7 +19,7 @@ final class StringHelper extends CoreHelper
     public static function run(?string $string): ?string
     {
         self::$data = $string;
-        if (! self::$data) {
+        if (self::$data) {
             self::stringTrim(self::$data);
             self::stringAllLower(self::$data);
             self::stringUpFirst(self::$data);
