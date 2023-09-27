@@ -104,7 +104,7 @@ RewriteRule ^ index.php [L]
 
 `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
 
-2. Установить проект и библиотеки командой `$ composer install --no-dev && npm run prod`  
+2. Установить проект и библиотеки `$ composer install --no-dev && npm run prod`  
 
 3. Установить права доступа на папки с тем же пользователем, что и у сервера:  
 
@@ -112,16 +112,20 @@ RewriteRule ^ index.php [L]
 
 `$ sudo chmod -R ug+rwx ./storage ./bootstrap/cache`
 
-4. Создать символьные ссылки для загрузки файлов:  
+4. Создать папки и символьные ссылки для загрузки файлов:  
 
+`$ sudo mkdir /storage/images && sudo mkdir /storage/avatar && sudo mkdir /storage/sound`  
 `$ sudo php artisan storage:link`  
 
-5. Скопировать файлы настроек `$ cp .env.example .env && cp config/settings.php.example config/settings.php`
-6. Сгенерировать ключ проекта командой `$ php artisan key:generate`
+5. Скопировать файлы настроек 
+
+`$ cp .env.example .env && cp config/settings.php.example config/settings.php`
+
+6. Сгенерировать ключ проекта `$ php artisan key:generate`
 7. В файле `.env` заполнить все незаполненные поля.
 8. Установить базу данных `$ php artisan migrate:fresh --seed`
-9. В файле `settings.php` по желанию отредактировать настройки.
-10. Настроить сокеты с помощью демона:  
+9. В файле `config/settings.php` по желанию отредактировать настройки.
+10. Настроить сокеты, планировщик, задачи, с помощью демона:  
 
 `$ sudo apt install supervisor`  
 `$ sudo npm install -g @soketi/soketi`  

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Requests;
+namespace App\Requests\Help;
 
 use App\Base\Requests\Request as BaseRequest;
 
-class IndexRequest extends BaseRequest
+class IndexUserRequest extends BaseRequest
 {
     public function rules(): array
     {

@@ -34,9 +34,6 @@
                 @can('new help')
                 <span id="counter" class="badge badge-danger badge-counter">@if(Cookie::get('newCount') > 0) {{ Cookie::get('newCount') }} @endif</span>
                 @endcan
-                @can('worker help')
-                <span id="counter" class="badge badge-success badge-counter">@if(Cookie::get('nowCount') > 0) {{ Cookie::get('nowCount') }} @endif</span>
-                @endcan
             </a>
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">

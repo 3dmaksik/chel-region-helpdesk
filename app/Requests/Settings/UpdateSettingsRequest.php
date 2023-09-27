@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Requests;
+namespace App\Requests\Settings;
 
 use App\Base\Requests\Request as BaseRequest;
 use Illuminate\Support\Facades\Auth;
 
-class AccountRequest extends BaseRequest
+class UpdateSettingsRequest extends BaseRequest
 {
-    /**
-     * @return array{avatar: string, sound_notify: string}
-     */
     public function rules(): array
     {
         return [

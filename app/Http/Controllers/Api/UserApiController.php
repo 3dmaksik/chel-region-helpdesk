@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\UsersAction;
 use App\Models\User;
-use App\Requests\PasswordRequest;
-use App\Requests\UserRequest;
+use App\Requests\User\StoreRequest;
+use App\Requests\User\UpdatePasswordRequest;
+use App\Requests\User\UpdateRequest;
 use Illuminate\Http\JsonResponse;
 
 class UserApiController extends Controller
@@ -14,7 +15,7 @@ class UserApiController extends Controller
     /**
      * [add new user]
      */
-    public function store(UserRequest $request, UsersAction $usersAction): JsonResponse
+    public function store(StoreRequest $request, UsersAction $usersAction): JsonResponse
     {
         $this->data = $usersAction->store($request->validated(null, null));
 
@@ -24,7 +25,7 @@ class UserApiController extends Controller
     /**
      * [update user]
      */
-    public function update(UserRequest $request, User $user, UsersAction $usersAction): JsonResponse
+    public function update(UpdateRequest $request, User $user, UsersAction $usersAction): JsonResponse
     {
         $this->data = $usersAction->update($request->validated(null, null), $user);
 
@@ -34,7 +35,7 @@ class UserApiController extends Controller
     /**
      * [update password for other user]
      */
-    public function updatePassword(PasswordRequest $request, User $user, UsersAction $usersAction): JsonResponse
+    public function updatePassword(UpdatePasswordRequest $request, User $user, UsersAction $usersAction): JsonResponse
     {
         $this->data = $usersAction->updatePassword($request->validated(null, null), $user);
 

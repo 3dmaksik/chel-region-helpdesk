@@ -315,7 +315,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [add new help]
      *
-     * @param  array  $request {category_id: string, user_id: int, description_long: string, images: \Illuminate\Http\UploadedFile|null}
+     * @param  array  $request {category_id: int, user_id: int, description_long: string, images: \Illuminate\Http\UploadedFile|null}
      */
     public function store(array $request): JsonResponse
     {
@@ -455,7 +455,7 @@ final class HelpAction extends Action implements IHelp
             return abort(404);
         }
         if ($this->user->id === auth()->user()->id) {
-            if ($this->user->getRoleNames()[0] !== 'admin' && $this->user->getRoleNames()[0] !== 'superAdmin') {
+            if ($this->user->getRoleNames()[0] === 'manager') {
                 $this->response = [
                     'message' => 'Нельзя назначить самого себя!',
                 ];

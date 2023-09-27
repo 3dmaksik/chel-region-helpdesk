@@ -5,7 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\HelpAction;
 use App\Models\Help;
-use App\Requests\HelpRequest;
+use App\Requests\Help\AcceptAdminRequest;
+use App\Requests\Help\ExecuteAdminRequest;
+use App\Requests\Help\RedefineAdminRequest;
+use App\Requests\Help\RejectAdminRequest;
+use App\Requests\Help\StoreAdminRequest;
+use App\Requests\Help\UpdateAdminRequest;
 use Illuminate\Http\JsonResponse;
 
 final class HelpApiController extends Controller
@@ -13,7 +18,7 @@ final class HelpApiController extends Controller
     /**
      * [add new help]
      */
-    public function store(HelpRequest $request, HelpAction $helps): JsonResponse
+    public function store(StoreAdminRequest $request, HelpAction $helps): JsonResponse
     {
         $this->data = $helps->store($request->validated(null, null));
 
@@ -23,7 +28,7 @@ final class HelpApiController extends Controller
     /**
      * [update help]
      */
-    public function update(HelpRequest $request, HelpAction $helps, Help $help): JsonResponse
+    public function update(UpdateAdminRequest $request, HelpAction $helps, Help $help): JsonResponse
     {
         $this->data = $helps->update($request->validated(null, null), $help);
 
@@ -33,7 +38,7 @@ final class HelpApiController extends Controller
     /**
      * [accept help]
      */
-    public function accept(HelpRequest $request, HelpAction $helps, Help $help): JsonResponse
+    public function accept(AcceptAdminRequest $request, HelpAction $helps, Help $help): JsonResponse
     {
         $this->data = $helps->accept($request->validated(null, null), $help);
 
@@ -43,7 +48,7 @@ final class HelpApiController extends Controller
     /**
      * [execute help]
      */
-    public function execute(HelpRequest $request, HelpAction $helps, Help $help): JsonResponse
+    public function execute(ExecuteAdminRequest $request, HelpAction $helps, Help $help): JsonResponse
     {
         $this->data = $helps->execute($request->validated(null, null), $help);
 
@@ -53,7 +58,7 @@ final class HelpApiController extends Controller
     /**
      * [redefine help]
      */
-    public function redefine(HelpRequest $request, HelpAction $helps, Help $help): JsonResponse
+    public function redefine(RedefineAdminRequest $request, HelpAction $helps, Help $help): JsonResponse
     {
         $this->data = $helps->redefine($request->validated(null, null), $help);
 
@@ -63,7 +68,7 @@ final class HelpApiController extends Controller
     /**
      * [reject help]
      */
-    public function reject(HelpRequest $request, HelpAction $helps, Help $help): JsonResponse
+    public function reject(RejectAdminRequest $request, HelpAction $helps, Help $help): JsonResponse
     {
         $this->data = $helps->reject($request->validated(null, null), $help);
 

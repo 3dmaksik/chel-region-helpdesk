@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NewsRequest extends BaseRequest
 {
-    /**
-     * @return array{name: string, description: string, news_text: string, created_at: date}
-     */
     public function rules(): array
     {
         return [

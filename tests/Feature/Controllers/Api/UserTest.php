@@ -95,7 +95,6 @@ class UserTest extends TestCase
         $response = $this->actingAs($this->superAdmin, 'web')->putJson(route(config('constants.users.update'), $testUser->id),
             [
                 'name' => 'testUpdate',
-                'password' => 'password1',
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
@@ -160,7 +159,7 @@ class UserTest extends TestCase
     public function test_controller_user_store_validation_error_required_super_admin(): void
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.users.store')));
-        $response->assertJsonValidationErrors(['name', 'firstname', 'lastname', 'cabinet_id', 'role']);
+        $response->assertJsonValidationErrors(['password','name', 'firstname', 'lastname', 'cabinet_id', 'role']);
         $response->assertStatus(422);
     }
 
@@ -217,24 +216,6 @@ class UserTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $response->assertJsonValidationErrors(['name', 'password', 'firstname', 'lastname', 'patronymic', 'cabinet_id']);
-        $response->assertStatus(422);
-    }
-
-    public function test_controller_user_store_password_error_super_admin(): void
-    {
-        $cabinet = Cabinet::factory()->create();
-        $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.users.store')),
-            [
-                'name' => 'testStore',
-                'firstname' => 'Имя',
-                'lastname' => 'Фамилия',
-                'patronymic' => 'Отчество',
-                'cabinet_id' => (string) $cabinet->id,
-                'role' => 'user',
-
-            ], [
-                'Accept' => 'application/json',
-            ]);
         $response->assertStatus(422);
     }
 
@@ -368,7 +349,6 @@ class UserTest extends TestCase
         $response = $this->actingAs($this->admin, 'web')->putJson(route(config('constants.users.update'), $testUser->id),
             [
                 'name' => 'testUpdate',
-                'password' => 'password1',
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
@@ -397,7 +377,6 @@ class UserTest extends TestCase
         $response = $this->actingAs($this->manager, 'web')->putJson(route(config('constants.users.update'), $testUser->id),
             [
                 'name' => 'testUpdate',
-                'password' => 'password1',
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',
@@ -426,7 +405,6 @@ class UserTest extends TestCase
         $response = $this->actingAs($this->user, 'web')->putJson(route(config('constants.users.update'), $testUser->id),
             [
                 'name' => 'testUpdate',
-                'password' => 'password1',
                 'firstname' => 'Имя',
                 'lastname' => 'Фамилия',
                 'patronymic' => 'Отчество',

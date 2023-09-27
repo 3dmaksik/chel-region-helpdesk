@@ -87,8 +87,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="select2-category">Выберите категорию</label>
-                                    <select class="select2-single form-control" data-aos-delay="100" name="category_id"
-                                        id="select2-category">
+                                    <select class="select2-single form-control select2-category" data-aos-delay="100" name="category_id">
                                         @foreach( $items['categories'] as $item)
                                         <option value="{{ $item->id }}">{{ $item->description }}</option>
                                         @endforeach
@@ -96,12 +95,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="select2-user">Выберите сотрудника</label>
-                                    <select class="select2-single form-control" data-val="true" name="user_id"
-                                        id="select2-user">
-                                        @foreach( $items['users'] as $item)
-                                        <option value="{{ $item->id }}">{{ $item->lastname }} {{ $item->firstname }} {{
-                                            $item->patronymic }}</option>
-                                        @endforeach
+                                    <select class="select2-single select2-user form-control" data-val="true" name="user_id">
                                     </select>
                                 </div>
                                 <div class="form-group">

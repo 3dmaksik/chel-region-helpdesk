@@ -13,6 +13,33 @@ import "../vendor/select2/dist/js/i18n/ru.js";
         language: "ru",
     });
     $(".select2-single").find(".select2-single").addClass("color-white");
+    $(".select2-user").select2({
+        language: "ru",
+        placeholder: 'Введите ФИО',
+        ajax: {
+            url: '/api/select2/user/public',
+            dataType: 'json',
+            delay: 2,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        if (item.id !== undefined)
+                        {
+                            if (item.patronymic === null)
+                            {
+                                item.patronymic = ''
+                            }
+                            return {
+                                text: item.lastname+ ' '+item.firstname+' '+item.patronymic,
+                                id: item.id
+                            }
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
     $(".custom-file-input").on("change", function () {
         if ($(this).val() != "")
             $(this)

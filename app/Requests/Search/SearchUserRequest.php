@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Requests;
+namespace App\Requests\Search;
 
 use App\Base\Requests\Request as BaseRequest;
 use Illuminate\Support\Facades\Auth;
 
-class SearchCabinetRequest extends BaseRequest
+class SearchUserRequest extends BaseRequest
 {
-    /**
-     * @return array{q: string}
-     */
     public function rules(): array
     {
         return [

@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Requests;
+namespace App\Requests\User;
 
 use App\Base\Requests\Request as BaseRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Password;
 
-class SearchUserRequest extends BaseRequest
+class UpdatePasswordRequest extends BaseRequest
 {
-    /**
-     * @return array{q: string}
-     */
     public function rules(): array
     {
         return [
-            'q' => 'sometimes|required|string|min:1|max:255',
+            'password' => ['required', 'string', Password::min(8), 'max:255'],
         ];
     }
 
