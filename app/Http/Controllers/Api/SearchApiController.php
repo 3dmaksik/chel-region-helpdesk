@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SearchCatalogAction;
-use App\Requests\SearchCabinetRequest;
-use App\Requests\SearchUserRequest;
+use App\Requests\Search\SearchCabinetRequest;
+use App\Requests\Search\SearchUserRequest;
+use App\Requests\Search\SearchUserPublicRequest;
 use Illuminate\Http\JsonResponse;
 
 class SearchApiController extends Controller
@@ -21,6 +22,12 @@ class SearchApiController extends Controller
     }
 
     public function user(SearchUserRequest $request, SearchCatalogAction $searchCatalogAction): JsonResponse
+    {
+        $this->data = $searchCatalogAction->searchUserHelp($request->validated(null, null));
+
+        return $this->data;
+    }
+    public function userPublic(SearchUserPublicRequest $request, SearchCatalogAction $searchCatalogAction): JsonResponse
     {
         $this->data = $searchCatalogAction->searchUserHelp($request->validated(null, null));
 

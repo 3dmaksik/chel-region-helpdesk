@@ -14,4 +14,9 @@ class Model extends CoreModel
     final public const UPDATED_AT = 'updated_at';
 
     public $timestamps = true;
+
+    public function resolveRouteBinding($value, $field = null): Model
+    {
+        return $this->resolveRouteBindingQuery($this, $value, $field)->firstOrFail();
+    }
 }

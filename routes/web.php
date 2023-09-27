@@ -36,20 +36,20 @@ Route::middleware('auth')->group(function (): void {
         ->as('help.')
         ->group(function (): void {
             Route::get('helps/all', 'index')->name('index')->middleware('can:all help');
-            Route::post('helps/all', 'getIndex')->name('index')->middleware('can:all help');
-            Route::get('helps/pagination', 'getIndex')->name('getIndex')->middleware('can:all help');
+            Route::post('helps/all', 'loadIndex')->name('index')->middleware('can:all help');
+            Route::get('helps/pagination', 'loadIndex')->name('getIndex')->middleware('can:all help');
             Route::get('helps/new', 'new')->name('new')->middleware('can:new help');
-            Route::post('helps/new', 'getNew')->name('new')->middleware('can:new help');
-            Route::get('create', 'create')->name('create')->middleware('can:create help');
+            Route::post('helps/new', 'loadNew')->name('new')->middleware('can:new help');
+            Route::get('helps/worker', 'worker')->name('worker')->middleware('can:worker help');
+            Route::post('helps/worker', 'loadWorker')->name('worker')->middleware('can:worker help');
+            Route::get('helps/completed', 'completed')->name('completed')->middleware('can:completed help');
+            Route::post('helps/completed', 'loadCompleted')->name('completed')->middleware('can:completed help');
             Route::get('helps/dismiss', 'dismiss')->name('dismiss')->middleware('can:dismiss help');
-            Route::post('helps/dismiss', 'getDismiss')->name('dismiss')->middleware('can:dismiss help');
+            Route::post('helps/dismiss', 'loadDismiss')->name('dismiss')->middleware('can:dismiss help');
+            Route::get('create', 'create')->name('create')->middleware('can:create help');
             Route::get('{help}/edit', 'edit')->name('edit')->middleware('can:edit help');
             Route::get('{help}/show', 'show')->name('show')->middleware('can:view help');
-            Route::post('{help}/show', 'getShow')->name('show')->middleware('can:view help');
-            Route::get('helps/worker', 'worker')->name('worker')->middleware('can:worker help');
-            Route::post('helps/worker', 'getWorker')->name('worker')->middleware('can:worker help');
-            Route::get('helps/completed', 'completed')->name('completed')->middleware('can:completed help');
-            Route::post('helps/completed', 'getCompleted')->name('completed')->middleware('can:completed help');
+            Route::post('{help}/show', 'loadShow')->name('show')->middleware('can:view help');
         });
     Route::controller(CabinetController::class)
         ->prefix('admin/cabinet')
@@ -106,13 +106,14 @@ Route::middleware('auth')->group(function (): void {
         ->as('home.')
         ->group(function (): void {
             Route::get('helps/worker', 'worker')->name('worker')->middleware('can:worker home help');
-            Route::post('helps/worker', 'getWorker')->name('worker')->middleware('can:worker home help');
+            Route::post('helps/worker', 'loadWorker')->name('worker')->middleware('can:worker home help');
             Route::get('helps/completed', 'completed')->name('completed')->middleware('can:completed home help');
-            Route::post('helps/completed', 'getCompleted')->name('completed')->middleware('can:completed home help');
+            Route::post('helps/completed', 'loadCompleted')->name('completed')->middleware('can:completed home help');
             Route::get('helps/dismiss', 'dismiss')->name('dismiss')->middleware('can:dismiss home help');
-            Route::post('helps/dismiss', 'getDismiss')->name('dismiss')->middleware('can:dismiss home help');
+            Route::post('helps/dismiss', 'loadDismiss')->name('dismiss')->middleware('can:dismiss home help');
             Route::get('helps/create', 'create')->name('create')->middleware('can:create home help');
             Route::get('{help}/show', 'show')->name('show')->middleware('can:view help');
+            Route::post('{help}/show', 'loadShow')->name('show')->middleware('can:view help');
         });
     Route::controller(SettingsController::class)
         ->prefix('settings')

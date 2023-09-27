@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\CabinetAction;
+use App\Models\Cabinet;
 use App\Requests\CabinetRequest;
 use Illuminate\Http\JsonResponse;
 
@@ -24,7 +25,7 @@ final class CabinetApiController extends Controller
     /**
      * [update cabinet]
      */
-    public function update(CabinetRequest $request, int $cabinet, CabinetAction $cabinetAction): JsonResponse
+    public function update(CabinetRequest $request, Cabinet $cabinet, CabinetAction $cabinetAction): JsonResponse
     {
         $this->data = $cabinetAction->update($request->validated(null, null), $cabinet);
 
@@ -34,7 +35,7 @@ final class CabinetApiController extends Controller
     /**
      * [delete cabinet]
      */
-    public function destroy(int $cabinet, CabinetAction $cabinetAction): JsonResponse
+    public function destroy(Cabinet $cabinet, CabinetAction $cabinetAction): JsonResponse
     {
         $this->data = $cabinetAction->destroy($cabinet);
 

@@ -40,7 +40,7 @@
                     href="{{ route(config('constants.help.worker')) }}">В работе</a>
                 @endcan
                 @can('completed help')
-                <a class="collapse-item {{ Route::currentRouteName() === config('constants.help.active') ? 'active':'' }}"
+                <a class="collapse-item {{ Route::currentRouteName() === config('constants.help.completed') ? 'active':'' }}"
                     href="{{ route(config('constants.help.completed')) }}">Выполненные</a>
                 @endcan
                 @can('dismiss help')

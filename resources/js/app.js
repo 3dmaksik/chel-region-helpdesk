@@ -11,11 +11,11 @@ $(function () {
 
     Echo.private("App.Models.User." + window.Laravel.user).notification(
         (notification) => {
-            console.log('алё, у телефона');
+            console.log('слушаю вас, вы позвонили в журнал заявок');
             loadNew(notification.method, notification.route);
             if (notification.method === "newadm") {
                 newCount();
-                sound.play();
+                //sound.play();
             }
             if (notification.method === "workeradm") {
                 nowCount();
@@ -25,7 +25,6 @@ $(function () {
             }
         }
     );
-
     $(".select2-cabinet").select2({
         language: "ru",
         placeholder: 'Введите номер кабинета',
@@ -78,13 +77,14 @@ $(function () {
         }
     });
 
-    if (localStorage.getItem('sound') === null)
+   /* if (localStorage.getItem('sound') === null)
     {
         const sound = new Howl({
             src: ["/sound/sound.ogg"],
             html5: true,
         });
     }
+    */
     jQuery.datetimepicker.setLocale("ru");
     jQuery("#datetimepicker").datetimepicker({
         format: "Y-m-d H:i:s",

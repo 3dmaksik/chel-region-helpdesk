@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <div id="now_count" class="small text-gray-500">На исполнении</div> <span
-                            id="now_count_text">Заявки на исполнение загружаются</span>
+                            id="now_count_text">@if(Cookie::get('nowCount') > 0) У вас заявок на исполнении:{{ Cookie::get('nowCount') }} @else Заявки на исполнение загружаются@endif </span>
                     </div>
                 </a>
                 @endcan

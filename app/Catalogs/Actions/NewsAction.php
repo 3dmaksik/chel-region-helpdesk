@@ -6,14 +6,14 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\ArticleDTO;
-use App\Core\Contracts\ICatalog;
-use App\Core\Contracts\ICatalogExtented;
+use App\Core\Contracts\IArticle;
 use App\Models\Article as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
-final class NewsAction extends Action implements ICatalog, ICatalogExtented
+final class NewsAction extends Action implements IArticle
 {
     /**
      * [all news cache with count items on page]
@@ -37,16 +37,11 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
     /**
      * [show one article]
      */
-    public function show(int $id): array
+    public function show(Model $model): array
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
         $this->response =
         [
-            'data' => $this->item,
+            'data' => $model,
         ];
 
         return $this->response;
@@ -68,7 +63,9 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
         $this->item->name = $this->dataObject->name;
         $this->item->description = $this->dataObject->description;
         $this->item->news_text = $this->dataObject->newsText;
-        $this->item->save();
+        DB::transaction(
+            fn () => $this->item->save()
+        );
         $this->response = [
             'message' => 'Новость успешно добавлена в очередь на размещение!',
             'reload' => true,
@@ -85,7 +82,7 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
      *
      * @param  array  $request {name: string, description: string, news_text: string, created_at: date}
      */
-    public function update(array $request, int $id): JsonResponse
+    public function update(array $request, Model $model): JsonResponse
     {
         $this->dataObject = new ArticleDTO(
             $request['name'],
@@ -93,20 +90,13 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
             $request['news_text'],
             new Carbon($request['created_at']),
         );
-        $this->item = Model::query()->find($id);
-
-        if (! $this->item) {
-            $this->response = [
-                'message' => 'Новость не найдена!',
-            ];
-
-            return response()->error($this->response);
-        }
-        $this->item->name = $this->dataObject->name;
-        $this->item->description = $this->dataObject->description;
-        $this->item->news_text = $this->dataObject->newsText;
-        $this->item->created_at = $this->dataObject->createdAt;
-        $this->item->save();
+        $model->name = $this->dataObject->name;
+        $model->description = $this->dataObject->description;
+        $model->news_text = $this->dataObject->newsText;
+        $model->created_at = $this->dataObject->createdAt;
+        DB::transaction(
+            fn () => $model->save()
+        );
         $this->response = [
             'message' => 'Новость успешно добавлена в очередь на обновление!',
         ];
@@ -119,18 +109,11 @@ final class NewsAction extends Action implements ICatalog, ICatalogExtented
     /**
      * [delete article]
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Model $model): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-
-        if (! $this->item) {
-            $this->response = [
-                'message' => 'Новость не найдена!',
-            ];
-
-            return response()->error($this->response);
-        }
-        $this->item->forceDelete();
+        DB::transaction(
+            fn () => $model->forceDelete()
+        );
         $this->response = [
             'message' => 'Новость успешно поставлена в очередь на удаление!',
             'reload' => true,

@@ -6,6 +6,8 @@ namespace App\Core\Contracts;
 
 interface IHelp
 {
+    public function getAllPagesPaginate(): array;
+
     public function getNewPagesPaginate(): array;
 
     public function getWorkerPagesPaginate(): array;
@@ -16,17 +18,23 @@ interface IHelp
 
     public function create(): mixed;
 
-    public function edit(int $id): array;
+    public function edit(\App\Models\Help $model): array;
 
-    public function accept(array $request, int $id): \Illuminate\Http\JsonResponse;
+    public function show(int $id): array;
 
-    public function execute(array $request, int $id): \Illuminate\Http\JsonResponse;
+    public function store(array $request): \Illuminate\Http\JsonResponse;
 
-    public function redefine(array $request, int $id): \Illuminate\Http\JsonResponse;
+    public function update(array $request, \App\Models\Help $model): \Illuminate\Http\JsonResponse;
 
-    public function reject(array $request, int $id): \Illuminate\Http\JsonResponse;
+    public function accept(array $request, \App\Models\Help $model): \Illuminate\Http\JsonResponse;
 
-    public function updateView(int $id, bool $status): \Illuminate\Http\JsonResponse;
+    public function execute(array $request, \App\Models\Help $model): \Illuminate\Http\JsonResponse;
+
+    public function redefine(array $request, \App\Models\Help $model): \Illuminate\Http\JsonResponse;
+
+    public function reject(array $request, \App\Models\Help $model): \Illuminate\Http\JsonResponse;
+
+    public function updateView(\App\Models\Help $model, bool $status): \Illuminate\Http\JsonResponse;
 
     public function getNewPagesCount(): \Illuminate\Http\JsonResponse;
 

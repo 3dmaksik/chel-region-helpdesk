@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\CategoryAction;
+use App\Models\Category;
 use Illuminate\View\View;
 
 final class CategoryController extends Controller
@@ -29,7 +30,7 @@ final class CategoryController extends Controller
     /**
      * [edit category]
      */
-    public function edit(int $category, CategoryAction $categoryAction): View
+    public function edit(Category $category, CategoryAction $categoryAction): View
     {
         $item = $categoryAction->show($category);
 

@@ -104,7 +104,7 @@ RewriteRule ^ index.php [L]
 
 `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
 
-2. Установить проект и библиотеки командой `$ composer install --no-dev`  
+2. Установить проект и библиотеки `$ composer install --no-dev && npm run prod`  
 
 3. Установить права доступа на папки с тем же пользователем, что и у сервера:  
 
@@ -112,18 +112,20 @@ RewriteRule ^ index.php [L]
 
 `$ sudo chmod -R ug+rwx ./storage ./bootstrap/cache`
 
-4. Создать символьные ссылки для загрузки файлов:  
+4. Создать папки и символьные ссылки для загрузки файлов:  
 
-`$ sudo ln -s /srv/example.com/storage/app/public/images /srv/example.com/public/storage/images`  
-`$ sudo ln -s /srv/example.com/storage/app/public/avatar /srv/example.com/public/storage/avatar`  
-`$ sudo ln -s /srv/example.com/storage/app/public/sound /srv/example.com/public/storage/sound`  
+`$ sudo mkdir /storage/images && sudo mkdir /storage/avatar && sudo mkdir /storage/sound`  
+`$ sudo php artisan storage:link`  
 
-5. Скопировать файлы настроек `$ cp .env.example .env && cp config/settings.php.example config/settings.php`
-6. Сгенерировать ключ проекта командой `$ php artisan key:generate`
+5. Скопировать файлы настроек 
+
+`$ cp .env.example .env && cp config/settings.php.example config/settings.php`
+
+6. Сгенерировать ключ проекта `$ php artisan key:generate`
 7. В файле `.env` заполнить все незаполненные поля.
 8. Установить базу данных `$ php artisan migrate:fresh --seed`
-9. В файле `settings.php` по желанию отредактировать настройки.
-10. Настроить сокеты с помощью демона:  
+9. В файле `config/settings.php` по желанию отредактировать настройки.
+10. Настроить сокеты, планировщик, задачи, с помощью демона:  
 
 `$ sudo apt install supervisor`  
 `$ sudo npm install -g @soketi/soketi`  
@@ -140,9 +142,7 @@ killasgroup=true
 stopwaitsecs=60
 stopsignal=sigint
 minfds=10240
-stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
 user=example_user
 ````
@@ -158,9 +158,7 @@ killasgroup=true
 stopwaitsecs=60
 stopsignal=sigint
 minfds=10240
-stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
 user=example_user
 ````
@@ -176,9 +174,7 @@ killasgroup=true
 stopwaitsecs=60
 stopsignal=sigint
 minfds=10240
-stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
-stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
 user=example_user
 ````
@@ -192,7 +188,7 @@ PS. Рады всем, кто сможет предоставить скрипт
 ### Обновления
                 
 1. Обновления проекта `$ git pull origin master && sudo supervisorctl update`.
-2. Обновления рабочих библиотек `$ composer update`, библиотек разработки, для тех кто возможно согласен участвовать в проекте `$ npm update`.
+2. Обновления рабочих библиотек `$ composer update && npm update && npm run prod`.
 3. В случае каких либо изменений файла `settings.php` необходимо из файла `settings.php.example` скопировать или изменить недостающие переменные, о чём будет сообщено в релизе.
 4. В случае каких либо изменений в базе необходимо выполнить `$ php artisan migrate` .
                 
@@ -200,7 +196,7 @@ PS. Рады всем, кто сможет предоставить скрипт
 ### Вопросы и предложения
 По всем найденным багам, предложениям пишите [сюда](https://github.com/3dmaksik/chel-region-helpdesk/issues)
 
-#### Лицензии используемых библиотек, связных библиотек, шрифта и другой текст, который никто не читает.
+#### Лицензии используемых библиотек, связных библиотек, шрифта.
                 
 1. Laravel- [MIT](https://github.com/laravel/laravel#license)
 2. Permission- [MIT](https://github.com/spatie/laravel-permission/blob/main/LICENSE.md)

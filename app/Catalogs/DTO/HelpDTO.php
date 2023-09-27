@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Catalogs\DTO;
 
 use App\Base\DTO\DTO;
-use App\Catalogs\Actions\Status;
+use App\Base\Enums\Status;
 use Carbon\Carbon;
 
 final class HelpDTO extends DTO

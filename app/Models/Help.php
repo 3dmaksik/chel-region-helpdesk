@@ -64,11 +64,11 @@ class Help extends Model
 
     public function scopeRoleHelp(Builder $builder): Builder
     {
-        if (auth()->user()->roles->pluck('name')[0] === 'superAdmin' || 'admin') {
-            return $builder->orderByRaw('CASE WHEN executor_id = '.auth()->user()->id.' THEN executor_id END DESC');
-        }
         if (auth()->user()->roles->pluck('name')[0] === 'manager') {
             return $builder->where('executor_id', auth()->user()->id);
+        }
+        if (auth()->user()->roles->pluck('name')[0] === 'superAdmin' || 'admin') {
+            return $builder->orderByRaw('CASE WHEN executor_id = '.auth()->user()->id.' THEN executor_id END DESC');
         }
 
         return $builder;

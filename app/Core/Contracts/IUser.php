@@ -6,7 +6,17 @@ namespace App\Core\Contracts;
 
 interface IUser
 {
-    public function updatePassword(array $request, int $id): \Illuminate\Http\JsonResponse;
+    public function getAllPagesPaginate(): array;
 
-    public function edit(int $id): array;
+    public function show(\App\Models\User $model): array;
+
+    public function edit(\App\Models\User $model): array;
+
+    public function store(array $request): \Illuminate\Http\JsonResponse;
+
+    public function update(array $request, \App\Models\User $model): \Illuminate\Http\JsonResponse;
+
+    public function updatePassword(array $request, \App\Models\User $model): \Illuminate\Http\JsonResponse;
+
+    public function destroy(\App\Models\User $model): \Illuminate\Http\JsonResponse;
 }

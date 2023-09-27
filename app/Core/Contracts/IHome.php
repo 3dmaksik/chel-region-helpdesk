@@ -6,7 +6,6 @@ namespace App\Core\Contracts;
 
 interface IHome
 {
-
     public function getWorkerPagesPaginate(): array;
 
     public function getCompletedPagesPaginate(): array;

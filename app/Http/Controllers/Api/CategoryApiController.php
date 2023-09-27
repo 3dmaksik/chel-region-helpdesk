@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\CategoryAction;
+use App\Models\Category;
 use App\Requests\CategoryRequest;
 use Illuminate\Http\JsonResponse;
 
@@ -22,7 +23,7 @@ final class CategoryApiController extends Controller
     /**
      * [update category]
      */
-    public function update(CategoryRequest $request, int $category, CategoryAction $categoryAction): JsonResponse
+    public function update(CategoryRequest $request, Category $category, CategoryAction $categoryAction): JsonResponse
     {
         $this->data = $categoryAction->update($request->validated(null, null), $category);
 
@@ -32,7 +33,7 @@ final class CategoryApiController extends Controller
     /**
      * [delete category]
      */
-    public function destroy(int $category, CategoryAction $categoryAction): JsonResponse
+    public function destroy(Category $category, CategoryAction $categoryAction): JsonResponse
     {
         $this->data = $categoryAction->destroy($category);
 

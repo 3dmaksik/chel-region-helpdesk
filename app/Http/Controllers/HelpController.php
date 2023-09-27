@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\HelpAction;
+use App\Models\Help;
 use Illuminate\View\View;
 
 class HelpController extends Controller
@@ -21,7 +22,7 @@ class HelpController extends Controller
     /**
      * [all helps in api]
      */
-    public function getIndex(HelpAction $helps): View
+    public function loadIndex(HelpAction $helps): View
     {
         $items = $helps->getAllPagesPaginate();
 
@@ -41,21 +42,11 @@ class HelpController extends Controller
     /**
      * [new help in api]
      */
-    public function getNew(HelpAction $helps): View
+    public function loadNew(HelpAction $helps): View
     {
         $items = $helps->getNewPagesPaginate();
 
         return view('loader.help', compact('items'));
-    }
-
-    /**
-     * [edit help]
-     */
-    public function edit(HelpAction $helps, int $help): View
-    {
-        $items = $helps->edit($help);
-
-        return view('forms.edit.help', compact('items'));
     }
 
     /**
@@ -71,7 +62,7 @@ class HelpController extends Controller
     /**
      * [worker help in api]
      */
-    public function getWorker(HelpAction $helps): View
+    public function loadWorker(HelpAction $helps): View
     {
         $items = $helps->getWorkerPagesPaginate();
 
@@ -91,7 +82,7 @@ class HelpController extends Controller
     /**
      * [completed help in api]
      */
-    public function getCompleted(HelpAction $helps): View
+    public function loadCompleted(HelpAction $helps): View
     {
         $items = $helps->getCompletedPagesPaginate();
 
@@ -111,11 +102,21 @@ class HelpController extends Controller
     /**
      * [dismiss help in api]
      */
-    public function getDismiss(HelpAction $helps): View
+    public function loadDismiss(HelpAction $helps): View
     {
         $items = $helps->getDismissPagesPaginate();
 
         return view('loader.help', compact('items'));
+    }
+
+    /**
+     * [create help]
+     */
+    public function create(HelpAction $helps): View
+    {
+        $items = $helps->create();
+
+        return view('forms.add.help', compact('items'));
     }
 
     /**
@@ -131,7 +132,7 @@ class HelpController extends Controller
     /**
      * [show one help in api]
      */
-    public function getShow(HelpAction $helps, int $help): View
+    public function loadShow(HelpAction $helps, int $help): View
     {
         $item = $helps->show($help);
 
@@ -139,12 +140,12 @@ class HelpController extends Controller
     }
 
     /**
-     * [create help]
+     * [edit help]
      */
-    public function create(HelpAction $helps): View
+    public function edit(HelpAction $helps, Help $help): View
     {
-        $items = $helps->create();
+        $items = $helps->edit($help);
 
-        return view('forms.add.help', compact('items'));
+        return view('forms.edit.help', compact('items'));
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('help', function (Blueprint $table) {
             $table->id()->index();
             $table->string('app_number')->nullable()->index()->unique();
-            $table->smallInteger('category_id');
+            $table->smallInteger('category_id')->default(1);
             $table->tinyInteger('status_id')->default(1);
             $table->tinyInteger('priority_id')->default(1);
             $table->smallInteger('user_id');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\UsersAction;
+use App\Models\User;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -31,7 +32,7 @@ class UserController extends Controller
     /**
      * [edit user]
      */
-    public function edit(int $user, UsersAction $usersAction): View
+    public function edit(User $user, UsersAction $usersAction): View
     {
         $items = $usersAction->edit($user);
 
@@ -41,7 +42,7 @@ class UserController extends Controller
     /**
      * [show one user]
      */
-    public function show(int $user, UsersAction $usersAction): View
+    public function show(User $user, UsersAction $usersAction): View
     {
         $item = $usersAction->show($user);
 

@@ -1,10 +1,10 @@
 {
-    "/js/app.js": "/js/app.js?id=8a73eaa880b6fae55abbcedfed8e23ff",
-    "/js/estartup.js": "/js/estartup.js?id=5e41fcbd02e3d196cb8afa095c31a986",
+    "/js/app.js": "/js/app.js?id=d1bab52af632deb3980e29d579fe4411",
+    "/js/estartup.js": "/js/estartup.js?id=11526f7f7381ad50b6282b84b7da586b",
     "/js/editor.js": "/js/editor.js?id=3f66b063d7ca27cc5c53ccbd2a79d59a",
     "/css/main.css": "/css/main.css?id=2212f404675a2561b227573f9c16273b",
     "/css/estartup.css": "/css/estartup.css?id=bcae14b5bd2b56cc39ee477a4d11c079",
-    "/js/app.min.js": "/js/app.min.js?id=8a73eaa880b6fae55abbcedfed8e23ff",
+    "/js/app.min.js": "/js/app.min.js?id=d1bab52af632deb3980e29d579fe4411",
     "/css/main.min.css": "/css/main.min.css?id=2212f404675a2561b227573f9c16273b",
     "/img/boy.png": "/img/boy.png?id=7e36bcdadaf77042e44f4ac133650ba1",
     "/img/error.svg": "/img/error.svg?id=ad8144cda6b5d3c749577e5fe31e97d2",
@@ -21,7 +21,7 @@
     "/img/think.svg": "/img/think.svg?id=a0f3643b36bfe79fb3f6d93a48e61497",
     "/img/undraw_posting_photo.svg": "/img/undraw_posting_photo.svg?id=96a2c3f036f07f962f82d4d9e4b72ae0",
     "/sound/sound.ogg": "/sound/sound.ogg?id=a0786fecb67e1c1048a9c2044001dfae",
-    "/js/estartup.min.js": "/js/estartup.min.js?id=5e41fcbd02e3d196cb8afa095c31a986",
+    "/js/estartup.min.js": "/js/estartup.min.js?id=11526f7f7381ad50b6282b84b7da586b",
     "/css/estartup.min.css": "/css/estartup.min.css?id=bcae14b5bd2b56cc39ee477a4d11c079",
     "/js/editor.min.js": "/js/editor.min.js?id=3f66b063d7ca27cc5c53ccbd2a79d59a"
 }

@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->middleware('throttle:10,1')->group(function (): void {
     Route::post('help/new', [IndexApiController::class, 'store'])->name('index.store');
+    Route::get('select2/user/public', [SearchApiController::class, 'userPublic'])->name('select2.user.public');
 });
 Route::middleware('auth')->middleware('throttle:100,1')->group(function (): void {
     Route::post('help/all', [HelpApiController::class, 'getApiCatalog'])->middleware('can:all help');

@@ -3,11 +3,10 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Enums\Status;
 use App\Base\Helpers\GeneratorAppNumberHelper;
 use App\Base\Helpers\StoreFilesHelper;
 use App\Catalogs\DTO\HelpDTO;
-use App\Core\Contracts\ICatalog;
-use App\Core\Contracts\ICatalogExtented;
 use App\Core\Contracts\IHelp;
 use App\Models\Category;
 use App\Models\Help as Model;
@@ -18,21 +17,10 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
-/**
- * [case status]
- *
- * @var'1'|'2'|'3'|'4'
- */
-enum Status: int
-{
-    case New = 1;
-    case Work = 2;
-    case Success = 3;
-    case Danger = 4;
-}
-final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHelp
+final class HelpAction extends Action implements IHelp
 {
     /**
      * [items help data paginate]
@@ -74,7 +62,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @var last
      */
-    private ?Model $last = null;
+    private ?Model $last;
 
     /**
      * [new app number]
@@ -95,7 +83,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @var images
      */
-    private ?string $images = null;
+    private ?string $images;
 
     /**
      * [this user in task]
@@ -142,7 +130,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @var images_final
      */
-    private ?string $images_final = null;
+    private ?string $images_final;
 
     /**
      * [count help]
@@ -284,16 +272,14 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      */
     public function show(int $id): array
     {
-        $this->user = User::query()->find(auth()->user()->id);
-        if (! $this->user) {
-
-            return abort(404);
-        }
-
-        if ($this->user->can('new help')) {
+        if (auth()->user()->roles->pluck('name')[0] === 'superAdmin' || 'admin') {
             $this->item = Model::query()->find($id);
-        } else {
-            $this->item = Model::query()->where('id',$id)->where('user_id', $this->user->id)->orWhere('executor_id', $this->user->id)->first();
+        }
+        if (auth()->user()->roles->pluck('name')[0] === 'manager') {
+            $this->item = Model::query()->where('id', $id)->where('executor_id', auth()->user()->id)->first();
+        }
+        if (auth()->user()->roles->pluck('name')[0] === 'user') {
+            $this->item = Model::query()->where('id', $id)->where('user_id', auth()->user()->id)->first();
         }
         if (! $this->item) {
 
@@ -329,7 +315,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
     /**
      * [add new help]
      *
-     * @param  array  $request {category_id: string, user_id: int, description_long: string, images: \Illuminate\Http\UploadedFile|null}
+     * @param  array  $request {category_id: int, user_id: int, description_long: string, images: \Illuminate\Http\UploadedFile|null}
      */
     public function store(array $request): JsonResponse
     {
@@ -358,7 +344,9 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         $this->item->user_id = $this->dataObject->user;
         $this->item->description_long = $this->dataObject->descriptionLong;
         $this->item->calendar_request = $this->dataObject->calendarRequest;
-        $this->item->save();
+        DB::transaction(
+            fn () => $this->item->save()
+        );
 
         $this->response = [
             'message' => 'Заявка успешно добавлена!',
@@ -379,20 +367,15 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @return array{item: \App\Models\Help, category: \Illuminate\Support\Collection, priority: \Illuminate\Support\Collection, user: \Illuminate\Support\Collection}
      */
-    public function edit(int $id): array
+    public function edit(Model $model): array
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
         $this->collectCategory = $this->getAllCategoryCollection();
         $this->collectPriority = $this->getAllPriorityCollection();
         $this->collectUser = $this->getAllExecutorCollection();
 
         $this->collectData =
             [
-                'item' => $this->item,
+                'item' => $model,
                 'category' => $this->collectCategory,
                 'priority' => $this->collectPriority,
                 'user' => $this->collectUser,
@@ -406,23 +389,20 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @param  array  $request {category_id: int, user_id: int, priority_id: int}
      */
-    public function update(array $request, int $id): JsonResponse
+    public function update(array $request, Model $model): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
 
         $this->dataObject = new HelpDTO(
             category : (int) $request['category_id'],
             user : (int) $request['user_id'],
             priority : (int) $request['priority_id'],
         );
-        $this->item->category_id = $this->dataObject->category;
-        $this->item->user_id = $this->dataObject->user;
-        $this->item->priority_id = $this->dataObject->priority;
-        $this->item->save();
+        $model->category_id = $this->dataObject->category;
+        $model->user_id = $this->dataObject->user;
+        $model->priority_id = $this->dataObject->priority;
+        DB::transaction(
+            fn () => $model->save()
+        );
 
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
@@ -435,7 +415,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         $admins = User::role(['admin'])->get();
         Notification::send($admins, new HelpNotification('newadm', route('help.new')));
 
-        $userHome = User::find($this->item->user_id);
+        $userHome = User::find($model->user_id);
         if (! $userHome) {
 
             return abort(404);
@@ -450,14 +430,9 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @param  array  $request {executor_id: int, priority_id: int, info: string}
      */
-    public function accept(array $request, int $id): JsonResponse
+    public function accept(array $request, Model $model): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
-        if ($this->item->status_id !== Status::New->value) {
+        if ($model->status_id !== Status::New->value) {
             $this->response = [
                 'message' => 'Заявка уже принята или отклонена!',
             ];
@@ -470,8 +445,8 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
             info : (string) $request['info'] ?? null,
             status : Status::Work,
             accept: Carbon::now(),
-            warning : Carbon::now()->addHour($this->item->priority->warning_timer),
-            execution : Carbon::now()->addHour($this->item->priority->danger_timer),
+            warning : Carbon::now()->addHour($model->priority->warning_timer),
+            execution : Carbon::now()->addHour($model->priority->danger_timer),
             checkWrite : true,
         );
         $this->user = User::query()->find($this->dataObject->executor);
@@ -480,7 +455,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
             return abort(404);
         }
         if ($this->user->id === auth()->user()->id) {
-            if ($this->user->getRoleNames()[0] !== 'admin' && $this->user->getRoleNames()[0] !== 'superAdmin') {
+            if ($this->user->getRoleNames()[0] === 'manager') {
                 $this->response = [
                     'message' => 'Нельзя назначить самого себя!',
                 ];
@@ -495,15 +470,17 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
 
             return response()->error($this->response);
         }
-        $this->item->executor_id = $this->user->id;
-        $this->item->priority_id = $this->dataObject->priority;
-        $this->item->info = $this->dataObject->info;
-        $this->item->status_id = $this->dataObject->status;
-        $this->item->calendar_accept = $this->dataObject->calendarAccept;
-        $this->item->calendar_warning = $this->dataObject->calendarWarning;
-        $this->item->calendar_execution = $this->dataObject->calendarExecution;
-        $this->item->check_write = $this->dataObject->checkWrite;
-        $this->item->save();
+        $model->executor_id = $this->user->id;
+        $model->priority_id = $this->dataObject->priority;
+        $model->info = $this->dataObject->info;
+        $model->status_id = $this->dataObject->status;
+        $model->calendar_accept = $this->dataObject->calendarAccept;
+        $model->calendar_warning = $this->dataObject->calendarWarning;
+        $model->calendar_execution = $this->dataObject->calendarExecution;
+        $model->check_write = $this->dataObject->checkWrite;
+        DB::transaction(
+            fn () => $model->save()
+        );
 
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
@@ -519,7 +496,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
             Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
         }
 
-        $userHome = User::find($this->item->user_id);
+        $userHome = User::find($model->user_id);
         if (! $userHome) {
 
             return abort(404);
@@ -539,14 +516,9 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @param  array  $request {info_final: string|null, images_final: \Illuminate\Http\UploadedFile|null}
      */
-    public function execute(array $request, int $id): JsonResponse
+    public function execute(array $request, Model $model): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
-        if ($this->item->status_id !== Status::Work->value) {
+        if ($model->status_id !== Status::Work->value) {
             $this->response = [
                 'message' => 'Заявка уже выполнена или отклонена!',
             ];
@@ -558,20 +530,22 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
             images_final : $request['images_final'] ?? null,
             status : Status::Success,
             calendar_final: Carbon::now(),
-            lead_at : Carbon::now()->diffInSeconds(Carbon::parse($this->item->calendar_accept)),
+            lead_at : Carbon::now()->diffInSeconds(Carbon::parse($model->calendar_accept)),
             checkWrite : false,
         );
         if ($this->dataObject->imagesFinal) {
             $this->images_final = collect(StoreFilesHelper::createFileImages($this->dataObject->imagesFinal, 'images', 1920, 1080))->toJson();
-            $this->item->images_final = $this->images_final;
+            $model->images_final = $this->images_final;
         }
 
-        $this->item->info_final = $this->dataObject->infoFinal;
-        $this->item->status_id = $this->dataObject->status;
-        $this->item->calendar_final = $this->dataObject->calendarFinal;
-        $this->item->lead_at = $this->dataObject->leadAt;
-        $this->item->check_write = $this->dataObject->checkWrite;
-        $this->item->save();
+        $model->info_final = $this->dataObject->infoFinal;
+        $model->status_id = $this->dataObject->status;
+        $model->calendar_final = $this->dataObject->calendarFinal;
+        $model->lead_at = $this->dataObject->leadAt;
+        $model->check_write = $this->dataObject->checkWrite;
+        DB::transaction(
+            fn () => $model->save()
+        );
 
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
@@ -582,7 +556,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         Notification::send($admins, new HelpNotification('workeradm', route('help.worker')));
         Notification::send($admins, new HelpNotification('completedadm', route('help.completed')));
 
-        $userHome = User::find($this->item->user_id);
+        $userHome = User::find($model->user_id);
         if (! $userHome) {
 
             return abort(404);
@@ -603,14 +577,9 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @param  array  $request {executor_id: int}
      */
-    public function redefine(array $request, int $id): JsonResponse
+    public function redefine(array $request, Model $model): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
-        if ($this->item->status_id !== Status::Work->value) {
+        if ($model->status_id !== Status::Work->value) {
             $this->response = [
                 'message' => 'Заявка уже выполнена или отклонена!',
             ];
@@ -640,8 +609,10 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
 
             return response()->error($this->response);
         }
-        $this->item->executor_id = $this->user->id;
-        $this->item->save();
+        $model->executor_id = $this->user->id;
+        DB::transaction(
+            fn () => $model->save()
+        );
 
         $this->response = [
             'message' => 'Заявка успешно перенаправлена!',
@@ -660,7 +631,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
             Notification::send($oldUserMod, new HelpNotification('workeradm', route('help.worker')));
         }
 
-        $userMod = User::query()->find($this->item->executor_id);
+        $userMod = User::query()->find($model->executor_id);
         if (! $userMod) {
 
             return abort(404);
@@ -669,7 +640,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
             Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
         }
 
-        $userHome = User::query()->find($this->item->user_id);
+        $userHome = User::query()->find($model->user_id);
         if (! $userHome) {
 
             return abort(404);
@@ -684,14 +655,9 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
      *
      * @param  array  $request {info_final: string|null}
      */
-    public function reject(array $request, int $id): JsonResponse
+    public function reject(array $request, Model $model): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
-        if ($this->item->status_id !== Status::New->value) {
+        if ($model->status_id !== Status::New->value) {
             $this->response = [
                 'message' => 'Заявка не может быть отклонена, так как уже принята в работу!',
             ];
@@ -706,13 +672,15 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
             lead_at : 60,
             checkWrite : false,
         );
-        $this->item->info_final = $this->dataObject->infoFinal;
-        $this->item->status_id = $this->dataObject->status;
-        $this->item->calendar_accept = $this->dataObject->calendarAccept;
-        $this->item->calendar_final = $this->dataObject->calendarFinal;
-        $this->item->lead_at = $this->dataObject->leadAt;
-        $this->item->check_write = $this->dataObject->checkWrite;
-        $this->item->save();
+        $model->info_final = $this->dataObject->infoFinal;
+        $model->status_id = $this->dataObject->status;
+        $model->calendar_accept = $this->dataObject->calendarAccept;
+        $model->calendar_final = $this->dataObject->calendarFinal;
+        $model->lead_at = $this->dataObject->leadAt;
+        $model->check_write = $this->dataObject->checkWrite;
+        DB::transaction(
+            fn () => $model->save()
+        );
 
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
@@ -723,7 +691,7 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
         Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
         Notification::send($admins, new HelpNotification('dismissadm', route('help.dismiss')));
 
-        $userHome = User::query()->find($this->item->user_id);
+        $userHome = User::query()->find($model->user_id);
         if (! $userHome) {
 
             return abort(404);
@@ -740,16 +708,13 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
 
     /**
      * [remove help]
-     *
+     * ! method not used
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Model $model): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
-        $this->item->forceDelete();
+        DB::transaction(
+            fn () => $model->forceDelete()
+        );
 
         $this->response = [
             'message' => 'Заявка успешно удалена!',
@@ -761,20 +726,17 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
 
     /**
      * [writable help]
-     *
+     * ! method not used
      */
-    public function updateView(int $id, bool $status = true): JsonResponse
+    public function updateView(Model $model, bool $status = true): JsonResponse
     {
-        $this->item = Model::query()->find($id);
-        if (! $this->item) {
-
-            return abort(404);
-        }
         $this->dataObject = new HelpDTO(
             checkWrite : $status,
         );
-        $this->item->check_write = $this->dataObject->checkWrite;
-        $this->item->save();
+        $model->check_write = $this->dataObject->checkWrite;
+        DB::transaction(
+            fn () => $model->save()
+        );
 
         $this->response = [
             'message' => 'Заявка успешно прочитана!',
@@ -786,12 +748,10 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
 
     /**
      * [get new help count]
-     *
      */
     public function getNewPagesCount(): JsonResponse
     {
-        $this->user = User::findOrFail(auth()->user()->id);
-        if ($this->user->can('new help')) {
+        if (auth()->user()->permissions->pluck('new help')) {
             $this->count = Model::where('status_id', Status::New)->count();
             Cookie::queue('newCount', $this->count);
         } else {
@@ -806,12 +766,19 @@ final class HelpAction extends Action implements ICatalog, ICatalogExtented, IHe
 
     /**
      * [get now help count]
-     *
      */
     public function getNowPagesCount(): JsonResponse
     {
-        $this->count = Model::where('status_id', Status::Work)
-            ->where('executor_id', auth()->user()->id)->count();
+        if (auth()->user()->permissions->pluck('worker help')) {
+            $this->count = Model::where('status_id', Status::Work)
+                ->where('executor_id', auth()->user()->id)->count();
+            Cookie::queue('nowCount', $this->count);
+        } else {
+            $this->count = 0;
+            if (Cookie::get('nowCount') !== null) {
+                Cookie::forget('nowCount');
+            }
+        }
 
         return response()->json($this->count);
     }

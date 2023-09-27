@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SearchCatalogAction;
-use App\Requests\SearchRequest;
+use App\Requests\Search\SearchRequest;
 use Illuminate\View\View;
 
 class SearchController extends Controller
