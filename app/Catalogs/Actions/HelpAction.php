@@ -300,11 +300,13 @@ final class HelpAction extends Action implements IHelp
      */
     public function getApiCatalog(): JsonResponse
     {
+        $this->collectCategory = $this->getAllCategoryCollection();
         $this->collectPriority = $this->getAllPriorityCollection();
         $this->collectUser = $this->getAllExecutorCollection();
 
         $this->collectData = collect(
             [
+                'category' => $this->collectCategory,
                 'priority' => $this->collectPriority,
                 'user' => $this->collectUser,
             ])->toJson();
@@ -359,29 +361,13 @@ final class HelpAction extends Action implements IHelp
         $admins = User::role(['admin'])->get();
         Notification::send($admins, new HelpNotification('newadm', route('help.new')));
 
+        $userHome = User::find($this->item->user_id);
+        if ($userHome) {
+            Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+            Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
+        }
+
         return response()->success($this->response);
-    }
-
-    /**
-     * [edit help]
-     *
-     * @return array{item: \App\Models\Help, category: \Illuminate\Support\Collection, priority: \Illuminate\Support\Collection, user: \Illuminate\Support\Collection}
-     */
-    public function edit(Model $model): array
-    {
-        $this->collectCategory = $this->getAllCategoryCollection();
-        $this->collectPriority = $this->getAllPriorityCollection();
-        $this->collectUser = $this->getAllExecutorCollection();
-
-        $this->collectData =
-            [
-                'item' => $model,
-                'category' => $this->collectCategory,
-                'priority' => $this->collectPriority,
-                'user' => $this->collectUser,
-            ];
-
-        return $this->collectData;
     }
 
     /**
@@ -396,31 +382,44 @@ final class HelpAction extends Action implements IHelp
             category : (int) $request['category_id'],
             user : (int) $request['user_id'],
             priority : (int) $request['priority_id'],
+            checkWrite : false,
         );
         $model->category_id = $this->dataObject->category;
         $model->user_id = $this->dataObject->user;
         $model->priority_id = $this->dataObject->priority;
+        $model->check_write = $this->dataObject->checkWrite;
         DB::transaction(
             fn () => $model->save()
         );
 
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
+            'reload' => true,
         ];
 
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
-        Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
+        Notification::send($superAdmin, new HelpNotification('workeradm', route('help.worker')));
+        Notification::send($superAdmin, new HelpNotification('completedadm', route('help.completed')));
 
         $admins = User::role(['admin'])->get();
-        Notification::send($admins, new HelpNotification('newadm', route('help.new')));
+        Notification::send($admins, new HelpNotification('workeradm', route('help.worker')));
+        Notification::send($admins, new HelpNotification('completedadm', route('help.completed')));
 
         $userHome = User::find($model->user_id);
-        if (! $userHome) {
+        if ($userHome) {
 
-            return abort(404);
+            Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+            Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
         }
-        Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+
+        $userMod = User::query()->find($model->executor_id);
+        if ($userMod) {
+            if ($userMod->getRoleNames()[0] === 'manager') {
+                Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
+                Notification::send($userMod, new HelpNotification('completedadm', route('help.completed')));
+            }
+        }
 
         return response()->success($this->response);
     }
@@ -484,24 +483,27 @@ final class HelpAction extends Action implements IHelp
 
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
-        Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
         Notification::send($superAdmin, new HelpNotification('workeradm', route('help.worker')));
+        Notification::send($superAdmin, new HelpNotification('completedadm', route('help.completed')));
 
         $admins = User::role(['admin'])->get();
-        Notification::send($admins, new HelpNotification('newadm', route('help.new')));
         Notification::send($admins, new HelpNotification('workeradm', route('help.worker')));
-
-        $userMod = $this->user;
-        if ($userMod->getRoleNames()[0] === 'manager') {
-            Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
-        }
+        Notification::send($admins, new HelpNotification('completedadm', route('help.completed')));
 
         $userHome = User::find($model->user_id);
-        if (! $userHome) {
+        if ($userHome) {
 
-            return abort(404);
+            Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+            Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
         }
-        Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+
+        $userMod = User::query()->find($model->executor_id);
+        if ($userMod) {
+            if ($userMod->getRoleNames()[0] === 'manager') {
+                Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
+                Notification::send($userMod, new HelpNotification('completedadm', route('help.completed')));
+            }
+        }
 
         $this->response = [
             'message' => 'Заявка успешно принята!',
@@ -546,7 +548,6 @@ final class HelpAction extends Action implements IHelp
         DB::transaction(
             fn () => $model->save()
         );
-
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
         Notification::send($superAdmin, new HelpNotification('workeradm', route('help.worker')));
@@ -557,12 +558,20 @@ final class HelpAction extends Action implements IHelp
         Notification::send($admins, new HelpNotification('completedadm', route('help.completed')));
 
         $userHome = User::find($model->user_id);
-        if (! $userHome) {
+        if ($userHome) {
 
-            return abort(404);
+            Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+            Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
         }
-        Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
-        Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
+
+        $userMod = User::query()->find($model->executor_id);
+        if ($userMod) {
+            if ($userMod->getRoleNames()[0] === 'manager') {
+                Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
+                Notification::send($userMod, new HelpNotification('completedadm', route('help.completed')));
+            }
+
+        }
 
         $this->response = [
             'message' => 'Заявка успешно выполнена!',
@@ -629,23 +638,23 @@ final class HelpAction extends Action implements IHelp
         $oldUserMod = $this->user;
         if ($oldUserMod->getRoleNames()[0] === 'manager') {
             Notification::send($oldUserMod, new HelpNotification('workeradm', route('help.worker')));
+            Notification::send($oldUserMod, new HelpNotification('completedadm', route('help.completed')));
         }
 
         $userMod = User::query()->find($model->executor_id);
-        if (! $userMod) {
+        if ($userMod) {
 
-            return abort(404);
-        }
-        if ($userMod->getRoleNames()[0] === 'manager') {
-            Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
+            if ($userMod->getRoleNames()[0] === 'manager') {
+                Notification::send($userMod, new HelpNotification('workeradm', route('help.worker')));
+                Notification::send($userMod, new HelpNotification('completedadm', route('help.completed')));
+            }
         }
 
         $userHome = User::query()->find($model->user_id);
-        if (! $userHome) {
-
-            return abort(404);
+        if ($userHome) {
+            Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
+            Notification::send($userHome, new HelpNotification('completeduser', route('home.completed')));
         }
-        Notification::send($userHome, new HelpNotification('workeruser', route('home.worker')));
 
         return response()->success($this->response);
     }
@@ -692,12 +701,10 @@ final class HelpAction extends Action implements IHelp
         Notification::send($admins, new HelpNotification('dismissadm', route('help.dismiss')));
 
         $userHome = User::query()->find($model->user_id);
-        if (! $userHome) {
-
-            return abort(404);
+        if ($userHome) {
+            Notification::send($userHome, new HelpNotification('workersuser', route('home.worker')));
+            Notification::send($userHome, new HelpNotification('dismissuser', route('home.dismiss')));
         }
-        Notification::send($userHome, new HelpNotification('dismissuser', route('home.dismiss')));
-
         $this->response = [
             'message' => 'Заявка успешно отклонена!',
             'reload' => true,

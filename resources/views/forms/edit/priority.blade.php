@@ -25,26 +25,26 @@
             <div class="form-group">
                 <label for="">Название</label>
                 <input type="text" name="description" value="{{ $item['data']->description }}" class="form-control"
-                    id="description" aria-describedby="textHelp" placeholder="Средний" autocomplete="off">
+                    id="description" aria-describedby="textHelp" placeholder="Средний" autocomplete="off" required>
                 <small id="textHelp" class="form-text text-muted">Введите наименование приоритета</small>
             </div>
             <div class="form-group">
                 <label for="">Позиция</label>
                 <input type="text" name="rang" value="{{ $item['data']->rang }}" class="form-control" id="rang"
-                    aria-describedby="textRang" placeholder="3" autocomplete="off">
+                    aria-describedby="textRang" placeholder="3" autocomplete="off" required>
                 <small id="textRang" class="form-text text-muted">Укажите позицию от 1 до 9</small>
             </div>
             <div class="form-group">
                 <label for="">Время</label>
                 <input type="text" name="warning_timer" value="{{ $item['data']->warning_timer}}" class="form-control"
-                    id="warning-timer" aria-describedby="textWarningTimer" placeholder="1" autocomplete="off">
+                    id="warning-timer" aria-describedby="textWarningTimer" placeholder="1" autocomplete="off" required>
                 <small id="textWarningTimer" class="form-text text-muted">Укажите длительность для предупреждения
                     приоритета в часах</small>
             </div>
             <div class="form-group">
                 <label for="">Время</label>
                 <input type="text" name="danger_timer" value="{{ $item['data']->danger_timer }}" class="form-control"
-                    id="danger-timer" aria-describedby="textDangerTimer" placeholder="2" autocomplete="off">
+                    id="danger-timer" aria-describedby="textDangerTimer" placeholder="2" autocomplete="off" required>
                 <small id="textDangerTimer" class="form-text text-muted">Укажите длительность для просрочки приоритета в
                     часах</small>
             </div>

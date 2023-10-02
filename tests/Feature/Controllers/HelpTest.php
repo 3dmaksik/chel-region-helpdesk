@@ -386,33 +386,6 @@ class HelpTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_controller_help_edit_super_admin(): void
-    {
-        $category = Category::factory()->create([
-            'description' => 'Общая',
-        ]);
-        $priority = Priority::factory()->create([
-            'description' => 'Средний',
-            'rang' => 1,
-            'warning_timer' => 1,
-            'danger_timer' => 2,
-        ]);
-        $this->status = Status::factory()->create([
-            'description' => 'Новая',
-        ]);
-
-        $help = Help::factory()->create([
-            'category_id' => $category->id,
-            'status_id' => $this->status->id,
-            'user_id' => $this->user->id,
-            'executor_id' => $this->manager->id,
-            'priority_id' => $priority->id,
-            'description_long' => fake()->text(),
-        ]);
-        $response = $this->actingAs($this->superAdmin, 'web')->get(route(config('constants.help.edit'), $help->id));
-        $response->assertStatus(200);
-    }
-
     public function test_controller_help_new_admin(): void
     {
         $category = Category::factory()->create([
@@ -697,33 +670,6 @@ class HelpTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_controller_help_edit_admin(): void
-    {
-        $category = Category::factory()->create([
-            'description' => 'Общая',
-        ]);
-        $priority = Priority::factory()->create([
-            'description' => 'Средний',
-            'rang' => 1,
-            'warning_timer' => 1,
-            'danger_timer' => 2,
-        ]);
-        $this->status = Status::factory()->create([
-            'description' => 'Новая',
-        ]);
-
-        $help = Help::factory()->create([
-            'category_id' => $category->id,
-            'status_id' => $this->status->id,
-            'user_id' => $this->user->id,
-            'executor_id' => $this->manager->id,
-            'priority_id' => $priority->id,
-            'description_long' => fake()->text(),
-        ]);
-        $response = $this->actingAs($this->admin, 'web')->get(route(config('constants.help.edit'), $help->id));
-        $response->assertStatus(200);
-    }
-
     public function test_controller_help_worker_manager(): void
     {
         $category = Category::factory()->create([
@@ -998,33 +944,6 @@ class HelpTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_controller_help_edit_error_manager(): void
-    {
-        $category = Category::factory()->create([
-            'description' => 'Общая',
-        ]);
-        $priority = Priority::factory()->create([
-            'description' => 'Средний',
-            'rang' => 1,
-            'warning_timer' => 1,
-            'danger_timer' => 2,
-        ]);
-        $this->status = Status::factory()->create([
-            'description' => 'Новая',
-        ]);
-
-        $help = Help::factory()->create([
-            'category_id' => $category->id,
-            'status_id' => $this->status->id,
-            'user_id' => $this->user->id,
-            'executor_id' => $this->manager->id,
-            'priority_id' => $priority->id,
-            'description_long' => fake()->text(),
-        ]);
-        $response = $this->actingAs($this->manager, 'web')->get(route(config('constants.help.edit'), $help->id));
-        $response->assertStatus(403);
-    }
-
     public function test_controller_help_index_error_user(): void
     {
         $response = $this->actingAs($this->user, 'web')->get(route(config('constants.help.index')));
@@ -1088,33 +1007,6 @@ class HelpTest extends TestCase
     public function test_controller_help_create_error_user(): void
     {
         $response = $this->actingAs($this->user, 'web')->get(route(config('constants.help.create')));
-        $response->assertStatus(403);
-    }
-
-    public function test_controller_help_edit_error_user(): void
-    {
-        $category = Category::factory()->create([
-            'description' => 'Общая',
-        ]);
-        $priority = Priority::factory()->create([
-            'description' => 'Средний',
-            'rang' => 1,
-            'warning_timer' => 1,
-            'danger_timer' => 2,
-        ]);
-        $this->status = Status::factory()->create([
-            'description' => 'Новая',
-        ]);
-
-        $help = Help::factory()->create([
-            'category_id' => $category->id,
-            'status_id' => $this->status->id,
-            'user_id' => $this->user->id,
-            'executor_id' => $this->manager->id,
-            'priority_id' => $priority->id,
-            'description_long' => fake()->text(),
-        ]);
-        $response = $this->actingAs($this->user, 'web')->get(route(config('constants.help.edit'), $help->id));
         $response->assertStatus(403);
     }
 }

@@ -25,19 +25,19 @@
             <div class="form-group">
                 <label for="">Логин</label>
                 <input type="text" name="name" value="{{ $items['user']->name }}" class="form-control" id="name"
-                    aria-describedby="textName" autocomplete="off">
+                    aria-describedby="textName" autocomplete="off" required>
                 <small id="textName" class="form-text text-muted">Введите логин пользователя</small>
             </div>
             <div class="form-group">
                 <label for="">Фамилия</label>
                 <input type="text" name="lastname" value="{{ $items['user']->lastname }}" class="form-control"
-                    id="lastname" aria-describedby="textLastname" placeholder="Фамилия" autocomplete="off">
+                    id="lastname" aria-describedby="textLastname" placeholder="Фамилия" autocomplete="off" required>
                 <small id="textLastname" class="form-text text-muted">Введите фамилию сотрудника</small>
             </div>
             <div class="form-group">
                 <label for="">Имя</label>
                 <input type="text" name="firstname" value="{{ $items['user']->firstname }}" class="form-control"
-                    id="firstname" aria-describedby="textName" placeholder="Имя" autocomplete="off">
+                    id="firstname" aria-describedby="textName" placeholder="Имя" autocomplete="off" required>
                 <small id="textName" class="form-text text-muted">Введите имя сотрудника</small>
             </div>
             <div class="form-group">

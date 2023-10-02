@@ -46,8 +46,7 @@ Route::middleware('auth')->group(function (): void {
             Route::post('helps/completed', 'loadCompleted')->name('completed')->middleware('can:completed help');
             Route::get('helps/dismiss', 'dismiss')->name('dismiss')->middleware('can:dismiss help');
             Route::post('helps/dismiss', 'loadDismiss')->name('dismiss')->middleware('can:dismiss help');
-            Route::get('create', 'create')->name('create')->middleware('can:create help');
-            Route::get('{help}/edit', 'edit')->name('edit')->middleware('can:edit help');
+            Route::get('helps/create', 'create')->name('create')->middleware('can:create help');
             Route::get('{help}/show', 'show')->name('show')->middleware('can:view help');
             Route::post('{help}/show', 'loadShow')->name('show')->middleware('can:view help');
         });

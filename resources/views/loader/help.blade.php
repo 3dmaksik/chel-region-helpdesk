@@ -2,12 +2,14 @@
 <div class="card {{ $items['method'] }}">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Все заявки</h6>
+        @if(request()->segment(1) == 'home')
         @if(auth()->user()->can('create help') && auth()->user()->can('create home help'))
         <a href="{{ route(config('constants.help.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая
                 заявка</button></a>
         @else
         <a href="{{ route(config('constants.home.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая
                 заявка</button></a>
+        @endif
         @endif
     </div>
     <div class="table-responsive loader-table">
@@ -60,10 +62,10 @@
                         <td class="d-print-none">
                             <div class="block">
                                 @if(auth()->user()->can('create help') && auth()->user()->can('create home help'))
-                                <a href="{{ route(config('constants.help.show'),$item->id) }}"> <button type="button"
+                                <a href="{{ route(config('constants.help.show'),$item->id) }}" target="_blank"> <button type="button"
                                         class="btn btn-info mb-1">Открыть</button></a>
                                 @else
-                                <a href="{{ route(config('constants.home.show'),$item->id) }}"> <button type="button"
+                                <a href="{{ route(config('constants.home.show'),$item->id) }}" target="_blank"> <button type="button"
                                         class="btn btn-info mb-1">Открыть</button></a>
                                 @endif
                             </div>

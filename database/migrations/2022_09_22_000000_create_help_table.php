@@ -23,6 +23,8 @@ return new class extends Migration
             $table->smallInteger('executor_id')->nullable();
             $table->json('images')->nullable();
             $table->json('images_final')->nullable();
+            $table->json('files')->nullable();
+            $table->json('files_final')->nullable();
             $table->longText('info')->nullable();
             $table->longText('info_final')->nullable();
             $table->dateTime('calendar_request');

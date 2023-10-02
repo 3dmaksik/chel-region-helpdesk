@@ -24,25 +24,25 @@
             <div class="form-group">
                 <label for="">Логин</label>
                 <input type="text" name="name" value="" class="form-control" id="name" aria-describedby="textName"
-                    autocomplete="off">
+                    autocomplete="off" required>
                 <small id="textName" class="form-text text-muted">Введите логин пользователя</small>
             </div>
             <div class="form-group">
                 <label for="">Пароль</label>
                 <input type="password" name="password" class="form-control" id="password"
-                    aria-describedby="textPassword" autocomplete="off">
+                    aria-describedby="textPassword" autocomplete="off" required>
                 <small id="textPassword" class="form-text text-muted">Введите новый пароль пользователя</small>
             </div>
             <div class="form-group">
                 <label for="">Фамилия</label>
                 <input type="text" name="lastname" value="" class="form-control" id="lastname"
-                    aria-describedby="textLastname" placeholder="Фамилия" autocomplete="off">
+                    aria-describedby="textLastname" placeholder="Фамилия" autocomplete="off" required>
                 <small id="textLastname" class="form-text text-muted">Введите фамилию пользователя</small>
             </div>
             <div class="form-group">
                 <label for="">Имя</label>
                 <input type="text" name="firstname" value="" class="form-control" id="firstname"
-                    aria-describedby="textName" placeholder="Имя" autocomplete="off">
+                    aria-describedby="textName" placeholder="Имя" autocomplete="off" required>
                 <small id="textName" class="form-text text-muted">Введите имя пользователяа</small>
             </div>
             <div class="form-group">

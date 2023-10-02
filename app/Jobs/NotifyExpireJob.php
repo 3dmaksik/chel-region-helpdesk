@@ -74,7 +74,7 @@ class NotifyExpireJob extends Job implements ShouldQueue
         if ($this->items !== null) {
             foreach ($this->items as $item) {
                 $this->user = User::findOrFail($item->executor_id);
-                if ($this->user->getRoleNames()[0] != 'user') {
+                if ($this->user->getRoleNames()[0] !== 'user') {
                     Notification::send($this->user, new ExpireNotification('expire', $item->app_number, $this->items->count() - 1));
                 }
             }

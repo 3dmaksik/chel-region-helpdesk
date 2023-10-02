@@ -26,7 +26,7 @@
                 <label for="">Наименование</label>
                 <input type="text" name="description" value="{{ $item['data']->description }}"
                     class="form-control @error('description') is-invalid @enderror" id="description"
-                    aria-describedby="textHelp" placeholder="Пр. 1" autocomplete="off">
+                    aria-describedby="textHelp" placeholder="Пр. 1" autocomplete="off" required>
                 <small id="textHelp" class="form-text text-muted">Введите статус</small>
                 @error('description')
                 <small class="invalid-feedback">Такой статус уже существует или превышено количество символов.</small>

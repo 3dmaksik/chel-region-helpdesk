@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label for="">Номер</label>
                 <input type="text" name="description" value="{{ $item['data']->description }}" class="form-control"
-                    id="description" aria-describedby="textHelp" placeholder="№ 1" autocomplete="off">
+                    id="description" aria-describedby="textHelp" placeholder="№ 1" autocomplete="off" required>
                 <small id="textHelp" class="form-text text-muted">Введите номер кабинета</small>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />

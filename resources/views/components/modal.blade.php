@@ -1,4 +1,44 @@
 <div id="modal-forms">
+<!-- Окно редактирования-->
+<div class="modal fade" id="editHelp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Редактирование заявки</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+            </div>
+            <form id="formEdit" class="form-submit" action="{{ route(config('constants.help.update'),$item['data']->id,'update') }}" method="POST">
+                @method('PATCH')
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="text-center">
+                            <div id="sent-message-update" style="display: none"> </div>
+                        </div>
+                        <label for="select2-category">Изменить категорию</label>
+                        <select class="select2-single form-control" name="category_id" id="update-select2-category">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="select2-user">Изменить сотрудника</label>
+                        <select class="select2-single select2-user form-control" name="user_id" id="update-select2-user">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="select2-priority">Изменить приоритет</label>
+                        <select class="select2-single form-control" name="priority_id" id="update-select2-priority">
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer form-group">
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Отменить</button>
+                    <input class="btn btn-success update-submit" type="submit" value="Изменить" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Окно принятия-->
 <div class="modal fade" id="acceptHelp" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -35,8 +75,8 @@
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Отменить</button>
                     <input class="btn btn-success update-submit" type="submit" value="Назначить" />
                 </div>
+            </form>
         </div>
-        </form>
     </div>
 </div>
 <!-- Окно выполнения-->
@@ -48,8 +88,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
-            <form id="formExecute" enctype="multipart/form-data" class="form-submit"
-                action="{{ route(config('constants.help.execute'),$item['data']->id,'execute') }}" method="POST">
+            <form id="formExecute" enctype="multipart/form-data" class="form-submit" action="{{ route(config('constants.help.execute'),$item['data']->id,'execute') }}" method="POST">
                 @method('PATCH')
                 @csrf
                 <div class="modal-body">
@@ -74,8 +113,8 @@
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Отменить</button>
                     <input class="btn btn-success update-submit" type="submit" value="Выполнить" />
                 </div>
+            </form>
         </div>
-        </form>
     </div>
 </div>
 <!-- Окно передачи-->
@@ -87,8 +126,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
-            <form id="formRedefine" class="form-submit"
-                action="{{ route(config('constants.help.redefine'),$item['data']->id,'redefine') }}" method="POST">
+            <form id="formRedefine" class="form-submit" action="{{ route(config('constants.help.redefine'),$item['data']->id,'redefine') }}" method="POST">
                 @method('PATCH')
                 @csrf
                 <div class="modal-body">
@@ -105,8 +143,8 @@
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Отменить</button>
                     <input class="btn btn-success update-submit" type="submit" value="Передать" />
                 </div>
+            </form>
         </div>
-        </form>
     </div>
 </div>
 <!-- Окно отклонения-->
@@ -118,8 +156,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
-            <form id="formReject" class="form-submit"
-                action="{{ route(config('constants.help.reject'),$item['data']->id,'reject') }}" method="POST">
+            <form id="formReject" class="form-submit" action="{{ route(config('constants.help.reject'),$item['data']->id,'reject') }}" method="POST">
                 @method('PATCH')
                 @csrf
                 <div class="modal-body">
@@ -136,8 +173,8 @@
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Отменить</button>
                     <input class="btn btn-danger update-submit" type="submit" value="Отклонить" />
                 </div>
+            </form>
         </div>
-        </form>
     </div>
 </div>
 

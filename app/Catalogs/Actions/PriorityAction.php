@@ -66,9 +66,9 @@ final class PriorityAction extends Action implements IPriority
     {
         $this->dataObject = new PriorityDTO(
             $request['description'],
-            $request['rang'],
-            $request['warning_timer'],
-            $request['danger_timer']
+            (int) $request['rang'],
+            (int) $request['warning_timer'],
+            (int) $request['danger_timer']
         );
         $this->item = new Model();
         $this->item->description = StringHelper::run($this->dataObject->description);
@@ -98,9 +98,9 @@ final class PriorityAction extends Action implements IPriority
 
         $this->dataObject = new PriorityDTO(
             $request['description'],
-            $request['rang'],
-            $request['warning_timer'],
-            $request['danger_timer']
+            (int) $request['rang'],
+            (int) $request['warning_timer'],
+            (int) $request['danger_timer']
         );
         $model->description = StringHelper::run($this->dataObject->description);
         $model->rang = $this->dataObject->rang;

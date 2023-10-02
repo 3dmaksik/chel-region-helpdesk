@@ -24,13 +24,13 @@
             <div class="form-group">
                 <label for="">Название</label>
                 <input type="text" name="name" value="" class="form-control" id="name" aria-describedby="textName"
-                    placeholder="Название" autocomplete="off">
+                    placeholder="Название" autocomplete="off" required>
                 <small id="textName" class="form-text text-muted">Введите название новости</small>
             </div>
             <div class="form-group">
                 <label for="">Описание</label>
                 <input type="text" name="description" value="" class="form-control" id="description"
-                    aria-describedby="textDescription" placeholder="Описание" autocomplete="off">
+                    aria-describedby="textDescription" placeholder="Описание" autocomplete="off" required>
                 <small id="textDesription" class="form-text text-muted">Введите описание новости</small>
             </div>
             <div class="form-group" style="min-height: 375px">
