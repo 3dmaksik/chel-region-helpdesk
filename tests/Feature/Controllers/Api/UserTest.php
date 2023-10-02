@@ -159,7 +159,7 @@ class UserTest extends TestCase
     public function test_controller_user_store_validation_error_required_super_admin(): void
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.users.store')));
-        $response->assertJsonValidationErrors(['password','name', 'firstname', 'lastname', 'cabinet_id', 'role']);
+        $response->assertJsonValidationErrors(['password', 'name', 'firstname', 'lastname', 'cabinet_id', 'role']);
         $response->assertStatus(422);
     }
 

@@ -138,14 +138,4 @@ class HelpController extends Controller
 
         return view('loader.help-view', compact('item'));
     }
-
-    /**
-     * [edit help]
-     */
-    public function edit(HelpAction $helps, Help $help): View
-    {
-        $items = $helps->edit($help);
-
-        return view('forms.edit.help', compact('items'));
-    }
 }

@@ -18,8 +18,6 @@ interface IHelp
 
     public function create(): mixed;
 
-    public function edit(\App\Models\Help $model): array;
-
     public function show(int $id): array;
 
     public function store(array $request): \Illuminate\Http\JsonResponse;

@@ -98,6 +98,9 @@ $(function () {
         else $(this).prev().text("Выберите файлы");
     });
     $(".btn-modal").on('click', function () {
+        $("#update-select2-category").empty();
+        $("#update-select2-user").empty();
+        $("#update-select2-user").empty();
         $("#accept-select2-user").empty();
         $("#redefine-select2-user").empty();
         $.ajax({
@@ -109,6 +112,17 @@ $(function () {
                 for (let i = 0; i < obj.user.length; i++) {
                     let counter = obj.user[i];
                     if (counter.patronymic === null) counter.patronymic = "";
+                    $("#update-select2-user").append(
+                        '<option value="' +
+                            counter.id +
+                            '">' +
+                            counter.lastname +
+                            " " +
+                            counter.firstname +
+                            " " +
+                            counter.patronymic +
+                            "</option>"
+                    );
                     $("#accept-select2-user").append(
                         '<option value="' +
                             counter.id +
@@ -135,6 +149,23 @@ $(function () {
                 for (let i = 0; i < obj.priority.length; i++) {
                     let counter = obj.priority[i];
                     $("#accept-select2-priority").append(
+                        '<option value="' +
+                            counter.id +
+                            '">' +
+                            counter.description +
+                            "</option>"
+                    );
+                    $("#update-select2-priority").append(
+                        '<option value="' +
+                            counter.id +
+                            '">' +
+                            counter.description +
+                            "</option>"
+                    );
+                }
+                for (let i = 0; i < obj.category.length; i++) {
+                    let counter = obj.category[i];
+                    $("#update-select2-category").append(
                         '<option value="' +
                             counter.id +
                             '">' +

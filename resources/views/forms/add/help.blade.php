@@ -6,7 +6,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Добавить новую заявку</h6>
         <div class="card-title">
             <div class="block">
-                <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.worker')) }}">
+                <a style="color: #757575;" class="hover" href="{{ url()->previous() }}">
                     <i class="fas fa-arrow-left fa-lg"></i>
                 </a> <span class="hidden">Назад</span>
                 <!-- скрытый элемент -->
@@ -31,7 +31,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="select2-user">Выберите сотрудника</label>
+                <label for="select2-user">Выберите сотрудника (Также можете выбрать себя)</label>
                 <select class="select2-user select2-single form-control" name="user_id" id="select2-user">
                 </select>
             </div>
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
-            <a class="btn btn-secondary" href="{{ route(config('constants.help.index')) }}">Отменить</a>
+            <a class="btn btn-secondary" href="{{ url()->previous() }}">Отменить</a>
         </form>
     </div>
 </div>

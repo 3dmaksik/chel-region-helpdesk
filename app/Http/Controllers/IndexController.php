@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\HelpAction;
-use App\Requests\IndexRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class IndexController extends Controller

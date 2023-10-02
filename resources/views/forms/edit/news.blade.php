@@ -25,13 +25,13 @@
             <div class="form-group">
                 <label for="">Название</label>
                 <input type="text" name="name" value="{{ $item['data']->name }}" class="form-control" id="name"
-                    aria-describedby="textName" placeholder="Название" autocomplete="off">
+                    aria-describedby="textName" placeholder="Название" autocomplete="off" required>
                 <small id="textName" class="form-text text-muted">Введите название новости</small>
             </div>
             <div class="form-group">
                 <label for="">Описание</label>
                 <input type="text" name="description" value="{{ $item['data']->description }}" class="form-control"
-                    id="description" aria-describedby="textDescription" placeholder="Описание" autocomplete="off">
+                    id="description" aria-describedby="textDescription" placeholder="Описание" autocomplete="off" required>
                 <small id="textDesription" class="form-text text-muted">Введите описание новости</small>
             </div>
             <div class="form-group">

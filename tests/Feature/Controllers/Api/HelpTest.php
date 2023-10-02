@@ -585,12 +585,14 @@ class HelpTest extends TestCase
         $this->assertDatabaseHas('help', ['info_final' => 'Готово']);
         $response->assertStatus(200);
     }
+
     public function test_controller_help_store_validation_error_required_super_admin(): void
     {
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.help.store')));
-        $response->assertJsonValidationErrors(['category_id','user_id','description_long']);
+        $response->assertJsonValidationErrors(['category_id', 'user_id', 'description_long']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_update_validation_error_required_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -613,9 +615,10 @@ class HelpTest extends TestCase
             'description_long' => fake()->text(),
         ]);
         $response = $this->actingAs($this->superAdmin, 'web')->patchJson(route(config('constants.help.update'), $help->id));
-        $response->assertJsonValidationErrors(['category_id','user_id','priority_id']);
+        $response->assertJsonValidationErrors(['category_id', 'user_id', 'priority_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_accept_validation_error_required_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -630,7 +633,7 @@ class HelpTest extends TestCase
         $this->status = Status::factory()->create([
             'description' => 'Новая',
         ]);
-        $help= Help::factory()->create([
+        $help = Help::factory()->create([
             'category_id' => $category->id,
             'status_id' => 1,
             'user_id' => $this->user->id,
@@ -638,9 +641,10 @@ class HelpTest extends TestCase
             'description_long' => fake()->text(),
         ]);
         $response = $this->actingAs($this->superAdmin, 'web')->patchJson(route(config('constants.help.accept'), $help->id));
-        $response->assertJsonValidationErrors(['executor_id','priority_id']);
+        $response->assertJsonValidationErrors(['executor_id', 'priority_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_execute_validation_error_required_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -667,6 +671,7 @@ class HelpTest extends TestCase
         $response->assertJsonValidationErrors(['info_final']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_redefine_validation_error_required_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -681,7 +686,7 @@ class HelpTest extends TestCase
         $this->status = Status::factory()->create([
             'description' => 'Новая',
         ]);
-        $help= Help::factory()->create([
+        $help = Help::factory()->create([
             'category_id' => $category->id,
             'status_id' => 2,
             'user_id' => $this->user->id,
@@ -693,6 +698,7 @@ class HelpTest extends TestCase
         $response->assertJsonValidationErrors(['executor_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_reject_validation_error_required_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -718,6 +724,7 @@ class HelpTest extends TestCase
         $response->assertJsonValidationErrors(['info_final']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_store_validation_error_exists_super_admin(): void
     {
         Storage::fake('local');
@@ -732,9 +739,10 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['category_id','user_id']);
+        $response->assertJsonValidationErrors(['category_id', 'user_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_update_validation_error_exists_super_admin(): void
     {
         $oldCategory = Category::factory()->create([
@@ -765,9 +773,10 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['category_id','user_id','priority_id']);
+        $response->assertJsonValidationErrors(['category_id', 'user_id', 'priority_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_accept_validation_error_exists_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -798,9 +807,10 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['executor_id','priority_id']);
+        $response->assertJsonValidationErrors(['executor_id', 'priority_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_redefine_validation_error_exists_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -833,6 +843,7 @@ class HelpTest extends TestCase
         $response->assertJsonValidationErrors(['executor_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_store_validation_error_size_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -853,6 +864,7 @@ class HelpTest extends TestCase
         $response->assertJsonValidationErrors(['images.0']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_execute_validation_error_size_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -887,6 +899,7 @@ class HelpTest extends TestCase
         $response->assertJsonValidationErrors(['images_final.0']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_store_validation_error_mime_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -907,6 +920,7 @@ class HelpTest extends TestCase
         $response->assertJsonValidationErrors(['images.0']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_execute_validation_error_mime_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -956,9 +970,10 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-            $response->assertJsonValidationErrors(['category_id', 'user_id']);
-            $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['category_id', 'user_id']);
+        $response->assertStatus(422);
     }
+
     public function test_controller_help_update_validation_error_integer_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -989,9 +1004,10 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['category_id', 'user_id','priority_id']);
+        $response->assertJsonValidationErrors(['category_id', 'user_id', 'priority_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_accept_validation_error_integer_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -1022,9 +1038,10 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['executor_id','priority_id']);
+        $response->assertJsonValidationErrors(['executor_id', 'priority_id']);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_redefine_validation_error_integer_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -1090,6 +1107,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_accept_user_error_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -1122,6 +1140,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_execute_status_error_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -1155,6 +1174,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_redefine_user_error_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -1196,6 +1216,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_redefine_status_error_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -1237,6 +1258,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_reject_status_error_super_admin(): void
     {
         $category = Category::factory()->create([
@@ -1266,6 +1288,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(422);
     }
+
     public function test_controller_help_update_error_user(): void
     {
         $oldCategory = Category::factory()->create([
@@ -1307,6 +1330,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(403);
     }
+
     public function test_controller_help_accept_error_manager(): void
     {
         $category = Category::factory()->create([
@@ -1339,6 +1363,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(403);
     }
+
     public function test_controller_help_accept_error_user(): void
     {
         $category = Category::factory()->create([
@@ -1371,6 +1396,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(403);
     }
+
     public function test_controller_help_reject_error_manager(): void
     {
         $category = Category::factory()->create([
@@ -1400,6 +1426,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(403);
     }
+
     public function test_controller_help_reject_error_user(): void
     {
         $category = Category::factory()->create([
@@ -1429,6 +1456,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(403);
     }
+
     public function test_controller_help_redefine_error_manager(): void
     {
         $category = Category::factory()->create([
@@ -1470,6 +1498,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(403);
     }
+
     public function test_controller_help_redefine_error_user(): void
     {
         $category = Category::factory()->create([
@@ -1511,6 +1540,7 @@ class HelpTest extends TestCase
             ]);
         $response->assertStatus(403);
     }
+
     public function test_controller_help_execute_error_user(): void
     {
         $category = Category::factory()->create([

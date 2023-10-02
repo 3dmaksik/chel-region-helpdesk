@@ -24,6 +24,7 @@
                             accept="image/png, image/jpeg" />
                     </div>
                 </div>
+                <!--
                 <div class="form-group">
                     <div class="form-group">
                         <figure>
@@ -40,6 +41,7 @@
                             accept="audio/ogg" />
                     </div>
                 </div>
+                -->
                 <input class="btn btn-primary" type="submit" value="Отправить" />
         </form>
     </div>

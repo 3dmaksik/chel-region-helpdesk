@@ -24,7 +24,7 @@
             <div class="form-group">
                 <label for="">Наименование</label>
                 <input type="text" name="description" value="" class="form-control" id="description"
-                    aria-describedby="textHelp" placeholder="№ 1" autocomplete="off">
+                    aria-describedby="textHelp" placeholder="№ 1" autocomplete="off" required>
                 <small id="textHelp" class="form-text text-muted">Введите номер кабинета</small>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />

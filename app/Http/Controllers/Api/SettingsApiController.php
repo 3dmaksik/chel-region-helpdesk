@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\SettingsAction;
-use App\Requests\Settings\UpdateSettingsRequest;
 use App\Requests\Settings\UpdatePasswordRequest;
+use App\Requests\Settings\UpdateSettingsRequest;
 use Illuminate\Http\JsonResponse;
 
 final class SettingsApiController extends Controller

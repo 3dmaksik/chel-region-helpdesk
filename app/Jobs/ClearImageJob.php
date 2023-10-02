@@ -19,27 +19,6 @@ class ClearImageJob extends Job implements ShouldQueue
     private ?Collection $items = null;
 
     /**
-     * [images in items]
-     *
-     * @var images
-     */
-    private array $images;
-
-    /**
-     * [images in items]
-     *
-     * @var images_final
-     */
-    private array $images_final;
-
-    /**
-     * [date for remove images]
-     *
-     * @var future
-     */
-    private Carbon $future;
-
-    /**
      * [tries for job]
      *
      * @var tries
@@ -74,26 +53,22 @@ class ClearImageJob extends Job implements ShouldQueue
     public function handle(): void
     {
         if (config('settings.clearImage') > 0) {
-            $this->future = Carbon::now()->addMonth();
-            $this->items = Help::where('calendar_final', '>', $this->future)
-                ->whereNotNull('images')
+            $this->items = Help::whereNotNull('images')
                 ->orWhereNotNull('images_final')
                 ->orderBy('id', 'DESC')
                 ->get();
             if ($this->items !== null) {
                 foreach ($this->items as $item) {
-                    if ($item->images !== null) {
-                        $this->images = json_decode((string) $item->images, true, 512, JSON_THROW_ON_ERROR);
-                        foreach ($this->images as $image) {
+                    if ($item->images !== null && strtotime('+1 year', strtotime($item->calendar_final)) < strtotime(Carbon::now())) {
+                        foreach ($item->images as $image) {
                             Storage::disk('images')->delete($image['url']);
                         }
                         $item->forceFill([
                             'images' => null,
                         ])->save();
                     }
-                    if ($item->images_final !== null) {
-                        $this->images_final = json_decode((string) $item->images_final, true, 512, JSON_THROW_ON_ERROR);
-                        foreach ($this->images_final as $image) {
+                    if ($item->images_final !== null && strtotime('+1 year', strtotime($item->calendar_final)) < strtotime(Carbon::now())) {
+                        foreach ($item->images_final as $image) {
                             Storage::disk('images')->delete($image['url']);
                         }
                         $item->forceFill([
