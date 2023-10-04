@@ -34,7 +34,7 @@
                         @if(strtotime($now)> strtotime($item->calendar_execution) && $item->calendar_execution!=null &&
                         $item->calendar_final==null && request()->segment(1) != 'user') class="badge-{{config("color.4.slug") }}"@endif>
                         <td>@if($item->check_write > 0)<div class="block" style="padding-right: 0.2rem"><i class="fa-solid fa-circle-check hover"></i><span class="hidden"> Просмотрено</span> <!-- скрытый элемент --> </div>@endif{{ $item->app_number }}</td>
-                        <td class="badge-table"><div class="block" style="padding-right: 0.2rem"><a class="hover" @can('prefix search') href="{{ route(config('constants.search.cabinet'),$item->category_id) }}"@endcan>
+                        <td class="badge-table"><div class="block" style="padding-right: 0.2rem"><a class="hover" @can('prefix search') href="{{ route(config('constants.search.category'),$item->category_id) }}"@endcan>
                         {{$item->category->description }}</a><span class="hidden">Открыть категорию</span> <!-- скрытый элемент --> </div></td>
                         <td class="badge-table"><div class="block" style="padding-right: 0.2rem"><a class="hover" @can('prefix search') href="{{ route(config('constants.search.cabinet'),$item->user->cabinet->id) }}"@endcan>
                         {{ $item->user->cabinet->description }}</a><span class="hidden">Открыть кабинет</span> <!-- скрытый элемент --> </div></td>
