@@ -27,7 +27,9 @@ class HomeAction extends Action implements IHome
             ->where('user_id', auth()->user()->id)
             ->orderBy('status_id', 'ASC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_execution', 'ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_warning', 'ASC')
             ->orderBy('calendar_accept', 'ASC')
             ->paginate($this->page);
         $this->helps =

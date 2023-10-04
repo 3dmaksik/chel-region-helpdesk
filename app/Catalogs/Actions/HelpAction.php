@@ -154,7 +154,9 @@ final class HelpAction extends Action implements IHelp
     {
         $this->items = Model::query()->orderBy('status_id', 'ASC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_execution', 'ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_warning', 'ASC')
             ->orderBy('calendar_final', 'DESC')
             ->paginate($this->page);
         $this->helps =
@@ -195,7 +197,9 @@ final class HelpAction extends Action implements IHelp
         $this->items = Model::query()->where('status_id', Status::Work)
             ->RoleHelp()
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_execution', 'ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
+            ->orderBy('calendar_warning', 'ASC')
             ->paginate($this->page);
         $this->helps =
         [
