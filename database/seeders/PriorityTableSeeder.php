@@ -17,8 +17,8 @@ class PriorityTableSeeder extends Seeder
         DB::table('priority')->insert([
             'description' => 'Средний',
             'rang' => 3,
-            'warning_timer' => 2,
-            'danger_timer' => 4,
+            'warning_timer' => 4,
+            'danger_timer' => 8,
         ]);
     }
 }

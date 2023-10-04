@@ -2,14 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Base\Helpers\GeneratorAppNumberHelper;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Cabinet;
 use App\Models\Category;
-use App\Models\Help;
-use App\Models\Priority;
 use App\Models\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
+use App\Models\Help;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use App\Base\Helpers\GeneratorAppNumberHelper;
+use Carbon\Carbon;
 
 class TestTableSeeder extends Seeder
 {
@@ -20,49 +22,86 @@ class TestTableSeeder extends Seeder
      */
     public function run()
     {
-        Category::factory()->count(100)->create();
-        Priority::factory()->count(5)->create();
-        for ($i = 1; $i <= 65000; $i++) {
-            Cabinet::create([
-                'description' => $i,
-            ]);
+        $cabinetFile = Storage::disk('public')->get('cabinet.json');
+        $categoryFile = Storage::disk('public')->get('category.json');
+        $workFile = Storage::disk('public')->get('work.json');
+        $cabinets = json_decode((string) $cabinetFile, true, JSON_THROW_ON_ERROR);
+        $categories = json_decode((string) $categoryFile, true, JSON_THROW_ON_ERROR);
+        $works = json_decode((string) $workFile, true, JSON_THROW_ON_ERROR);
+        $helpFile = Storage::disk('public')->get('help.json');
+        $helps = json_decode((string) $helpFile, true, JSON_THROW_ON_ERROR);
+        foreach ($cabinets as $cabinet) {
+            $database = new Cabinet();
+            $database->id = $cabinet['id'];
+            $database->description = $cabinet['description'];
+            $database->created_at = $cabinet['created_at'];
+            $database->updated_at = $cabinet['updated_at'];
+            DB::transaction(
+                fn () => $database->save()
+            );
+
         }
-        for ($i = 1; $i <= 64000; $i++) {
-            User::factory()->create([
-                'name' => mt_rand().Str::random(100).$i,
-                'email' => mt_rand().Str::random(100).$i.'@.ru',
-                'email_verified_at' => now(),
-                'firstname' => fake()->firstName(),
-                'lastname' => fake()->lastName(),
-                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-                'remember_token' => Str::random(10),
-                'cabinet_id' => fake()->numberBetween(1, 64500),
-            ]);
+        foreach ($categories as $category) {
+            $database = new Category();
+            $database->id = $category['id'];
+            $database->description = $category['description'];
+            $database->created_at = $category['created_at'];
+            $database->updated_at = $category['updated_at'];
+            DB::transaction(
+                fn () => $database->save()
+            );
+
         }
-        for ($i = 1; $i <= 500000; $i++) {
-            $last = Help::select('app_number')->orderBy('id', 'desc')->first();
-            if ($last == null) {
-                $app_number = GeneratorAppNumberHelper::generate();
-            } else {
-                $app_number = GeneratorAppNumberHelper::generate($last->app_number);
+        foreach ($works as $work) {
+            $database = new User();
+            $database->id = $work['id'];
+            $flp = explode(" ", $work['description']);
+            $database->cabinet_id = 1;
+            $database->name = $work['id'];
+            $database->email = mt_rand().time().'@1.ru';
+            $database->email_verified_at = now();
+            $database->password = Hash::make('password');
+            if ($work['id'] ==4)
+            {
+                $database->name = 'nataly';
             }
-            Help::factory()->create([
-                'app_number' => $app_number,
-                'category_id' => fake()->numberBetween(1, 99),
-                'status_id' => fake()->numberBetween(1, 4),
-                'priority_id' => fake()->numberBetween(1, 6),
-                'user_id' => fake()->numberBetween(1, 63500),
-                'executor_id' => fake()->numberBetween(1, 63500),
-                'info' => fake()->text(),
-                'info_final' => fake()->text(),
-                'calendar_request' => fake()->date(),
-                'calendar_accept' => fake()->date(),
-                'calendar_warning' => fake()->date(),
-                'calendar_execution' => fake()->date(),
-                'calendar_final' => fake()->date(),
-                'description_long' => fake()->text(),
-                'lead_at' => fake()->numberBetween(1, 999),
-            ]);
+            $database->firstname = $flp[1];
+            $database->lastname = $flp[0];
+            $database->patronymic = $flp[2];
+            $database->created_at = $work['created_at'];
+            $database->updated_at = $work['updated_at'];
+            DB::transaction(
+                fn () => $database->save()
+            );
+            $database->assignRole('user');
+        }
+        $user = User::where('name','nataly')->first();
+        $user->syncRoles('superAdmin');
+        foreach ($helps as $help) {
+            $database = new Help();
+            $database->id = $help['id'];
+            $last= Help::select('app_number')->orderBy('id', 'desc')->first();
+            $last ? $app_number = GeneratorAppNumberHelper::generate($last->app_number) : $app_number = GeneratorAppNumberHelper::generate();
+            $database->app_number = $app_number;
+            $database->category_id = $help['category_id'];
+            $database->status_id = $help['status_id'];
+            $database->priority_id = 1;
+            $database->user_id = $help['work_id'];
+            $database->executor_id = 4;
+            $database->description_long = $help['description_long'];
+            $database->info_final = $help['info'];
+            $database->calendar_request	= $help['calendar_request'];
+            $database->calendar_accept = $help['calendar_request'];
+            $database->calendar_warning = Carbon::parse($help['calendar_request'])->addHours(4);
+            $database->calendar_execution = Carbon::parse($help['calendar_request'])->addHours(8);
+            $database->calendar_final = $help['calendar_final'];
+            $database->check_write = true;
+            $database->lead_at = Carbon::parse($help['calendar_final'])->diffInSeconds(Carbon::parse($help['calendar_request']));
+            $database->created_at = $help['created_at'];
+            $database->updated_at = $help['updated_at'];
+            DB::transaction(
+                fn () => $database->save()
+            );
         }
     }
 }

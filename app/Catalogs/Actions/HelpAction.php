@@ -77,7 +77,6 @@ final class HelpAction extends Action implements IHelp
      * @var calendar_request
      */
     private Carbon $calendar_request;
-
     /**
      * [images help request]
      *
@@ -444,8 +443,8 @@ final class HelpAction extends Action implements IHelp
             info : (string) $request['info'] ?? null,
             status : Status::Work,
             accept: Carbon::now(),
-            warning : Carbon::now()->addHour($model->priority->warning_timer),
-            execution : Carbon::now()->addHour($model->priority->danger_timer),
+            warning : $this->checkDate(Carbon::now()->addHours($model->priority->warning_timer)),
+            execution : $this->checkDate(Carbon::now()->addHours($model->priority->danger_timer)),
             checkWrite : true,
         );
         $this->user = User::query()->find($this->dataObject->executor);
@@ -789,7 +788,29 @@ final class HelpAction extends Action implements IHelp
 
         return response()->json($this->count);
     }
+    protected function checkDate(Carbon $date): Carbon
+    {
+        $hour = Carbon::parse($date)->format('H');
+        $time = 16;
+        $timeFry = 15;
+        if (Carbon::parse($date)->format('D') === "Fry" && $hour > $timeFry)
+        {
+            $hour-=$timeFry;
+            return Carbon::parse($date)->addDays(3)->subHours($hour);
+        }
 
+        if ($hour > $time)
+        {
+            $hour-=$time;
+            return Carbon::parse($date)->addDay()->subHours($hour);
+        }
+        if ($hour < 9)
+        {
+            return Carbon::parse($date)->addDay()->hours(9);
+        }
+        return $date;
+
+    }
     protected function getAllCategoryCollection(): Collection
     {
         $rows = collect();

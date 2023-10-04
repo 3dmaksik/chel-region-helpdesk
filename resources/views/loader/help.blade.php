@@ -16,14 +16,14 @@
         <table class="table align-items-center table-flush">
             <thead class="thead-light">
                 <tr>
-                    <th style="max-width:15%">Номер</th>
-                    <th style="max-width:10%">Категория</th>
-                    <th style="max-width:1%;">Кабинет</th>
-                    <th style="max-width:15%">Сотрудник</th>
-                    <th style="max-width:12%">Дата подачи</th>
-                    <th style="max-width:12%">Дата выполнения</th>
-                    <th style="max-width:12%">Контрольная дата</th>
-                    <th style="max-width:10%">Статус</th>
+                    <th style="width:15%">Номер заявки</th>
+                    <th style="width:20%">Категория</th>
+                    <th style="width:1%;">Кабинет</th>
+                    <th style="width:12%">Сотрудник</th>
+                    <th style="width:15%">Дата подачи</th>
+                    <th style="width:15%">Дата выполнения</th>
+                    <th style="width:15%">Контрольная дата</th>
+                    <th style="width:1%">Статус</th>
                     <th class="d-print-none"></th>
                 </tr>
             </thead>
