@@ -1,6 +1,6 @@
 # Chel-region-helpdesk
 
-![](https://img.shields.io/github/v/release/3dmaksik/chel-region-helpdesk?display_name=release&include_prereleases&sort=date) ![](https://img.shields.io/packagist/dependency-v/laravel/laravel/php) ![](https://img.shields.io/github/issues/3dmaksik/chel-region-helpdesk)
+![](https://img.shields.io/github/v/release/3dmaksik/chel-region-helpdesk?display_name=release&include_prereleases&sort=date) ![](https://img.shields.io/packagist/dependency-v/3dmaksik/chel-region-helpdesk/php) ![](https://img.shields.io/github/issues/3dmaksik/chel-region-helpdesk)
 ### О проекте
 
 Система является простым хелпдеском для органов местного самоуправления. 

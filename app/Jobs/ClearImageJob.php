@@ -59,7 +59,7 @@ class ClearImageJob extends Job implements ShouldQueue
                 ->get();
             if ($this->items !== null) {
                 foreach ($this->items as $item) {
-                    if ($item->images !== null && strtotime('+1 year', strtotime($item->calendar_final)) < strtotime(Carbon::now())) {
+                    if ($item->images !== null && strtotime('+'.config('settings.clearImage').' month', strtotime($item->calendar_final)) < strtotime(Carbon::now())) {
                         foreach ($item->images as $image) {
                             Storage::disk('images')->delete($image['url']);
                         }
@@ -67,7 +67,7 @@ class ClearImageJob extends Job implements ShouldQueue
                             'images' => null,
                         ])->save();
                     }
-                    if ($item->images_final !== null && strtotime('+1 year', strtotime($item->calendar_final)) < strtotime(Carbon::now())) {
+                    if ($item->images_final !== null && strtotime('+'.config('settings.clearImage').' month', strtotime($item->calendar_final)) < strtotime(Carbon::now())) {
                         foreach ($item->images_final as $image) {
                             Storage::disk('images')->delete($image['url']);
                         }

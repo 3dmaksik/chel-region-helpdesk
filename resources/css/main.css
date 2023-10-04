@@ -72,6 +72,10 @@
 .badge-table a:hover {
     color: #757575;
 }
+.badge-warning
+{
+    color:#fff;
+}
 .badge-warning a,
 .badge-warning a:hover,
 .badge-danger a,
