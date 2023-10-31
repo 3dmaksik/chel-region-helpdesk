@@ -2,13 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Base\Enums\Status;
 use App\Base\Jobs\Job;
 use App\Models\Help;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use App\Base\Enums\Status;
 
 class StatsErrorWorkJob extends Job implements ShouldQueue
 {

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Base\Controllers\Controller;
 use App\Catalogs\Actions\HelpAction;
-
 use Illuminate\View\View;
 
 class IndexController extends Controller

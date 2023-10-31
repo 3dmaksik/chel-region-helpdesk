@@ -77,6 +77,7 @@ final class HelpAction extends Action implements IHelp
      * @var calendar_request
      */
     private Carbon $calendar_request;
+
     /**
      * [images help request]
      *
@@ -152,7 +153,8 @@ final class HelpAction extends Action implements IHelp
      */
     public function getAllPagesPaginate(): array
     {
-        $this->items = Model::query()->orderBy('status_id', 'ASC')
+        $this->items = Model::query()->orderBy('calendar_accept', 'DESC')
+            ->orderBy('status_id', 'ASC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderBy('calendar_execution', 'ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
@@ -792,29 +794,31 @@ final class HelpAction extends Action implements IHelp
 
         return response()->json($this->count);
     }
+
     protected function checkDate(Carbon $date): Carbon
     {
         $hour = Carbon::parse($date)->format('H');
         $time = 16;
         $timeFry = 15;
-        if (Carbon::parse($date)->format('D') === "Fry" && $hour > $timeFry)
-        {
-            $hour-=$timeFry;
+        if (Carbon::parse($date)->format('D') === 'Fry' && $hour > $timeFry) {
+            $hour -= $timeFry;
+
             return Carbon::parse($date)->addDays(3)->subHours($hour);
         }
 
-        if ($hour > $time)
-        {
-            $hour-=$time;
+        if ($hour > $time) {
+            $hour -= $time;
+
             return Carbon::parse($date)->addDay()->subHours($hour);
         }
-        if ($hour < 9)
-        {
+        if ($hour < 9) {
             return Carbon::parse($date)->addDay()->hours(9);
         }
+
         return $date;
 
     }
+
     protected function getAllCategoryCollection(): Collection
     {
         $rows = collect();
