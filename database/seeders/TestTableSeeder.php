@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
+use App\Base\Helpers\GeneratorAppNumberHelper;
 use App\Models\Cabinet;
 use App\Models\Category;
-use App\Models\User;
 use App\Models\Help;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Base\Helpers\GeneratorAppNumberHelper;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class TestTableSeeder extends Seeder
 {
@@ -55,14 +55,13 @@ class TestTableSeeder extends Seeder
         foreach ($works as $work) {
             $database = new User();
             $database->id = $work['id'];
-            $flp = explode(" ", $work['description']);
+            $flp = explode(' ', $work['description']);
             $database->cabinet_id = 1;
             $database->name = $work['id'];
             $database->email = mt_rand().time().'@1.ru';
             $database->email_verified_at = now();
             $database->password = Hash::make('password');
-            if ($work['id'] ==4)
-            {
+            if ($work['id'] == 4) {
                 $database->name = 'nataly';
             }
             $database->firstname = $flp[1];
@@ -75,12 +74,12 @@ class TestTableSeeder extends Seeder
             );
             $database->assignRole('user');
         }
-        $user = User::where('name','nataly')->first();
+        $user = User::where('name', 'nataly')->first();
         $user->syncRoles('superAdmin');
         foreach ($helps as $help) {
             $database = new Help();
             $database->id = $help['id'];
-            $last= Help::select('app_number')->orderBy('id', 'desc')->first();
+            $last = Help::select('app_number')->orderBy('id', 'desc')->first();
             $last ? $app_number = GeneratorAppNumberHelper::generate($last->app_number) : $app_number = GeneratorAppNumberHelper::generate();
             $database->app_number = $app_number;
             $database->category_id = $help['category_id'];
@@ -90,7 +89,7 @@ class TestTableSeeder extends Seeder
             $database->executor_id = 4;
             $database->description_long = $help['description_long'];
             $database->info_final = $help['info'];
-            $database->calendar_request	= $help['calendar_request'];
+            $database->calendar_request = $help['calendar_request'];
             $database->calendar_accept = $help['calendar_request'];
             $database->calendar_warning = Carbon::parse($help['calendar_request'])->addHours(4);
             $database->calendar_execution = Carbon::parse($help['calendar_request'])->addHours(8);

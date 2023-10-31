@@ -104,7 +104,7 @@ RewriteRule ^ index.php [L]
 
 `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
 
-2. Установить проект и библиотеки `$ composer install --no-dev && npm run prod`  
+2. Установить проект и библиотеки `$ composer install --no-dev && npm install && npm run prod`  
 
 3. Установить права доступа на папки с тем же пользователем, что и у сервера:  
 
@@ -114,7 +114,7 @@ RewriteRule ^ index.php [L]
 
 4. Создать папки и символьные ссылки для загрузки файлов:  
 
-`$ sudo mkdir /storage/images && sudo mkdir /storage/avatar && sudo mkdir /storage/sound`  
+`$ mkdir storage/images && mkdir storage/avatar && mkdir storage/sound`  
 `$ sudo php artisan storage:link`  
 
 5. Скопировать файлы настроек 

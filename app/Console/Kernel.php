@@ -30,6 +30,9 @@ class Kernel extends ConsoleKernel
         $schedule->job(new StatsActiveCategoryJob)->hourly();
         $schedule->job(new StatsActiveWorkJob)->hourly();
         $schedule->job(new StatsErrorWorkJob)->hourly();
+        if ($this->app->environment('local')) {
+            $schedule->command('telescope:prune')->hourly();
+        }
     }
 
     /**

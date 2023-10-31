@@ -27,7 +27,7 @@ class Action extends CoreAction
     /**
      * [base model or null]
      */
-    public ?Model $item = null;
+    public ?Model $item;
 
     /**
      * [data for database or result data]
