@@ -26,11 +26,11 @@ class HomeAction extends Action implements IHome
         $this->items = Model::where('status_id', '<', Status::Success)
             ->where('user_id', auth()->user()->id)
             ->orderBy('status_id', 'ASC')
+            ->orderBy('calendar_execution', 'DESC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
-            ->orderBy('calendar_execution', 'ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
-            ->orderBy('calendar_warning', 'ASC')
-            ->orderBy('calendar_accept', 'ASC')
+            ->orderBy('calendar_warning', 'DESC')
+            ->orderBy('calendar_accept', 'DESC')
             ->paginate($this->page);
         $this->helps =
         [
