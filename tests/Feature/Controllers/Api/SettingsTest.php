@@ -15,8 +15,8 @@ use Tests\TestCase;
 
 class SettingsTest extends TestCase
 {
-    use DatabaseTransactions;
-    //use RefreshDatabase;
+    //use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function setUp(): void
     {
