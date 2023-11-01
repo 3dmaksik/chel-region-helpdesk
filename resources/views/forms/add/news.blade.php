@@ -38,7 +38,9 @@
                 <textarea class="wysiwyg form-control" id="news-text" rows="9" name="news_text"></textarea>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
+            @if (url()->previous()!==url()->current())
             <a class="btn btn-secondary" href="{{ route(config('constants.news.index')) }}">Отменить</a>
+            @endif
         </form>
     </div>
 </div>

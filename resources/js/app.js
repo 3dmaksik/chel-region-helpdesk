@@ -15,9 +15,11 @@ $(function () {
             loadNew(notification.method, notification.route);
             if (notification.method === "newadm") {
                 newCount();
+                nowCount();
                 //sound.play();
             }
-            if (notification.method === "workeradm") {
+            if (notification.method === "workeradm" || notification.method === "completedadm" ) {
+                newCount();
                 nowCount();
             }
             if (notification.method === "expire") {
@@ -225,7 +227,7 @@ $(function () {
                         $(".base-alert-danger").fadeIn(2000);
                         setTimeout(function(){
                           $(".base-alert-danger").fadeOut(2000);
-                        }, 4500);
+                        }, 5500);
 
                     $(form)
                         .find("input, textarea, select, button[type=submit]")
@@ -246,12 +248,12 @@ $(function () {
                         $(".base-alert-success").fadeIn(2000);
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
-                        }, 5500);
+                        }, 4000);
                     if (data.reload === true)
                     {
                         setTimeout(function(){
                             location.reload();
-                          }, 6000);
+                          }, 4000);
                     }
                     $(form)
                         .find("input, textarea, select, button[type=submit]")

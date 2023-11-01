@@ -2,3 +2,4 @@
 /js*
 /fonts*
 /vendor*
+*.json
