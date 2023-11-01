@@ -52,7 +52,9 @@
                 @enderror
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
+            @if (url()->previous()!==url()->current())
             <a class="btn btn-secondary" href="{{ route(config('constants.help.index')) }}">Отменить</a>
+            @endif
         </form>
     </div>
 </div>

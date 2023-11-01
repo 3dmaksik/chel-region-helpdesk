@@ -67,7 +67,9 @@
                 <small id="textRole" class="form-text text-muted">Выберите роль пользователя</small>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
+            @if (url()->previous()!==url()->current())
             <a class="btn btn-secondary" href="{{ route(config('constants.users.index')) }}">Отменить</a>
+            @endif
         </form>
     </div>
 </div>

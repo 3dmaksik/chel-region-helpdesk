@@ -6,10 +6,12 @@
         <h6 class="m-0 font-weight-bold text-primary">Добавить новую заявку</h6>
         <div class="card-title">
             <div class="block">
+                @if (url()->previous()!==url()->current())
                 <a style="color: #757575;" class="hover" href="{{ url()->previous() }}">
                     <i class="fas fa-arrow-left fa-lg"></i>
                 </a> <span class="hidden">Назад</span>
                 <!-- скрытый элемент -->
+                @endif
             </div>
             <div class="block d-print-none">
                 <a style="color: #757575;" class="hover" href="javascript:(print());">
@@ -49,7 +51,9 @@
                 </div>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
+            @if (url()->previous()!==url()->current())
             <a class="btn btn-secondary" href="{{ url()->previous() }}">Отменить</a>
+            @endif
         </form>
     </div>
 </div>

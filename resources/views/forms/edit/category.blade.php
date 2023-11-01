@@ -29,7 +29,9 @@
                 <small id="textHelp" class="form-text text-muted">Введите категорию</small>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
+            @if (url()->previous()!==url()->current())
             <a class="btn btn-secondary" href="{{ url()->previous() }}">Отменить</a>
+            @endif
         </form>
     </div>
 </div>

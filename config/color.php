@@ -7,7 +7,7 @@ return
         'slug' => 'light',
     ],
     [
-        'name' => 'Фиолетовый',
+        'name' => 'Синий',
         'slug' => 'primary',
     ],
     [
@@ -27,7 +27,11 @@ return
         'slug' => 'warning',
     ],
     [
-        'name' => 'Синий',
+        'name' => 'Бирюзовый',
         'slug' => 'info',
+    ],
+    [
+        'name' => 'Чёрный',
+        'slug' => 'dark',
     ],
 ];

@@ -28,7 +28,9 @@
                 <small id="textHelp" class="form-text text-muted">Введите номер кабинета</small>
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />
+            @if (url()->previous()!==url()->current())
             <a class="btn btn-secondary" href="{{ route(config('constants.cabinet.index')) }}">Отменить</a>
+            @endif
         </form>
     </div>
 </div>
