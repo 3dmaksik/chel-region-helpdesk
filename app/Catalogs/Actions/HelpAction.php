@@ -154,12 +154,13 @@ final class HelpAction extends Action implements IHelp
     public function getAllPagesPaginate(): array
     {
         $this->items = Model::query()
-            ->orderBy('status_id', 'ASC')
+            ->orderBy('calendar_execution', 'DESC')
+            ->orderBy('calendar_warning', 'DESC')
+            ->orderBy('calendar_request', 'DESC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
-            ->orderBy('calendar_execution', 'ASC')
-            ->orderBy('calendar_warning', 'ASC')
             ->orderBy('calendar_final', 'DESC')
+            ->orderBy('status_id', 'ASC')
             ->paginate($this->page);
         $this->helps =
         [
