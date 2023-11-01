@@ -12,8 +12,8 @@ use Tests\TestCase;
 
 class SearchTest extends TestCase
 {
-    use DatabaseTransactions;
-    //use RefreshDatabase;
+    //use DatabaseTransactions;
+    use RefreshDatabase;
 
     private User $superAdmin;
 
