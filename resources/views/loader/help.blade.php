@@ -62,10 +62,10 @@
                         <td class="d-print-none">
                             <div class="block">
                                 @if(auth()->user()->can('create help') && auth()->user()->can('create home help'))
-                                <a href="{{ route(config('constants.help.show'),$item->id) }}" target="_blank"> <button type="button"
+                                <a href="{{ route(config('constants.help.show'),$item->id) }}"> <button type="button"
                                         class="btn btn-info mb-1">Открыть</button></a>
                                 @else
-                                <a href="{{ route(config('constants.home.show'),$item->id) }}" target="_blank"> <button type="button"
+                                <a href="{{ route(config('constants.home.show'),$item->id) }}"> <button type="button"
                                         class="btn btn-info mb-1">Открыть</button></a>
                                 @endif
                             </div>

@@ -18,3 +18,5 @@ yarn-error.log
 .phpunit.cache
 /.phpunit.cache
 /config/settings.php
+_ide_helper.php
+.phpstorm.meta.php

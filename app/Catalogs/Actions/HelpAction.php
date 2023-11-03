@@ -147,6 +147,13 @@ final class HelpAction extends Action implements IHelp
     private int $userId;
 
     /**
+     * [route for redirect]
+     *
+     * @var userId
+     */
+    private string $route;
+
+    /**
      * [all helps with count items on page]
      *
      * @return array{method: string, data: Illuminate\Pagination\LengthAwarePaginator}
@@ -355,11 +362,18 @@ final class HelpAction extends Action implements IHelp
         DB::transaction(
             fn () => $this->item->save()
         );
-
+        if (auth()->user()->can('create help') && auth()->user()->can('create home help'))
+        {
+            $this->route = route(config('constants.help.show'),$this->item->id);
+        }
+        else
+        {
+            $this->route = route(config('constants.home.show'),$this->item->id);
+        }
         $this->response = [
             'message' => 'Заявка успешно добавлена!',
+            'route' => $this->route,
         ];
-
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
         Notification::send($superAdmin, new HelpNotification('newadm', route('help.new')));
@@ -400,7 +414,7 @@ final class HelpAction extends Action implements IHelp
 
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
-            'reload' => true,
+            'loading' => true,
         ];
 
         $superAdmin = User::role(['superAdmin'])->get();
@@ -513,7 +527,7 @@ final class HelpAction extends Action implements IHelp
 
         $this->response = [
             'message' => 'Заявка успешно принята!',
-            'reload' => true,
+            'loading' => true,
         ];
 
         return response()->success($this->response);
@@ -581,7 +595,7 @@ final class HelpAction extends Action implements IHelp
 
         $this->response = [
             'message' => 'Заявка успешно выполнена!',
-            'reload' => true,
+            'loading' => true,
         ];
 
         return response()->success($this->response);
@@ -631,7 +645,7 @@ final class HelpAction extends Action implements IHelp
 
         $this->response = [
             'message' => 'Заявка успешно перенаправлена!',
-            'reload' => true,
+            'loading' => true,
         ];
 
         $superAdmin = User::role(['superAdmin'])->get();
@@ -713,7 +727,7 @@ final class HelpAction extends Action implements IHelp
         }
         $this->response = [
             'message' => 'Заявка успешно отклонена!',
-            'reload' => true,
+            'loading' => true,
         ];
 
         return response()->success($this->response);

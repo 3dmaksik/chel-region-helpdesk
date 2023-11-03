@@ -40,5 +40,11 @@ window.Echo = new Echo({
     forceTLS: false,
     encrypted: true,
     disableStats: true,
-    enabledTransports: ['ws'],
+    enabledTransports: ['ws', 'wss'],
 });
+
+window.Echo.connector.pusher.connection.bind('state_change', function(states) {
+    if(states.current === 'disconnected') {
+        window.Echo.connector.pusher.connect();
+    }
+  });

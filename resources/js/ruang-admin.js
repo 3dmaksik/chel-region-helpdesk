@@ -90,4 +90,4 @@ $(".popover-dismiss").popover({
 
 var version = document.getElementById("version-ruangadmin");
 
-version.innerHTML = "Версия 1.2.3";
+version.innerHTML = "Версия 1.2.4";
