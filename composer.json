@@ -19,6 +19,7 @@
         "spatie/laravel-permission": "^5"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.13",
         "brianium/paratest": "^7",
         "fakerphp/faker": "^1",
         "laravel-lang/common": "^3",
@@ -60,7 +61,8 @@
     "extra": {
         "laravel": {
             "dont-discover": [
-                "laravel/telescope"
+                "laravel/telescope",
+                "barryvdh/laravel-ide-helper"
             ]
         }
     },

@@ -23,28 +23,28 @@
             <span>Рабочие заявки</span>
         </a>
         <div id="WorkForm"
-            class="collapse {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' ? 'show':'' }}"
+            class="collapse {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' || request()->segment(3) =='show' && request()->segment(1) == 'admin' ? 'show':'' }}"
             aria-labelledby="headingForm" data-parent="#workSidebar" style="">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Рабочие заявки</h6>
                 @can('all help')
-                <a class="collapse-item  {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'all' ? 'active':'' }}"
+                <a class="collapse-item  {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'all' ||  url()->previous() == route(config('constants.help.index')) && request()->segment(3) =='show' && request()->segment(1) == 'admin' ? 'active':'' }}"
                     href="{{ route(config('constants.help.index')) }}">Все</a>
                 @endcan
                 @can('new help')
-                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'new' ? 'active':'' }}"
+                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'new' ||  url()->previous() == route(config('constants.help.new')) && request()->segment(3) =='show' && request()->segment(1) == 'admin' ? 'active':'' }}"
                     href="{{ route(config('constants.help.new')) }}">Новые</a>
                 @endcan
                 @can('worker help')
-                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'worker' ? 'active':'' }}"
+                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'worker' ||  url()->previous() == route(config('constants.home.worker')) || url()->previous() == route(config('constants.help.worker')) && request()->segment(3) =='show' && request()->segment(1) == 'admin' ? 'active':'' }}"
                     href="{{ route(config('constants.help.worker')) }}">В работе</a>
                 @endcan
                 @can('completed help')
-                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'completed' ? 'active':'' }}"
+                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'completed' ||  url()->previous() == route(config('constants.home.completed')) ||  url()->previous() == route(config('constants.help.completed')) && request()->segment(3) =='show' && request()->segment(1) == 'admin' ? 'active':'' }}"
                     href="{{ route(config('constants.help.completed')) }}">Выполненные</a>
                 @endcan
                 @can('dismiss help')
-                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'dismiss' ? 'active':'' }}"
+                <a class="collapse-item {{ request()->segment(1) == 'admin' && request()->segment(2) == 'helps' && request()->segment(3) == 'dismiss' ||  url()->previous() == route(config('constants.home.dismiss')) ||  url()->previous() == route(config('constants.help.dismiss')) && request()->segment(3) =='show' && request()->segment(1) == 'admin' ? 'active':'' }}"
                     href="{{ route(config('constants.help.dismiss')) }}">Отклонённые</a>
                 @endcan
             </div>
@@ -59,15 +59,15 @@
             <span>Мои заявки</span>
         </a>
         <div id="UserForm"
-            class="collapse {{ request()->segment(1) == 'home' && request()->segment(2) == 'helps' ? 'show':'' }}"
+            class="collapse {{ request()->segment(1) == 'home' && request()->segment(2) == 'helps' || request()->segment(3) == 'show' && request()->segment(1) == 'home' ? 'show':'' }}"
             aria-labelledby="headingForm" data-parent="#UserSidebar" style="">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Мои заявки</h6>
-                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(2) == 'helps' && request()->segment(3) == 'worker' ? 'active':'' }}"
+                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(2) == 'helps' && request()->segment(3) == 'worker' ||  url()->previous() == route(config('constants.home.worker')) && request()->segment(3) =='show' && request()->segment(1) == 'home' ? 'active':'' }}"
                     href="{{ route(config('constants.home.worker')) }}">В работе</a>
-                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(2) == 'helps' && request()->segment(3) == 'completed' ? 'active':'' }}"
+                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(2) == 'helps' && request()->segment(3) == 'completed' ||  url()->previous() == route(config('constants.home.completed')) && request()->segment(3) =='show' && request()->segment(1) == 'home' ? 'active':'' }}"
                     href="{{ route(config('constants.home.completed')) }}">Выполненные</a>
-                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(2) == 'helps' && request()->segment(3) == 'dismiss' ? 'active':'' }}"
+                <a class="collapse-item {{ request()->segment(1) == 'home' && request()->segment(2) == 'helps' && request()->segment(3) == 'dismiss' ||  url()->previous() == route(config('constants.home.dismiss')) && request()->segment(3) =='show' && request()->segment(1) == 'home' ? 'active':'' }}"
                     href="{{ route(config('constants.home.dismiss')) }}">Отклонённые</a>
             </div>
         </div>

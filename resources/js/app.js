@@ -248,12 +248,24 @@ $(function () {
                         $(".base-alert-success").fadeIn(2000);
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
-                        }, 4000);
+                        }, 3000);
                     if (data.reload === true)
                     {
                         setTimeout(function(){
                             location.reload();
-                          }, 4000);
+                        }, 3000);
+                    }
+                    else
+                    {
+                        setTimeout(function(){
+                            window.location.href = data.route;
+                        }, 3000);
+                    }
+                    if (data.loading === true)
+                    {
+                        $.post(window.location.href, function (data) {
+                            $(".loader-view").html(data);
+                        });
                     }
                     $(form)
                         .find("input, textarea, select, button[type=submit]")
@@ -332,4 +344,8 @@ $(function () {
     $("#preloader").fadeOut("slow", function () {
         $(this).remove();
     });
+    function restart(){
+        location.reload(true);
+    }
+    setInterval(restart,600000);
 });
