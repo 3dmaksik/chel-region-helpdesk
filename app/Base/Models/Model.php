@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Model newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Model newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Model query()
+ *
  * @mixin \Eloquent
  */
 class Model extends CoreModel

@@ -362,17 +362,12 @@ final class HelpAction extends Action implements IHelp
         DB::transaction(
             fn () => $this->item->save()
         );
-        if (auth()->user()->can('create help') && auth()->user()->can('create home help'))
-        {
-            $this->route = route(config('constants.help.show'),$this->item->id);
-        }
-        else
-        {
-            $this->route = route(config('constants.home.show'),$this->item->id);
-        }
+        $this->route = $this->getShowView($this->item->id);
         $this->response = [
             'message' => 'Заявка успешно добавлена!',
             'route' => $this->route,
+            'loading' => true,
+            'reload' => false,
         ];
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
@@ -411,10 +406,11 @@ final class HelpAction extends Action implements IHelp
         DB::transaction(
             fn () => $model->save()
         );
-
+        $this->route = route(config('constants.help.show'), $model->id);
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
-            'loading' => true,
+            'route' => $this->route,
+            'reload' => false,
         ];
 
         $superAdmin = User::role(['superAdmin'])->get();
@@ -454,6 +450,7 @@ final class HelpAction extends Action implements IHelp
         if ($model->status_id !== Status::New->value) {
             $this->response = [
                 'message' => 'Заявка уже принята или отклонена!',
+                'reload' => true,
             ];
 
             return response()->error($this->response);
@@ -525,9 +522,12 @@ final class HelpAction extends Action implements IHelp
             }
         }
 
+        $this->route = route(config('constants.help.show'), $model->id);
         $this->response = [
-            'message' => 'Заявка успешно принята!',
+            'message' => 'Заявка успешно обновлена!',
+            'route' => $this->route,
             'loading' => true,
+            'reload' => false,
         ];
 
         return response()->success($this->response);
@@ -543,6 +543,7 @@ final class HelpAction extends Action implements IHelp
         if ($model->status_id !== Status::Work->value) {
             $this->response = [
                 'message' => 'Заявка уже выполнена или отклонена!',
+                'reload' => true,
             ];
 
             return response()->error($this->response);
@@ -593,9 +594,12 @@ final class HelpAction extends Action implements IHelp
 
         }
 
+        $this->route = route(config('constants.help.show'), $model->id);
         $this->response = [
-            'message' => 'Заявка успешно выполнена!',
+            'message' => 'Заявка успешно обновлена!',
+            'route' => $this->route,
             'loading' => true,
+            'reload' => false,
         ];
 
         return response()->success($this->response);
@@ -611,6 +615,7 @@ final class HelpAction extends Action implements IHelp
         if ($model->status_id !== Status::Work->value) {
             $this->response = [
                 'message' => 'Заявка уже выполнена или отклонена!',
+                'reload' => true,
             ];
 
             return response()->error($this->response);
@@ -643,9 +648,11 @@ final class HelpAction extends Action implements IHelp
             fn () => $model->save()
         );
 
+        $this->route = route(config('constants.help.show'), $model->id);
         $this->response = [
-            'message' => 'Заявка успешно перенаправлена!',
-            'loading' => true,
+            'message' => 'Заявка успешно обновлена!',
+            'route' => $this->route,
+            'reload' => false,
         ];
 
         $superAdmin = User::role(['superAdmin'])->get();
@@ -689,6 +696,7 @@ final class HelpAction extends Action implements IHelp
         if ($model->status_id !== Status::New->value) {
             $this->response = [
                 'message' => 'Заявка не может быть отклонена, так как уже принята в работу!',
+                'reload' => true,
             ];
 
             return response()->error($this->response);
@@ -725,9 +733,12 @@ final class HelpAction extends Action implements IHelp
             Notification::send($userHome, new HelpNotification('workersuser', route('home.worker')));
             Notification::send($userHome, new HelpNotification('dismissuser', route('home.dismiss')));
         }
+        $this->route = route(config('constants.help.show'), $model->id);
         $this->response = [
-            'message' => 'Заявка успешно отклонена!',
+            'message' => 'Заявка успешно обновлена!',
+            'route' => $this->route,
             'loading' => true,
+            'reload' => false,
         ];
 
         return response()->success($this->response);
@@ -744,7 +755,7 @@ final class HelpAction extends Action implements IHelp
         );
 
         $this->response = [
-            'message' => 'Заявка успешно удалена!',
+            'message' => 'Заявка успешно обновлена!',
             'reload' => true,
         ];
 
@@ -890,5 +901,14 @@ final class HelpAction extends Action implements IHelp
     {
         $item->check_write = true;
         $item->save();
+    }
+
+    protected function getShowView(int $id): string
+    {
+        if (auth()->user()?->can('create help') && auth()->user()?->can('create home help')) {
+            return route(config('constants.help.show'), $id);
+        } else {
+            return route(config('constants.home.show'), $id);
+        }
     }
 }
