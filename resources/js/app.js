@@ -255,12 +255,6 @@ $(function () {
                             location.reload();
                         }, 3000);
                     }
-                    else
-                    {
-                        setTimeout(function(){
-                            window.location.href = data.route;
-                        }, 3000);
-                    }
                     if (data.loading === true)
                     {
                         $.post(window.location.href, function (data) {

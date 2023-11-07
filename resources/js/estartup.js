@@ -142,13 +142,13 @@ import "../vendor/select2/dist/js/i18n/ru.js";
                         $(".base-alert-success").fadeIn(2000);
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
-                        }, 4500);
+                        }, 2500);
                     $(this)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
                     setTimeout(function () {
                         location.reload();
-                    }, 5000);
+                    }, 3000);
                 },
             });
         });
