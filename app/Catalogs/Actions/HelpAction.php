@@ -311,11 +311,11 @@ final class HelpAction extends Action implements IHelp
     /**
      * [get api for form help]
      */
-    public function getApiCatalog($full = true): JsonResponse
+    public function getApiCatalog($fullOrExecutor = true): JsonResponse
     {
         $this->collectCategory = $this->getAllCategoryCollection();
         $this->collectPriority = $this->getAllPriorityCollection();
-        $full === true ? $this->collectUser = $this->getAllExecutorCollection() : $this->collectUser = $this->getAllUserCollection();
+        $fullOrExecutor === true ? $this->collectUser = $this->getAllExecutorCollection() : $this->collectUser = $this->getAllUserCollection();
 
         $this->collectData = collect(
             [
@@ -366,8 +366,7 @@ final class HelpAction extends Action implements IHelp
         $this->response = [
             'message' => 'Заявка успешно добавлена!',
             'route' => $this->route,
-            'load' => true,
-            'reload' => false,
+            'getLoad' => true,
         ];
         $superAdmin = User::role(['superAdmin'])->get();
         Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
@@ -410,7 +409,6 @@ final class HelpAction extends Action implements IHelp
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
             'route' => $this->route,
-            'reload' => false,
         ];
 
         $superAdmin = User::role(['superAdmin'])->get();
@@ -526,8 +524,7 @@ final class HelpAction extends Action implements IHelp
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
             'route' => $this->route,
-            'loading' => true,
-            'reload' => false,
+            'postLoad' => true,
         ];
 
         return response()->success($this->response);
@@ -598,8 +595,7 @@ final class HelpAction extends Action implements IHelp
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
             'route' => $this->route,
-            'loading' => true,
-            'reload' => false,
+            'postLoad' => true,
         ];
 
         return response()->success($this->response);
@@ -652,7 +648,6 @@ final class HelpAction extends Action implements IHelp
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
             'route' => $this->route,
-            'reload' => false,
         ];
 
         $superAdmin = User::role(['superAdmin'])->get();
@@ -737,8 +732,7 @@ final class HelpAction extends Action implements IHelp
         $this->response = [
             'message' => 'Заявка успешно обновлена!',
             'route' => $this->route,
-            'loading' => true,
-            'reload' => false,
+            'postLoad' => true,
         ];
 
         return response()->success($this->response);
