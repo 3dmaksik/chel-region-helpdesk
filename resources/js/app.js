@@ -114,17 +114,6 @@ $(function () {
                 for (let i = 0; i < obj.user.length; i++) {
                     let counter = obj.user[i];
                     if (counter.patronymic === null) counter.patronymic = "";
-                    $("#update-select2-user").append(
-                        '<option value="' +
-                            counter.id +
-                            '">' +
-                            counter.lastname +
-                            " " +
-                            counter.firstname +
-                            " " +
-                            counter.patronymic +
-                            "</option>"
-                    );
                     $("#accept-select2-user").append(
                         '<option value="' +
                             counter.id +
@@ -172,6 +161,29 @@ $(function () {
                             counter.id +
                             '">' +
                             counter.description +
+                            "</option>"
+                    );
+                }
+            },
+        });
+        $.ajax({
+            url: "/api/help/all/execution",
+            method: "post",
+            dataType: "json",
+            success: function (data) {
+                const obj = JSON.parse(data);
+                for (let i = 0; i < obj.user.length; i++) {
+                    let counter = obj.user[i];
+                    if (counter.patronymic === null) counter.patronymic = "";
+                    $("#update-select2-user").append(
+                        '<option value="' +
+                            counter.id +
+                            '">' +
+                            counter.lastname +
+                            " " +
+                            counter.firstname +
+                            " " +
+                            counter.patronymic +
                             "</option>"
                     );
                 }
@@ -260,6 +272,12 @@ $(function () {
                         $.post(window.location.href, function (data) {
                             $(".loader-view").html(data);
                         });
+                    }
+                    if (data.load === true)
+                    {
+                        setTimeout(function(){
+                            window.location.href = data.route;
+                          }, 2000);
                     }
                     $(form)
                         .find("input, textarea, select, button[type=submit]")

@@ -1,6 +1,6 @@
 <div id="modal-forms">
 <!-- Окно редактирования-->
-<div class="modal fade" id="editHelp" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="editHelp" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -22,7 +22,7 @@
                     </div>
                     <div class="form-group">
                         <label for="select2-user">Изменить сотрудника</label>
-                        <select class="select2-single select2-user form-control" name="user_id" id="update-select2-user">
+                        <select class="select2-user select2-single form-control" name="user_id" id="update-select2-user">
                         </select>
                     </div>
                     <div class="form-group">
@@ -40,7 +40,7 @@
     </div>
 </div>
 <!-- Окно принятия-->
-<div class="modal fade" id="acceptHelp" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="acceptHelp" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -80,7 +80,7 @@
     </div>
 </div>
 <!-- Окно выполнения-->
-<div class="modal fade" id="executeHelp" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="executeHelp" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -118,7 +118,7 @@
     </div>
 </div>
 <!-- Окно передачи-->
-<div class="modal fade" id="redefineHelp" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="redefineHelp" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -148,7 +148,7 @@
     </div>
 </div>
 <!-- Окно отклонения-->
-<div class="modal fade" id="rejectHelp" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="rejectHelp" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

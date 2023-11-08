@@ -5,15 +5,6 @@ namespace App\Base\Models;
 use App\Core\Models\CoreModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-/**
- * App\Base\Models\Model
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Model newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Model newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Model query()
- *
- * @mixin \Eloquent
- */
 class Model extends CoreModel
 {
     use HasFactory;
