@@ -236,10 +236,7 @@ $(function () {
                             "При отправке возникла ошибка:<br/>" +
                             data.responseJSON.message
                         );
-                        $(".base-alert-danger").fadeIn(2000);
-                        setTimeout(function(){
-                          $(".base-alert-danger").fadeOut(2000);
-                        }, 5500);
+                        $(".base-alert-danger").fadeIn(2500).fadeOut(2500);
 
                     $(form)
                         .find("input, textarea, select, button[type=submit]")
@@ -257,27 +254,26 @@ $(function () {
                         .text(
                             data.message
                         );
-                        $(".base-alert-success").fadeIn(2000);
-                        setTimeout(function(){
-                          $(".base-alert-success").fadeOut(2000);
-                        }, 3000);
+                        $(".base-alert-success").fadeIn(2500).fadeOut(2500);
                     if (data.reload === true)
                     {
                         setTimeout(function(){
                             location.reload();
-                        }, 3000);
+                        }, 5000);
                     }
-                    if (data.loading === true)
+                    if (data.postLoad === true)
                     {
-                        $.post(window.location.href, function (data) {
-                            $(".loader-view").html(data);
-                        });
+                        setTimeout(function(){
+                            $.post(window.location.href, function (data) {
+                                $(".loader-view").hide().html(data).fadeIn(2500);
+                            });
+                          }, 1000);
                     }
-                    if (data.load === true)
+                    if (data.getLoad === true)
                     {
                         setTimeout(function(){
                             window.location.href = data.route;
-                          }, 2000);
+                          }, 3000);
                     }
                     $(form)
                         .find("input, textarea, select, button[type=submit]")
@@ -347,10 +343,7 @@ $(function () {
                text
                 );
         }
-        $(".base-alert-danger").fadeIn(2000);
-            setTimeout(function(){
-            $(".base-alert-danger").fadeOut(2000);
-            }, 6500);
+        $(".base-alert-danger").fadeIn(2500).fadeOut(2500);
     }
 
     $("#preloader").fadeOut("slow", function () {
