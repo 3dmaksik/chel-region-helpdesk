@@ -46,5 +46,7 @@ window.Echo = new Echo({
 window.Echo.connector.pusher.connection.bind('state_change', function(states) {
     if(states.current === 'disconnected') {
         window.Echo.connector.pusher.connect();
+        var now = new Date();
+        console.log('reconnect in ') + now;
     }
   });
