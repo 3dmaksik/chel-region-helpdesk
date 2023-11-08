@@ -15,8 +15,9 @@ class Action extends CoreAction
      *
      * @var response [data => null|Illuminate\Pagination\LengthAwarePaginator,
      *                message => null|string,
-     *                route => null|bool]
-     *                loading => null|bool]
+     *                route => null|bool,
+     *                loading => null|bool,
+     *                load => null|bool,
      *                reload => null|bool]
      */
     public array $response;

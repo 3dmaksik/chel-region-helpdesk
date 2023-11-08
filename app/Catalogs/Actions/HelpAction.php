@@ -311,11 +311,11 @@ final class HelpAction extends Action implements IHelp
     /**
      * [get api for form help]
      */
-    public function getApiCatalog(): JsonResponse
+    public function getApiCatalog($full = true): JsonResponse
     {
         $this->collectCategory = $this->getAllCategoryCollection();
         $this->collectPriority = $this->getAllPriorityCollection();
-        $this->collectUser = $this->getAllExecutorCollection();
+        $full === true ? $this->collectUser = $this->getAllExecutorCollection() : $this->collectUser = $this->getAllUserCollection();
 
         $this->collectData = collect(
             [
@@ -366,7 +366,7 @@ final class HelpAction extends Action implements IHelp
         $this->response = [
             'message' => 'Заявка успешно добавлена!',
             'route' => $this->route,
-            'loading' => true,
+            'load' => true,
             'reload' => false,
         ];
         $superAdmin = User::role(['superAdmin'])->get();

@@ -96,6 +96,16 @@ final class HelpApiController extends Controller
     }
 
     /**
+     * [get api for form help with execution]
+     */
+    public function getApiCatalogExecution(HelpAction $helps): JsonResponse
+    {
+        $this->data = $helps->getApiCatalog(false);
+
+        return $this->data;
+    }
+
+    /**
      * [writable help]
      */
     public function checkHelp(HelpAction $helps, Help $id): JsonResponse
