@@ -162,12 +162,12 @@ final class HelpAction extends Action implements IHelp
     {
         $this->items = Model::query()
             ->orderBy('status_id', 'ASC')
-            ->orderBy('calendar_execution', 'DESC')
+            ->orderBy('calendar_final', 'DESC')
             ->orderByRaw('CASE WHEN calendar_execution IS NULL THEN 0 ELSE 1 END ASC')
             ->orderByRaw('CASE WHEN calendar_warning IS NULL THEN 0 ELSE 1 END ASC')
             ->orderBy('calendar_warning', 'DESC')
             ->orderBy('calendar_request', 'DESC')
-            ->orderBy('calendar_final', 'DESC')
+            ->orderBy('calendar_execution', 'DESC')
             ->paginate($this->page);
         $this->helps =
         [
@@ -283,7 +283,7 @@ final class HelpAction extends Action implements IHelp
      *
      * @return array{data: \App\Models\Help}
      */
-    public function show(int $id): array
+    public function show(int $id, bool $writeStatus = true): array
     {
         if (auth()->user()->roles->pluck('name')[0] === 'superAdmin' || 'admin') {
             $this->item = Model::query()->find($id);
@@ -298,7 +298,7 @@ final class HelpAction extends Action implements IHelp
 
             return abort(404);
         }
-        $this->checkWrite($this->item);
+        $this->checkWrite($this->item, $writeStatus);
 
         $this->response =
         [
@@ -891,9 +891,9 @@ final class HelpAction extends Action implements IHelp
         return $rows;
     }
 
-    protected function checkWrite(Model $item): void
+    protected function checkWrite(Model $item, bool $status): void
     {
-        $item->check_write = true;
+        $item->check_write = $status;
         $item->save();
     }
 

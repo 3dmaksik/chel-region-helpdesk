@@ -2,7 +2,7 @@
 <div class="card {{ $items['method'] }}">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Все заявки</h6>
-        @if(request()->segment(1) == 'home')
+        @if(request()->is('home/helps/*'))
         @if(auth()->user()->can('create help') && auth()->user()->can('create home help'))
         <a href="{{ route(config('constants.help.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая
                 заявка</button></a>
@@ -10,6 +10,14 @@
         <a href="{{ route(config('constants.home.create')) }}"> <button type="button" class="btn btn-primary mb-1">Новая
                 заявка</button></a>
         @endif
+        @endif
+        @if (request()->is('search*') && url()->previous()!==url()->current())
+            <div class="block">
+                <a style="color: #757575;" class="hover" href="{{ url()->previous() }}">
+                    <i class="fas fa-arrow-left fa-lg"></i>
+                </a> <span class="hidden">Назад</span>
+                <!-- скрытый элемент -->
+            </div>
         @endif
     </div>
     <div class="table-responsive loader-table">

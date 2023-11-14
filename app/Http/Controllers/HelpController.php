@@ -134,7 +134,7 @@ class HelpController extends Controller
      */
     public function loadShow(HelpAction $helps, int $help): View
     {
-        $item = $helps->show($help);
+        $item = $helps->show($help, false);
 
         return view('loader.help-view-body', compact('item'));
     }

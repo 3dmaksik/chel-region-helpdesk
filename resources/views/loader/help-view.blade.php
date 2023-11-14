@@ -12,9 +12,9 @@
             </div>
             @else
             <div class="block" style="cursor: pointer;">
-                <a style="color: #757575;" class="hover" onclick="window.close()">
+                <a style="color: #757575;" class="hover" href="{{ route(config('constants.news.index')) }}">
                      <i class="fas fa-close fa-lg"></i>
-                </a> <span class="hidden">Закрыть</span>
+                </a> <span class="hidden">На главную</span>
                     <!-- скрытый элемент -->
             </div>
             @endif
