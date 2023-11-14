@@ -72,6 +72,14 @@ class NotifyExpireJob extends Job implements ShouldQueue
             ->orderBy('id', 'DESC')
             ->get();
         if ($this->items !== null) {
+            $superAdmin = User::role(['superAdmin'])->get();
+
+            Notification::send($superAdmin, new HelpNotification('alladm', route('help.index')));
+            Notification::send($superAdmin, new HelpNotification('workeradm', route('help.worker')));
+
+            $admins = User::role(['admin'])->get();
+            Notification::send($admins, new HelpNotification('workeradm', route('help.worker')));
+
             foreach ($this->items as $item) {
                 $this->user = User::findOrFail($item->executor_id);
                 if ($this->user->getRoleNames()[0] !== 'user') {
