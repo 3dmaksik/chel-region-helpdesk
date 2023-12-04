@@ -63,7 +63,11 @@ final class SearchCatalogAction extends Action
      */
     public function searchHelpWork(int $id): array
     {
-        $this->helpSearch = Help::query()->where('user_id', $id)->RoleSearch()->paginate($this->page);
+        $this->helpSearch = Help::query()
+            ->where('user_id', $id)
+            ->RoleSearch()
+            ->orderBy('calendar_request', 'DESC')
+            ->paginate($this->page);
         $this->searchData =
         [
             'method' => 'searchwork',
@@ -80,7 +84,11 @@ final class SearchCatalogAction extends Action
      */
     public function searchHelpCategory(int $id): array
     {
-        $this->helpSearch = Help::query()->where('category_id', $id)->RoleSearch()->paginate($this->page);
+        $this->helpSearch = Help::query()
+            ->where('category_id', $id)
+            ->RoleSearch()
+            ->orderBy('calendar_request', 'DESC')
+            ->paginate($this->page);
         $this->searchData =
         [
             'method' => 'searchcategory',
@@ -98,7 +106,12 @@ final class SearchCatalogAction extends Action
     public function searchHelpCabinet(int $id): array
     {
         $this->helpSearch =
-        Help::join('users', 'users.id', '=', 'help.user_id')->RoleSearch()->where('users.cabinet_id', $id)->paginate($this->page);
+        Help::join('users', 'users.id', '=', 'help.user_id')
+            ->RoleSearch()
+            ->where('users.cabinet_id', $id)
+            ->select('*', 'help.id as help_id')
+            ->orderBy('calendar_request', 'DESC')
+            ->paginate($this->page);
         $this->searchData =
         [
             'method' => 'searchcabinet',
@@ -173,6 +186,8 @@ final class SearchCatalogAction extends Action
             ->orWhere('users.firstname', 'LIKE', '%'.$item.'%')
             ->orWhere('users.lastname', 'LIKE', '%'.$item.'%')
             ->orWhere('users.patronymic', 'LIKE', '%'.$item.'%')
+            ->select('*', 'help.id as help_id')
+            ->orderBy('calendar_request', 'DESC')
             ->paginate($this->page);
         $this->helpSearch->appends(['search' => $item]);
         $this->searchData =
