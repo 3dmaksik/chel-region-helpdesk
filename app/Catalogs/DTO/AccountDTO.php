@@ -14,8 +14,8 @@ final class AccountDTO extends DTO
     public readonly ?UploadedFile $soundNotify;
 
     public function __construct(
-        UploadedFile $avatar = null,
-        UploadedFile $soundNotify = null,
+        ?UploadedFile $avatar = null,
+        ?UploadedFile $soundNotify = null,
     ) {
         $this->avatar = $avatar;
         $this->soundNotify = $soundNotify;

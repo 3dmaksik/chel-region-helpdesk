@@ -34,6 +34,8 @@ class Help extends Model
         'info',
         'info_final',
         'images_final',
+        'files_remove',
+        'files_final_remove',
         'check_write',
     ];
 

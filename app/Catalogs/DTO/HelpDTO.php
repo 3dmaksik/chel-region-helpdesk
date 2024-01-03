@@ -44,6 +44,10 @@ final class HelpDTO extends DTO
 
     public readonly ?Carbon $calendarFinal;
 
+    public readonly ?Carbon $filesRemove;
+
+    public readonly ?Carbon $filesFinalRemove;
+
     public readonly ?int $leadAt;
 
     public function __construct(
@@ -67,6 +71,8 @@ final class HelpDTO extends DTO
         $this->calendarWarning = $params['warning'] ?? null;
         $this->calendarExecution = $params['execution'] ?? null;
         $this->calendarFinal = $params['calendar_final'] ?? null;
+        $this->filesRemove = $params['files_remove'] ?? null;
+        $this->filesFinalRemove = $params['files_final_remove'] ?? null;
         $this->leadAt = $params['lead_at'] ?? null;
     }
 }

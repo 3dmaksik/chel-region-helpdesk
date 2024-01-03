@@ -32,6 +32,8 @@ return new class extends Migration
             $table->dateTime('calendar_warning')->nullable();
             $table->dateTime('calendar_execution')->nullable();
             $table->dateTime('calendar_final')->nullable();
+            $table->dateTime('files_remove')->nullable();
+            $table->dateTime('files_final_remove')->nullable();
             $table->bigInteger('lead_at')->nullable();
             $table->longText('description_long');
             $table->boolean('check_write')->default(false);
