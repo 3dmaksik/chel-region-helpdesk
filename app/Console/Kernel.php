@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new ClearImageJob)->daily();
+        $schedule->job(new ClearImageJob)->hourly();
         $schedule->job(new NotifyExpireJob)->hourly();
         $schedule->job(new StatsLeadJob)->hourly();
         $schedule->job(new StatsYearJob)->hourly();

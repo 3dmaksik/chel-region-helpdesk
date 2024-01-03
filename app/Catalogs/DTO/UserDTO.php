@@ -29,7 +29,7 @@ final class UserDTO extends DTO
         int $cabinetId,
         string $role,
         ?PasswordDTO $password,
-        string $patronymic = null,
+        ?string $patronymic = null,
     ) {
         $this->name = $name;
         $this->firstname = $firstname;

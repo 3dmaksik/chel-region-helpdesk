@@ -53,29 +53,31 @@ class ClearImageJob extends Job implements ShouldQueue
     public function handle(): void
     {
         if (config('settings.clearImage') > 0) {
-            $this->items = Help::whereNotNull('images')
-                ->orWhereNotNull('images_final')
+            $this->items = Help::where('files_remove', '<', Carbon::now())
+                ->WhereNotNull('calendar_final')
                 ->orderBy('id', 'DESC')
                 ->get();
-            if ($this->items !== null) {
-                foreach ($this->items as $item) {
-                    if ($item->images !== null && strtotime('+'.config('settings.clearImage').' month', strtotime($item->calendar_final)) < strtotime(Carbon::now())) {
-                        foreach ($item->images as $image) {
-                            Storage::disk('images')->delete($image['url']);
-                        }
-                        $item->forceFill([
-                            'images' => null,
-                        ])->save();
-                    }
-                    if ($item->images_final !== null && strtotime('+'.config('settings.clearImage').' month', strtotime($item->calendar_final)) < strtotime(Carbon::now())) {
-                        foreach ($item->images_final as $image) {
-                            Storage::disk('images')->delete($image['url']);
-                        }
-                        $item->forceFill([
-                            'images_final' => null,
-                        ])->save();
-                    }
+            foreach ($this->items as $item) {
+                foreach ($item->images as $image) {
+                    Storage::disk('images')->delete($image['url']);
                 }
+                $item->forceFill([
+                    'images' => null,
+                    'files_remove' => null,
+                ])->save();
+            }
+            $this->items = Help::where('files_final_remove', '<', Carbon::now())
+                ->WhereNotNull('calendar_final')
+                ->orderBy('id', 'DESC')
+                ->get();
+            foreach ($this->items as $item) {
+                foreach ($item->images as $image) {
+                    Storage::disk('images')->delete($image['url']);
+                }
+                $item->forceFill([
+                    'images_final' => null,
+                    'files_final_remove' => null,
+                ])->save();
             }
         }
     }

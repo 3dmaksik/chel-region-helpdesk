@@ -14,7 +14,7 @@ final class PasswordDTO extends DTO
 
     public function __construct(
         string $password,
-        string $currentPassword = null
+        ?string $currentPassword = null
     ) {
         $this->password = $password;
         $this->currentPassword = $currentPassword;

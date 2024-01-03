@@ -352,6 +352,7 @@ final class HelpAction extends Action implements IHelp
         if ($this->dataObject->images) {
             $this->images = collect(StoreFilesHelper::createFileImages($this->dataObject->images, 'images', 1920, 1080))->toJson();
             $this->item->images = $this->images;
+            $this->item->files_remove = $this->checkRemove();
         }
         $this->item->app_number = $this->dataObject->appNumber;
         $this->item->category_id = $this->dataObject->category;
@@ -556,6 +557,7 @@ final class HelpAction extends Action implements IHelp
         if ($this->dataObject->imagesFinal) {
             $this->images_final = collect(StoreFilesHelper::createFileImages($this->dataObject->imagesFinal, 'images', 1920, 1080))->toJson();
             $model->images_final = $this->images_final;
+            $this->item->files_final_remove = $this->checkRemove();
         }
 
         $model->info_final = $this->dataObject->infoFinal;
@@ -904,5 +906,14 @@ final class HelpAction extends Action implements IHelp
         } else {
             return route(config('constants.home.show'), $id);
         }
+    }
+
+    protected function checkRemove(): ?Carbon
+    {
+        if (config('settings.clearImage') > 0) {
+            return Carbon::now()->addMonths(config('settings.clearImage'));
+        }
+
+        return null;
     }
 }
