@@ -54,7 +54,8 @@ class StatsMonthJob extends Job implements ShouldQueue
         $this->today = Carbon::now();
         Cache::forget('statsMonth');
         Cache::remember('statsMonth', Carbon::now()->addHour(), function () {
-            return Help::whereMonth('calendar_request', '=', $this->today->month)->count();
+            return Help::whereYear('calendar_request', '=', $this->today->year)
+                ->whereMonth('calendar_request', '=', $this->today->month)->count();
         });
     }
 }
