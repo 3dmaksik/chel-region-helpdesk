@@ -6,4 +6,4 @@ steps:
     image: plugins/docker
     settings:
       context: ./docker/8.2
-      dockerfile: Dockerfile
+      dockerfile: ./docker/8.2
