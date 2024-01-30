@@ -1,0 +1,5 @@
+image: dockerfile/nginx
+git:
+  path: bitbucket.org/danggrianto/drone
+script:
+  - echo hello world
