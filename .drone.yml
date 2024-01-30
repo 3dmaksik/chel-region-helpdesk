@@ -6,4 +6,4 @@ steps:
   image: php:8.2-fpm-alpine
   commands:
     # Update packages
-  - apt update -yqq
+  - php -v
