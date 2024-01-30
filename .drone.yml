@@ -6,4 +6,4 @@ steps:
     image: php:8.2-fpm-alpine
     commands:
   - sleep 5 # give docker enough time to start
-  - exho test
+  - echo test
