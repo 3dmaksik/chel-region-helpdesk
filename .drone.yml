@@ -2,8 +2,8 @@ kind: pipeline
 name: default
 
 steps:
-  - name: Build docker image
-    image: plugins/docker
-    settings:
-      context: ./docker/8.2
-      dockerfile: ./docker/8.2
+  - name: test
+    image: php:8.2-fpm-alpine
+    commands:
+  - sleep 5 # give docker enough time to start
+  - exho test
