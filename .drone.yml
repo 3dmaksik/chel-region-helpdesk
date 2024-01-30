@@ -3,8 +3,45 @@ type: docker
 name: default
 
 steps:
-- name: greeting
-  image: golang:1.12
+- name: build
+  image: php:8.2-fpm-alpine
   commands:
-  - go build
-  - go test
+    # Update packages
+  - apt-get update -yqq
+  # Prep for Node
+  - apt-get install gnupg -yqq
+  # Upgrade to Node 8
+  - curl -sL https://deb.nodesource.com/setup_18.x | bash -
+  # Install dependencies
+  - apt-get install gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2 dnsutils librsvg2-bin -yqq
+  # Install php extensions
+  - docker-php-ext-install cli dev fpm pgsql sqlite3 gd imagick curl imap mysql mbstring xml zip bcmath soap intl readline ldap msgpack igbinary redis swoole memcached pcov xdebug common
+  # Install & enable Xdebug for code coverage reports
+  - pecl install xdebug
+  - docker-php-ext-enable xdebug
+  # Install Composer and project dependencies.
+  - curl -sS https://getcomposer.org/installer | php
+  - php composer.phar install
+  # Install Node dependencies.
+  # comment this out if you don't have a node dependency
+  - npm install
+  # Copy over testing configuration.
+  # Don't forget to set the database config in .env.testing correctly
+  # DB_HOST=mysql
+  # DB_DATABASE=project_name
+  # DB_USERNAME=root
+  # DB_PASSWORD=secret
+  - cp .env.testing .env
+  - cp config/settings.php.example config/settings.php
+  # Run npm build
+  # comment this out if you don't have a frontend build
+  # you can change this to to your frontend building script like
+  # npm run build
+  - npm run dev
+  # Generate an application key. Re-cache.
+  - php artisan key:generate
+  - php artisan config:cache
+  # Run database migrations.
+  - php artisan migrate
+  # Run database seed
+  - php artisan db:seed
