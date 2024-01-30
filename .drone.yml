@@ -2,10 +2,14 @@ kind: pipeline
 name: default
 
 steps:
-- name: build
-  image: php:8.2-fpm-alpine
+- name: test
+  image: compose:1.23.2
+  volumes:
+  - name: docker_sock
+    path: /var/run/docker.sock
   commands:
-    # Update packages
-  - php -v
-  # Install php extensions
-  - docker-php-ext-install dev fpm pgsql sqlite3 gd imagick curl imap mysql mbstring xml zip bcmath soap intl readline ldap msgpack igbinary redis swoole memcached pcov xdebug common
+  - up -f docker-compose.yaml
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
