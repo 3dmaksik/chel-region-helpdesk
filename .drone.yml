@@ -8,4 +8,4 @@ steps:
     # Update packages
   - php -v
   # Install php extensions
-  - docker-php-ext-install cli dev fpm pgsql sqlite3 gd imagick curl imap mysql mbstring xml zip bcmath soap intl readline ldap msgpack igbinary redis swoole memcached pcov xdebug common
+  - docker-php-ext-install dev fpm pgsql sqlite3 gd imagick curl imap mysql mbstring xml zip bcmath soap intl readline ldap msgpack igbinary redis swoole memcached pcov xdebug common
