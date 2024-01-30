@@ -1,5 +1,12 @@
-image: dockerfile/nginx
-git:
-  path: bitbucket.org/danggrianto/drone
-script:
+kind: pipeline
+type: exec
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: greeting
+  commands:
   - echo hello world
