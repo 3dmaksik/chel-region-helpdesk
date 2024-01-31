@@ -24,7 +24,7 @@ steps:
     image: mariadb:10
     commands:
     - sleep 30
-    - mysql -u root -h database
+    - mysql -u root -h database --execute="SELECT VERSION();"
 
   - name: build
     image: ubuntu:22.04
@@ -48,3 +48,11 @@ steps:
     depends_on:
     - frontend
     - library
+    - test_database
+
+  - name: test
+    image: ubuntu:22.04
+    commands:
+    - php artisan test --recreate-databases
+    depends_on:
+    - build
