@@ -23,8 +23,8 @@ steps:
   - name: test_database
     image: mariadb:10
     commands:
-    - sleep 15
-    - mysql -u root --execute="SELECT VERSION();"
+    - sleep 30
+    - mysql -u root -h database
 
   - name: build
     image: ubuntu:22.04
