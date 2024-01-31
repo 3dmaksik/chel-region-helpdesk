@@ -50,7 +50,7 @@ final class NewsAction extends Action implements IArticle
     /**
      * [add new article]
      *
-     * @param  array  $request {name: string, description: string, news_text: string}
+     * @param  array  $request  {name: string, description: string, news_text: string}
      */
     public function store(array $request): JsonResponse
     {
@@ -80,7 +80,7 @@ final class NewsAction extends Action implements IArticle
     /**
      * [update article]
      *
-     * @param  array  $request {name: string, description: string, news_text: string, created_at: date}
+     * @param  array  $request  {name: string, description: string, news_text: string, created_at: date}
      */
     public function update(array $request, Model $model): JsonResponse
     {

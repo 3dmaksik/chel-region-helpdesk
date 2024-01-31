@@ -129,7 +129,7 @@ final class UsersAction extends Action implements IUser
     /**
      * [add new user]
      *
-     * @param  array  $request {name: string, firstname:string, cabinet_id: string, role: string, password: string, patronymic: string|null}
+     * @param  array  $request  {name: string, firstname:string, cabinet_id: string, role: string, password: string, patronymic: string|null}
      */
     public function store(array $request): JsonResponse
     {
@@ -177,7 +177,7 @@ final class UsersAction extends Action implements IUser
     /**
      * [update user]
      *
-     * @param  array  $request {name: string, firstname:string, cabinet_id: string, role: string, password: null, patronymic: string|null}
+     * @param  array  $request  {name: string, firstname:string, cabinet_id: string, role: string, password: null, patronymic: string|null}
      */
     public function update(array $request, Model $model): JsonResponse
     {
@@ -216,7 +216,7 @@ final class UsersAction extends Action implements IUser
     /**
      * [update password for other user]
      *
-     * @param  array  $request {password: string}
+     * @param  array  $request  {password: string}
      */
     public function updatePassword(array $request, Model $model): JsonResponse
     {

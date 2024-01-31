@@ -330,7 +330,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [add new help]
      *
-     * @param  array  $request {category_id: int, user_id: int, description_long: string, images: \Illuminate\Http\UploadedFile|null}
+     * @param  array  $request  {category_id: int, user_id: int, description_long: string, images: \Illuminate\Http\UploadedFile|null}
      */
     public function store(array $request): JsonResponse
     {
@@ -388,7 +388,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [update help]
      *
-     * @param  array  $request {category_id: int, user_id: int, priority_id: int}
+     * @param  array  $request  {category_id: int, user_id: int, priority_id: int}
      */
     public function update(array $request, Model $model): JsonResponse
     {
@@ -442,7 +442,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [accept help]
      *
-     * @param  array  $request {executor_id: int, priority_id: int, info: string}
+     * @param  array  $request  {executor_id: int, priority_id: int, info: string}
      */
     public function accept(array $request, Model $model): JsonResponse
     {
@@ -534,7 +534,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [execute help]
      *
-     * @param  array  $request {info_final: string|null, images_final: \Illuminate\Http\UploadedFile|null}
+     * @param  array  $request  {info_final: string|null, images_final: \Illuminate\Http\UploadedFile|null}
      */
     public function execute(array $request, Model $model): JsonResponse
     {
@@ -557,7 +557,7 @@ final class HelpAction extends Action implements IHelp
         if ($this->dataObject->imagesFinal) {
             $this->images_final = collect(StoreFilesHelper::createFileImages($this->dataObject->imagesFinal, 'images', 1920, 1080))->toJson();
             $model->images_final = $this->images_final;
-            $this->item->files_final_remove = $this->checkRemove();
+            $model->files_final_remove = $this->checkRemove();
         }
 
         $model->info_final = $this->dataObject->infoFinal;
@@ -606,7 +606,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [redefine help]
      *
-     * @param  array  $request {executor_id: int}
+     * @param  array  $request  {executor_id: int}
      */
     public function redefine(array $request, Model $model): JsonResponse
     {
@@ -686,7 +686,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [reject help]
      *
-     * @param  array  $request {info_final: string|null}
+     * @param  array  $request  {info_final: string|null}
      */
     public function reject(array $request, Model $model): JsonResponse
     {

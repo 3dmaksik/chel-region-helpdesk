@@ -59,7 +59,7 @@ final class CabinetAction extends Action implements ICabinet
     /**
      * [add new cabinet]
      *
-     * @param  array  $request {description: string}
+     * @param  array  $request  {description: string}
      */
     public function store(array $request): JsonResponse
     {
@@ -85,7 +85,7 @@ final class CabinetAction extends Action implements ICabinet
     /**
      * [update cabinet]
      *
-     * @param  array  $request {description: string}
+     * @param  array  $request  {description: string}
      */
     public function update(array $request, Model $model): JsonResponse
     {
