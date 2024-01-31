@@ -18,7 +18,7 @@ steps:
   - name: library
     image: composer
     commands:
-    - composer install --ignore-platform-req=ext-gd --ignore-platform-req=ext-fileinfo
+    - composer install --ignore-platform-req=ext-*
 
   - name: build
     image: ubuntu:22.04
