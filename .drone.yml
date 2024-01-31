@@ -3,10 +3,12 @@ name: default
 
 steps:
   - name: test
-    image: php:8.2-cli
+    image: php:8.2-fpm
     commands:
     - apt-get update
     - apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev dnsutils librsvg2-bin
-    - docker-php-ext-install dev fpm pgsql sqlite3 gd imagick curl imap mysql mbstring xml zip bcmath soap intl readline ldap msgpack igbinary redis swoole memcached pcov xdebug common
+    - pecl install cli dev
+    - docker-php-ext-enable cli dev
+    #- docker-php-ext-install cli dev fpm pgsql sqlite3 gd imagick curl imap mysql mbstring xml zip bcmath soap intl readline ldap msgpack igbinary redis swoole memcached pcov xdebug common
     - cp .env.example .env
     - php artisan key:generate
