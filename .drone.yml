@@ -2,7 +2,7 @@ kind: pipeline
 name: default
 
 steps:
-  - name:
+  - name: frontend
     image: node:18
     commands:
     - npm run prod
