@@ -51,7 +51,7 @@ final class StatusAction extends Action implements IStatus
     /**
      * [add new status]
      *
-     * @param  array  $request {description: string, color: string}
+     * @param  array  $request  {description: string, color: string}
      */
     public function store(array $request): JsonResponse
     {
@@ -77,7 +77,7 @@ final class StatusAction extends Action implements IStatus
     /**
      * [update status for check existence color]
      *
-     * @param  array  $request {description: string, color: string}
+     * @param  array  $request  {description: string, color: string}
      */
     public function update(array $request, Model $model): JsonResponse
     {
@@ -105,7 +105,7 @@ final class StatusAction extends Action implements IStatus
     /**
      * [checking for the existence of a color in config]
      *
-     * @param  array  $color {name: string, slug: string}
+     * @param  array  $color  {name: string, slug: string}
      */
     private function checkColor(array $color, string $check, bool $status = false): bool
     {

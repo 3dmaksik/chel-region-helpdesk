@@ -14,11 +14,11 @@ class Action extends CoreAction
      * [result data]
      *
      * @var response [data => null|Illuminate\Pagination\LengthAwarePaginator,
-     *                message => null|string,
-     *                route => null|bool,
-     *                getload => null|bool,
-     *                postLoad => null|bool,
-     *                reload => null|bool]
+     *               message => null|string,
+     *               route => null|bool,
+     *               getload => null|bool,
+     *               postLoad => null|bool,
+     *               reload => null|bool]
      */
     public array $response;
 

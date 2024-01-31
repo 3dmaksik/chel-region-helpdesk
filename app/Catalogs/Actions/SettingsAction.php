@@ -46,7 +46,7 @@ final class SettingsAction extends Action implements ISettings
     /**
      * [update password]
      *
-     * @param  array  $request {current_password: string, password: string}
+     * @param  array  $request  {current_password: string, password: string}
      */
     public function updatePassword(array $request): JsonResponse
     {
@@ -96,7 +96,7 @@ final class SettingsAction extends Action implements ISettings
     /**
      * [update password]
      *
-     * @param  array  $request {avatar: \Illuminate\Http\UploadedFile|null, sound_notify: \Illuminate\Http\UploadedFile|null}
+     * @param  array  $request  {avatar: \Illuminate\Http\UploadedFile|null, sound_notify: \Illuminate\Http\UploadedFile|null}
      */
     public function updateSettings(array $request): JsonResponse
     {

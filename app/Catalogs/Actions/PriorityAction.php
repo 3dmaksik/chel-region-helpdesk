@@ -60,7 +60,7 @@ final class PriorityAction extends Action implements IPriority
     /**
      * [add new priority]
      *
-     * @param  array  $request {description: string, rang: int, warning_timer: int, danger_timer: int}
+     * @param  array  $request  {description: string, rang: int, warning_timer: int, danger_timer: int}
      */
     public function store(array $request): JsonResponse
     {
@@ -91,7 +91,7 @@ final class PriorityAction extends Action implements IPriority
     /**
      * [update priority]
      *
-     * @param  array  $request {description: string, rang: int, warning_timer: int, danger_timer: int}
+     * @param  array  $request  {description: string, rang: int, warning_timer: int, danger_timer: int}
      */
     public function update(array $request, Model $model): JsonResponse
     {

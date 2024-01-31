@@ -60,7 +60,7 @@ final class CategoryAction extends Action implements ICategory
     /**
      * [add new category]
      *
-     * @param  array  $request {description: string}
+     * @param  array  $request  {description: string}
      */
     public function store(array $request): JsonResponse
     {
@@ -86,7 +86,7 @@ final class CategoryAction extends Action implements ICategory
     /**
      * [update category]
      *
-     * @param  array  $request {description: string}
+     * @param  array  $request  {description: string}
      */
     public function update(array $request, Model $model): JsonResponse
     {
