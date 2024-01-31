@@ -26,7 +26,7 @@ steps:
     - sleep 30
     - mysql -u root -h database --execute="SELECT VERSION();"
 
-  - name: build
+  - name: build_test_app
     image: ubuntu:22.04
     commands:
     - ln -snf /usr/share/zoneinfo/UTC /etc/localtime && echo UTC > /etc/timezone
@@ -45,14 +45,8 @@ steps:
     - mkdir storage/images && mkdir storage/avatar && mkdir storage/sound
     - php artisan storage:link
     - nohup php artisan serve &
+    - php artisan test --parallel --recreate-databases
     depends_on:
     - frontend
     - library
     - test_database
-
-  - name: test
-    image: ubuntu:22.04
-    commands:
-    - php artisan test --recreate-databases
-    depends_on:
-    - build
