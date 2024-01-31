@@ -18,7 +18,7 @@ steps:
   - name: library
     image: composer
     commands:
-    - composer install
+    - composer install --ignore-platform-req=ext-gd,ext-fileinfo
 
   - name: build
     image: ubuntu:22.04
@@ -37,3 +37,6 @@ steps:
     - php artisan migrate
     - php artisan db:seed
     - nohup php artisan serve &
+    depends_on:
+    - frontend
+    - library
