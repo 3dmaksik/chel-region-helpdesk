@@ -5,6 +5,7 @@ steps:
   - name: frontend
     image: node:18
     commands:
+    - npm install
     - npm run prod
 
   - name: build
