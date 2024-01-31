@@ -20,6 +20,12 @@ steps:
     commands:
     - composer install --ignore-platform-req=ext-*
 
+  - name: test_database
+    image: mariadb:10
+    commands:
+    - sleep 15
+    - mysql -u root --execute="SELECT VERSION();"
+
   - name: build
     image: ubuntu:22.04
     commands:
