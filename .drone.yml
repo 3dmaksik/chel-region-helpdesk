@@ -12,7 +12,7 @@ steps:
       docker-php-ext-configure xml && docker-php-ext-configure zip && docker-php-ext-configure bcmath && docker-php-ext-configure soap && docker-php-ext-configure intl && \
       docker-php-ext-configure readline && docker-php-ext-configure ldap && docker-php-ext-configure msgpack && docker-php-ext-configure igbinary && docker-php-ext-configure redis && \
       docker-php-ext-configure swoole && docker-php-ext-configure memcached && docker-php-ext-configure pcov && docker-php-ext-configure xdebug && docker-php-ext-configure common
-    #- docker-php-ext-install &&
+    - docker-php-ext-install cli dev pgsql sqlite3 gd imagick curl imap mysql mbstring xml zip bcmath soap intl readline ldap msgpack igbinary redis swoole memcached pcov xdebug common
     #- docker-php-ext-enable &&
     #- cp .env.example .env
     - #php artisan key:generate
