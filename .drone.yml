@@ -1,12 +1,24 @@
 kind: pipeline
 name: default
 
+services:
+- name: database
+  image: mariadb:10
+  environment:
+    MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    MYSQL_DATABASE: testing
+
 steps:
   - name: frontend
     image: node:18
     commands:
     - npm install
     - npm run prod
+
+  - name: library
+    image: composer
+    commands:
+    - composer install
 
   - name: build
     image: ubuntu:22.04
@@ -18,8 +30,10 @@ steps:
     - echo "deb [signed-by=/etc/apt/keyrings/ppa_ondrej_php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" > /etc/apt/sources.list.d/ppa_ondrej_php.list
     - apt-get update
     - DEBIAN_FRONTEND=noninteractive apt-get install -y -q php8.2-cli php8.2-dev php8.2-fpm php8.2-pgsql php8.2-sqlite3 php8.2-gd php8.2-imagick php8.2-curl php8.2-imap php8.2-mysql php8.2-mbstring php8.2-xml php8.2-zip php8.2-bcmath php8.2-soap php8.2-intl php8.2-readline php8.2-ldap php8.2-msgpack php8.2-igbinary php8.2-redis php8.2-swoole php8.2-memcached php8.2-pcov php8.2-xdebug php8.2-common
-    - curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
     - ls
-    - cp .env.example .env
+    - cp .env.testing .env
     - cp config/settings.php.example config/settings.php
-    - #php artisan key:generate
+    - php artisan config:cache
+    - php artisan migrate
+    - php artisan db:seed
+    - nohup php artisan serve &
