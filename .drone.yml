@@ -7,7 +7,12 @@ steps:
     commands:
     - apt-get update
     - apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev dnsutils librsvg2-bin
-    - docker-php-ext-configure pdo_mysql
-    - docker-php-ext-install pdo_mysql
-    - cp .env.example .env
-    - php artisan key:generate
+    - docker-php-ext-configure cli && docker-php-ext-configure dev && docker-php-ext-configure pgsql && docker-php-ext-configure sqlite3 && docker-php-ext-configure gd && \
+      docker-php-ext-configure imagick && docker-php-ext-configure curl && docker-php-ext-configure imap && docker-php-ext-configure mysql && docker-php-ext-configure mbstring && \
+      docker-php-ext-configure xml && docker-php-ext-configure zip && docker-php-ext-configure bcmath && docker-php-ext-configure soap && docker-php-ext-configure intl && \
+      docker-php-ext-configure readline && docker-php-ext-configure ldap && docker-php-ext-configure msgpack && docker-php-ext-configure igbinary && docker-php-ext-configure redis && \
+      docker-php-ext-configure swoole && docker-php-ext-configure memcached && docker-php-ext-configure pcov && docker-php-ext-configure xdebug && docker-php-ext-configure common
+    #- docker-php-ext-install &&
+    #- docker-php-ext-enable &&
+    #- cp .env.example .env
+    - #php artisan key:generate
