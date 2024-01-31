@@ -36,6 +36,8 @@ steps:
     - php artisan config:cache
     - php artisan migrate
     - php artisan db:seed
+    - mkdir storage/images && mkdir storage/avatar && mkdir storage/sound
+    - php artisan storage:link
     - nohup php artisan serve &
     depends_on:
     - frontend
