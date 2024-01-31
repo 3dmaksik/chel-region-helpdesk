@@ -7,8 +7,7 @@ steps:
     commands:
     - apt-get update
     - apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev dnsutils librsvg2-bin
-    - pear clear-cache && pear update-channels && pear upgrade && pecl install cli dev
-    - docker-php-ext-enable cli dev
-    #- docker-php-ext-install cli dev fpm pgsql sqlite3 gd imagick curl imap mysql mbstring xml zip bcmath soap intl readline ldap msgpack igbinary redis swoole memcached pcov xdebug common
+    - docker-php-ext-configure pdo_mysql zip
+    - docker-php-ext-install pdo_mysql zip
     - cp .env.example .env
     - php artisan key:generate
