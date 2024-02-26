@@ -77,7 +77,7 @@
     @can('all directory list')
     <div class="sidebar-heading"> Списки </div>
     @can('view category')
-    <li class="nav-item {{ request()->routeIs('catergory.index') ? 'active' : '' }}}"> <a
+    <li class="nav-item {{ request()->routeIs('category.index') ? 'active' : '' }}"> <a
             class="nav-link" href="{{ route(config('constants.category.index')) }}">
             <i class="fas fa-fw fa-angle-double-up"></i>
             <span>Категории</span>
