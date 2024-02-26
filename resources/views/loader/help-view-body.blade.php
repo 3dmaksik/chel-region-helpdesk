@@ -136,6 +136,7 @@
         @if ($item['data']->lead_at!==null)
         <p class="text-primary">Время выполнения заявки</p>
         @if ($item['data']->lead_at['day']>0){{ $item['data']->lead_at['day'] }} дн. @endif @if ($item['data']->lead_at['hour']>0){{ $item['data']->lead_at['hour'] }} ч. @endif @if ($item['data']->lead_at['minute']>0){{ $item['data']->lead_at['minute'] }} мин. @endif
+        @if ($item['data']->lead_at['second']>0){{ $item['data']->lead_at['second'] }} сек. @endif
         <hr>
         @endif
         @if ($item['data']->executor_id===auth()->user()->id || auth()->user()->getRoleNames()[0] === 'superAdmin' || auth()->user()->getRoleNames()[0] === 'admin')

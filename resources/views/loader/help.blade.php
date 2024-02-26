@@ -29,8 +29,8 @@
                     <th style="width:1%;">Кабинет</th>
                     <th style="width:12%">Сотрудник</th>
                     <th style="width:15%">Дата подачи</th>
-                    <th style="width:15%">Дата выполнения</th>
                     <th style="width:15%">Контрольная дата</th>
+                    <th style="width:15%">Дата выполнения</th>
                     <th style="width:1%">Статус</th>
                     <th class="d-print-none"></th>
                 </tr>
@@ -52,17 +52,17 @@
                         </td>
                         <td>{{ $item->calendar_request}}</td>
                         <td>
-                            @if ($item->calendar_final==null)
-                            Дата неопределена
-                            @else
-                            {{ $item->calendar_final }}
-                            @endif
-                        </td>
-                        <td>
                             @if ($item->calendar_execution==null)
                             Дата неопределена
                             @else
                             {{ $item->calendar_execution }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($item->calendar_final==null)
+                            Дата неопределена
+                            @else
+                            {{ $item->calendar_final }}
                             @endif
                         </td>
                         <td><span class="badge badge-{{ $item->status->color }}">{{ $item->status->description }}</span>
