@@ -16,10 +16,10 @@
 ### Требования
 
 - Astra Linux 1.7+ или другая российская ОС, либо любая акутальная операционная система семейства Linux;
-- PHP 8.1-8.2 c расширением fileinfo, 
+- PHP 8.1-8.3 c расширением fileinfo, 
 а также со всеми стандартными расширениями, которые по умолчанию обычно включены:
 [pgsql, sqlite3, gd, imagick, curl, imap, mysql, mbstring, xml, zip, bcmath, soap,
-intl, readline, ldap, msgpack, igbinary, redis, swoole, memcached, pcov]
+intl, readline, ldap, msgpack, igbinary, redis, pcov]
 - СУБД на выбор MYSQL 8.0+/MariaDB 10.8+, PostgreSQL 14+;
 - Сервер Ngnix 1.23+, Apache не рекомендуется;
 - Кеш на выбор Memcashed 1.6+, Redis 7.0 или без него;
@@ -181,8 +181,6 @@ user=example_user
 `$ sudo supervisorctl update`  
 
 После чего проект готов к работе. 
-
-PS. Рады всем, кто сможет предоставить скрипт автоматического развёртывания.
                 
 
 ### Обновления
@@ -192,7 +190,14 @@ PS. Рады всем, кто сможет предоставить скрипт
 3. В случае каких либо изменений файла `settings.php` необходимо из файла `settings.php.example` скопировать или изменить недостающие переменные, о чём будет сообщено в релизе.
 4. В случае каких либо изменений в базе необходимо выполнить `$ php artisan migrate` .
                 
-
+### Запуск проекта в Docker
+                
+1. Перейти в режим суперадминистратора `$ su -`.
+2.  Установить докер, если ещё не установлен [(инструкция по установке)](https://docs.docker.com/engine/install) (в таблице необходимо нажать на вашу систему)
+3. Для установки проекта необходимо запустить скрипт (требуется wget) `$ wget https://raw.githubusercontent.com/3dmaksik/chel-region-helpdesk/master/build/project/install.sh && chmod +x install.sh && ./install.sh`. 
+4. Для обновления проекта необходимо запустить скрипт `$ wget https://raw.githubusercontent.com/3dmaksik/chel-region-helpdesk/master/build/project/update.sh && chmod +x update.sh && ./update.sh`.
+5. Вы также можете сохранить данные скрипты отдельно и запускать не скачивая. 
+                
 ### Вопросы и предложения
 По всем найденным багам, предложениям пишите [сюда](https://github.com/3dmaksik/chel-region-helpdesk/issues)
 
