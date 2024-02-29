@@ -6,6 +6,7 @@ use App\Base\Jobs\Job;
 use App\Models\Help;
 use App\Models\User;
 use App\Notifications\ExpireNotification;
+use App\Notifications\HelpNotification;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
