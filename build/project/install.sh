@@ -1,7 +1,10 @@
 #!/bin/bash
+NAME=$USER
+su - root
 mkdir -p /var/www/html
-chown -r www-data:www-data /var/www/html
-su - www-data
+usermod -a -G www-data $NAME
+chown $NAME:www-data /var/www/html
+su - $NAME
 cd /var/www/html/chel-region-helpdesk && git clone https://github.com/3dmaksik/chel-region-helpdesk.git
 mv -f /var/www/html/chel-region-helpdesk /var/www/html
 cp /var/www/html/chel-region-helpdesk/.env.docker /var/www/html/chel-region-helpdesk/.env
