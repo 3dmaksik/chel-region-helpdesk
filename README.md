@@ -193,10 +193,11 @@ user=example_user
 ### Запуск проекта в Docker
                 
 1.  Установить докер, если ещё не установлен [(инструкция по установке)](https://docs.docker.com/engine/install) (в таблице необходимо нажать на вашу систему)
-2. Для установки проекта необходимо запустить скрипт без root (требуется wget и пользователь с id, gid 1000, обычно это второй после root) `$ wget https://raw.githubusercontent.com/3dmaksik/chel-region-helpdesk/master/build/project/install.sh && sudo chmod +x install.sh && ./install.sh`. 
+2. Для установки проекта необходимо запустить скрипт без root (требуется wget и пользователь с id, gid 1000, обычно это созданный пользователь при установке операционной системы) `$ wget https://raw.githubusercontent.com/3dmaksik/chel-region-helpdesk/master/build/project/install.sh && sudo chmod +x install.sh && ./install.sh`. 
 3. В файле `.env` укажите используемый айпи адрес или домен в строке APP_URL.
-4. Для обновления проекта необходимо запустить скрипт `$ wget https://raw.githubusercontent.com/3dmaksik/chel-region-helpdesk/master/build/project/update.sh && sudo chmod +x update.sh && ./update.sh`.
+4. Для обновления проекта необходимо запустить скрипт, удалив прошлый файл, если ранее скачивался `$ wget https://raw.githubusercontent.com/3dmaksik/chel-region-helpdesk/master/build/project/update.sh && sudo chmod +x update.sh && ./update.sh`.
 5. Вы также можете сохранить данные скрипты отдельно и запускать не скачивая.
+6. В случае появления ошибок во время первой установки или обновления необходимо в первую очередь запустить последний выбранный скрипт повторно. Работа продолжится с места ошибки.
                 
 ### Вопросы и предложения
 По всем найденным багам, предложениям пишите [сюда](https://github.com/3dmaksik/chel-region-helpdesk/issues)

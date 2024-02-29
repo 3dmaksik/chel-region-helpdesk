@@ -15,9 +15,9 @@ services:
         networks:
             - laravel
         logging:
-        options:
-            max-size: "10m"
-            max-file: "3"
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
     nginx:
         image: nginx:alpine
@@ -32,9 +32,9 @@ services:
         depends_on:
             - app
         logging:
-        options:
-            max-size: "10m"
-            max-file: "3"
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
     mariadb:
         image: 'mariadb:10'
@@ -55,9 +55,9 @@ services:
         networks:
             - laravel
         logging:
-        options:
-            max-size: "10m"
-            max-file: "3"
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
     redis:
         image: redis:alpine
@@ -69,11 +69,11 @@ services:
         networks:
             - laravel
         depends_on:
-            - ngnix
+            - nginx
         logging:
-        options:
-            max-size: "10m"
-            max-file: "3"
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
     phpmyadmin:
         image: 'phpmyadmin:latest'
@@ -89,9 +89,9 @@ services:
         networks:
           - laravel
         logging:
-        options:
-            max-size: "10m"
-            max-file: "3"
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
     soketi:
         build:
@@ -110,11 +110,11 @@ services:
         networks:
             - laravel
         depends_on:
-            - ngnix
+            - nginx
         logging:
-        options:
-            max-size: "10m"
-            max-file: "3"
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
     shedule:
         build:
@@ -130,9 +130,9 @@ services:
         depends_on:
             - app
         logging:
-        options:
-            max-size: "10m"
-            max-file: "3"
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
     queue:
         build:
@@ -146,12 +146,12 @@ services:
         networks:
             - laravel
         depends_on:
-            - app
             - shedule
+            - app
         logging:
-        options:
-            max-size: "10m"
-            max-file: "3"
+            options:
+                max-size: "10m"
+                max-file: "3"
         restart: unless-stopped
 networks:
     laravel:
