@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /var/www/html
+cd /var/www/html/chel-region-helpdesk
 git pull origin master
 docker compose exec app composer update --no-dev
 docker compose exec app npm run prod

@@ -2,13 +2,11 @@
 mkdir -p /var/www/html
 chown -r www-data:www-data /var/www/html
 su - www-data
-cd /var/www/html
-git clone https://github.com/3dmaksik/chel-region-helpdesk.git
+cd /var/www/html/chel-region-helpdesk && git clone https://github.com/3dmaksik/chel-region-helpdesk.git
 mv -f /var/www/html/chel-region-helpdesk /var/www/html
-rm var/www/html/chel-region-helpdesk
-cp /var/www/html/.env.docker /var/www/html/.env
-cp /var/www/html/config/settings.php.example /var/www/html/config/settings.php
-mkdir /var/www/html/storage/images && mkdir /var/www/html/storage/avatar && mkdir /var/www/html/storage/sound
+cp /var/www/html/chel-region-helpdesk/.env.docker /var/www/html/chel-region-helpdesk/.env
+cp /var/www/html/chel-region-helpdesk/config/settings.php.example /var/www/html/chel-region-helpdesk/config/settings.php
+mkdir /var/www/html/chel-region-helpdesk/storage/images && mkdir /var/www/html/chel-region-helpdesk/storage/avatar && mkdir /var/www/html/chel-region-helpdesk/storage/sound
 su - root
 docker compose up -d --build
 docker compose exec app composer install --no-dev
