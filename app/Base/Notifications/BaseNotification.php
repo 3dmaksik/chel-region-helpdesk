@@ -2,8 +2,10 @@
 
 namespace App\Base\Notifications;
 
-use App\Core\Notifications\CoreNotification;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class BaseNotification extends CoreNotification
+class BaseNotification implements ShouldBroadcast
 {
+    use Queueable;
 }

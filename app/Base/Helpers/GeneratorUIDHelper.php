@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Base\Helpers;
 
-use App\Core\Helpers\CoreHelper;
-
-final class GeneratorUIDHelper extends CoreHelper
+final class GeneratorUIDHelper
 {
     /**
      * [checking division by 4]

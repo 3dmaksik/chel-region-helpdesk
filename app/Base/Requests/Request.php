@@ -2,8 +2,8 @@
 
 namespace App\Base\Requests;
 
-use App\Core\Requests\CoreRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class Request extends CoreRequest
+class Request extends FormRequest
 {
 }

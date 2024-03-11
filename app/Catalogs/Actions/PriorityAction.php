@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\IPriority;
 use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\PriorityDTO;
-use App\Core\Contracts\IPriority;
 use App\Models\Help;
 use App\Models\Priority as Model;
 use Carbon\Carbon;

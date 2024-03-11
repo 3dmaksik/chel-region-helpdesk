@@ -2,11 +2,6 @@
 
 namespace App\Base\Actions;
 
-use App\Core\Actions\CoreSubAction;
-
-class SubAction extends CoreSubAction
+class SubAction
 {
-    public function run(): void
-    {
-    }
 }
