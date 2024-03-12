@@ -2,10 +2,10 @@
 
 namespace App\Base\Models;
 
-use App\Core\Models\CoreModel;
+use Illuminate\Database\Eloquent\Model as LaravelModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Model extends CoreModel
+class Model extends LaravelModel
 {
     use HasFactory;
 
