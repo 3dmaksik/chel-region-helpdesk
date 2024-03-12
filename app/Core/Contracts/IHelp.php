@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Base\Contracts;
+namespace App\Core\Contracts;
 
 interface IHelp
 {

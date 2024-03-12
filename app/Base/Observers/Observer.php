@@ -2,7 +2,9 @@
 
 namespace App\Base\Observers;
 
-class Observer
+use App\Core\Observers\CoreObserver;
+
+class Observer extends CoreObserver
 {
     //
 }

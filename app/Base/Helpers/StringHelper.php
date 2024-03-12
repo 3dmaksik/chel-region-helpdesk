@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Base\Helpers;
 
-final class StringHelper
+use App\Core\Helpers\CoreHelper;
+
+final class StringHelper extends CoreHelper
 {
     /**
      * [processed string]

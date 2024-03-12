@@ -2,6 +2,8 @@
 
 namespace App\Base\DTO;
 
-class DTO
+use App\Core\DTO\CoreDTO;
+
+class DTO extends CoreDTO
 {
 }
