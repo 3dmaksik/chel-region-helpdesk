@@ -5,6 +5,7 @@
     "keywords": ["chel", "admin"],
     "license": "MIT",
     "require": {
+        "php": ">=8.1",
         "guzzlehttp/guzzle": "^7",
         "intervention/image": "^2",
         "laravel/framework": "^10",
