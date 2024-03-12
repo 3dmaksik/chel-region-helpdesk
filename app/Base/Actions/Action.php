@@ -4,11 +4,10 @@ namespace App\Base\Actions;
 
 use App\Base\DTO\DTO;
 use App\Base\Models\Model;
-use App\Core\Actions\CoreAction;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class Action extends CoreAction
+class Action
 {
     /**
      * [result data]

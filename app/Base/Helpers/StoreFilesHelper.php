@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Base\Helpers;
 
-use App\Core\Helpers\CoreHelper;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as Img;
 
-final class StoreFilesHelper extends CoreHelper
+final class StoreFilesHelper
 {
     /**
      * [url one file or more files]
