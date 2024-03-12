@@ -15,8 +15,8 @@ use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
-    //use DatabaseTransactions;
-    use RefreshDatabase;
+    use DatabaseTransactions;
+    //use RefreshDatabase;
 
     private User $superAdmin;
 
