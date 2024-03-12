@@ -26,14 +26,14 @@ intl, readline, ldap, msgpack, igbinary, redis, pcov]
 - Composer, Node, NPM, git.
 
 ### Подготовка к установке
-Создать папку для работы, например`/srv/example.com/` и направить используемый сервер на поддиректорию`public`
+Создать папку для работы, например`/var/www/html` и направить используемый сервер на поддиректорию`public`
 Примерные настройки перенаправления для сервера ngnix. 
 Изменяются в файле`/etc/nginx/nginx.conf`
 ````
     server {
     listen 80;
     server_name server_domain_or_IP;
-    root /var/www/travellist/public;
+    root /var/www/html/chel-region-helpdesk/public;
 
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
@@ -64,7 +64,7 @@ intl, readline, ldap, msgpack, igbinary, redis, pcov]
     }
            }
 ````
-Если используется Apache (не рекомендуется) создаётся в корне `/srv/example.com/` файл `.htaccess` с примерно следующим содержанием.
+Если используется Apache (не рекомендуется) создаётся в корне `/var/www/html/chel-region-helpdesk/` файл `.htaccess` с примерно следующим содержанием.
 ````
 Options +FollowSymLinks
 RewriteEngine On
@@ -82,8 +82,8 @@ RewriteRule ^ index.php [L]
 <VirtualHost *:80>
  ServerAdmin admin@example.com
  ServerName mydomain.com
- DocumentRoot /srv/example.com/public
-   <Directory /srv/example.com>
+ DocumentRoot /var/www/html/chel-region-helpdesk/public
+   <Directory /var/www/html/chel-region-helpdesk>
      Options Indexes MultiViews
      AllowOverride None
      Require all granted
@@ -102,13 +102,14 @@ RewriteRule ^ index.php [L]
                 
 1. Скопировать проект к себе на сервер в созданную ранее папку:  
 
+`$ cd /var/www/html`
 `$ git clone https://github.com/3dmaksik/chel-region-helpdesk.git`
 
 2. Установить проект и библиотеки `$ composer install --no-dev && npm install && npm run prod`  
 
 3. Установить права доступа на папки с тем же пользователем, что и у сервера:  
 
-`$ sudo chgrp -R example-user ./storage ./bootstrap/cache`
+`$ sudo chgrp -R www-data ./storage ./bootstrap/cache`
 
 `$ sudo chmod -R ug+rwx ./storage ./bootstrap/cache`
 

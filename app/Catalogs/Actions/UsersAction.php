@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\IUser;
 use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\PasswordDTO;
 use App\Catalogs\DTO\UserDTO;
-use App\Base\Contracts\IUser;
 use App\Models\Help;
 use App\Models\User as Model;
 use Carbon\Carbon;

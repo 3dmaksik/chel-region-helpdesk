@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Catalogs\DTO\CabinetDTO;
 use App\Base\Contracts\ICabinet;
+use App\Catalogs\DTO\CabinetDTO;
 use App\Models\Cabinet as Model;
 use App\Models\User;
 use Carbon\Carbon;

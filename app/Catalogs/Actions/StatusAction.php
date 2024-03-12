@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
-use App\Catalogs\DTO\StatusDTO;
 use App\Base\Contracts\IStatus;
+use App\Catalogs\DTO\StatusDTO;
 use App\Models\Status as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
