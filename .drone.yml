@@ -47,7 +47,7 @@ steps:
     - mkdir storage/images && mkdir storage/avatar && mkdir storage/sound
     - php artisan storage:link
     - nohup php artisan serve &
-    - php artisan test --process-isolation
+    - php artisan test --parallel --recreate-databases
     depends_on:
     - frontend
     - library
