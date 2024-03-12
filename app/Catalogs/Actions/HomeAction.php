@@ -4,7 +4,7 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Base\Enums\Status;
-use App\Core\Contracts\IHome;
+use App\Base\Contracts\IHome;
 use App\Models\Help as Model;
 
 class HomeAction extends Action implements IHome

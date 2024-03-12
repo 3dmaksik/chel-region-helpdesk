@@ -6,7 +6,7 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\ArticleDTO;
-use App\Core\Contracts\IArticle;
+use App\Base\Contracts\IArticle;
 use App\Models\Article as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;

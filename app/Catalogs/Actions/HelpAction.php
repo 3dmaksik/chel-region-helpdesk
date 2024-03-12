@@ -7,7 +7,7 @@ use App\Base\Enums\Status;
 use App\Base\Helpers\GeneratorAppNumberHelper;
 use App\Base\Helpers\StoreFilesHelper;
 use App\Catalogs\DTO\HelpDTO;
-use App\Core\Contracts\IHelp;
+use App\Base\Contracts\IHelp;
 use App\Models\Category;
 use App\Models\Help as Model;
 use App\Models\Priority;

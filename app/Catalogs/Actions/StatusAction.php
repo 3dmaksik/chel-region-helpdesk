@@ -6,7 +6,7 @@ namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
 use App\Catalogs\DTO\StatusDTO;
-use App\Core\Contracts\IStatus;
+use App\Base\Contracts\IStatus;
 use App\Models\Status as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;

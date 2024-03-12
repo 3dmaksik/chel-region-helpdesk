@@ -8,7 +8,7 @@ use App\Base\Actions\Action;
 use App\Base\Helpers\StoreFilesHelper;
 use App\Catalogs\DTO\AccountDTO;
 use App\Catalogs\DTO\PasswordDTO;
-use App\Core\Contracts\ISettings;
+use App\Base\Contracts\ISettings;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;

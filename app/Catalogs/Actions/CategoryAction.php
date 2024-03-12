@@ -7,7 +7,7 @@ namespace App\Catalogs\Actions;
 use App\Base\Actions\Action;
 use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\CategoryDTO;
-use App\Core\Contracts\ICategory;
+use App\Base\Contracts\ICategory;
 use App\Models\Category as Model;
 use App\Models\Help;
 use Carbon\Carbon;
