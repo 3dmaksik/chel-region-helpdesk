@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\ICategory;
 use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\CategoryDTO;
-use App\Core\Contracts\ICategory;
 use App\Models\Category as Model;
 use App\Models\Help;
 use Carbon\Carbon;
@@ -67,7 +67,7 @@ final class CategoryAction extends Action implements ICategory
         $this->dataObject = new CategoryDTO(
             $request['description']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->description = StringHelper::run($this->dataObject->description);
         DB::transaction(
             fn () => $this->item->save()

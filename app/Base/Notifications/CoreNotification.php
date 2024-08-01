@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Notifications;
+namespace App\Base\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;

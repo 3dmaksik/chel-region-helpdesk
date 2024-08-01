@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Base\Helpers;
 
-use App\Core\Helpers\CoreHelper;
 use Carbon\Carbon;
 
-final class GeneratorAppNumberHelper extends CoreHelper
+final class GeneratorAppNumberHelper
 {
     /**
      * [this year]

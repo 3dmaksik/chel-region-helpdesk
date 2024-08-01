@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\IUser;
 use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\PasswordDTO;
 use App\Catalogs\DTO\UserDTO;
-use App\Core\Contracts\IUser;
 use App\Models\Help;
 use App\Models\User as Model;
 use Carbon\Carbon;
@@ -152,7 +152,7 @@ final class UsersAction extends Action implements IUser
             $this->passwordDTO,
             $request['patronymic'],
         );
-        $this->user = new Model();
+        $this->user = new Model;
         $this->user->name = $this->dataObject->name;
         $this->user->firstname = StringHelper::run($this->dataObject->firstname);
         $this->user->lastname = StringHelper::run($this->dataObject->lastname);

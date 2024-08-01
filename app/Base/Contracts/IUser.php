@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Core\Contracts;
+namespace App\Base\Contracts;
 
 interface IUser
 {

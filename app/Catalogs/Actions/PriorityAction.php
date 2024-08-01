@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\IPriority;
 use App\Base\Helpers\StringHelper;
 use App\Catalogs\DTO\PriorityDTO;
-use App\Core\Contracts\IPriority;
 use App\Models\Help;
 use App\Models\Priority as Model;
 use Carbon\Carbon;
@@ -70,7 +70,7 @@ final class PriorityAction extends Action implements IPriority
             (int) $request['warning_timer'],
             (int) $request['danger_timer']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->description = StringHelper::run($this->dataObject->description);
         $this->item->rang = $this->dataObject->rang;
         $this->item->warning_timer = $this->dataObject->warning_timer;

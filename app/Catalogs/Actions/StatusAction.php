@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\IStatus;
 use App\Catalogs\DTO\StatusDTO;
-use App\Core\Contracts\IStatus;
 use App\Models\Status as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -59,7 +59,7 @@ final class StatusAction extends Action implements IStatus
             $request['description'],
             $request['color']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->description = $this->dataObject->description;
         $this->item->color = $this->dataObject->color;
         DB::transaction(

@@ -15,9 +15,7 @@ class HelpNotification extends BaseNotification
      *
      * @return void
      */
-    public function __construct(public string $method, public string $route)
-    {
-    }
+    public function __construct(public string $method, public string $route) {}
 
     /**
      * Get the notification's delivery channels.

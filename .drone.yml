@@ -25,6 +25,8 @@ steps:
     commands:
     - sleep 30
     - mysql -u root -h database --execute="SELECT VERSION();"
+    depends_on:
+    - database
 
   - name: build_test_app
     image: ubuntu:22.04

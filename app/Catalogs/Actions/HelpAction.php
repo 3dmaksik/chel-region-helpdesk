@@ -3,11 +3,11 @@
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\IHelp;
 use App\Base\Enums\Status;
 use App\Base\Helpers\GeneratorAppNumberHelper;
 use App\Base\Helpers\StoreFilesHelper;
 use App\Catalogs\DTO\HelpDTO;
-use App\Core\Contracts\IHelp;
 use App\Models\Category;
 use App\Models\Help as Model;
 use App\Models\Priority;
@@ -348,7 +348,7 @@ final class HelpAction extends Action implements IHelp
             request : $this->calendar_request,
             images : $request['images'] ?? null,
         );
-        $this->item = new Model();
+        $this->item = new Model;
         if ($this->dataObject->images) {
             $this->images = collect(StoreFilesHelper::createFileImages($this->dataObject->images, 'images', 1920, 1080))->toJson();
             $this->item->images = $this->images;
@@ -392,7 +392,6 @@ final class HelpAction extends Action implements IHelp
      */
     public function update(array $request, Model $model): JsonResponse
     {
-
         $this->dataObject = new HelpDTO(
             category : (int) $request['category_id'],
             user : (int) $request['user_id'],
@@ -551,7 +550,7 @@ final class HelpAction extends Action implements IHelp
             images_final : $request['images_final'] ?? null,
             status : Status::Success,
             calendar_final: Carbon::now(),
-            lead_at : Carbon::now()->diffInSeconds(Carbon::parse($model->calendar_accept)),
+            lead_at : (int)Carbon::now()->diffInRealSeconds(Carbon::parse($model->calendar_accept)),
             checkWrite : false,
         );
         if ($this->dataObject->imagesFinal) {
@@ -820,12 +819,23 @@ final class HelpAction extends Action implements IHelp
     protected function checkDate(Carbon $date): Carbon
     {
         $hour = Carbon::parse($date)->format('H');
-        $time = 16;
-        $timeFry = 15;
-        if (Carbon::parse($date)->format('D') === 'Fry' && $hour > $timeFry) {
-            $hour -= $timeFry;
+        $minute = Carbon::parse($date)->format('i');
+        $time = config('settings.workTime');
+        $timeFry = config('settings.fryTime');
+        $dayFry = config('settings.fryDays');
+        $dayWeek = config('settings.weekDays');
+        $hour < 9 ?: $hour = 9;
+        if ($this->checkDays(Carbon::parse($date)->format('d.m'), $dayFry) === true && $hour >= $timeFry && $minute > 10) {
 
-            return Carbon::parse($date)->addDays(3)->subHours($hour);
+            $newDate = Carbon::parse($date)->addDay()->hours($time);
+
+            return $this->checkDate($newDate);
+        }
+        if ($this->checkDays(Carbon::parse($date)->format('d.m'), $dayWeek) === true) {
+
+            $newDate = Carbon::parse($date)->addDay()->hours($time);
+
+            return $this->checkDate($newDate);
         }
 
         if ($hour > $time) {
@@ -833,12 +843,29 @@ final class HelpAction extends Action implements IHelp
 
             return Carbon::parse($date)->addDay()->subHours($hour);
         }
-        if ($hour < 9) {
-            return Carbon::parse($date)->addDay()->hours(9);
+        if ($hour < $time) {
+            if ($minute > 30) {
+                $minute -= 30;
+            } elseif ($minute === 30) {
+                $minute = 30;
+            }
+            return Carbon::parse($date)->addDay()->hours($time)->minutes((int)$minute);
         }
 
         return $date;
 
+    }
+
+    protected function checkDays(string $date, array $config): bool
+    {
+        $days = $config;
+        foreach ($days as $day) {
+            if ($day === $date) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function getAllCategoryCollection(): Collection

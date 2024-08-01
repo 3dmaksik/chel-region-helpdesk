@@ -15,9 +15,7 @@ class ExpireNotification extends BaseNotification
      *
      * @return void
      */
-    public function __construct(public string $method, public string $text, public int $count)
-    {
-    }
+    public function __construct(public string $method, public string $text, public int $count) {}
 
     /**
      * Get the notification's delivery channels.

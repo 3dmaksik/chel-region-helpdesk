@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\IArticle;
 use App\Catalogs\DTO\ArticleDTO;
-use App\Core\Contracts\IArticle;
 use App\Models\Article as Model;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -59,7 +59,7 @@ final class NewsAction extends Action implements IArticle
             $request['description'],
             $request['news_text']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->name = $this->dataObject->name;
         $this->item->description = $this->dataObject->description;
         $this->item->news_text = $this->dataObject->newsText;

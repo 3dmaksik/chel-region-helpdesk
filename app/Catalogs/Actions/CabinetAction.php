@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Catalogs\Actions;
 
 use App\Base\Actions\Action;
+use App\Base\Contracts\ICabinet;
 use App\Catalogs\DTO\CabinetDTO;
-use App\Core\Contracts\ICabinet;
 use App\Models\Cabinet as Model;
 use App\Models\User;
 use Carbon\Carbon;
@@ -66,7 +66,7 @@ final class CabinetAction extends Action implements ICabinet
         $this->dataObject = new CabinetDTO(
             $request['description']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->description = $this->dataObject->description;
         DB::transaction(
             fn () => $this->item->save()

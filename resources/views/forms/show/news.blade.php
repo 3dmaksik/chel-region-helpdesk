@@ -26,9 +26,11 @@
         <div>{!! $item['data']->news_text !!}</div>
         <hr>
         <h6 class="text-primary">Дата публикации:</h6>
-        <h6>{{ $item['data']->created_at }}</h6>
+        <small class="text-secondary"> {{ $item['data']->created_at}}</small>
         @can('edit news')
+        <div class="mt-2">
         <a class="btn btn-success" href="{{ route(config('constants.news.edit'), $item['data']->id)}}">Редактировать новость</a>
+        </div>
         @endcan
     </div>
 </div>

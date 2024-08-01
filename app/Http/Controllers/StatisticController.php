@@ -11,9 +11,7 @@ class StatisticController extends Controller
 {
     public Help $item;
 
-    public function __construct(private readonly StatisticAction $statistic)
-    {
-    }
+    public function __construct(private readonly StatisticAction $statistic) {}
 
     public function index(): View
     {

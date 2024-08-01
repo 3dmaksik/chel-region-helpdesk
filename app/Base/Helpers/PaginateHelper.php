@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Base\Helpers;
 
-use App\Core\Helpers\CoreHelper;
 use Illuminate\Container\Container;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 //Base Helper Paginate in Laravel
-final class PaginateHelper extends CoreHelper
+final class PaginateHelper
 {
     public static function paginate(Collection $results, int $pageSize): LengthAwarePaginator
     {
