@@ -550,7 +550,7 @@ final class HelpAction extends Action implements IHelp
             images_final : $request['images_final'] ?? null,
             status : Status::Success,
             calendar_final: Carbon::now(),
-            lead_at : Carbon::now()->diffInSeconds(Carbon::parse($model->calendar_accept)),
+            lead_at : (int)Carbon::now()->diffInRealSeconds(Carbon::parse($model->calendar_accept)),
             checkWrite : false,
         );
         if ($this->dataObject->imagesFinal) {
