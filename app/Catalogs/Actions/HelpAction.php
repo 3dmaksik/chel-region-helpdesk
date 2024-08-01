@@ -849,8 +849,7 @@ final class HelpAction extends Action implements IHelp
             } elseif ($minute === 30) {
                 $minute = 30;
             }
-
-            return Carbon::parse($date)->addDay()->hours($time)->minutes($minute);
+            return Carbon::parse($date)->addDay()->hours($time)->minutes((int)$minute);
         }
 
         return $date;
