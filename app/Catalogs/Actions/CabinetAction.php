@@ -66,7 +66,7 @@ final class CabinetAction extends Action implements ICabinet
         $this->dataObject = new CabinetDTO(
             $request['description']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->description = $this->dataObject->description;
         DB::transaction(
             fn () => $this->item->save()

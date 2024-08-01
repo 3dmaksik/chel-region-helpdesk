@@ -59,7 +59,7 @@ final class StatusAction extends Action implements IStatus
             $request['description'],
             $request['color']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->description = $this->dataObject->description;
         $this->item->color = $this->dataObject->color;
         DB::transaction(

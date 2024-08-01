@@ -2,6 +2,4 @@
 
 namespace App\Base\Actions;
 
-class SubAction
-{
-}
+class SubAction {}

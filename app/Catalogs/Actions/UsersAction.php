@@ -152,7 +152,7 @@ final class UsersAction extends Action implements IUser
             $this->passwordDTO,
             $request['patronymic'],
         );
-        $this->user = new Model();
+        $this->user = new Model;
         $this->user->name = $this->dataObject->name;
         $this->user->firstname = StringHelper::run($this->dataObject->firstname);
         $this->user->lastname = StringHelper::run($this->dataObject->lastname);

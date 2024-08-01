@@ -67,7 +67,7 @@ final class CategoryAction extends Action implements ICategory
         $this->dataObject = new CategoryDTO(
             $request['description']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->description = StringHelper::run($this->dataObject->description);
         DB::transaction(
             fn () => $this->item->save()

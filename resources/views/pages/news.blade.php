@@ -16,16 +16,15 @@
             <h3 class="text-primary">{{ $item->name }}</h3>
         </a>
         <h6 class="text-primary">{{ $item->description }}</h6>
-        <hr/>
         <a href="{{ route(config('constants.news.show'),$item->id) }}"> <button type="button"
                 class="btn btn-info">Читать далее</button></a>
         @can('edit news')
         <a href="{{ route(config('constants.news.edit'),$item->id) }}"> <button type="button"
-                class="btn btn-success">Редактировать новость</button></a>
+                class="btn btn-success">Редактировать</button></a>
         @endcan
         @can('destroy news')
         <a data-toggle="modal" data-target="#removeModal-{{ $item->id}}" href="#"> <button type="button"
-                class="btn btn-danger remove">Удалить новость</button></a>
+                class="btn btn-danger remove">Удалить</button></a>
         <!-- Окно удаления-->
         <div class="modal fade" id="removeModal-{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -53,9 +52,10 @@
             </div>
         </div>
         @endcan
+        <div class="mt-2">
+        <small class="text-secondary"> {{ $item->created_at}}</small>
+        </div>
         <hr/>
-        <small>Дата публикации: {{ $item->created_at}}</small>
-        <br/>
         @empty
         <div></div>
         @endforelse

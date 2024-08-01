@@ -9,9 +9,7 @@ use Illuminate\View\View;
 
 class SearchController extends Controller
 {
-    public function __construct(private readonly SearchCatalogAction $catalogs)
-    {
-    }
+    public function __construct(private readonly SearchCatalogAction $catalogs) {}
 
     public function all(SearchRequest $request): View
     {

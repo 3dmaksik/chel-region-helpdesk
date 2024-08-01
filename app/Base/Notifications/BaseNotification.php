@@ -2,6 +2,4 @@
 
 namespace App\Base\Notifications;
 
-class BaseNotification extends CoreNotification
-{
-}
+class BaseNotification extends CoreNotification {}

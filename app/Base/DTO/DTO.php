@@ -2,6 +2,4 @@
 
 namespace App\Base\DTO;
 
-class DTO
-{
-}
+class DTO {}

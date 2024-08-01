@@ -39,9 +39,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Show the application's login form.
@@ -155,9 +153,7 @@ class LoginController extends Controller
      *
      * @return mixed
      */
-    protected function authenticated(Request $request, mixed $user)
-    {
-    }
+    protected function authenticated(Request $request, mixed $user) {}
 
     /**
      * Get the failed login response instance.

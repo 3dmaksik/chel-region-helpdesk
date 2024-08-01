@@ -59,7 +59,7 @@ final class NewsAction extends Action implements IArticle
             $request['description'],
             $request['news_text']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->name = $this->dataObject->name;
         $this->item->description = $this->dataObject->description;
         $this->item->news_text = $this->dataObject->newsText;

@@ -70,7 +70,7 @@ final class PriorityAction extends Action implements IPriority
             (int) $request['warning_timer'],
             (int) $request['danger_timer']
         );
-        $this->item = new Model();
+        $this->item = new Model;
         $this->item->description = StringHelper::run($this->dataObject->description);
         $this->item->rang = $this->dataObject->rang;
         $this->item->warning_timer = $this->dataObject->warning_timer;
