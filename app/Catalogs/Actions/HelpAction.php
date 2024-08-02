@@ -550,7 +550,7 @@ final class HelpAction extends Action implements IHelp
             images_final : $request['images_final'] ?? null,
             status : Status::Success,
             calendar_final: Carbon::now(),
-            lead_at : (int)Carbon::now()->diffInRealSeconds(Carbon::parse($model->calendar_accept)),
+            lead_at : (int) Carbon::now()->diffInRealSeconds(Carbon::parse($model->calendar_accept)),
             checkWrite : false,
         );
         if ($this->dataObject->imagesFinal) {
@@ -820,36 +820,28 @@ final class HelpAction extends Action implements IHelp
     {
         $hour = Carbon::parse($date)->format('H');
         $minute = Carbon::parse($date)->format('i');
-        $time = config('settings.workTime');
-        $timeFry = config('settings.fryTime');
-        $dayFry = config('settings.fryDays');
-        $dayWeek = config('settings.weekDays');
-        $hour < 9 ?: $hour = 9;
-        if ($this->checkDays(Carbon::parse($date)->format('d.m'), $dayFry) === true && $hour >= $timeFry && $minute > 10) {
+        $time = config('calendar.workTime');
+        $timeFry = config('calendar.fryTime');
+        $dayFry = config('calendar.fryDays');
+        $dayWeek = config('calendar.weekDays');
+        if ($this->checkDays(Carbon::parse($date)->format('d.m'), $dayFry) === true || $this->checkDays(Carbon::parse($date)->format('d.m'), $dayWeek) === true) {
 
-            $newDate = Carbon::parse($date)->addDay()->hours($time);
-
-            return $this->checkDate($newDate);
-        }
-        if ($this->checkDays(Carbon::parse($date)->format('d.m'), $dayWeek) === true) {
-
-            $newDate = Carbon::parse($date)->addDay()->hours($time);
+            if ($hour >= $timeFry) {
+                $hour = 9;
+            }
+            $newDate = Carbon::parse($date)->addDay()->hours((int) $hour);
 
             return $this->checkDate($newDate);
         }
+        if ($hour < 9) {
+            $hour = 9;
 
+            return Carbon::parse($date)->hours((int) $hour);
+        }
         if ($hour > $time) {
             $hour -= $time;
 
-            return Carbon::parse($date)->addDay()->subHours($hour);
-        }
-        if ($hour < $time) {
-            if ($minute > 30) {
-                $minute -= 30;
-            } elseif ($minute === 30) {
-                $minute = 30;
-            }
-            return Carbon::parse($date)->addDay()->hours($time)->minutes((int)$minute);
+            return Carbon::parse($date)->addDay()->subHours((int) $hour);
         }
 
         return $date;
