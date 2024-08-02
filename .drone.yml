@@ -52,3 +52,7 @@ steps:
     - frontend
     - library
     - test_database
+trigger:
+  branch:
+  - master
+  - develop
