@@ -843,7 +843,7 @@ final class HelpAction extends Action implements IHelp
 
             return Carbon::parse($date)->addDay()->subHours((int) $hour);
         }
-        if ($hour === $timeFry &&  $hour < $time + 1 && $minute > 30) {
+        if ($hour > $timeFry - 1 && $hour < $time + 1 && $minute > 30) {
             $hour = 15;
 
             return Carbon::parse($date)->hours((int) $hour);
