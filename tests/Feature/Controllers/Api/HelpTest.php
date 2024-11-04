@@ -850,7 +850,7 @@ class HelpTest extends TestCase
             'description' => 'Общая',
         ]);
         Storage::fake('local');
-        $image = UploadedFile::fake()->image('avatar.png', 100, 100)->size(30720);
+        $image = UploadedFile::fake()->image('avatar.png', 100, 100)->size(30720)->mimeType('image/png');
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.help.store')),
             [
                 'category_id' => $category->id,
