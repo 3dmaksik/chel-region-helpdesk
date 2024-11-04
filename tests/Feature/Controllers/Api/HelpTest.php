@@ -896,6 +896,7 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
+        $response->assertJsonValidationErrors(['images.0']);
         $response->assertStatus(422);
     }
 
@@ -951,7 +952,9 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertStatus(500);
+
+        $response->assertJsonValidationErrors(['images.0']);
+        $response->assertStatus(422);
     }
 
     public function test_controller_help_store_validation_error_integer_super_admin(): void
