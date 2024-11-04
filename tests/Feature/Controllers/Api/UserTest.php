@@ -292,7 +292,7 @@ class UserTest extends TestCase
             'priority_id' => $priority->id,
             'description_long' => fake()->text(),
         ]);
-        $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.users.destroy'), $testUser->id));
+        $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.users.destroy'), $testUser->id+1));
         $response->assertStatus(422);
     }
 

@@ -43,7 +43,7 @@ class StoreFileTest extends TestCase
         for ($i = 1; $i <= 10; $i++) {
             $testFile = UploadedFile::fake()->create('file.zip')->size(10);
             $filename = StoreFilesHelper::createFileName($testFile);
-            $file = StoreFilesHelper::createOneFile('file', $filename, $testFile );
+            $file = StoreFilesHelper::createOneFile($filename, $testFile, 'file');
             $this->assertNull($file);
             Storage::disk('file')->delete($filename);
         }

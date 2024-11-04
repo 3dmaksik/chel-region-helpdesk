@@ -179,6 +179,6 @@ final class StoreFilesHelper
     public static function createNotify(string $filename, UploadedFile $request, string $type): void
     {
         self::$fileName = $filename;
-        self::saveSoundStorage($request, $type, self::$fileName);
+        self::saveFileStorage($request, $type, self::$fileName);
     }
 }
