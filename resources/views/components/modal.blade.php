@@ -108,6 +108,15 @@
                                 accept="image/png, image/jpeg" multiple />
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="files-final">Загрузите любые дополнительные файлы в формате архива если необходимо</label>
+                        <div class="custom-file">
+                            <label class="custom-file-label" for="customDoc">Выберите файлы</label>
+                            <input type="file" name="files_final[]" class="custom-file-input" id="customDoc"
+                                accept="application/x-bzip application/x-bzip2 application/gzip application/x-gzip
+                                application/vnd.rar application/x-tar application/zip application/x-zip-compressed application/x-freearc" multiple />
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer form-group">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Отменить</button>

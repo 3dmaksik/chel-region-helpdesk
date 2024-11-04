@@ -115,7 +115,9 @@ RewriteRule ^ index.php [L]
 
 4. Создать папки и символьные ссылки для загрузки файлов:  
 
-`$ mkdir storage/images && mkdir storage/avatar && mkdir storage/sound`  
+`$ mkdir storage/images && mkdir storage/avatar && mkdir storage/sound && mkdir storage/files`
+`$ sudo ln -s ./app/public ./storage && sudo ln -s ./app/public/images ./storage/images && sudo ln -s ./app/public/avatar ./storage/avatar && sudo ln -s ./app/public/files ./storage/files && sudo ln -s ./app/public/sound ./storage/sound`
+
 `$ sudo php artisan storage:link`  
 
 5. Скопировать файлы настроек 
@@ -181,7 +183,7 @@ user=example_user
 ````
 `$ sudo supervisorctl update`  
 
-После чего проект готов к работе. 
+После чего проект готов к работе. Логин и пароль по умолчанию admin/password. По желанию его возможно изменить.
                 
 
 ### Обновления

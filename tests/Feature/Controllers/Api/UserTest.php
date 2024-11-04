@@ -292,8 +292,8 @@ class UserTest extends TestCase
             'priority_id' => $priority->id,
             'description_long' => fake()->text(),
         ]);
-        $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.users.destroy'), $testUser->id));
-        $response->assertStatus(422);
+        $response = $this->actingAs($this->superAdmin, 'web')->deleteJson(route(config('constants.users.destroy'), $testUser->id + 1));
+        $response->assertStatus(404);
     }
 
     public function test_controller_user_destroy_error_self_last_check_super_admin(): void

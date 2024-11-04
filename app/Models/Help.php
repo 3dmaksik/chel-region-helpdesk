@@ -30,6 +30,9 @@ class Help extends Model
         'calendar_execution',
         'lead_at',
         'images',
+        'images_final',
+        'files',
+        'files_final',
         'description_long',
         'info',
         'info_final',
@@ -151,15 +154,25 @@ class Help extends Model
 
     protected function images(): Attribute
     {
-        return $this->imagesJson();
+        return $this->filesJson();
     }
 
     protected function imagesFinal(): Attribute
     {
-        return $this->imagesJson();
+        return $this->filesJson();
     }
 
-    protected function imagesJson(): Attribute
+    protected function files(): Attribute
+    {
+        return $this->filesJson();
+    }
+
+    protected function filesFinal(): Attribute
+    {
+        return $this->filesJson();
+    }
+
+    protected function filesJson(): Attribute
     {
         return Attribute::make(
             get: function ($value) {

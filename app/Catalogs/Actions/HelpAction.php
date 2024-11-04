@@ -121,7 +121,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [this old executor in task]
      *
-     * @var images
+     * @var oldUserMod
      */
     public User $oldUserMod;
 
@@ -133,9 +133,23 @@ final class HelpAction extends Action implements IHelp
     private ?string $images_final;
 
     /**
+     * [files help]
+     *
+     * @var files
+     */
+    private ?string $files;
+
+    /**
+     * [files help in final task]
+     *
+     * @var files_final
+     */
+    private ?string $files_final;
+
+    /**
      * [count help]
      *
-     * @var images
+     * @var count
      */
     private int $count;
 
@@ -347,11 +361,18 @@ final class HelpAction extends Action implements IHelp
             description_long : $request['description_long'],
             request : $this->calendar_request,
             images : $request['images'] ?? null,
+            files : $request['files'] ?? null,
         );
         $this->item = new Model;
         if ($this->dataObject->images) {
             $this->images = collect(StoreFilesHelper::createFileImages($this->dataObject->images, 'images', 1920, 1080))->toJson();
             $this->item->images = $this->images;
+        }
+        if ($this->dataObject->files) {
+            $this->files = collect(StoreFilesHelper::createFileOther($this->dataObject->files, 'file'))->toJson();
+            $this->item->files = $this->files;
+        }
+        if ($this->dataObject->images || $this->dataObject->files) {
             $this->item->files_remove = $this->checkRemove();
         }
         $this->item->app_number = $this->dataObject->appNumber;
@@ -548,6 +569,7 @@ final class HelpAction extends Action implements IHelp
         $this->dataObject = new HelpDTO(
             info_final: (string) $request['info_final'] ?? null,
             images_final : $request['images_final'] ?? null,
+            files_final : $request['files_final'] ?? null,
             status : Status::Success,
             calendar_final: Carbon::now(),
             lead_at : (int) Carbon::now()->diffInRealSeconds(Carbon::parse($model->calendar_accept)),
@@ -556,6 +578,12 @@ final class HelpAction extends Action implements IHelp
         if ($this->dataObject->imagesFinal) {
             $this->images_final = collect(StoreFilesHelper::createFileImages($this->dataObject->imagesFinal, 'images', 1920, 1080))->toJson();
             $model->images_final = $this->images_final;
+        }
+        if ($this->dataObject->filesFinal) {
+            $this->files_final = collect(StoreFilesHelper::createFileOther($this->dataObject->filesFinal, 'file'))->toJson();
+            $model->files_final = $this->files_final;
+        }
+        if ($this->dataObject->imagesFinal || $this->dataObject->filesFinal) {
             $model->files_final_remove = $this->checkRemove();
         }
 
@@ -848,6 +876,7 @@ final class HelpAction extends Action implements IHelp
 
             return Carbon::parse($date)->hours((int) $hour);
         }
+
         return $date;
 
     }
@@ -933,8 +962,8 @@ final class HelpAction extends Action implements IHelp
 
     protected function checkRemove(): ?Carbon
     {
-        if (config('settings.clearImage') > 0) {
-            return Carbon::now()->addMonths(config('settings.clearImage'));
+        if (config('settings.clearFile') > 0) {
+            return Carbon::now()->addMonths(config('settings.clearFile'));
         }
 
         return null;

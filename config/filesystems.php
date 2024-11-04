@@ -59,6 +59,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'file' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/files'),
+            'url' => env('APP_URL').'/storage/files',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         'sound' => [
             'driver' => 'local',
@@ -96,6 +103,7 @@ return [
     'links' => [
         public_path('storage/images') => storage_path('app/public/images'),
         public_path('storage/avatar') => storage_path('app/public/avatar'),
+        public_path('storage/files') => storage_path('app/public/files'),
         public_path('storage/sound') => storage_path('app/public/sound'),
     ],
 

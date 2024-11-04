@@ -32,6 +32,10 @@ final class HelpDTO extends DTO
 
     public readonly ?array $imagesFinal;
 
+    public readonly ?array $files;
+
+    public readonly ?array $filesFinal;
+
     public readonly ?string $info;
 
     public readonly ?string $infoFinal;
@@ -65,6 +69,8 @@ final class HelpDTO extends DTO
         $this->priority = $params['priority'] ?? null;
         $this->images = $params['images'] ?? null;
         $this->imagesFinal = $params['images_final'] ?? null;
+        $this->files = $params['files'] ?? null;
+        $this->filesFinal = $params['files_final'] ?? null;
         $this->info = $params['info'] ?? null;
         $this->infoFinal = $params['info_final'] ?? null;
         $this->calendarAccept = $params['accept'] ?? null;
