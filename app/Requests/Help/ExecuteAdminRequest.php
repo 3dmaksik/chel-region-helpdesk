@@ -9,9 +9,12 @@ class ExecuteAdminRequest extends BaseRequest
 {
     public function rules(): array
     {
+        $fileMax = config('settings.fileMax');
+
         return [
             'info_final' => 'required|string',
-            'images_final.*' => 'nullable|mimes:jpg,gif,png,jpeg|max:20480',
+            'images_final.*' => 'nullable', 'mimes:jpg,gif,png,jpeg', "max:$fileMax",
+            'files_final.*' => 'nullable', 'mimes:arc,bz,bz2,gz,rar,tar,zip', "max:$fileMax",
         ];
     }
 

@@ -37,4 +37,15 @@ class StoreFileTest extends TestCase
             Storage::disk('sound')->delete($filename);
         }
     }
+    public function test_store_file(): void
+    {
+        Storage::fake('file');
+        for ($i = 1; $i <= 10; $i++) {
+            $testFile = UploadedFile::fake()->create('file.zip')->size(10);
+            $filename = StoreFilesHelper::createFileName($testFile);
+            $file = StoreFilesHelper::createOneFile('file', $filename, $testFile );
+            $this->assertNull($file);
+            Storage::disk('file')->delete($filename);
+        }
+    }
 }

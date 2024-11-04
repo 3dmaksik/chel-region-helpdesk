@@ -244,14 +244,6 @@ final class UsersAction extends Action implements IUser
      */
     public function destroy(Model $model): JsonResponse
     {
-        $this->count = Help::where('user_id', $model->id)->orWhere('executor_id', $model->id)->count();
-        if ($this->count > 0) {
-            $this->response = [
-                'message' => 'Пользователь не может быть удалён, так как не удалены все заявки связанные с ним!',
-            ];
-
-            return response()->error($this->response);
-        }
         $this->role = $model->getRoleNames()[0];
         $this->countRole = Model::role(['superAdmin'])->count();
         if ($this->countRole === 1 && $this->role === 'superAdmin' || $model->id === auth()->user()->id) {
@@ -267,6 +259,7 @@ final class UsersAction extends Action implements IUser
         if ($model->sound_notify) {
             Storage::disk('sound')->delete($model->sound_notify);
         }
+        Help::where('user_id', $model->id)->orWhere('executor_id', $model->id)->delete();
         $model->syncRoles([]);
         $model->forceDelete();
 

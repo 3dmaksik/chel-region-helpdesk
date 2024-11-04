@@ -218,9 +218,14 @@ $(function () {
             let formid = $(this).attr('id');
             let form = document.querySelector('#'+formid);
             let formData = new FormData(form);
-            $.each($("input[type=file]"), function (i, obj) {
+            $.each($("#customFile"), function (i, obj) {
                 $.each(obj.files, function (j, file) {
                     formData.append("images[" + j + "]", file);
+                });
+            });
+            $.each($("#customDoc"), function (i, obj) {
+                $.each(obj.files, function (j, file) {
+                    formData.append("files[" + j + "]", file);
                 });
             });
             $.ajax({
