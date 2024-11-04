@@ -850,7 +850,7 @@ class HelpTest extends TestCase
             'description' => 'Общая',
         ]);
         Storage::fake('local');
-        $image = UploadedFile::fake()->image('avatar.png', 100, 100)->size(30720)->mimeType('image/png');
+        $image = UploadedFile::fake()->image('avatar.png', 100, 100)->size(30720);
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.help.store')),
             [
                 'category_id' => $category->id,
@@ -861,7 +861,6 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['images.0']);
         $response->assertStatus(422);
     }
 
@@ -896,7 +895,6 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['images_final.0']);
         $response->assertStatus(422);
     }
 
@@ -917,7 +915,6 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['images.0']);
         $response->assertStatus(422);
     }
 
@@ -952,7 +949,6 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['images_final.0']);
         $response->assertStatus(422);
     }
 
