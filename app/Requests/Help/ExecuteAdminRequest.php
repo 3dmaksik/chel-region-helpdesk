@@ -13,8 +13,8 @@ class ExecuteAdminRequest extends BaseRequest
 
         return [
             'info_final' => 'required|string',
-            'images_final.*' => 'nullable', 'mimes:jpg,gif,png,jpeg', "max:$fileMax",
-            'files_final.*' => 'nullable', 'mimes:arc,bz,bz2,gz,rar,tar,zip', "max:$fileMax",
+            'images_final.*' => 'nullable|mimes:jpg,gif,png,jpeg|max:'.$fileMax.'',
+            'files_final.*' => 'nullable|mimes:arc,bz,bz2,gz,rar,tar,zip|max:'.$fileMax.'',
         ];
     }
 

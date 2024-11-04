@@ -887,7 +887,7 @@ class HelpTest extends TestCase
             'description_long' => fake()->text(),
         ]);
         Storage::fake('local');
-        $image = UploadedFile::fake()->image('image.png', 100, 100)->size(300720);
+        $image = UploadedFile::fake()->image('image.png', 100, 100)->size(30720);
         $response = $this->actingAs($this->superAdmin, 'web')->patchJson(route(config('constants.help.execute'), $oldHelp->id),
             [
                 'info_final' => 'Готово',
