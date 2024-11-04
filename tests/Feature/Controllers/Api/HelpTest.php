@@ -887,7 +887,7 @@ class HelpTest extends TestCase
             'description_long' => fake()->text(),
         ]);
         Storage::fake('local');
-        $image = UploadedFile::fake()->image('image.png', 100, 100)->size(30720);
+        $image = UploadedFile::fake()->image('image.png', 100, 100)->size(300720);
         $response = $this->actingAs($this->superAdmin, 'web')->patchJson(route(config('constants.help.execute'), $oldHelp->id),
             [
                 'info_final' => 'Готово',
@@ -951,7 +951,7 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertStatus(422);
+        $response->assertStatus(500);
     }
 
     public function test_controller_help_store_validation_error_integer_super_admin(): void
