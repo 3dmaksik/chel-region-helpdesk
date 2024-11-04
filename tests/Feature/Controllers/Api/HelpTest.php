@@ -858,7 +858,7 @@ class HelpTest extends TestCase
                 'user_id' => $this->user->id,
                 'description_long' => 'Текст',
                 'images' => [$image],
-                'files' => [$files],
+                'files' => [$file],
 
             ], [
                 'Accept' => 'application/json',
@@ -891,7 +891,7 @@ class HelpTest extends TestCase
         ]);
         Storage::fake('local');
         $image = UploadedFile::fake()->image('image.png', 100, 100)->size(30720);
-        $file = UploadedFile::fake()->create('test.zip','30720','zip');
+        $file = UploadedFile::fake()->create('test.zip','30720');
         $response = $this->actingAs($this->superAdmin, 'web')->patchJson(route(config('constants.help.execute'), $oldHelp->id),
             [
                 'info_final' => 'Готово',
