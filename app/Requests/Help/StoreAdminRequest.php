@@ -15,8 +15,8 @@ class StoreAdminRequest extends BaseRequest
             'category_id' => 'required|integer|numeric|exists:category,id',
             'user_id' => 'required|integer|numeric|exists:users,id',
             'description_long' => 'required|string',
-            'images.*' => 'nullable', 'mimes:jpg,gif,png,jpeg', "max:$fileMax",
-            'files.*' => 'nullable', 'mimes:arc,bz,bz2,gz,rar,tar,zip', "max:$fileMax",
+            'images.*' => 'nullable|mimes:jpg,gif,png,jpeg|max:'.$fileMax.'',
+            'files.*' => 'nullable|mimes:arc,bz,bz2,gz,rar,tar,zip|max:'.$fileMax.'',
         ];
     }
 
