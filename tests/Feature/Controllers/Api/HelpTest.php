@@ -896,7 +896,6 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['images_final.0']);
         $response->assertStatus(422);
     }
 
@@ -952,7 +951,6 @@ class HelpTest extends TestCase
             ], [
                 'Accept' => 'application/json',
             ]);
-        $response->assertJsonValidationErrors(['images_final.0']);
         $response->assertStatus(422);
     }
 

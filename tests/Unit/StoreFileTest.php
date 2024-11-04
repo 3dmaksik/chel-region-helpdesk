@@ -37,6 +37,7 @@ class StoreFileTest extends TestCase
             Storage::disk('sound')->delete($filename);
         }
     }
+
     public function test_store_file(): void
     {
         Storage::fake('file');

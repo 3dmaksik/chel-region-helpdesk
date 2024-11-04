@@ -243,7 +243,7 @@ $(function () {
                         .prop("disabled", true);
                 },
                 error: function (data) {
-                         if (data.responseJSON.message === undefined)
+                        if (data.responseJSON.message === undefined)
                         {
                             data.responseJSON.message = data.message;
                         }

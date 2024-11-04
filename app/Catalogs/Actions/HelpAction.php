@@ -583,8 +583,7 @@ final class HelpAction extends Action implements IHelp
             $this->files_final = collect(StoreFilesHelper::createFileOther($this->dataObject->filesFinal, 'file'))->toJson();
             $model->files_final = $this->files_final;
         }
-        if ($this->dataObject->imagesFinal || $this->dataObject->filesFinal)
-        {
+        if ($this->dataObject->imagesFinal || $this->dataObject->filesFinal) {
             $model->files_final_remove = $this->checkRemove();
         }
 
