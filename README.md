@@ -117,6 +117,7 @@ RewriteRule ^ index.php [L]
 
 `$ mkdir storage/images && mkdir storage/avatar && mkdir storage/sound && mkdir storage/files`
 `$ sudo ln -s ./app/public ./storage && sudo ln -s ./app/public/images ./storage/images && sudo ln -s ./app/public/avatar ./storage/avatar && sudo ln -s ./app/public/files ./storage/files && sudo ln -s ./app/public/sound ./storage/sound`
+
 `$ sudo php artisan storage:link`  
 
 5. Скопировать файлы настроек 
