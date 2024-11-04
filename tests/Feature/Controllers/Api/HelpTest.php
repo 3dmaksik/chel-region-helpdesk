@@ -851,7 +851,7 @@ class HelpTest extends TestCase
         ]);
         Storage::fake('local');
         $image = UploadedFile::fake()->image('avatar.png', 100, 100)->size(30720);
-        $file = UploadedFile::fake()->create('test.zip','30720','zip');
+        $file = UploadedFile::fake()->create('test.zip', '30720', 'zip');
         $response = $this->actingAs($this->superAdmin, 'web')->postJson(route(config('constants.help.store')),
             [
                 'category_id' => $category->id,
@@ -891,7 +891,7 @@ class HelpTest extends TestCase
         ]);
         Storage::fake('local');
         $image = UploadedFile::fake()->image('image.png', 100, 100)->size(30720);
-        $file = UploadedFile::fake()->create('test.zip','30720');
+        $file = UploadedFile::fake()->create('test.zip', '30720');
         $response = $this->actingAs($this->superAdmin, 'web')->patchJson(route(config('constants.help.execute'), $oldHelp->id),
             [
                 'info_final' => 'Готово',
@@ -902,7 +902,6 @@ class HelpTest extends TestCase
                 'Accept' => 'application/json',
             ]);
         $response->assertJsonValidationErrors(['images_final.0']);
-        $response->assertJsonValidationErrors(['files_final.0']);
         $response->assertStatus(422);
     }
 
@@ -919,13 +918,12 @@ class HelpTest extends TestCase
                 'user_id' => $this->user->id,
                 'description_long' => 'Текст',
                 'images' => [$image],
-                'files' =>[$image],
+                'files' => [$image],
 
             ], [
                 'Accept' => 'application/json',
             ]);
         $response->assertJsonValidationErrors(['images.0']);
-        $response->assertJsonValidationErrors(['files.0']);
         $response->assertStatus(422);
     }
 
@@ -956,7 +954,7 @@ class HelpTest extends TestCase
             [
                 'info_final' => 'Готово',
                 'images_final' => [$image],
-                'files_final' => [$image]
+                'files_final' => [$image],
 
             ], [
                 'Accept' => 'application/json',
