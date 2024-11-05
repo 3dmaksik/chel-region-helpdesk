@@ -52,7 +52,7 @@ class ClearImageJob extends Job implements ShouldQueue
      */
     public function handle(): void
     {
-        if (config('settings.clearImage') > 0) {
+        if (config('settings.clearFile') > 0) {
             $this->items = Help::where('files_remove', '<', Carbon::now())
                 ->WhereNotNull('calendar_final')
                 ->orderBy('id', 'DESC')
@@ -61,8 +61,13 @@ class ClearImageJob extends Job implements ShouldQueue
                 foreach ($item->images as $image) {
                     Storage::disk('images')->delete($image['url']);
                 }
+                foreach ($item->files as $file) {
+                    Storage::disk('file')->delete($file['url']);
+                }
+
                 $item->forceFill([
                     'images' => null,
+                    'files' => null,
                     'files_remove' => null,
                 ])->save();
             }
@@ -74,8 +79,12 @@ class ClearImageJob extends Job implements ShouldQueue
                 foreach ($item->images as $image) {
                     Storage::disk('images')->delete($image['url']);
                 }
+                foreach ($item->files as $file) {
+                    Storage::disk('file')->delete($file['url']);
+                }
                 $item->forceFill([
                     'images_final' => null,
+                    'files_final' => null,
                     'files_final_remove' => null,
                 ])->save();
             }

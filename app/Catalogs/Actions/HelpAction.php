@@ -344,7 +344,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [add new help]
      *
-     * @param  array  $request  {category_id: int, user_id: int, description_long: string, images: \Illuminate\Http\UploadedFile|null}
+     * @param  array  $request  {category_id: int, user_id: int, description_long: string, images: \Illuminate\Http\UploadedFile|null, files: \Illuminate\Http\UploadedFile|null}
      */
     public function store(array $request): JsonResponse
     {
@@ -554,7 +554,7 @@ final class HelpAction extends Action implements IHelp
     /**
      * [execute help]
      *
-     * @param  array  $request  {info_final: string|null, images_final: \Illuminate\Http\UploadedFile|null}
+     * @param  array  $request  {info_final: string|null, images_final: \Illuminate\Http\UploadedFile|null, files_final: \Illuminate\Http\UploadedFile|null}
      */
     public function execute(array $request, Model $model): JsonResponse
     {
@@ -572,7 +572,7 @@ final class HelpAction extends Action implements IHelp
             files_final : $request['files_final'] ?? null,
             status : Status::Success,
             calendar_final: Carbon::now(),
-            lead_at : (int) Carbon::now()->diffInRealSeconds(Carbon::parse($model->calendar_accept)),
+            lead_at : (int) Carbon::parse($model->calendar_accept)->diffInSeconds(Carbon::now()),
             checkWrite : false,
         );
         if ($this->dataObject->imagesFinal) {
