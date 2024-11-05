@@ -6,7 +6,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Добавить новую заявку</h6>
         <div class="card-title">
             <div class="block">
-                <a style="color: #757575;" class="hover" href="{{ route(config('constants.help.worker')) }}">
+                <a style="color: #757575;" class="hover" href="{{ route(config('constants.home.worker')) }}">
                     <i class="fas fa-arrow-left fa-lg"></i>
                 </a> <span class="hidden">Назад</span>
                 <!-- скрытый элемент -->
@@ -49,6 +49,18 @@
                 </div>
                 @error('images')
                 <small class="invalid-feedback">Неверное расширение или превышен размер фото</small>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="files">Загрузите любые дополнительные файлы в формате архива если необходимо</label>
+                <div class="custom-file">
+                    <label class="custom-file-label" for="customDoc">Выберите файлы</label>
+                    <input type="file" name="files[]" class="custom-file-input" id="customDoc"
+                        accept="application/x-bzip application/x-bzip2 application/gzip application/x-gzip
+                        application/vnd.rar application/x-tar application/zip application/x-zip-compressed application/x-freearc" multiple />
+                </div>
+                @error('files')
+                <small class="invalid-feedback">Неверное расширение или превышен размер файлов</small>
                 @enderror
             </div>
             <input class="btn btn-primary" type="submit" value="Отправить" />

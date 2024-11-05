@@ -85,9 +85,14 @@ import "../vendor/select2/dist/js/i18n/ru.js";
         $(this).on("submit", function (e) {
             e.preventDefault();
             var formData = new FormData(this);
-            $.each($("input[type=file]"), function (i, obj) {
+            $.each($("#customFile"), function (i, obj) {
                 $.each(obj.files, function (j, file) {
                     formData.append("images[" + j + "]", file);
+                });
+            });
+            $.each($("#customDoc"), function (i, obj) {
+                $.each(obj.files, function (j, file) {
+                    formData.append("files[" + j + "]", file);
                 });
             });
             $.ajax({

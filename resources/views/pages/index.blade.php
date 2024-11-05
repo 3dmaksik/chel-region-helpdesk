@@ -111,6 +111,15 @@
                                             accept="image/png, image/jpeg" multiple />
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="files">Загрузите любые дополнительные файлы в формате архива если необходимо</label>
+                                    <div class="custom-file">
+                                        <label class="custom-file-label" for="customDoc">Выберите файлы</label>
+                                        <input type="file" name="files[]" class="custom-file-input" id="customDoc"
+                                            accept="application/x-bzip application/x-bzip2 application/gzip application/x-gzip
+                                            application/vnd.rar application/x-tar application/zip application/x-zip-compressed application/x-freearc" multiple />
+                                    </div>
+                                </div>
                                 <div class="my-3 text-center">
                                     <div id="error-message" style="display: none"></div>
                                     <div id="sent-message" style="display: none"> </div>
