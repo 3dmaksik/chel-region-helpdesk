@@ -33,6 +33,7 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
     && docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
+
 # Intl
 RUN apt-get install -y libicu-dev \
 && docker-php-ext-configure intl \
@@ -66,6 +67,7 @@ RUN pecl install redis && docker-php-ext-enable redis
 
 # Igbinary
 RUN pecl install igbinary && docker-php-ext-enable igbinary
+
 # Php-imap
 RUN apt-get install -y \
         libc-client-dev libkrb5-dev && \
