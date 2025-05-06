@@ -1,6 +1,7 @@
 /node_modules
 /storage/*.key
 /vendor
+/.osp
 .env
 .env.backup
 .env.production

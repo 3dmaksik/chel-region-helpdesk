@@ -68,7 +68,7 @@ final class CategoryAction extends Action implements ICategory
             $request['description']
         );
         $this->item = new Model;
-        $this->item->description = StringHelper::run($this->dataObject->description);
+        $this->item->description = StringHelper::stringTrim($this->dataObject->description);
         DB::transaction(
             fn () => $this->item->save()
         );
@@ -93,7 +93,7 @@ final class CategoryAction extends Action implements ICategory
         $this->dataObject = new CategoryDTO(
             $request['description']
         );
-        $model->description = StringHelper::run($this->dataObject->description);
+        $model->description = StringHelper::stringTrim($this->dataObject->description);
         DB::transaction(
             fn () => $model->save()
         );

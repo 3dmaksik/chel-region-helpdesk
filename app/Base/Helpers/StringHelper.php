@@ -29,7 +29,7 @@ final class StringHelper
     /**
      * [removing spaces]
      */
-    protected static function stringTrim(string $string): string
+    public static function stringTrim(string $string): string
     {
         return self::$data = trim((string) $string);
     }
@@ -37,7 +37,7 @@ final class StringHelper
     /**
      * [convert all characters to lower case]
      */
-    protected static function stringAllLower(string $string): string
+    public static function stringAllLower(string $string): string
     {
         return self::$data = strtolower((string) $string);
     }
@@ -45,7 +45,7 @@ final class StringHelper
     /**
      * [convert first character to upper case]
      */
-    protected static function stringUpFirst(string $string): string
+    public static function stringUpFirst(string $string): string
     {
         return self::$data = mb_convert_case((string) $string, MB_CASE_TITLE, 'UTF-8');
     }

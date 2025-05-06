@@ -148,12 +148,14 @@ import "../vendor/select2/dist/js/i18n/ru.js";
                         setTimeout(function(){
                           $(".base-alert-success").fadeOut(2000);
                         }, 2500);
-                    $(this)
-                        .find("input, textarea, select, button[type=submit]")
-                        .prop("disabled", false);
                     setTimeout(function () {
                         location.reload();
                     }, 3000);
+                    setTimeout(function () {
+                        $(this)
+                        .find("input, textarea, select, button[type=submit]")
+                        .prop("disabled", false);
+                          }, 5000);
                 },
             });
         });
