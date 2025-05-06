@@ -295,9 +295,11 @@ $(function () {
                             window.location.href = data.route;
                           }, 3000);
                     }
-                    $(form)
+                    setTimeout(function(){
+                        $(form)
                         .find("input, textarea, select, button[type=submit]")
                         .prop("disabled", false);
+                      }, 5000);
                 },
             });
             return false;
