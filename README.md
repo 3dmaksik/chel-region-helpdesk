@@ -16,7 +16,7 @@
 ### Требования
 
 - Astra Linux 1.8+ или другая российская ОС, либо любая акутальная операционная система семейства Linux;
-- PHP 8.1-8.3 c расширением fileinfo, 
+- PHP 8.3+ c расширением fileinfo, 
 а также со всеми стандартными расширениями, которые по умолчанию обычно включены:
 [pgsql, sqlite3, gd, imagick, curl, imap, mysql, mbstring, xml, zip, bcmath, soap,
 intl, readline, ldap, msgpack, igbinary, redis, pcov]
